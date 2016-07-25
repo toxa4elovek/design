@@ -1,7 +1,7 @@
 $(document).ready(function () {
   const awardInput = $('#award')
 
-  $(document).on('click', '#brief-saved-ok', function() {
+  $(document).on('click', '#brief-saved-ok', function () {
     $('.gotest-close').click()
     return false
   })
@@ -401,7 +401,7 @@ $(document).ready(function () {
     url: '/pitchfiles/add.json'
   })
 
-  uploader.on('du.add', function(e) {
+  uploader.on('du.add', function (e) {
     return onSelectHandler.call(this, uploader, e, fileIds, Cart)
   })
 
@@ -524,25 +524,25 @@ $(document).ready(function () {
   awardInput.blur(function () {
     var input = $(this)
     var minimalAward = input.data('minimalAward')
-     //console.log('blur - current award input value - ' + input.val())
-     //console.log('blur - current minimal award - ' + minimalAward)
+    // console.log('blur - current award input value - ' + input.val())
+    // console.log('blur - current minimal award - ' + minimalAward)
     if (input.val() == '') {
-       //console.log('Award input is empty, setting value as minimumAward - ' + minimalAward)
+      // console.log('Award input is empty, setting value as minimumAward - ' + minimalAward)
       input.val(minimalAward)
       award = minimalAward
     }
     var award = 0
     indicator.removeClass('low normal good')
-    //console.log(input.data('discount'))
+    // console.log(input.data('discount'))
     if ((awardInput.hasClass('placeholder')) && (input.data('discount') === false)) {
-      //console.log('getting middle price')
+      // console.log('getting middle price')
       awardInput.val(Calculator.getMiddlePrice())
     }
-    //console.log(minimalAward)
-    //console.log(input.val())
+    // console.log(minimalAward)
+    // console.log(input.val())
     if (minimalAward > input.val()) {
-      //console.log(minimalAward)
-      //console.log('minimalAward is more than award value' - minimalAward)
+      // console.log(minimalAward)
+      // console.log('minimalAward is more than award value' - minimalAward)
       input.val(minimalAward)
       input.addClass('initial-price')
       indicator.addClass('normal')
@@ -550,18 +550,18 @@ $(document).ready(function () {
     } else {
       input.removeClass('initial-price')
       award = input.val()
-      //console.log('Value is exists - ' + award)
+    // console.log('Value is exists - ' + award)
     }
     if (award <= 14980) {
       $('#fastpitch-tooltip').fadeIn()
     } else {
       $('#fastpitch-tooltip').fadeOut()
     }
-     //console.log('redrawing indicator and updating cart - ' + award)
+    // console.log('redrawing indicator and updating cart - ' + award)
     drawIndicator(input, award)
     Cart.updateOption($(this).data('optionTitle'), award)
-   //console.log('Value after blur - ' + awardInput.val())
-   //console.log('blur end- current minimal award - ' + minimalAward)
+  // console.log('Value after blur - ' + awardInput.val())
+  // console.log('blur end- current minimal award - ' + minimalAward)
   })
 
   function formatMoney (value) {
@@ -611,10 +611,10 @@ $(document).ready(function () {
       }
     }
     var minimalAward = input.data('minimalAward')
-   //console.log('MinimalAward in click - ' + minimalAward)
-   //console.log(awardInput.attr('placeholder'))
-   //console.log(awardInput.attr('value'))
-   //console.log('Inside award click - ' + awardInput.val())
+  // console.log('MinimalAward in click - ' + minimalAward)
+  // console.log(awardInput.attr('placeholder'))
+  // console.log(awardInput.attr('value'))
+  // console.log('Inside award click - ' + awardInput.val())
   })
 
   var Calculator = new AwardCalculator()
@@ -1223,17 +1223,19 @@ function FeatureCart () {
       alert('Укажите награду для дизайнера!')
     } else {
       $.post('/pitches/add.json', self.data, function (response) {
-        if (typeof (simplesave) == 'undefined') {
-          if (response == 'redirect') {
+        if (typeof (simplesave) === 'undefined') {
+          if (response === 'redirect') {
             window.location = '/users/registration'
           }
-          if (response == 'noaward') {
+          if (response === 'noaward') {
             alert('Укажите награду для дизайнера!')
             return false
           }
-          if (response == 'lowaward') {
-            alert('Награда слишком низкая!')
-            return false
+          if (typeof (response.error) !== 'undefined') {
+            if (response.error === 'lowaward') {
+              alert('Награда слишком низкая!')
+              return false
+            }
           }
           self.id = response
           $('#pitch-id').val(self.id)
@@ -1357,14 +1359,14 @@ function FeatureCart () {
     drawIndicator(input, input.val())
   }
   this._logoProperites = function () {
-    var array = [ ]
+    var array = []
     $.each($('.slider'), function (i, object) {
       array.push($(object).slider('value'))
     })
     return array
   }
   this._logoTypeArray = function () {
-    var array = [ ]
+    var array = []
     var checkedExperts = $('input:checked', '.look-variants')
     $.each(checkedExperts, function (index, object) {
       array.push($(object).data('id'))
@@ -1372,7 +1374,7 @@ function FeatureCart () {
     return array
   },
   this._formatArray = function () {
-    var array = [ ]
+    var array = []
     var checkedExperts = $('input:checked', '.extensions')
     $.each(checkedExperts, function (index, object) {
       array.push($(object).data('value'))
@@ -1380,7 +1382,7 @@ function FeatureCart () {
     return array
   },
   this._jobArray = function () {
-    var array = [ ]
+    var array = []
     var checkedJob = $('input:checked', '#list-job-type')
     $.each(checkedJob, function (index, object) {
       array.push($(object).val())
@@ -1388,7 +1390,7 @@ function FeatureCart () {
     return array
   },
   this._expertArray = function () {
-    var array = [ ]
+    var array = []
     var checkedExperts = $('input:checked', '.experts')
     $.each(checkedExperts, function (index, object) {
       array.push($(object).data('id'))
