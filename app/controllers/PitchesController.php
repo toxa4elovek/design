@@ -592,12 +592,12 @@ class PitchesController extends AppController
         $result = array('error' => 'no data provided');
         if ($this->request->data) {
             $userId = $this->userHelper->getId();
-            if(!isset($this->request->data['commonPitchData']['id'])) {
-                $this->request->data['commonPitchData']['user_id'] = $userId;
-            }else {
+            if((isset($this->request->data['commonPitchData']['id'])) && (!empty($this->request->data['commonPitchData']['id']))) {
                 if($project = Pitch::first($this->request->data['commonPitchData']['id'])) {
                     $this->request->data['commonPitchData']['user_id'] = $project->user_id;
                 }
+            }else {
+                $this->request->data['commonPitchData']['user_id'] = $userId;
             }
             $actionType = $this->request->data['actionType'];
             $gatracking = new \Racecore\GATracking\GATracking('UA-9235854-5');
