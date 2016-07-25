@@ -2239,7 +2239,7 @@ class Pitch extends AppModel
      */
     public static function getAutoClosingWarningComment($projectId)
     {
-        $project = Pitch::first(['conditions' => ['id' => $projectId], 'with' => ['Category']]);
+        $project = Pitch::first(['conditions' => ['Pitch.id' => $projectId], 'with' => ['Category']]);
         $projectOwner = User::first($project->user_id);
         $solution = Solution::first($project->awarded);
         $designer = User::first($solution->user_id);
