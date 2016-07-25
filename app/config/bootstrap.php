@@ -42,6 +42,15 @@ require __DIR__ . '/bootstrap/libraries.php';
  */
 require __DIR__ . '/bootstrap/errors.php';
 
+
+/**
+ * This file defines bindings between classes which are triggered during the request cycle, and
+ * allow the framework to automatically configure its environmental settings. You can add your own
+ * behavior and modify the dispatch cycle to suit your needs.
+ */
+require __DIR__ . '/bootstrap/action.php';
+
+
 /**
  * This file contains configurations for connecting to external caching resources, as well as
  * default caching rules for various systems within your application
@@ -52,13 +61,6 @@ require __DIR__ . '/bootstrap/cache.php';
  * Include this file if your application uses one or more database connections.
  */
 require __DIR__ . '/bootstrap/connections.php';
-
-/**
- * This file defines bindings between classes which are triggered during the request cycle, and
- * allow the framework to automatically configure its environmental settings. You can add your own
- * behavior and modify the dispatch cycle to suit your needs.
- */
-require __DIR__ . '/bootstrap/action.php';
 
 /**
  * This file contains configuration for session (and/or cookie) storage, and user or web service
@@ -82,33 +84,35 @@ require __DIR__ . '/bootstrap/media.php';
 /**
  * This file configures console filters and settings, specifically output behavior and coloring.
  */
-// require __DIR__ . '/bootstrap/console.php';
+if (PHP_SAPI === 'cli') {
+    require __DIR__ . '/bootstrap/console.php';
+}
 
 /**
  * This file contains custom validation rules for models
  */
 require __DIR__ . '/bootstrap/validation.php';
 
-	define('SECOND', 1);
-	define('MINUTE', 60);
-	define('HOUR', 3600);
-	define('DAY', 86400);
-	define('WEEK', 604800);
-	define('MONTH', 2592000);
-	define('YEAR', 31536000);
+define('SECOND', 1);
+define('MINUTE', 60);
+define('HOUR', 3600);
+define('DAY', 86400);
+define('WEEK', 604800);
+define('MONTH', 2592000);
+define('YEAR', 31536000);
 
-	define('REFERAL_DISCOUNT', 300);
-	define('REFERAL_AWARD', 500);
+define('REFERAL_DISCOUNT', 300);
+define('REFERAL_AWARD', 500);
 
-	define('FEE_LOW', 0.245);
-	define('FEE_NORMAL', 0.215);
-	define('FEE_GOOD', 0.195);
+define('FEE_LOW', 0.245);
+define('FEE_NORMAL', 0.215);
+define('FEE_GOOD', 0.195);
 
-	define('COPY_BASE_PRICE', 7000);
+define('COPY_BASE_PRICE', 7000);
 
-	define('WINS_FOR_VIEW', 1); // Designer`s wins for allow private pitches view
+define('WINS_FOR_VIEW', 1); // Designer`s wins for allow private pitches view
 
-	define('MYSQL_DATETIME_FORMAT', 'Y-m-d H:i:s');
+define('MYSQL_DATETIME_FORMAT', 'Y-m-d H:i:s');
 
 date_default_timezone_set('Europe/Minsk');
 

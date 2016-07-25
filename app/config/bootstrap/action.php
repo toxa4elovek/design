@@ -136,5 +136,3 @@ Dispatcher::applyFilter('_callable', function($self, $params, $chain) {
         return new Response(compact('request') + array('location' => '/users/login'));
     };
 });
-
-?>
