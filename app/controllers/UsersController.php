@@ -2204,12 +2204,19 @@ class UsersController extends \app\controllers\AppController
                 'billed' => 1
             ]]))) {
                 $reducePriceAmount = 0;
+                $addonTotal = 0;
+                $instantOptions = 0;
                 foreach ($addons as $addon) {
+                    $addonTotal += (int) $addon->total;
                     if ($addon->prolong == 1) {
                         $reducePriceAmount += $addon->{'prolong-days'} * 1000;
                     }
                 }
-                $data['finalPrice'] = (int) $data['price'];
+                if((!in_array('pinproject', $plan['free'])) && ($data['pinned'])) {
+                    $instantOptions += 1000;
+                }
+                $data['addonTotal'] = $addonTotal;
+                $data['finalPrice'] = (int) $data['price'] + $addonTotal + $instantOptions;
                 $data['price'] -= $reducePriceAmount;
             }
             if ($data['expert'] == 1) {
