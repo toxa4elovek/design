@@ -713,4 +713,17 @@ class User extends \lithium\storage\Session {
         return 0;
     }
 
+    /**
+     * Метод-обёртка, возвращяет количество загруженных решений
+     *
+     * @return int
+     */
+    public function getTotalSolutionNum() {
+        if($this->isLoggedIn()) {
+            $userModel = $this->_options['userModel'];
+            return (int) $userModel::getTotalSolutionNum($this->getId());
+        }
+        return 0;
+    }
+
 }

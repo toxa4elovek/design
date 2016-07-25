@@ -1,7 +1,7 @@
 <?=$this->view()->render(array('element' => 'scripts/viewsolution_init'), array('pitch' => $pitch));
 if (
 (($pitch->status > 0) && ($this->user->isAllowedToComment()) && (($this->user->isPitchOwner($pitch->user_id)) || ($this->user->isManagerOfProject($pitch->id)) || ($this->user->isExpert()) || ($this->user->isAdmin()))) ||
-(($pitch->status == 0) && ($pitch->published == 1) && ($this->user->isAllowedToComment()))
+(($pitch->status == 0) && ($pitch->published == 1) && ($this->user->getTotalSolutionNum()) && ($this->user->isAllowedToComment()))
 
 && ($this->user->getId())
 ):?>

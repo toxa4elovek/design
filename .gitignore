@@ -79,3 +79,8 @@ app/webroot/js/jquery-plugins/jquery.scrollto.min.js
 app/webroot/js/jquery-plugins/jquery.simplemodal-1.4.2.js
 app/webroot/js/jquery/jquery-1.9.1.min.js
 app/webroot/js/jquery/jquery-migrate-1.1.0.min.js
+app/webroot/js/posts/view.js
+app/webroot/js/subscription_plans/PhoneNumberInput.js
+app/webroot/js/subscription_plans/subscriber.js
+app/webroot/js/users/office/PushNotificationsStatus.js
+app/webroot/js/users/office/SmsNotificationsStatus.js
