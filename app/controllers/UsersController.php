@@ -56,16 +56,16 @@ class UsersController extends \app\controllers\AppController
      *
      * @var array
      */
-    public $publicActions = array(
+    public $publicActions = [
         'vklogin', 'unsubscribe', 'registration', 'login', 'sale', /* 'info', 'sendmail', */ 'confirm', 'checkform', 'recover', 'setnewpassword', 'loginasadmin', 'view', 'updatetwitter', 'updatetwitterfeed', 'banned', 'activation', 'need_activation', 'requesthelp', 'testemail', 'feed', 'test'
-    );
+    ];
 
     public $nominatedCount = false;
 
     public function _init()
     {
         parent::_init();
-        $withMenu = array(
+        $withMenu = [
             'office',
             'solutions',
             'awarded',
@@ -75,22 +75,22 @@ class UsersController extends \app\controllers\AppController
             'step3',
             'step4',
             'mypitches'
-        );
+        ];
         if (in_array($this->request->action, $withMenu)) {
-            $myPitches = Pitch::all(array(
-                        'conditions' => array('user_id' => Session::read('user.id')),
-            ));
-            $pitchIds = array();
+            $myPitches = Pitch::all([
+                        'conditions' => ['user_id' => Session::read('user.id')],
+            ]);
+            $pitchIds = [];
             foreach ($myPitches as $pitch) {
                 $pitchIds[] = $pitch->id;
             }
-            $solutionsFromMyPitches = array();
+            $solutionsFromMyPitches = [];
             if (!empty($pitchIds)) {
-                $solutionsFromMyPitches = Solution::all(array('conditions' => array('pitch_id' => $pitchIds, 'nominated' => '1')));
+                $solutionsFromMyPitches = Solution::all(['conditions' => ['pitch_id' => $pitchIds, 'nominated' => '1']]);
             }
 
-            $conditions = array('Solution.user_id' => Session::read('user.id'), 'nominated' => '1', 'status' => array('<' => 2));
-            $solutions = Solution::all(array('conditions' => $conditions, 'with' => array('Pitch')));
+            $conditions = ['Solution.user_id' => Session::read('user.id'), 'nominated' => '1', 'status' => ['<' => 2]];
+            $solutions = Solution::all(['conditions' => $conditions, 'with' => ['Pitch']]);
 
             if (count($solutionsFromMyPitches) > 0) {
                 $solutions = array_merge($solutions->data(), $solutionsFromMyPitches->data());
@@ -138,20 +138,20 @@ class UsersController extends \app\controllers\AppController
             Session::delete('user.events');
         }
         $gallery = Solution::getUserSolutionGallery(Session::read('user.id'));
-        $winnersData = Solution::all(array('conditions' => array('Solution.awarded' => 1, 'Pitch.private' => 0), 'order' => array('Solution.created' => 'desc'), 'limit' => 50, 'with' => array('Pitch')));
-        $winners = array();
+        $winnersData = Solution::all(['conditions' => ['Solution.awarded' => 1, 'Pitch.private' => 0], 'order' => ['Solution.created' => 'desc'], 'limit' => 50, 'with' => ['Pitch']]);
+        $winners = [];
         foreach ($winnersData as $winner) {
             if ($winner->pitch->category_id != 7) {
                 $winners[] = $winner;
             }
         }
-        $winners = array();
+        $winners = [];
         $updates = Event::getEvents(User::getSubscribedPitches(Session::read('user.id')), 1, null);
         $nextUpdates = count(Event::getEvents(User::getSubscribedPitches(Session::read('user.id')), 2, null));
         if (is_null($this->request->env('HTTP_X_REQUESTED_WITH'))) {
             return compact('gallery', 'winners', 'date', 'updates', 'nextUpdates');
         } else {
-            return $this->render(array('layout' => false, 'data' => compact('gallery', 'winners', 'date', 'updates', 'nextUpdates')));
+            return $this->render(['layout' => false, 'data' => compact('gallery', 'winners', 'date', 'updates', 'nextUpdates')]);
         }
     }
 
@@ -167,9 +167,9 @@ class UsersController extends \app\controllers\AppController
             Session::delete('user.events');
             $pitchIds = User::getSubscribedPitches(Session::read('user.id'));
         } else {
-            $pitchIds = array();
+            $pitchIds = [];
         }
-        $pitches = Pitch::all(array('conditions' => array('status' => 0, 'published' => 1, 'multiwinner' => 0), 'order' => array('started' => 'desc'), 'limit' => 5));
+        $pitches = Pitch::all(['conditions' => ['status' => 0, 'published' => 1, 'multiwinner' => 0], 'order' => ['started' => 'desc'], 'limit' => 5]);
         $middlePost = false;
         $shareEvent = null;
         if ((isset($this->request->query['event'])) && (is_numeric($this->request->query['event']))) {
@@ -188,7 +188,7 @@ class UsersController extends \app\controllers\AppController
             $accessToken = Event::getBingAccessToken();
             return compact('date', 'updates', 'nextUpdates', 'news', 'pitches', 'solutions', 'middlePost', 'banner', 'shareEvent', 'accessToken', 'tag');
         } else {
-            return $this->render(array('layout' => false, 'data' => compact('pitchIds', 'date', 'updates', 'nextUpdates', 'pitches')));
+            return $this->render(['layout' => false, 'data' => compact('pitchIds', 'date', 'updates', 'nextUpdates', 'pitches')]);
         }
     }
 
@@ -197,22 +197,22 @@ class UsersController extends \app\controllers\AppController
         $user = User::first(Session::read('user.id'));
         if (empty($user->referal_token)) {
             $user->referal_token = User::generateReferalToken();
-            $user->save(null, array('validate' => false));
+            $user->save(null, ['validate' => false]);
         }
-        $refPitches = Pitch::all(array(
-                    'conditions' => array(
-                        'user_id' => array(
+        $refPitches = Pitch::all([
+                    'conditions' => [
+                        'user_id' => [
                             '!=' => 0,
-                        ),
+                        ],
                         'referal' => $user->id
-                    ),
-                    'with' => array('User'),
-        ));
+                    ],
+                    'with' => ['User'],
+        ]);
         $completePaymentCount = Logreferal::getCompletePaymentCount(Session::read('user.id'));
         if (is_null($this->request->env('HTTP_X_REQUESTED_WITH'))) {
             return compact('user', 'refPitches', 'completePaymentCount');
         } else {
-            return $this->render(array('layout' => false, 'data' => compact('user', 'refPitches', 'completePaymentCount')));
+            return $this->render(['layout' => false, 'data' => compact('user', 'refPitches', 'completePaymentCount')]);
         }
     }
 
@@ -224,7 +224,7 @@ class UsersController extends \app\controllers\AppController
     {
         if (empty($this->userRecord->subscriber_referal_token)) {
             $this->userRecord->subscriber_referal_token = User::generateSubscriberReferalToken();
-            $this->userRecord->save(null, array('validate' => false));
+            $this->userRecord->save(null, ['validate' => false]);
         }
         $fullUrl = 'https://godesigner.ru/pages/subscribe?sref=' . $this->userRecord->subscriber_referal_token;
         $shortUrl = 'https://godesigner.ru/urls/' . Url::getShortUrlFor($fullUrl);
@@ -238,12 +238,12 @@ class UsersController extends \app\controllers\AppController
             $user->phone_operator = 0;
             $user->phone_code = 0;
             $user->phone_valid = 0;
-            $user->save(null, array('validate' => false));
-            $result = array(
+            $user->save(null, ['validate' => false]);
+            $result = [
                 'code' => true,
                 'phone' => 0,
                 'phone_valid' => 0,
-            );
+            ];
             return $result;
         }
         $this->redirect('/');
@@ -256,38 +256,38 @@ class UsersController extends \app\controllers\AppController
      */
     public function solutions()
     {
-        $conditions = array(
+        $conditions = [
             'Solution.user_id' => $this->userHelper->getId(),
             'Pitch.blank' => 0
-        );
-        $unfilteredSolutions = Solution::all(array(
+        ];
+        $unfilteredSolutions = Solution::all([
             'conditions' => $conditions,
-            'with' => array('Pitch', 'Solutiontag'),
-            'order' => array('Solution.id' => 'desc')
-        ));
+            'with' => ['Pitch', 'Solutiontag'],
+            'order' => ['Solution.id' => 'desc']
+        ]);
         $nominatedCount = $this->nominatedCount;
-        $myPitches = Pitch::all(array('conditions' => array(
+        $myPitches = Pitch::all(['conditions' => [
             'user_id' => $this->userHelper->getId(),
-            'published' => 1, 'billed' => 1)));
+            'published' => 1, 'billed' => 1]]);
 
         if ($myPitches->data()) {
-            $idList = array();
+            $idList = [];
             foreach ($myPitches as $pitch) {
                 $idList[] = $pitch->id;
             }
-            $unfilteredSolutions = Solution::all(array(
-                'conditions' => array('pitch_id' => $idList),
-                'order' => array('Solution.id' => 'desc'),
-                'with' => array('Pitch', 'Solutiontag')
-            ));
+            $unfilteredSolutions = Solution::all([
+                'conditions' => ['pitch_id' => $idList],
+                'order' => ['Solution.id' => 'desc'],
+                'with' => ['Pitch', 'Solutiontag']
+            ]);
         }
-        $multiWinnerOriginals = array();
+        $multiWinnerOriginals = [];
         foreach ($unfilteredSolutions as $solution) {
             if (($solution->multiwinner != 0) && ($solution->awarded != 0)) {
                 $multiWinnerOriginals[] = $solution->multiwinner;
             }
         }
-        $filteredSolutions = array();
+        $filteredSolutions = [];
         foreach ($unfilteredSolutions as $solution) {
             if (($solution->pitch->multiwinner != 0) && ($solution->pitch->awarded != $solution->id)) {
                 continue;
@@ -305,26 +305,26 @@ class UsersController extends \app\controllers\AppController
         if (is_null($this->request->env('HTTP_X_REQUESTED_WITH'))) {
             return compact('solutions', 'filterType', 'nominatedCount');
         } else {
-            return $this->render(array('layout' => false, 'data' => compact('solutions', 'filterType', 'nominatedCount')));
+            return $this->render(['layout' => false, 'data' => compact('solutions', 'filterType', 'nominatedCount')]);
         }
     }
 
     public function awarded()
     {
-        $myPitches = Pitch::all(array(
-                    'conditions' => array('user_id' => Session::read('user.id')),
-        ));
-        $pitchIds = array();
+        $myPitches = Pitch::all([
+                    'conditions' => ['user_id' => Session::read('user.id')],
+        ]);
+        $pitchIds = [];
         foreach ($myPitches as $pitch) {
             $pitchIds[] = $pitch->id;
         }
-        $solutionsFromMyPitches = array();
+        $solutionsFromMyPitches = [];
         if (!empty($pitchIds)) {
-            $solutionsFromMyPitches = Solution::all(array('conditions' => array('pitch_id' => $pitchIds, 'Solution.awarded' => '1'), 'with' => array('Pitch')));
+            $solutionsFromMyPitches = Solution::all(['conditions' => ['pitch_id' => $pitchIds, 'Solution.awarded' => '1'], 'with' => ['Pitch']]);
         }
 
-        $conditions = array('Solution.user_id' => Session::read('user.id'), 'Solution.awarded' => 1, 'Solution.nominated' => 0);
-        $solutions = Solution::all(array('conditions' => $conditions, 'with' => array('Pitch')));
+        $conditions = ['Solution.user_id' => Session::read('user.id'), 'Solution.awarded' => 1, 'Solution.nominated' => 0];
+        $solutions = Solution::all(['conditions' => $conditions, 'with' => ['Pitch']]);
 
         if (count($solutionsFromMyPitches) > 0) {
             $solutions = array_merge($solutions->data(), $solutionsFromMyPitches->data());
@@ -337,26 +337,26 @@ class UsersController extends \app\controllers\AppController
         if (is_null($this->request->env('HTTP_X_REQUESTED_WITH'))) {
             return compact('solutions', 'filterType');
         } else {
-            return $this->render(array('layout' => false, 'data' => compact('solutions', 'filterType')));
+            return $this->render(['layout' => false, 'data' => compact('solutions', 'filterType')]);
         }
     }
 
     public function nominated()
     {
-        $myPitches = Pitch::all(array(
-                    'conditions' => array('user_id' => Session::read('user.id')),
-        ));
-        $pitchIds = array();
+        $myPitches = Pitch::all([
+                    'conditions' => ['user_id' => Session::read('user.id')],
+        ]);
+        $pitchIds = [];
         foreach ($myPitches as $pitch) {
             $pitchIds[] = $pitch->id;
         }
-        $solutionsFromMyPitches = array();
+        $solutionsFromMyPitches = [];
         if (!empty($pitchIds)) {
-            $solutionsFromMyPitches = Solution::all(array('conditions' => array('pitch_id' => $pitchIds, 'nominated' => '1', 'Solution.awarded' => '0'), 'with' => array('Pitch')));
+            $solutionsFromMyPitches = Solution::all(['conditions' => ['pitch_id' => $pitchIds, 'nominated' => '1', 'Solution.awarded' => '0'], 'with' => ['Pitch']]);
         }
 
-        $conditions = array('Solution.user_id' => Session::read('user.id'), 'Solution.nominated' => '1');
-        $solutions = Solution::all(array('conditions' => $conditions, 'with' => array('Pitch')));
+        $conditions = ['Solution.user_id' => Session::read('user.id'), 'Solution.nominated' => '1'];
+        $solutions = Solution::all(['conditions' => $conditions, 'with' => ['Pitch']]);
 
         if (count($solutionsFromMyPitches) > 0) {
             $solutions = array_merge($solutions->data(), $solutionsFromMyPitches->data());
@@ -367,18 +367,18 @@ class UsersController extends \app\controllers\AppController
         if (is_null($this->request->env('HTTP_X_REQUESTED_WITH'))) {
             return compact('solutions', 'filterType');
         } else {
-            return $this->render(array('layout' => false, 'data' => compact('solutions', 'filterType')));
+            return $this->render(['layout' => false, 'data' => compact('solutions', 'filterType')]);
         }
     }
 
     public function step1()
     {
-        if (($solution = Solution::first(array('conditions' => array('Solution.id' => $this->request->id), 'with' => array('Pitch', 'User')))) && ($solution->nominated == 1 || $solution->awarded == 1)) {
+        if (($solution = Solution::first(['conditions' => ['Solution.id' => $this->request->id], 'with' => ['Pitch', 'User']])) && ($solution->nominated == 1 || $solution->awarded == 1)) {
             if ((Session::read('user.id') != $solution->user_id) && (Session::read('user.isAdmin') != 1) && (!User::checkRole('admin')) && (Session::read('user.id') != $solution->pitch->user_id)) {
                 return $this->redirect('Users::feed');
             }
             if (Session::read('user.id') == $solution->pitch->user_id) {
-                return $this->redirect(array('controller' => 'users', 'action' => 'step2', 'id' => $solution->id));
+                return $this->redirect(['controller' => 'users', 'action' => 'step2', 'id' => $solution->id]);
             }
             $solution->pitch->category = Category::first($solution->pitch->category_id);
             if ($solution->user_id == $this->userHelper->getId()) {
@@ -406,7 +406,6 @@ class UsersController extends \app\controllers\AppController
             'conditions' => ['Solution.id' => $this->request->id],
                 'with' => ['Pitch', 'User']]))
             && ($solution->nominated == 1 || $solution->awarded == 1)) {
-
             $canManageClosing = false;
             if (((int) $solution->pitch->category_id === 20)
                 && (Manager::getTeamLeaderOfManager($this->userHelper->getId()) === (int) $solution->pitch->user_id)
@@ -425,7 +424,7 @@ class UsersController extends \app\controllers\AppController
                 $type = 'designer';
                 $designer = User::first($this->userHelper->getId());
                 if (($designer->phone_valid != 1) || ($designer->phone == '')) {
-                    return $this->redirect(array('controller' => 'users', 'action' => 'step1', 'id' => $this->request->id));
+                    return $this->redirect(['controller' => 'users', 'action' => 'step1', 'id' => $this->request->id]);
                 }
                 $messageTo = $client = User::first($solution->pitch->user_id);
             } else {
@@ -460,6 +459,7 @@ class UsersController extends \app\controllers\AppController
                     $userIdForComment = $this->userHelper->getId();
                 }
                 $newComment->set($this->request->data);
+                $newComment->text = nl2br($this->request->data['text']);
                 $newComment->user_id = $userIdForComment;
                 $newComment->solution_id = $solution->id;
                 $newComment->created = date('Y-m-d H:i:s');
@@ -484,11 +484,11 @@ class UsersController extends \app\controllers\AppController
                 $user = User::first(Session::read('user.id'));
                 $avatarHelper = new AvatarHelper;
                 $userAvatar = $avatarHelper->show($user->data(), false, true);
-                $comment = Wincomment::first(array('conditions' => array('Wincomment.id' => $newComment->id), 'with' => array('User', 'Solution')));
+                $comment = Wincomment::first(['conditions' => ['Wincomment.id' => $newComment->id], 'with' => ['User', 'Solution']]);
                 $comment = $comment->data();
                 return json_encode(compact('newComment', 'comment', 'userAvatar'));
             }
-            $files = array();
+            $files = [];
             $commentCount = Wincomment::count(
                 [
                     'fields' => ['id'],
@@ -509,14 +509,14 @@ class UsersController extends \app\controllers\AppController
                 $text = sprintf('Вся переписка до запроса исходников должна быть проведена в рамках этого кабинета. Мы не допускаем обмена контактами до момента одобрения исходников, т.о. в спорной ситуации мы сможем разрешить конфликт. Мы убедительно просим вас соблюдать правила платформы. Срок завершительного этапа %d дней. Предупреждайте, если правки или комментарии займут более 24 часов.', $timelimit);
                 $date = new \DateTime();
                 $dateString = $date->format('Y-m-d H:i:s');
-                $data = array(
+                $data = [
                     'user_id' => 108,
                     'text' => $text,
                     'step' => 2,
                     'solution_id' => $solution->id,
                     'created' => $dateString,
                     'touch' => '0000-00-00 00:00:00'
-                );
+                ];
                 $comment = Wincomment::create($data);
                 $comment->save();
                 User::sendSpamWincomment($comment, $client);
@@ -524,14 +524,14 @@ class UsersController extends \app\controllers\AppController
                     $nameInflector = new NameInflector();
                     $ownerFormatted = $nameInflector->renderName($client->first_name, $client->last_name);
                     $text = '<a href="#" class="mention-link" data-comment-to="' . $ownerFormatted . '">@' . $ownerFormatted . ',</a> Нам понравилось работать с вами, и мы хотим продолжить наше партнерство. Сотрудничайте с&nbsp;дизайнерами и&nbsp;копирайтерами без рисков дальше, корректируйте макеты без сервисных сборов, создавайте проекты от 500р. в&nbsp;течение года, став нашим абонентом. В течение недели <a href="/pages/subscribe?utm_source=GDsite&utm_medium=final_stage_comment&utm_campaign=off10percent" target="_blank">мы предлагаем вам скидку 10%</a> на <a href="/pages/subscribe?utm_source=GDsite&utm_medium=final_stage_comment&utm_campaign=off10percent" target="_blank">годовое обслуживание</a>.';
-                    $data = array(
+                    $data = [
                         'user_id' => 108,
                         'text' => $text,
                         'step' => 2,
                         'solution_id' => $solution->id,
                         'created' => date('Y-m-d H:i:s'),
                         'touch' => '0000-00-00 00:00:00'
-                    );
+                    ];
                     $comment = Wincomment::create($data);
                     $comment->save();
                     User::sendSpamWincomment($comment, $client);
@@ -541,16 +541,16 @@ class UsersController extends \app\controllers\AppController
                         if (!SubscriptionPlan::hasSubscriptionPlanDraft($client->id)) {
                             $plan = SubscriptionPlan::getPlan(1);
                             $paymentId = SubscriptionPlan::getNextSubscriptionPlanId($this->userHelper->getId());
-                            $receipt = array(
-                                array(
+                            $receipt = [
+                                [
                                     'name' => 'Оплата тарифа «' . $plan['title'] . '»',
                                     'value' => $plan['price']
-                                ),
-                                array(
+                                ],
+                                [
                                     'name' => 'Пополнение счёта',
                                     'value' => 0
-                                )
-                            );
+                                ]
+                            ];
                             $discount = 10;
                             $discountValue = -1 * ($plan['price'] - $this->money->applyDiscount($plan['price'], $discount));
                             $receipt = Receipt::addRow($receipt, "Скидка — $discount%", $discountValue);
@@ -563,7 +563,7 @@ class UsersController extends \app\controllers\AppController
                 }
             }
 
-            $comments = Wincomment::all(array('conditions' => array('step' => 2, 'solution_id' => $solution->id), 'order' => array('created' => 'desc'), 'with' => array('User')));
+            $comments = Wincomment::all(['conditions' => ['step' => 2, 'solution_id' => $solution->id], 'order' => ['created' => 'desc'], 'with' => ['User']]);
             foreach ($comments as $comment) {
                 if ($comment->user_id == $solution->user_id) {
                     $comment->type = 'designer';
@@ -612,8 +612,8 @@ class UsersController extends \app\controllers\AppController
 
     public function step3()
     {
-        \lithium\net\http\Media::type('json', array('text/html'));
-        if (($solution = Solution::first(array('conditions' => array('Solution.id' => $this->request->id), 'with' => array('Pitch', 'User')))) && ($solution->nominated == 1 || $solution->awarded == 1)) {
+        \lithium\net\http\Media::type('json', ['text/html']);
+        if (($solution = Solution::first(['conditions' => ['Solution.id' => $this->request->id], 'with' => ['Pitch', 'User']])) && ($solution->nominated == 1 || $solution->awarded == 1)) {
             if (($this->request->params['confirm']) && ($this->request->params['confirm'] == 'confirm') &&
                     ($this->userHelper->isAdmin() || ($this->userHelper->isPitchOwner($solution->pitch->user_id))) && ($solution->step < 3)) {
                 $user = User::first($solution->user_id);
@@ -622,14 +622,14 @@ class UsersController extends \app\controllers\AppController
                     $nameInflector = new NameInflector();
                     $ownerFormatted = $nameInflector->renderName($client->first_name, $client->last_name);
                     $text = '<a href="#" class="mention-link" data-comment-to="' . $ownerFormatted . '">@' . $ownerFormatted . ',</a> Нам понравилось работать с вами, и мы хотим продолжить наше партнерство. Сотрудничайте с&nbsp;дизайнерами и&nbsp;копирайтерами без рисков дальше, корректируйте макеты без сервисных сборов, создавайте проекты от 500р. в&nbsp;течение года, став нашим абонентом. В течение недели <a href="/pages/subscribe?utm_source=GDsite&utm_medium=final_stage_comment&utm_campaign=off10percent" target="_blank">мы предлагаем вам скидку 10%</a> на <a href="/pages/subscribe?utm_source=GDsite&utm_medium=final_stage_comment&utm_campaign=off10percent" target="_blank">годовое обслуживание</a>.';
-                    $data = array(
+                    $data = [
                         'user_id' => 108,
                         'text' => $text,
                         'step' => 3,
                         'solution_id' => $solution->id,
                         'created' => date('Y-m-d H:i:s'),
                         'touch' => '0000-00-00 00:00:00'
-                    );
+                    ];
                     $comment = Wincomment::create($data);
                     $comment->save();
                     User::sendSpamWincomment($comment, $client);
@@ -639,16 +639,16 @@ class UsersController extends \app\controllers\AppController
                         if (!SubscriptionPlan::hasSubscriptionPlanDraft($client->id)) {
                             $plan = SubscriptionPlan::getPlan(1);
                             $paymentId = SubscriptionPlan::getNextSubscriptionPlanId($this->userHelper->getId());
-                            $receipt = array(
-                                array(
+                            $receipt = [
+                                [
                                     'name' => 'Оплата тарифа «' . $plan['title'] . '»',
                                     'value' => $plan['price']
-                                ),
-                                array(
+                                ],
+                                [
                                     'name' => 'Пополнение счёта',
                                     'value' => 0
-                                )
-                            );
+                                ]
+                            ];
                             $discount = 10;
                             $discountValue = -1 * ($plan['price'] - $this->money->applyDiscount($plan['price'], $discount));
                             $receipt = Receipt::addRow($receipt, "Скидка — $discount%", $discountValue);
@@ -662,7 +662,7 @@ class UsersController extends \app\controllers\AppController
                 User::sendSpamWinstep($user, $solution, '3');
                 $solution->step = 3;
                 $solution->save();
-                return $this->redirect(array('controller' => 'users', 'action' => 'step3', 'id' => $solution->id));
+                return $this->redirect(['controller' => 'users', 'action' => 'step3', 'id' => $solution->id]);
             }
 
             $canManageClosing = false;
@@ -680,7 +680,7 @@ class UsersController extends \app\controllers\AppController
             }
 
             if ($solution->step < 3) {
-                return $this->redirect(array('controller' => 'users', 'action' => 'step2', 'id' => $this->request->id));
+                return $this->redirect(['controller' => 'users', 'action' => 'step2', 'id' => $this->request->id]);
             }
             if (($solution->pitch->category_id == 7) && ($solution->step == 4)) {
                 return $this->redirect('/users/step4/' . $solution->id);
@@ -690,7 +690,7 @@ class UsersController extends \app\controllers\AppController
                 $type = 'designer';
                 $designer = User::first($this->userHelper->getId());
                 if (($designer->phone_valid != 1) || ($designer->phone == '')) {
-                    return $this->redirect(array('controller' => 'users', 'action' => 'step1', 'id' => $this->request->id));
+                    return $this->redirect(['controller' => 'users', 'action' => 'step1', 'id' => $this->request->id]);
                 }
                 $messageTo = $client = User::first($solution->pitch->user_id);
             } else {
@@ -725,6 +725,7 @@ class UsersController extends \app\controllers\AppController
                     $userIdForComment = $this->userHelper->getId();
                 }
                 $newComment->set($this->request->data);
+                $newComment->text = nl2br($this->request->data['text']);
                 $newComment->user_id = $userIdForComment;
                 $newComment->solution_id = $solution->id;
                 $newComment->created = date('Y-m-d H:i:s');
@@ -749,12 +750,12 @@ class UsersController extends \app\controllers\AppController
                 $user = User::first(Session::read('user.id'));
                 $avatarHelper = new AvatarHelper;
                 $userAvatar = $avatarHelper->show($user->data(), false, true);
-                $comment = Wincomment::first(array('conditions' => array('Wincomment.id' => $newComment->id), 'with' => array('User', 'Solution')));
+                $comment = Wincomment::first(['conditions' => ['Wincomment.id' => $newComment->id], 'with' => ['User', 'Solution']]);
                 $comment = $comment->data();
                 return json_encode(compact('newComment', 'comment', 'userAvatar'));
             }
-            $comments = Wincomment::all(array('conditions' => array('step' => 3, 'solution_id' => $solution->id), 'order' => array('created' => 'desc'), 'with' => array('User')));
-            $files = array();
+            $comments = Wincomment::all(['conditions' => ['step' => 3, 'solution_id' => $solution->id], 'order' => ['created' => 'desc'], 'with' => ['User']]);
+            $files = [];
             foreach ($comments as $comment) {
                 if ($comment->user_id == $solution->user_id) {
                     $comment->type = 'designer';
@@ -804,7 +805,7 @@ class UsersController extends \app\controllers\AppController
 
     public function step4()
     {
-        if (($solution = Solution::first(array('conditions' => array('Solution.id' => $this->request->id), 'with' => array('Pitch', 'User'))))) {
+        if (($solution = Solution::first(['conditions' => ['Solution.id' => $this->request->id], 'with' => ['Pitch', 'User']]))) {
             if (($this->request->params['confirm']) && ($this->request->params['confirm'] == 'confirm') &&
                     (($this->userHelper->isPitchOwner($solution->pitch->user_id)) || $this->userHelper->isAdmin()) && ($solution->step == 3)) {
                 $user = User::first($solution->user_id);
@@ -816,7 +817,7 @@ class UsersController extends \app\controllers\AppController
                 $solution->step = 4;
                 $solution->save();
                 Pitch::finishPitch($solution->pitch_id);
-                return $this->redirect(array('controller' => 'users', 'action' => 'step4', 'id' => $solution->id));
+                return $this->redirect(['controller' => 'users', 'action' => 'step4', 'id' => $solution->id]);
             }
 
             if (($this->request->params['confirm']) && ($this->request->params['confirm'] == 'confirm') &&
@@ -830,7 +831,7 @@ class UsersController extends \app\controllers\AppController
                 $solution->step = 4;
                 $solution->save();
                 Pitch::finishPitch($solution->pitch_id);
-                return $this->redirect(array('controller' => 'users', 'action' => 'step4', 'id' => $solution->id));
+                return $this->redirect(['controller' => 'users', 'action' => 'step4', 'id' => $solution->id]);
             }
 
             $canManageClosing = false;
@@ -848,20 +849,20 @@ class UsersController extends \app\controllers\AppController
             }
 
             if ($solution->step < 4) {
-                return $this->redirect(array('controller' => 'users', 'action' => 'step3', 'id' => $this->request->id));
+                return $this->redirect(['controller' => 'users', 'action' => 'step3', 'id' => $this->request->id]);
             }
             $solution->pitch->category = Category::first($solution->pitch->category_id);
             if ($this->userHelper->isSolutionAuthor($solution->user_id)) {
                 $type = 'designer';
-                $gradeByOtherParty = Grade::first(array('conditions' => array('user_id' => $solution->pitch->user_id, 'pitch_id' => $solution->pitch->id)));
+                $gradeByOtherParty = Grade::first(['conditions' => ['user_id' => $solution->pitch->user_id, 'pitch_id' => $solution->pitch->id]]);
             } else {
                 $type = 'client';
-                $gradeByOtherParty = Grade::first(array('conditions' => array('user_id' => $solution->user_id, 'pitch_id' => $solution->pitch->id)));
+                $gradeByOtherParty = Grade::first(['conditions' => ['user_id' => $solution->user_id, 'pitch_id' => $solution->pitch->id]]);
             }
             if ($this->userHelper->isAdmin()) {
                 $type = 'admin';
             }
-            $grade = Grade::first(array('conditions' => array('user_id' => $this->userHelper->getId(), 'pitch_id' => $solution->pitch->id, 'type' => $type)));
+            $grade = Grade::first(['conditions' => ['user_id' => $this->userHelper->getId(), 'pitch_id' => $solution->pitch->id, 'type' => $type]]);
             if ($this->request->data) {
                 $grade = Grade::create();
                 $grade->set($this->request->data);
@@ -884,7 +885,7 @@ class UsersController extends \app\controllers\AppController
     public function mypitches()
     {
         if (!is_null($this->request->env('HTTP_X_REQUESTED_WITH'))) {
-            return $this->render(array('layout' => false));
+            return $this->render(['layout' => false]);
         } else {
             $categories = Category::all();
             if (isset($this->request->query['category'])) {
@@ -909,7 +910,7 @@ class UsersController extends \app\controllers\AppController
     {
         if (($this->request->query) && (isset($this->request->query['token'])) && (isset($this->request->query['from']))) {
             $email = base64_decode($this->request->query['from']);
-            if ($user = User::first(array('conditions' => array('email' => $email)))) {
+            if ($user = User::first(['conditions' => ['email' => $email]])) {
                 if (sha1($user->id . $user->created) == base64_decode($this->request->query['token'])) {
                     $user->email_newpitch = 0;
                     $user->email_newcomments = 0;
@@ -917,13 +918,13 @@ class UsersController extends \app\controllers\AppController
                     $user->email_newsolonce = 0;
                     $user->email_newsol = 0;
                     $user->email_digest = 0;
-                    $user->save(null, array('validate' => false));
+                    $user->save(null, ['validate' => false]);
                     Auth::set('user', $user->data());
                     return $this->redirect('/users/profile');
                 }
             }
         }
-        return $this->render(array('layout' => 'default', 'data' => false));
+        return $this->render(['layout' => 'default', 'data' => false]);
     }
 
     /**
@@ -950,7 +951,7 @@ class UsersController extends \app\controllers\AppController
                 $isUserExists = $user->isUserExistsByEmail($this->request->data['email']);
                 if ($isUserExists) {
                     // если он уже регился обычным способом, сохраняем его фейсбук айди
-                    $userToLog = User::first(array('conditions' => array('email' => $this->request->data['email'])));
+                    $userToLog = User::first(['conditions' => ['email' => $this->request->data['email']]]);
                     if (isset($this->request->data['service'])) {
                         $userToLog->vkontakte_uid = $this->request->data['uid'];
                     } else {
@@ -977,9 +978,9 @@ class UsersController extends \app\controllers\AppController
                         // если пользователей фейсбука у нас отсутствует, то сохраняем его в базу
                         if (($fb && $user->saveFacebookUser($this->request->data)) || (!$fb && $user->saveVkontakteUser($this->request->data))) {
                             if ($fb) {
-                                $userToLog = User::first(array('conditions' => array('facebook_uid' => $this->request->data['facebook_uid'])));
+                                $userToLog = User::first(['conditions' => ['facebook_uid' => $this->request->data['facebook_uid']]]);
                             } else {
-                                $userToLog = User::first(array('conditions' => array('vkontakte_uid' => $this->request->data['uid'])));
+                                $userToLog = User::first(['conditions' => ['vkontakte_uid' => $this->request->data['uid']]]);
                             }
                             $userToLog->setLastActionTime();
                             if ($fb) {
@@ -993,7 +994,7 @@ class UsersController extends \app\controllers\AppController
                             $newuser = true;
                             if (isset($_COOKIE['fastpitch'])) {
                                 $fastId = unserialize($_COOKIE['fastpitch']);
-                                $fastPitches = Pitch::all(array('conditions' => array('id' => $fastId)));
+                                $fastPitches = Pitch::all(['conditions' => ['id' => $fastId]]);
                                 foreach ($fastPitches as $fastPitch) {
                                     $fastPitch->user_id = $userToLog->id;
                                 }
@@ -1006,9 +1007,9 @@ class UsersController extends \app\controllers\AppController
                     } else {
                         // если он уже у нас есть, то вытаскиваем все его данные по айди
                         if ($fb) {
-                            $userToLog = User::first(array('conditions' => array('facebook_uid' => $this->request->data['facebook_uid'])));
+                            $userToLog = User::first(['conditions' => ['facebook_uid' => $this->request->data['facebook_uid']]]);
                         } else {
-                            $userToLog = User::first(array('conditions' => array('vkontakte_uid' => $this->request->data['uid'])));
+                            $userToLog = User::first(['conditions' => ['vkontakte_uid' => $this->request->data['uid']]]);
                         }
                         if (!$userToLog->gender) {
                             $gender = 0;
@@ -1022,7 +1023,7 @@ class UsersController extends \app\controllers\AppController
                         $newuser = false;
                         if (isset($_COOKIE['fastpitch'])) {
                             $fastId = unserialize($_COOKIE['fastpitch']);
-                            $fastPitches = Pitch::all(array('conditions' => array('id' => $fastId)));
+                            $fastPitches = Pitch::all(['conditions' => ['id' => $fastId]]);
                             foreach ($fastPitches as $fastPitch) {
                                 $fastPitch->user_id = $userToLog->id;
                             }
@@ -1034,16 +1035,16 @@ class UsersController extends \app\controllers\AppController
                             if (!SubscriptionPlan::hasSubscriptionPlanDraft($userToLog->id)) {
                                 $plan = SubscriptionPlan::getPlan(1);
                                 $paymentId = SubscriptionPlan::getNextSubscriptionPlanId($userToLog->id);
-                                $receipt = array(
-                                    array(
+                                $receipt = [
+                                    [
                                         'name' => 'Оплата тарифа «' . $plan['title'] . '»',
                                         'value' => $plan['price']
-                                    ),
-                                    array(
+                                    ],
+                                    [
                                         'name' => 'Пополнение счёта',
                                         'value' => 0
-                                    )
-                                );
+                                    ]
+                                ];
                                 $discount = 10;
                                 $discountValue = -1 * ($plan['price'] - $this->money->applyDiscount($plan['price'], $discount));
                                 $receipt = Receipt::addRow($receipt, "Скидка — $discount%", $discountValue);
@@ -1061,11 +1062,11 @@ class UsersController extends \app\controllers\AppController
                 }
                 if ($userToLog->banned) {
                     Auth::clear('user');
-                    return array('data' => true, 'redirect' => '/users/banned');
+                    return ['data' => true, 'redirect' => '/users/banned'];
                 }
                 if ($userToLog->active == 0) {
                     Auth::clear('user');
-                    return array('data' => true, 'redirect' => '/users/login');
+                    return ['data' => true, 'redirect' => '/users/login'];
                 }
                 $userToLog->autologin_token = $userToLog->generateToken();
                 if (isset($this->request->data['accessToken'])) {
@@ -1073,7 +1074,7 @@ class UsersController extends \app\controllers\AppController
                 }
                 setcookie('autologindata', 'id=' . $userToLog->id . '&token=' . sha1($userToLog->autologin_token), time() + strtotime('+1 month'), '/');
                 $userToLog->lastTimeOnline = date('Y-m-d H:i:s');
-                $userToLog->save(null, array('validate' => false));
+                $userToLog->save(null, ['validate' => false]);
                 // производим аутентификацию
                 Auth::set('user', $userToLog->data());
                 // отдаем тру для того, чтобы джаваскрипт сделал редирект
@@ -1101,7 +1102,7 @@ class UsersController extends \app\controllers\AppController
                     }
                     $this->redirect($redirect);
                 }
-                return array('data' => true, 'redirect' => $redirect, 'newuser' => $newuser);
+                return ['data' => true, 'redirect' => $redirect, 'newuser' => $newuser];
             } else {
                 // обычная регистрация
                 if (!isset($this->request->data['case']) || $this->request->data['case'] != 'fu27fwkospf' || !$this->request->is('json')) { // Check for bots
@@ -1138,12 +1139,12 @@ class UsersController extends \app\controllers\AppController
 
                 $user->set($this->request->data);
                 if (($user->validates()) && ($user->save($this->request->data))) {
-                    $userToLog = User::first(array('conditions' => array('id' => $user->id)));
+                    $userToLog = User::first(['conditions' => ['id' => $user->id]]);
                     $userToLog->lastTimeOnline = date('Y-m-d H:i:s');
                     $userToLog->setLastActionTime();
                     // Отправляем письмо для верификации почты
                     if ($user->isClient) {
-                        $posts = Post::all(array('order' => array('id' => 'desc'), 'limit' => 2));
+                        $posts = Post::all(['order' => ['id' => 'desc'], 'limit' => 2]);
                         UserMailer::verification_mail_client($userToLog, $posts);
                     } else {
                         UserMailer::verification_mail($userToLog);
@@ -1155,7 +1156,7 @@ class UsersController extends \app\controllers\AppController
 
                     if (isset($_COOKIE['fastpitch'])) {
                         $fastId = unserialize($_COOKIE['fastpitch']);
-                        $fastPitches = Pitch::all(array('conditions' => array('id' => $fastId)));
+                        $fastPitches = Pitch::all(['conditions' => ['id' => $fastId]]);
                         foreach ($fastPitches as $fastPitch) {
                             $fastPitch->user_id = $user->id;
                         }
@@ -1169,7 +1170,7 @@ class UsersController extends \app\controllers\AppController
                             $pitch->save();
                         }
                         Session::delete('temppitch');
-                        return array('redirect' => '/pitches/edit/' . $pitchId . '#step3', 'who_am_i' => 'client');
+                        return ['redirect' => '/pitches/edit/' . $pitchId . '#step3', 'who_am_i' => 'client'];
                     }
                     $data = $userToLog->data();
                     $session = Session::read();
@@ -1188,12 +1189,12 @@ class UsersController extends \app\controllers\AppController
         $redirect_uri = 'https://www.godesigner.ru/users/vklogin'; // Адрес сайта
 
 
-        $params = array(
+        $params = [
             'client_id' => $client_id,
             'redirect_uri' => $redirect_uri,
             'scope' => 'friends',
             'response_type' => 'code'
-        );
+        ];
         $freePitch = Pitch::getFreePitch();
         return compact('user', 'invite', 'params', 'url', 'freePitch');
     }
@@ -1220,11 +1221,11 @@ class UsersController extends \app\controllers\AppController
                 $redirect = '/users/profile';
                 $status = 'client';
             }
-            $user->save(null, array('validate' => false));
-            return array('result' => true, 'redirect' => $redirect, 'status' => $status);
+            $user->save(null, ['validate' => false]);
+            return ['result' => true, 'redirect' => $redirect, 'status' => $status];
         }
 
-        return array('result' => false, 'error' => 'no user', 'redirect' => '/');
+        return ['result' => false, 'error' => 'no user', 'redirect' => '/'];
     }
 
     /**
@@ -1238,7 +1239,7 @@ class UsersController extends \app\controllers\AppController
         $user = User::create();
         if ($this->request->data) {
             $this->request->data['password'] = String::hash($this->request->data['password']);
-            if (Auth::check('user', $this->request, array('checkSession' => true))) {
+            if (Auth::check('user', $this->request, ['checkSession' => true])) {
                 $userToLog = User::first(Session::read('user.id'));
                 /* if(!$userToLog->invited) {
                   Session::clear();
@@ -1250,18 +1251,18 @@ class UsersController extends \app\controllers\AppController
                 }
                 if ($userToLog->active == 0) {
                     Auth::clear('user');
-                    return array('data' => true, 'redirect' => '/users/login');
+                    return ['data' => true, 'redirect' => '/users/login'];
                 }
                 $userToLog->lastTimeOnline = date('Y-m-d H:i:s');
                 if ((isset($this->request->data['remember'])) && ($this->request->data['remember'] == 'on')) {
                     $userToLog->autologin_token = $userToLog->generateToken();
                     setcookie('autologindata', 'id=' . $userToLog->id . '&token=' . sha1($userToLog->autologin_token), time() + strtotime('+1 month'), '/');
                 }
-                $userToLog->save(null, array('validate' => false));
+                $userToLog->save(null, ['validate' => false]);
                 /// FastPitches
                 if (isset($_COOKIE['fastpitch'])) {
                     $fastId = unserialize($_COOKIE['fastpitch']);
-                    $fastPitches = Pitch::all(array('conditions' => array('id' => $fastId)));
+                    $fastPitches = Pitch::all(['conditions' => ['id' => $fastId]]);
                     foreach ($fastPitches as $fastPitch) {
                         $fastPitch->user_id = $userToLog->id;
                     }
@@ -1344,19 +1345,19 @@ class UsersController extends \app\controllers\AppController
     public function confirm()
     {
         if (isset($this->request->query['token'])) {
-            $user = User::first(array('conditions' => array('token' => $this->request->query['token'])));
+            $user = User::first(['conditions' => ['token' => $this->request->query['token']]]);
             if ($user) {
                 $user->activateUser();
                 UserMailer::hi_mail($user);
                 Auth::clear('user');
                 Auth::set('user', $user->data());
                 Session::write('user.confirmed_email', 1);
-                return $this->redirect(array('Users::office', '?' => array('success' => 'true')));
+                return $this->redirect(['Users::office', '?' => ['success' => 'true']]);
             } else {
-                return $this->redirect(array('Users::registration', '?' => array('success' => 'false')));
+                return $this->redirect(['Users::registration', '?' => ['success' => 'false']]);
             }
         } else {
-            return $this->redirect(array('Users::registration', '?' => array('success' => 'false')));
+            return $this->redirect(['Users::registration', '?' => ['success' => 'false']]);
         }
     }
 
@@ -1368,22 +1369,22 @@ class UsersController extends \app\controllers\AppController
     public function checkform()
     {
         if (isset($this->request->data['email'])) {
-            if ($user = User::find('first', array('conditions' => array('email' => $this->request->data['email'])))) {
-                return array('data' => true);
+            if ($user = User::find('first', ['conditions' => ['email' => $this->request->data['email']]])) {
+                return ['data' => true];
             }
         }
-        return array('data' => false);
+        return ['data' => false];
     }
 
     public function setnewpassword()
     {
         $token = $this->request->query['token'];
         if (isset($token)) {
-            $user = User::first(array('conditions' => array('token' => $token)));
+            $user = User::first(['conditions' => ['token' => $token]]);
             if ($user) {
                 Auth::set('user', $user->data());
                 if ($this->request->data) {
-                    $errors = array();
+                    $errors = [];
                     if (empty($this->request->data['password'])) {
                         $errors['password'] = 'Пароль пустой';
                     }
@@ -1394,7 +1395,7 @@ class UsersController extends \app\controllers\AppController
                         $user->password = String::hash($this->request->data['password']);
                         $user->token = '';
                         $user->success = true;
-                        $user->save(null, array('validate' => false));
+                        $user->save(null, ['validate' => false]);
                     }
                 }
                 return compact('token', 'user', 'errors');
@@ -1415,12 +1416,12 @@ class UsersController extends \app\controllers\AppController
         if (Session::read('user.id')) {
             return $this->redirect('/users/profile');
         }
-        $errors = array();
+        $errors = [];
         $success = false;
         if ($this->request->data) {
             if ($user = User::findByEmail($this->request->data['email'])) {
                 $user->token = $user->generateToken();
-                $user->save(null, array('validate' => false));
+                $user->save(null, ['validate' => false]);
                 UserMailer::forgotpassword_mail($user);
                 $success = true;
             } else {
@@ -1436,8 +1437,8 @@ class UsersController extends \app\controllers\AppController
         if ($user->id == '21376') {
             $this->redirect('/news');
         }
-        $winnersData = Solution::all(array('conditions' => array('Solution.awarded' => 1, 'Pitch.private' => 0), 'order' => array('Solution.created' => 'desc'), 'limit' => 50, 'with' => array('Pitch')));
-        $winners = array();
+        $winnersData = Solution::all(['conditions' => ['Solution.awarded' => 1, 'Pitch.private' => 0], 'order' => ['Solution.created' => 'desc'], 'limit' => 50, 'with' => ['Pitch']]);
+        $winners = [];
         foreach ($winnersData as $winner) {
             if ($winner->pitch->category_id != 7) {
                 $winners[] = $winner;
@@ -1447,12 +1448,12 @@ class UsersController extends \app\controllers\AppController
         $passwordInfo = false;
         $emailInfo = false;
         if ($this->request->data) {
-            $user->userdata = serialize(array(
+            $user->userdata = serialize([
                 'birthdate' => $this->request->data['birthdate'],
                 'city' => $this->request->data['city'],
                 'profession' => $this->request->data['profession'],
                 'about' => $this->request->data['about'],
-            ));
+            ]);
             $user->isClient = $this->request->data['isClient'];
             $user->isDesigner = $this->request->data['isDesigner'];
             $user->isCopy = $this->request->data['isCopy'];
@@ -1462,7 +1463,7 @@ class UsersController extends \app\controllers\AppController
             $user->last_name = $this->request->data['last_name'];
             $user->gender = $this->request->data['gender'];
 
-            $user->save(null, array('validate' => false));
+            $user->save(null, ['validate' => false]);
         }
         return compact('user', 'winners', 'passwordInfo', 'emailInfo');
     }
@@ -1481,12 +1482,12 @@ class UsersController extends \app\controllers\AppController
             if (isset($this->request->data['short_company_name'])) {
                 $shortUpdate = true;
                 $user->short_company_name = $this->request->data['short_company_name'];
-                $user->companydata = serialize(array(
+                $user->companydata = serialize([
                     'company_name' => $this->request->data['company_name'],
                     'inn' => $this->request->data['inn'],
                     'kpp' => $this->request->data['kpp'],
                     'address' => $this->request->data['address'],
-                ));
+                ]);
             }
             if (isset($this->request->data['first_name'])) {
                 $shortUpdate = true;
@@ -1531,40 +1532,40 @@ class UsersController extends \app\controllers\AppController
             if (isset($this->request->data['birthdate'])) {
                 $shortUpdate = true;
                 $unserialized = unserialize($user->userdata);
-                $user->userdata = serialize(array(
+                $user->userdata = serialize([
                     'birthdate' => $this->request->data['birthdate'],
                     'city' => $unserialized['city'],
                     'profession' => $unserialized['profession'],
                     'about' => $unserialized['about'],
                     'accept_sms' => $unserialized['accept_sms']
-                ));
+                ]);
             }
             if (isset($this->request->data['accept_sms'])) {
                 $shortUpdate = true;
                 $unserialized = unserialize($user->userdata);
                 $smsValue = (int) $this->request->data['accept_sms'];
                 $smsValue = (bool) $smsValue;
-                $user->userdata = serialize(array(
+                $user->userdata = serialize([
                     'birthdate' => $unserialized['birthdate'],
                     'city' => $unserialized['city'],
                     'profession' => $unserialized['profession'],
                     'about' => $unserialized['about'],
                     'accept_sms' => $smsValue
-                ));
+                ]);
             }
             if (isset($this->request->data['city'])) {
                 $shortUpdate = true;
                 $unserialized = unserialize($user->userdata);
-                $user->userdata = serialize(array(
+                $user->userdata = serialize([
                     'birthdate' => $unserialized['birthdate'],
                     'city' => $this->request->data['city'],
                     'profession' => $unserialized['profession'],
                     'about' => $unserialized['about'],
                     'accept_sms' => $unserialized['accept_sms']
-                ));
+                ]);
             }
             if ($shortUpdate) {
-                $result = $user->save(null, array('validate' => false));
+                $result = $user->save(null, ['validate' => false]);
                 $data = $this->request->data;
                 if ($this->request->is('json')) {
                     return compact('result', 'data');
@@ -1578,7 +1579,7 @@ class UsersController extends \app\controllers\AppController
                 $user->phone_valid = 0;
                 $user->phone_code = '';
                 $user->phone_operator = '';
-                $user->save(null, array('validate' => false));
+                $user->save(null, ['validate' => false]);
                 return json_encode(true);
             }
 
@@ -1595,18 +1596,18 @@ class UsersController extends \app\controllers\AppController
                         }
                         $smsCount[] = time();
                     } else {
-                        $smsCount = array(time());
+                        $smsCount = [time()];
                     }
                 } else {
-                    $smsCount = array(time());
+                    $smsCount = [time()];
                 }
                 Session::write('user.smsCount', $smsCount);
 
                 $textMessage = $user->phone_code . ' - код для проверки';
-                $params = array(
+                $params = [
                     "text" => $textMessage
-                );
-                $phones = array($user->phone);
+                ];
+                $phones = [$user->phone];
                 $smsService = new SmsUslugi();
                 $respond = $smsService->send($params, $phones);
                 if (!isset($respond['smsid'])) {
@@ -1646,10 +1647,10 @@ class UsersController extends \app\controllers\AppController
                         }
                         $smsCount[] = time();
                     } else {
-                        $smsCount = array(time());
+                        $smsCount = [time()];
                     }
                 } else {
-                    $smsCount = array(time());
+                    $smsCount = [time()];
                 }
                 Session::write('user.smsCount', $smsCount);
 
@@ -1674,13 +1675,13 @@ class UsersController extends \app\controllers\AppController
             }
 
             if (isset($this->request->data['email'])) {
-                if ($userWithEmail = User::first(array(
-                    'conditions' => array(
+                if ($userWithEmail = User::first([
+                    'conditions' => [
                         'email' => $this->request->data['email'],
-                        'id' => array(
+                        'id' => [
                             '!=' => $user->id,
-                        ),
-                    )))) {
+                        ],
+                    ]])) {
                     $emailInfo = 'Пользователь с таким адресом электронной почты уже существует!';
                     $result = false;
                 } else {
@@ -1691,7 +1692,7 @@ class UsersController extends \app\controllers\AppController
                         $user->token = $user->generateToken();
                         Session::write('user.email', $user->email);
                         UserMailer::verification_mail($user);
-                        $result = $user->save(null, array('validate' => false));
+                        $result = $user->save(null, ['validate' => false]);
                     }
                 }
                 return compact('result', 'emailInfo');
@@ -1707,7 +1708,7 @@ class UsersController extends \app\controllers\AppController
                         $passwordInfo = 'Пароли не совпадают!';
                     } else {
                         $user->password = String::hash($this->request->data['newpassword']);
-                        $result = $user->save(null, array('validate' => false));
+                        $result = $user->save(null, ['validate' => false]);
                         $passwordInfo = 'Пароль изменен!';
                     }
                 }
@@ -1749,7 +1750,7 @@ class UsersController extends \app\controllers\AppController
                     $user->email_onlycopy = 0;
                 }
             }
-            $result = $user->save(null, array('validate' => false));
+            $result = $user->save(null, ['validate' => false]);
         }
         if ($this->request->is('json')) {
             return compact('result');
@@ -1784,19 +1785,19 @@ class UsersController extends \app\controllers\AppController
                 $solution->tags = Solution::getTagsArrayForSolution($solution);
             }
             $isClient = false;
-            $userPitches = Pitch::all(array('order' => ['started' => 'desc'],  'with' => ['Category'], 'conditions' => array('OR' => [['type' => 'company_project'], ['type' => '']], 'billed' => 1, 'published' => 1, 'user_id' => $user->id, 'blank' => 0, 'multiwinner' => 0)));
+            $userPitches = Pitch::all(['order' => ['started' => 'desc'],  'with' => ['Category'], 'conditions' => ['OR' => [['type' => 'company_project'], ['type' => '']], 'billed' => 1, 'published' => 1, 'user_id' => $user->id, 'blank' => 0, 'multiwinner' => 0]]);
             if (count($userPitches) > 0) {
                 $isClient = true;
-                $ids = array();
+                $ids = [];
                 foreach ($userPitches as $pitch) {
                     $ids[] = $pitch->id;
                 }
-                $selectedSolutions = Solution::all(array('conditions' => array(
+                $selectedSolutions = Solution::all(['conditions' => [
                     'pitch_id' => $ids,
-                    'OR' => array(array('rating = 4'), array('rating = 5'), array('Solution.awarded = 1'), array('Solution.nominated = 1'))
-                ),
-                    'with' => array('Pitch')
-                ));
+                    'OR' => [['rating = 4'], ['rating = 5'], ['Solution.awarded = 1'], ['Solution.nominated = 1']]
+                ],
+                    'with' => ['Pitch']
+                ]);
             }
             $userPitches = $userPitches->data();
             return compact('user', 'pitchCount', 'averageGrade', 'totalUserFavorite', 'totalFavoriteMe', 'totalViews', 'totalLikes', 'awardedSolutionNum', 'totalSolutionNum', 'selectedSolutions', 'isClient', 'userPitches');
@@ -1822,7 +1823,7 @@ class UsersController extends \app\controllers\AppController
             $totalSolutionNum = (int) User::getTotalSolutionNum($this->request->id);
             $totalFavoriteMe = Favourite::getNumberOfTimesAddedToFavourite($user->id);
             $totalUserFavorite = Favourite::getCountFavoriteUsersForUser($user->id);
-            $isFav = Favourite::first(array('conditions' => array('user_id' => Session::read('user.id'), 'fav_user_id' => $user->id)));
+            $isFav = Favourite::first(['conditions' => ['user_id' => Session::read('user.id'), 'fav_user_id' => $user->id]]);
 
             if (User::checkRole('admin')) {
                 $selectedSolutions = Solution::getUsersSolutions($this->request->id);
@@ -1832,22 +1833,22 @@ class UsersController extends \app\controllers\AppController
 
             $moderations = null;
             if (User::checkRole('admin') || (Session::read('user.isAdmin') == 1)) {
-                $moderations = Moderation::all(array('conditions' => array('model_user' => $user->id)));
+                $moderations = Moderation::all(['conditions' => ['model_user' => $user->id]]);
             }
             $isClient = false;
-            $userPitches = Pitch::all(array('order' => ['started' => 'desc'],  'with' => ['Category'], 'conditions' => array('OR' => [['type' => 'company_project'], ['type' => '']], 'billed' => 1, 'published' => 1, 'user_id' => $user->id, 'blank' => 0, 'multiwinner' => 0)));
+            $userPitches = Pitch::all(['order' => ['started' => 'desc'],  'with' => ['Category'], 'conditions' => ['OR' => [['type' => 'company_project'], ['type' => '']], 'billed' => 1, 'published' => 1, 'user_id' => $user->id, 'blank' => 0, 'multiwinner' => 0]]);
             if (count($userPitches) > 0) {
                 $isClient = true;
-                $ids = array();
+                $ids = [];
                 foreach ($userPitches as $pitch) {
                     $ids[] = $pitch->id;
                 }
-                $selectedSolutions = Solution::all(array('conditions' => array(
+                $selectedSolutions = Solution::all(['conditions' => [
                                 'pitch_id' => $ids,
-                                'OR' => array(array('rating = 4'), array('rating = 5'), array('Solution.awarded = 1'), array('Solution.nominated = 1'))
-                            ),
-                            'with' => array('Pitch')
-                ));
+                                'OR' => [['rating = 4'], ['rating = 5'], ['Solution.awarded = 1'], ['Solution.nominated = 1']]
+                            ],
+                            'with' => ['Pitch']
+                ]);
             }
             $userPitches = $userPitches->data();
             return compact('user', 'pitchCount', 'totalUserFavorite', 'isFav', 'totalFavoriteMe', 'averageGrade', 'totalViews', 'totalLikes', 'awardedSolutionNum', 'totalSolutionNum', 'selectedSolutions', 'isClient', 'moderations', 'userPitches');
@@ -1858,8 +1859,8 @@ class UsersController extends \app\controllers\AppController
     public function savePaymentData()
     {
         $user = User::first(Session::read('user.id'));
-        $user->paymentOptions = serialize(array($this->request->data));
-        $user->save(null, array('validate' => false));
+        $user->paymentOptions = serialize([$this->request->data]);
+        $user->save(null, ['validate' => false]);
         return $user->paymentOptions;
     }
 
@@ -1871,7 +1872,7 @@ class UsersController extends \app\controllers\AppController
             $redirect = $this->request->query['redirect'];
         }
         if (isset($token)) {
-            $user = User::first(array('conditions' => array('token' => $token, 'isAdmin' => 1)));
+            $user = User::first(['conditions' => ['token' => $token, 'isAdmin' => 1]]);
             if ($user) {
                 Auth::clear('user');
                 Auth::set('user', $user->data());
@@ -1905,8 +1906,8 @@ class UsersController extends \app\controllers\AppController
             $term = $this->request->data['term'] * DAY;
             $user->silenceUntil = date('Y-m-d H:i:s', time() + $term);
             $user->silenceCount += 1;
-            $user->save(null, array('validate' => false));
-            UserMailer::ban(array('user' => $user->data(), 'term' => $this->request->data['term']));
+            $user->save(null, ['validate' => false]);
+            UserMailer::ban(['user' => $user->data(), 'term' => $this->request->data['term']]);
         }
 
         return $user->data();
@@ -1916,7 +1917,7 @@ class UsersController extends \app\controllers\AppController
     {
         if (($user = User::first($this->request->data['id'])) && (Session::read('user.isAdmin') == 1 || (in_array(Session::read('user.id'), User::$admins)))) {
             $user->silenceUntil = date('Y-m-d H:i:s');
-            $user->save(null, array('validate' => false));
+            $user->save(null, ['validate' => false]);
         }
         return $user->data();
     }
@@ -1926,7 +1927,7 @@ class UsersController extends \app\controllers\AppController
         if (($user = User::first($this->request->data['id'])) && ($this->userHelper->isAdmin())) {
             $user->banned = 0;
             $user->banned_until = '0000-00-00 00:00:00';
-            $user->save(null, array('validate' => false));
+            $user->save(null, ['validate' => false]);
             return $this->request->data;
         }
     }
@@ -1935,7 +1936,7 @@ class UsersController extends \app\controllers\AppController
     {
         if (($user = User::first($this->request->data['id'])) && (Session::read('user.isAdmin') == 1 || (in_array(Session::read('user.id'), User::$admins)))) {
             $user->block();
-            UserMailer::block(array('user' => $user->data()));
+            UserMailer::block(['user' => $user->data()]);
             return $this->request->data;
         }
     }
@@ -1954,7 +1955,7 @@ class UsersController extends \app\controllers\AppController
     public function stats()
     {
         $count = User::count();
-        return array('data' => array('count' => $count));
+        return ['data' => ['count' => $count]];
     }
 
     public function deleteaccount()
@@ -1963,7 +1964,7 @@ class UsersController extends \app\controllers\AppController
         $user->active = 0;
         $user->oldemail = $user->email;
         $user->email = '';
-        $user->save(null, array('validate' => false));
+        $user->save(null, ['validate' => false]);
         Auth::clear('user');
         session_destroy();
         unset($_SESSION);
@@ -2034,7 +2035,7 @@ class UsersController extends \app\controllers\AppController
         if ($this->request->is('json') && (($this->request->id == 1 || $this->request->id == 2)) && (Session::read('user.id') > 0) && ($user = User::first((int) Session::read('user.id')))) {
             $user->social = (int) $this->request->id;
             Session::write('user.social', $user->social);
-            return $user->save(null, array('validate' => false));
+            return $user->save(null, ['validate' => false]);
         }
         $this->redirect('/');
     }
@@ -2058,10 +2059,10 @@ class UsersController extends \app\controllers\AppController
                     }
                     $smsCount[] = time();
                 } else {
-                    $smsCount = array(time());
+                    $smsCount = [time()];
                 }
             } else {
-                $smsCount = array(time());
+                $smsCount = [time()];
             }
             Session::write('user.smsCount', $smsCount);
 
@@ -2122,7 +2123,7 @@ class UsersController extends \app\controllers\AppController
             }
             $user->gender = $gender;
             Session::write('user.gender', $gender);
-            return json_encode($user->save(null, array('validate' => false)));
+            return json_encode($user->save(null, ['validate' => false]));
         }
     }
 
@@ -2140,7 +2141,7 @@ class UsersController extends \app\controllers\AppController
                     Auth::set('user', $user->data());
                     unset($cache[$complete_hash]);
                     Rcache::write('SpamDsicountWeek', $cache);
-                    return $this->redirect(array('controller' => 'pitches', 'action' => 'view', 'id' => $data['pitch_id']));
+                    return $this->redirect(['controller' => 'pitches', 'action' => 'view', 'id' => $data['pitch_id']]);
                 }
             }
         }
@@ -2154,16 +2155,16 @@ class UsersController extends \app\controllers\AppController
      */
     public function subscriber()
     {
-        $conditions = array(
+        $conditions = [
             'billed' => 1,
             'user_id' => $this->userHelper->getId(),
-            'OR' => array(
-                array('type' => 'fund-balance'),
-                array('type' => 'plan-payment'),
-                array('type' => 'company_project'),
-                array('type' => 'multiwinner', 'category_id' => 20)
-            )
-        );
+            'OR' => [
+                ['type' => 'fund-balance'],
+                ['type' => 'plan-payment'],
+                ['type' => 'company_project'],
+                ['type' => 'multiwinner', 'category_id' => 20]
+            ]
+        ];
         if ((isset($this->request->query['query']))
             && ($this->request->query['query'] != 'найдите свой  проект по ключевому слову или типу')
             && (!empty($this->request->query['query']))) {
@@ -2172,13 +2173,13 @@ class UsersController extends \app\controllers\AppController
             $firstUpper = (mb_strtoupper($firstLetter, 'utf-8'));
             $firstLower = (mb_strtolower($firstLetter, 'utf-8'));
             $string = $firstLower . mb_substr($query, 1, mb_strlen($query, 'utf-8'), 'utf-8') . '|' . $firstUpper . mb_substr($query, 1, mb_strlen($query, 'utf-8'), 'utf-8') . '|' . mb_strtoupper($query, 'utf-8') . '|' . str_replace('ё', 'е', $query);
-            $conditions += array('title' => array('REGEXP' => $string));
+            $conditions += ['title' => ['REGEXP' => $string]];
         }
-        $paymentsObj = Pitch::all(array(
+        $paymentsObj = Pitch::all([
             'conditions' => $conditions,
-            'order' => array('started' => 'desc')
-        ));
-        $payments = array();
+            'order' => ['started' => 'desc']
+        ]);
+        $payments = [];
         $defaultFinishDate = date('Y-m-d H:i:s', time() + (10 * DAY));
         $moneyFormatter = new MoneyFormatter();
         $client = User::first($this->userHelper->getId());
@@ -2211,7 +2212,7 @@ class UsersController extends \app\controllers\AppController
                         $reducePriceAmount += $addon->{'prolong-days'} * 1000;
                     }
                 }
-                if((!in_array('pinproject', $plan['free'])) && ($data['pinned'])) {
+                if ((!in_array('pinproject', $plan['free'])) && ($data['pinned'])) {
                     $instantOptions += 1000;
                 }
                 $data['addonTotal'] = $addonTotal;
@@ -2242,18 +2243,18 @@ class UsersController extends \app\controllers\AppController
             }
             if ($data['type'] != 'fund-balance') {
                 if ($data['type'] != 'plan-payment') {
-                    $data['formattedMoney'] = '- ' . $moneyFormatter->formatMoney($data['price'], array('suffix' => ''));
+                    $data['formattedMoney'] = '- ' . $moneyFormatter->formatMoney($data['price'], ['suffix' => '']);
                 } else {
-                    $data['formattedMoney'] = '- ' . $moneyFormatter->formatMoney($data['price'], array('suffix' => ''));
+                    $data['formattedMoney'] = '- ' . $moneyFormatter->formatMoney($data['price'], ['suffix' => '']);
                 }
             }
             if ($data['type'] == 'fund-balance') {
                 $data['formattedDate'] = date('d.m.Y', strtotime($row->billed_date));
-                $data['formattedMoney'] = '+ ' . $moneyFormatter->formatMoney($data['total'], array('suffix' => ''));
+                $data['formattedMoney'] = '+ ' . $moneyFormatter->formatMoney($data['total'], ['suffix' => '']);
             }
             $payments[] = $data;
             if (($data['type'] === 'company_project') && ($data['status'] == 2) && ($data['awarded'] == 0)) {
-                $formattedRefund = $moneyFormatter->formatMoney((int) $data['finalPrice'] - (int) $data['extraFunds'], array('suffix' => ''));
+                $formattedRefund = $moneyFormatter->formatMoney((int) $data['finalPrice'] - (int) $data['extraFunds'], ['suffix' => '']);
                 $refundedObject = [
                     "id" => $data['id'],
                     "type" => "refund",
@@ -2282,14 +2283,14 @@ class UsersController extends \app\controllers\AppController
             $data['type'] = 'addon';
             $data['timestamp'] = strtotime($addon->created);
             $data['formattedDate'] = date('d.m.Y', strtotime($addon->created));
-            $data['formattedMoney'] = '- ' . $moneyFormatter->formatMoney($data['total'], array('suffix' => ''));
+            $data['formattedMoney'] = '- ' . $moneyFormatter->formatMoney($data['total'], ['suffix' => '']);
             $data['title'] = 'Оплата доп. опции';
             $title = [];
             if ($data['experts']) {
                 $title[] = 'экспертное мнение';
             }
             if ($data['prolong']) {
-                $days = $numInflector->formatString($data['prolong-days'], array('string' => array('first' => 'день', 'second' => 'дня', 'third' => 'дней')));
+                $days = $numInflector->formatString($data['prolong-days'], ['string' => ['first' => 'день', 'second' => 'дня', 'third' => 'дней']]);
                 $title[] = 'продление ' . $data['prolong-days'] . ' ' . $days  ;
             }
             if ($data['brief']) {
@@ -2313,7 +2314,7 @@ class UsersController extends \app\controllers\AppController
             return ($firstDate > $secondDate) ? -1 : 1;
         });
         if ($this->request->is('json')) {
-            $data = array(
+            $data = [
                 'balance' => $this->userHelper->getBalance(),
                 'companyName' => $this->userHelper->getShortCompanyName(),
                 'fullCompanyName' => $this->userHelper->getFullCompanyName(),
@@ -2322,7 +2323,7 @@ class UsersController extends \app\controllers\AppController
                 'plan' => $this->userHelper->getCurrentPlanData(),
                 'payload' => $payments,
                 'conditions' => $conditions
-            );
+            ];
             return $data;
         }
         return compact('payments', 'defaultFinishDate');
@@ -2409,11 +2410,11 @@ class qqUploadedFileForm
 class qqFileUploader
 {
 
-    private $allowedExtensions = array();
+    private $allowedExtensions = [];
     private $sizeLimit = 104857600;
     private $file;
 
-    public function __construct(array $allowedExtensions = array(), $sizeLimit = 104857600)
+    public function __construct(array $allowedExtensions = [], $sizeLimit = 104857600)
     {
         $allowedExtensions = array_map("strtolower", $allowedExtensions);
 
@@ -2460,11 +2461,11 @@ class qqFileUploader
     public function handleUpload($uploadDirectory, $replaceOldFile = true)
     {
         if (!is_writable($uploadDirectory)) {
-            return array('error' => "Server error. Upload directory isn't writable.");
+            return ['error' => "Server error. Upload directory isn't writable."];
         }
 
         if (!$this->file) {
-            return array('error' => 'No files were uploaded.');
+            return ['error' => 'No files were uploaded.'];
         }
 
 
@@ -2476,7 +2477,7 @@ class qqFileUploader
 
         if ($this->allowedExtensions && !in_array(strtolower($ext), $this->allowedExtensions)) {
             $these = implode(', ', $this->allowedExtensions);
-            return array('error' => 'File has an invalid extension, it should be one of ' . $these . '.');
+            return ['error' => 'File has an invalid extension, it should be one of ' . $these . '.'];
         }
 
         if (!$replaceOldFile) {
@@ -2487,10 +2488,10 @@ class qqFileUploader
         }
 
         if ($this->file->save($uploadDirectory . $filename . '.' . $ext)) {
-            return array('success' => true, 'name' => $originalname . '.' . $ext, 'tmpname' => $uploadDirectory . $filename . '.' . $ext);
+            return ['success' => true, 'name' => $originalname . '.' . $ext, 'tmpname' => $uploadDirectory . $filename . '.' . $ext];
         } else {
-            return array('error' => 'Could not save uploaded file.' .
-                'The upload was cancelled, or server error encountered');
+            return ['error' => 'Could not save uploaded file.' .
+                'The upload was cancelled, or server error encountered'];
         }
     }
 }
