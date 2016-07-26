@@ -460,6 +460,7 @@ class UsersController extends \app\controllers\AppController
                     $userIdForComment = $this->userHelper->getId();
                 }
                 $newComment->set($this->request->data);
+                $newComment->text = nl2br($this->request->data['text']);
                 $newComment->user_id = $userIdForComment;
                 $newComment->solution_id = $solution->id;
                 $newComment->created = date('Y-m-d H:i:s');
@@ -725,6 +726,7 @@ class UsersController extends \app\controllers\AppController
                     $userIdForComment = $this->userHelper->getId();
                 }
                 $newComment->set($this->request->data);
+                $newComment->text = nl2br($this->request->data['text']);
                 $newComment->user_id = $userIdForComment;
                 $newComment->solution_id = $solution->id;
                 $newComment->created = date('Y-m-d H:i:s');
