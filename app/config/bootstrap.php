@@ -104,9 +104,9 @@ define('YEAR', 31536000);
 define('REFERAL_DISCOUNT', 300);
 define('REFERAL_AWARD', 500);
 
-define('FEE_LOW', 0.245);
-define('FEE_NORMAL', 0.215);
-define('FEE_GOOD', 0.195);
+define('FEE_LOW', 0.295);
+define('FEE_NORMAL', 0.245);
+define('FEE_GOOD', 0.205);
 
 define('COPY_BASE_PRICE', 7000);
 
@@ -130,7 +130,7 @@ require __DIR__ . '/bootstrap/sms.php';
 
 /*
 Dispatcher::applyFilter('_call', function($self, $params, $chain) {
-	var_dump($params);
+    var_dump($params);
     if (isset($params['callable']->response)) {
         Logger::adapter('default')->bind($params['callable']->response);
     }
