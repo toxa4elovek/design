@@ -173,11 +173,24 @@ class PagesController extends AppController
      */
     public function subscribe()
     {
+        if ((!empty($this->request->query['sref'])) && (User::isValidReferalCodeForSubscribers($this->request->query['sref']))) {
+            return $this->redirect($this->request->url);
+        }
         if ($this->userHelper->isLoggedIn() && $this->userRecord->hasActiveSubscriptionDiscountForRecord()) {
             $discount = $this->userRecord->getSubscriptionDiscountForRecord();
             $discountEndTime = $this->userRecord->getSubscriptionDiscountEndTimeForRecord();
             $data = compact('discount', 'discountEndTime');
             return $this->render(['template' => 'subscribe_discount', 'data' => $data]);
+        }
+        if(($this->discountForSubscriberReferal > 0) && (isset($_COOKIE['sreftime']))) {
+            $startTime = strtotime(date(MYSQL_DATETIME_FORMAT, $_COOKIE['sreftime']));
+            $delta = (time() - $startTime);
+            if(floor($delta / DAY) < 10) {
+                $discount = $this->discountForSubscriberReferal;
+                $discountEndTime = date(MYSQL_DATETIME_FORMAT, $startTime + 10 * DAY);
+                $data = compact('discount', 'discountEndTime');
+                return $this->render(['template' => 'subscribe_discount', 'data' => $data]);
+            }
         }
     }
 /*

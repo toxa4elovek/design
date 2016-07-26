@@ -484,6 +484,7 @@ $word2 = 'Опишите вид деятельности. Что отличае�
     <div style="color: rgb(202, 202, 202); font-size: 14px; margin-top: 20px;">Пожалуйста, используйте эту паузу<br> с пользой для здоровья!</div>
 </div>
 
+<?= $this->view()->render(array('element' => 'popups/brief_saved')); ?>
 <script type="text/javascript" src="/js/jquery-1.8.3.min.js"></script>
 <script type="text/javascript" src="/js/tinymce/tinymce.min.js"></script>
 <?php if(!$onlyText):?>

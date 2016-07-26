@@ -45,7 +45,7 @@ $job_types = array(
                         <li class="fakeinput" style=" padding-top: 1px; margin-left:0;"></li>
                     </ul>
                     <p class="output-p">
-                        <label class="greyboldheader">Укажите 5 тегов, которые описывают логотип <?= $this->view()->render(array('element' => 'newbrief/required_star'), array('tooltipClass' => "tooltip3")) ?></label>
+                        <label class="greyboldheader">Укажите 5 тегов, которые описывают <?php if($pitch->category_id == 1):?>логотип<?php else:?>решение<?php endif?> <?= $this->view()->render(array('element' => 'newbrief/required_star'), array('tooltipClass' => "tooltip3")) ?></label>
                     </p>
                     <div id="filterContainer">
                         <ul class="tags" id="filterbox" style="margin-left: 9px"></ul>
@@ -82,10 +82,11 @@ $job_types = array(
                         </p>
                     </div>
                 </div>
-                <div style="float:left; width: 230px; margin-bottom: 20px;"><p class="supplement">
+                <div style="float:left; width: 230px; margin-bottom: 20px;"><p class="supplement"><?php if($pitch->category_id == 1):?>
                         Это поможет найти ваш логотип тем, кто захочет его купить. Т.о мы дарим вам возможность продать работу, если та не станет победителем с первого раза.
+                    <?php endif ?>
                 </div>
-                <div style="float:left; width: 230px; margin-bottom: 20px;margin-top:63px;">
+                <div style="float:left; width: 230px; margin-bottom: 20px;<?php if($pitch->category_id != 1):?>margin-top:188px;<?php else:?>margin-top:63px;<?php endif?>">
                     <p class="supplement">
                         Для копирайтинга достаточно написать идею в поле, или прикрепить документ в формате TXT, PDF или JPEG/RGB, не больше 5 Мбт, 800*800px. Если ваше решение победит в проекте, вы загрузите запрашиваемые заказчиком рабочие документы.
                     </p>

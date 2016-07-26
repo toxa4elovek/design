@@ -60,6 +60,10 @@
 .project-search-table .light td {
     border-right: 0;
 }
+td.price {
+    padding-top: 20px;
+    vertical-align: top;
+}
 td.pitches-time {
     color: #999;
     font-family: Helvetica, sans-serif;
@@ -70,6 +74,8 @@ td.pitches-time {
     text-transform: uppercase;
     text-align: left;
     padding-left: 67px;
+    padding-top: 23px;
+    vertical-align: top;
 }
 .table-link-container a {
     color: #999;

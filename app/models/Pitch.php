@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\extensions\mailers\NotificationsMailer;
 use app\extensions\social\TwitterAPI;
 use app\extensions\storage\Rcache;
 use \lithium\storage\Session;
@@ -89,6 +90,30 @@ class Pitch extends AppModel
                 if ($params['pitch']->expert == 1) {
                     Pitch::sendExpertMail($params);
                 }
+                if ($params['pitch']->type === '') {
+                    Lead::resetLeadForUser($params['pitch']->user_id);
+                }
+                $project = $params['pitch'];
+                if (($project->category_id != 20) && (!empty($project->ga_id))) {
+                    $options = ['client_id' => $project->ga_id, 'user_id' => $project->user_id];
+                    $tracking = new \Racecore\GATracking\GATracking('UA-9235854-5', $options);
+
+                    $transaction = $tracking->createTracking('Ecommerce\Transaction');
+                    $transaction->setID($project->id);
+                    $transaction->setRevenue($project->total);
+                    $transaction->setCurrency('RUB');
+                    $result = $tracking->sendTracking($transaction);
+
+                    $item = $tracking->createTracking('Ecommerce\Item');
+                    $item->setTransactionID($project->id);
+                    $item->setName($project->title);
+                    $item->setPrice($project->total);
+                    $item->setQuantity(1);
+                    $item->setSku($project->id . '_1');
+                    $item->setCategory('Проект');
+                    $item->setCurrency('RUB');
+                    $result = $tracking->sendTracking($item);
+                }
             }
             return $result;
         });
@@ -114,7 +139,7 @@ class Pitch extends AppModel
             $client = User::first($params['pitch']->user_id);
             $nameInflector = new nameInflector();
             if ($params['pitch']->expert == 0):
-                $message = '@' . $nameInflector->renderName($client->first_name, $client->last_name) . ', срок проекта подошел к концу! Дизайнеры больше не могут предлагать решения и оставлять комментарии! Настал момент анонсировать победителя. У вас есть 4 дня на выбор лучшего решения. Выбрав лучшее, вы получите возможность внесения поправок и время на получение исходников.';
+                $message = Comment::getWinnerSelectionCommentForClient($nameInflector->renderName($client->first_name, $client->last_name), Pitch::getDaysForWinnerSelection($params['pitch']->id));
             else:
                 $message = '@' . $nameInflector->renderName($client->first_name, $client->last_name) . ', проект завершен и ожидает мнения эксперта, который в течение 2 рабочих дней выберет 3 идеи, которые лучше всего отвечают поставленной задаче. Дизайнеры больше не могут предлагать решения и оставлять комментарии!';
             endif;
@@ -122,6 +147,13 @@ class Pitch extends AppModel
             Comment::createComment($data);
             if ($params['pitch']->expert == 1) {
                 Pitch::sendExpertTimeoutMail($params);
+            } elseif ($params['pitch']->category_id != 20) {
+                $project = $params['pitch'];
+                if (($project->guaranteed == 0) && ($project->pitchData()['avgNum'] >= 3.0)) {
+                    NotificationsMailer::sendChooseWinnerNotificationForNonGuarantee($project);
+                } else {
+                    NotificationsMailer::sendChooseWinnerNotificationForGuarantee($project);
+                }
             }
             $result = $chain->next($self, $params, $chain);
             return $result;
@@ -254,7 +286,8 @@ class Pitch extends AppModel
      * Метод возвращяет количество завершенных проектов
      * @return integer
      */
-    public static function getNumOfCompletedProjects() {
+    public static function getNumOfCompletedProjects()
+    {
         return self::count(array(
             'conditions' => array(
                 'published' => 1,
@@ -337,16 +370,22 @@ class Pitch extends AppModel
         return false;
     }
 
+    /**
+     * Метод находит все проекты, где приём работ должен быть окончен,
+     * завершает их и отправляет письма заказчикам
+     *
+     * @return int
+     */
     public static function timeoutPitches()
     {
-        $pitches = self::all(array('conditions' => array(
+        $projects = self::all(array('conditions' => array(
                         'status' => 0,
                         'finishDate' => array('<' => date('Y-m-d H:i:s')),
                         'published' => 1
         )));
         $count = 0;
-        foreach ($pitches as $pitch) {
-            self::timeoutPitch($pitch);
+        foreach ($projects as $project) {
+            self::timeoutPitch($project);
             $count++;
         }
         return $count;
@@ -433,8 +472,12 @@ class Pitch extends AppModel
         if ($pitch = self::first($addon->pitch_id)) {
             $sumProlong = 1000 * $addon->{'prolong-days'};
             $pitch->price += $sumProlong;
-            $timeProlong = strtotime($pitch->finishDate) + ($addon->{'prolong-days'} * DAY);
+            $daysAdded = $addon->{'prolong-days'} * DAY;
+            $timeProlong = strtotime($pitch->finishDate) + ($daysAdded);
             $pitch->finishDate = date('Y-m-d H:i:s', $timeProlong);
+            if ($pitch->category_id == 20) {
+                $pitch->chooseWinnerFinishDate = date('Y-m-d H:i:s', (strtotime($pitch->chooseWinnerFinishDate) + $daysAdded));
+            }
             if ($pitch->save()) {
                 Comment::createComment(array(
                     'pitch_id' => $pitch->id,
@@ -827,7 +870,7 @@ class Pitch extends AppModel
     public static function generatePdfAct($options)
     {
         $destination = PdfGetter::findPdfDestination($options['destination']);
-        $path = ($destination == 'f') ? LITHIUM_APP_PATH . '/' . 'libraries' . '/' . 'MPDF54/MPDF54/tmp/' : '';
+        $path = ($destination == 'f') ? LITHIUM_APP_PATH . '/' . 'resources' . '/' . 'tmp/' : '';
         $options['pitch']->moneyback = self::isMoneyBack($options['pitch']->id);
         if ($options['pitch']->type == 'plan-payment') {
             $planId = SubscriptionPlan::getPlanForPayment($options['pitch']->id);
@@ -880,7 +923,7 @@ class Pitch extends AppModel
     public static function generatePdfReport($options)
     {
         $destination = PdfGetter::findPdfDestination($options['destination']);
-        $path = ($destination == 'f') ? LITHIUM_APP_PATH . '/' . 'libraries' . '/' . 'MPDF54/MPDF54/tmp/' : '';
+        $path = ($destination == 'f') ? LITHIUM_APP_PATH . '/' . 'resources' . '/' . 'tmp/' : '';
         $layout = ($options['bill']->individual == 1) ? 'Report-fiz' : 'Report-yur';
         $options['transaction_id'] = self::getPaymentId($options['pitch']->id);
         $receipt = Receipt::all(array(
@@ -966,7 +1009,7 @@ class Pitch extends AppModel
             'conditions' => array(
                 'status' => 2,
                 'totalFinishDate' => array(
-                    '>=' => date('Y-m-d H:i:s', time() - 5 * MINUTE),
+                    '>=' => date('Y-m-d H:i:s', time() - 1 * DAY),
                 ),
             ),
         );
@@ -975,7 +1018,12 @@ class Pitch extends AppModel
             foreach ($pitches as $pitch) {
                 if ($bill = Bill::first($pitch->id)) {
                     $destination = 'File';
-                    $options = compact('pitch', 'bill', 'destination');
+                    $addons = Addon::all(array('conditions' => [
+                        'pitch_id' => $pitch->id,
+                        'billed' => 1,
+                        'prolong' => ['>' => 0],
+                    ]));
+                    $options = compact('pitch', 'bill', 'addons', 'destination');
                     self::generatePdfReport($options);
                     if ($bill->individual != 1) {
                         self::generatePdfAct($options);
@@ -1287,10 +1335,10 @@ class Pitch extends AppModel
                 'order' => array(
                     'created' => 'asc')
             ));
-            if ($pitch->firstSolution) {
-                $time = strtotime($pitch->firstSolution->created);
+        if ($pitch->firstSolution) {
+            $time = strtotime($pitch->firstSolution->created);
                 //Rcache::write($cacheKey, $time);
-            }
+        }
         //}
         return $time;
     }
@@ -1314,15 +1362,15 @@ class Pitch extends AppModel
             } else {
                 $ratingsNum = array();
             }
-            $rating = 0;
-            $percents = 0;
-            if (count($ids) > 0) {
-                $percents = (count($ratingsNum) / count($ids)) * 100;
-            }
-            if ($percents > 100) {
-                $percents = 100;
-            }
-            switch ($percents) {
+        $rating = 0;
+        $percents = 0;
+        if (count($ids) > 0) {
+            $percents = (count($ratingsNum) / count($ids)) * 100;
+        }
+        if ($percents > 100) {
+            $percents = 100;
+        }
+        switch ($percents) {
                 case $percents < 50:
                     $rating = 1;
                     break;
@@ -1339,14 +1387,16 @@ class Pitch extends AppModel
                     $rating = 5;
                     break;
             }
-            $diff = strtotime(date('Y-m-d', $pitch->firstSolutionTime)) + DAY - $pitch->firstSolutionTime;
-            if ((!$pitch->firstSolution) || (($pitch->firstSolution) && ($pitch->firstSolutionTime > strtotime($dt->format('Y-m-d H:i:s')) + $diff))) {
-                $rating = 3;
-            }
-            if (strtotime($plusDay) < time()) {
-                //Rcache::write($cacheKey, $rating, [], '+2 hours');
-            }
-        //}
+            //$diff = strtotime(date('Y-m-d', $pitch->firstSolutionTime)) + DAY - $pitch->firstSolutionTime;
+        if (($pitch->firstSolution) && ($pitch->firstSolutionTime < strtotime($dt->format('Y-m-d')) + DAY)) {
+            $wasSolutionPostedOnThisDateOrBefore = true;
+        } else {
+            $wasSolutionPostedOnThisDateOrBefore = false;
+        }
+        if ((!$pitch->firstSolution) || !$wasSolutionPostedOnThisDateOrBefore) {
+            //if ((!$pitch->firstSolution) || (($pitch->firstSolution) && ($pitch->firstSolutionTime > strtotime($dt->format('Y-m-d H:i:s')) + $diff))) {
+            $rating = 3;
+        }
         return $rating;
     }
 
@@ -1364,16 +1414,16 @@ class Pitch extends AppModel
                 $commentsNum = array();
             }
 
-            $comments = 0;
-            $percents = 0;
-            if (count($ids) > 0) {
-                $percents = (count($commentsNum) / count($ids)) * 100;
-            }
+        $comments = 0;
+        $percents = 0;
+        if (count($ids) > 0) {
+            $percents = (count($commentsNum) / count($ids)) * 100;
+        }
 
-            if ($percents > 100) {
-                $percents = 100;
-            }
-            switch ($percents) {
+        if ($percents > 100) {
+            $percents = 100;
+        }
+        switch ($percents) {
                 case $percents < 50: $comments = 1;
                     break;
                 case $percents < 63: $comments = 2;
@@ -1385,13 +1435,19 @@ class Pitch extends AppModel
                 case $percents <= 100: $comments = 5;
                     break;
             }
-            $diff = strtotime(date('Y-m-d', $pitch->firstSolutionTime)) + DAY - $pitch->firstSolutionTime;
-            if ((!$pitch->firstSolution) || (($pitch->firstSolution) && ($pitch->firstSolutionTime > strtotime($dt->format('Y-m-d H:i:s')) + $diff))) {
+        if (($pitch->firstSolution) && ($pitch->firstSolutionTime < strtotime($dt->format('Y-m-d')) + DAY)) {
+            $wasSolutionPostedOnThisDateOrBefore = true;
+        } else {
+            $wasSolutionPostedOnThisDateOrBefore = false;
+        }
+            //$diff = strtotime(date('Y-m-d', $pitch->firstSolutionTime)) + DAY - $pitch->firstSolutionTime;
+            if ((!$pitch->firstSolution) || !$wasSolutionPostedOnThisDateOrBefore) {
+                //if ((!$pitch->firstSolution) || (($pitch->firstSolution) && ($pitch->firstSolutionTime > strtotime($dt->format('Y-m-d H:i:s')) + $diff))) {
                 $comments = 3;
             }
-            if (strtotime($plusDay) < time()) {
-                //Rcache::write($cacheKey, $comments, [], '+2 hours');
-            }
+        if (strtotime($plusDay) < time()) {
+            //Rcache::write($cacheKey, $comments, [], '+2 hours');
+        }
         //}
         return $comments;
     }
@@ -1659,6 +1715,7 @@ class Pitch extends AppModel
             $pitch->finished = date('Y-m-d H:i:s');
             $pitch->totalFinishDate = '0000-00-00 00:00:00';
             $pitch->awardedDate = date('Y-m-d H:i:s');
+            $pitch->billed_date = date('Y-m-d H:i:s');
             Solution::awardCopy($pitch->awarded);
             $count = self::getCountBilledMultiwinner($pitch->multiwinner);
             if ($count == 0) {
@@ -1677,6 +1734,27 @@ class Pitch extends AppModel
                 //User::sendTweetWinner($solution);
                 Task::createNewTask($solution->id, 'victoryNotificationTwitter');
                 Task::createNewTask($solution->id, 'victoryNotification');
+                $project = $pitch;
+                if (($project->category_id != 20) && (!empty($project->ga_id))) {
+                    $options = ['client_id' => $project->ga_id, 'user_id' => $project->user_id];
+                    $tracking = new \Racecore\GATracking\GATracking('UA-9235854-5', $options);
+
+                    $transaction = $tracking->createTracking('Ecommerce\Transaction');
+                    $transaction->setID($project->id);
+                    $transaction->setRevenue($project->total);
+                    $transaction->setCurrency('RUB');
+                    $result = $tracking->sendTracking($transaction);
+
+                    $item = $tracking->createTracking('Ecommerce\Item');
+                    $item->setTransactionID($project->id);
+                    $item->setName($project->title);
+                    $item->setPrice($project->total);
+                    $item->setQuantity(1);
+                    $item->setSku($project->id . '_1');
+                    $item->setCategory('Дополнительный победитель');
+                    $item->setCurrency('RUB');
+                    $result = $tracking->sendTracking($item);
+                }
                 return true;
             }
         } else {
@@ -1711,6 +1789,27 @@ class Pitch extends AppModel
                     $pitch->save();
                     SolutionsMailer::sendSolutionBoughtNotification($pitch->awarded);
                     SpamMailer::sendNewLogosaleProject($pitch);
+                    $project = $pitch;
+                    if (($project->category_id != 20) && (!empty($project->ga_id))) {
+                        $options = ['client_id' => $project->ga_id, 'user_id' => $project->user_id];
+                        $tracking = new \Racecore\GATracking\GATracking('UA-9235854-5', $options);
+
+                        $transaction = $tracking->createTracking('Ecommerce\Transaction');
+                        $transaction->setID($project->id);
+                        $transaction->setRevenue($project->total);
+                        $transaction->setCurrency('RUB');
+                        $result = $tracking->sendTracking($transaction);
+
+                        $item = $tracking->createTracking('Ecommerce\Item');
+                        $item->setTransactionID($project->id);
+                        $item->setName($project->title);
+                        $item->setPrice($project->total);
+                        $item->setQuantity(1);
+                        $item->setSku($project->id . '_1');
+                        $item->setCategory('Распродажа логотипов');
+                        $item->setCurrency('RUB');
+                        $result = $tracking->sendTracking($item);
+                    }
                     return true;
                 }
             }
@@ -1736,6 +1835,27 @@ class Pitch extends AppModel
             'started' => date('Y-m-d H:i:s'),
             'finishDate' => date('Y-m-d H:i:s')
         );
+        $project = $penalty;
+        if (($project->category_id != 20) && (!empty($project->ga_id))) {
+            $options = ['client_id' => $project->ga_id, 'user_id' => $project->user_id];
+            $tracking = new \Racecore\GATracking\GATracking('UA-9235854-5', $options);
+
+            $transaction = $tracking->createTracking('Ecommerce\Transaction');
+            $transaction->setID($project->id);
+            $transaction->setRevenue($project->total);
+            $transaction->setCurrency('RUB');
+            $result = $tracking->sendTracking($transaction);
+
+            $item = $tracking->createTracking('Ecommerce\Item');
+            $item->setTransactionID($project->id);
+            $item->setName($project->title);
+            $item->setPrice($project->total);
+            $item->setQuantity(1);
+            $item->setSku($project->id . '_1');
+            $item->setCategory('Штраф');
+            $item->setCurrency('RUB');
+            $result = $tracking->sendTracking($item);
+        }
         return $penalty->save($data);
     }
 
@@ -1842,7 +1962,7 @@ class Pitch extends AppModel
                 return false;
             }
             if (($pitch['status'] == 2) && ($pitch['category_id'] == 1) &&
-                ($pitch['private'] == 0) && ($pitch['totalFinishDate'] < date('Y-m-d H:i:s', time() - 30 * DAY))) {
+                ($pitch['private'] == 0) && ($pitch['totalFinishDate'] !== '0000-00-00 00:00:00') && (strtotime($pitch['totalFinishDate']) < (time() - (30 * DAY)))) {
                 return true;
             } else {
                 return false;
@@ -2119,12 +2239,12 @@ class Pitch extends AppModel
      */
     public static function getAutoClosingWarningComment($projectId)
     {
-        $project = Pitch::first($projectId);
+        $project = Pitch::first(['conditions' => ['Pitch.id' => $projectId], 'with' => ['Category']]);
         $projectOwner = User::first($project->user_id);
         $solution = Solution::first($project->awarded);
         $designer = User::first($solution->user_id);
         $nameInflector = new NameInflector();
-        $planDaysDefault = 10;
+        $planDaysDefault = $project->category->default_timelimit;
         if (in_array($project->category_id, array(3, 4))) {
             $planDaysDefault = 17;
         }
@@ -2190,12 +2310,15 @@ class Pitch extends AppModel
                 'type' => 'penalty',
             )
         ))) {
+            $gatracking = new \Racecore\GATracking\GATracking('UA-9235854-5');
+            $gaId = $gatracking->getClientId();
             $data = array(
                 'user_id' => $userId,
                 'type' => 'penalty',
                 'category' => 98,
                 'title' => 'Оплата штрафа',
-                'awarded' => $solutionId
+                'awarded' => $solutionId,
+                'ga_id' => $gaId
             );
             $payment = self::create($data);
             $payment->save();
@@ -2237,5 +2360,81 @@ class Pitch extends AppModel
             return true;
         }
         return false;
+    }
+
+    /**
+     * Метод возвращает целое количество дней (округлённое вниз), отведенное на выбор победителей
+     * нужно для отображения в уведомлениях для заказчиков
+     *
+     * @param $projectId
+     * @return int
+     */
+    public static function getDaysForWinnerSelection($projectId)
+    {
+        $project = self::first($projectId);
+        if ((int) $project->category_id === 20) {
+            $finishDate = new \DateTime($project->finishDate);
+            $chooseWinnerFinishDate = new \DateTime($project->chooseWinnerFinishDate);
+            $interval = $finishDate->diff($chooseWinnerFinishDate);
+            return (int) $interval->format('%a');
+        }
+        return 4;
+    }
+
+    /**
+     * Метод возвращает дату, когда у заказчика заканчивается время на выбор победителя
+     *
+     * @param $record
+     * @return \DateTime
+     */
+    public function getEndOfWinnerSelectionDateTime($record)
+    {
+        if ((int) $record->category_id === 20) {
+            $finishDateTimeFormattedString = $record->chooseWinnerFinishDate;
+        } else {
+            $finishDateTimeFormattedString = date('Y-m-d H:i:s', strtotime($record->finishDate) + 4 * DAY);
+        }
+        return new \DateTime($finishDateTimeFormattedString);
+    }
+
+    /**
+     * Метод определяет, допустимо ли отправлять смс клиенту с учетом сдвига в 4-5 часов.
+     * Запретные часы 23-07
+     *
+     * @param $record
+     * @return bool
+     */
+    public function isOkToSendSmsForFinishWinnerSelectionWarning($record)
+    {
+        $date = $record->getEndOfWinnerSelectionDateTime();
+        $hour = $date->format('G');
+        if (($hour >= 3) && ($hour < 11)) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Метод возвращяет минимальную награду на указанную дату с учётом скидки на выходных
+     *
+     * @param $categoryId
+     * @param \DateTime $dateTime
+     * @return int
+     */
+    public static function getMinimalAwardForCategoryForDate($categoryId, \DateTime $dateTime) {
+        $category = Category::first($categoryId);
+        $defaultLow = ((int) $dateTime->format('N') > 5) ? $category->discountPrice : $category->minAward;
+        return (int) $defaultLow;
+    }
+
+    /**
+     * Метод определяет, выше или равна ли награда минимальной на указанной день (с учётом возможных скидок по выходным)
+     *
+     * @param $record
+     * @param \DateTime $dateTime
+     * @return bool
+     */
+    public function isAwardValidForDate($record, \DateTime $dateTime) {
+        return $record->price >= self::getMinimalAwardForCategoryForDate($record->category_id, $dateTime);
     }
 }

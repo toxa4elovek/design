@@ -81,11 +81,43 @@ class SubscriptionPlan extends Pitch
                 'type' => 'plan-payment'
             )
         ))) {
+            $gatracking = new \Racecore\GATracking\GATracking('UA-9235854-5');
+            $gaId = $gatracking->getClientId();
             $data = array(
                 'user_id' => $userId,
                 'type' => 'plan-payment',
                 'category' => 100,
-                'title' => 'Оплата абонентского обслуживания'
+                'title' => 'Оплата абонентского обслуживания',
+                'ga_id' => $gaId
+            );
+            $payment = self::create($data);
+            $payment->save();
+        }
+        return $payment->id;
+    }
+
+    /**
+     * Метод возвращяет следующий зарезервированный айди для платежа за тарифный план для анонимных пользователей
+     *
+     * @param $googleAnalyticsId
+     * @param $promocode
+     * @return mixed
+     */
+    public static function getNextSubscriptionPlanIdByGAId($googleAnalyticsId, $promocode)
+    {
+        if (!$payment = self::first(array(
+            'conditions' => array(
+                'ga_id' => $googleAnalyticsId,
+                'billed' => 0,
+                'type' => 'plan-payment'
+            )
+        ))) {
+            $data = array(
+                'type' => 'plan-payment',
+                'category' => 100,
+                'title' => 'Оплата абонентского обслуживания',
+                'promocode' => $promocode,
+                'ga_id' => $googleAnalyticsId
             );
             $payment = self::create($data);
             $payment->save();
@@ -119,11 +151,14 @@ class SubscriptionPlan extends Pitch
                 'type' => 'fund-balance'
             )
         ))) {
+            $gatracking = new \Racecore\GATracking\GATracking('UA-9235854-5');
+            $gaId = $gatracking->getClientId();
             $data = array(
                 'user_id' => $userId,
                 'type' => 'fund-balance',
                 'category' => 99,
-                'title' => 'Пополнение счёта'
+                'title' => 'Пополнение счёта',
+                'ga_id' => $gaId
             );
             $payment = self::create($data);
             $payment->save();
@@ -199,7 +234,7 @@ class SubscriptionPlan extends Pitch
                 if (!$finalResult) {
                     $finalResult = $result;
                 }
-            }elseif(($paymentPlan->type === 'fund-balance') || ($paymentPlan->getPlanForPaymentForRecord() === 0)) {
+            } elseif (($paymentPlan->type === 'fund-balance') || ($paymentPlan->getPlanForPaymentForRecord() === 0)) {
                 $result = User::fillBalance($paymentPlan->user_id, (int) $paymentPlan->total);
                 Task::createNewTask($paymentPlan->id, 'emailFillBalanceSuccessNotification');
                 if (!$finalResult) {

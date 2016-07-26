@@ -12,12 +12,7 @@
  */
 use lithium\storage\Cache;
 use lithium\core\Libraries;
-use lithium\core\Environment;
-use lithium\action\Dispatcher;
-use lithium\storage\cache\adapter\Apc;
 use app\extensions\storage\Rcache;
-use lithium\data\Connections;
-use lithium\data\source\Database;
 
 if(Rcache::enabled()) {
 	Rcache::init();
@@ -33,10 +28,6 @@ if (PHP_SAPI === 'cli') {
  */
 $cachePath = Libraries::get(true, 'resources') . '/tmp/cache';
 
-if (!($apcEnabled = Apc::enabled()) && !is_writable($cachePath)) {
-	return;
-}
-
 /**
  * This configures the default cache, based on whether ot not APC user caching is enabled. If it is
  * not, file caching will be used. Most of this code is for getting you up and running only, and
@@ -44,22 +35,12 @@ if (!($apcEnabled = Apc::enabled()) && !is_writable($cachePath)) {
  */
 $default = array('adapter' => 'File', 'strategies' => array('Serializer'));
 
-if ($apcEnabled) {
-	$default = array('adapter' => 'Apc');
-}
 Cache::config(compact('default'));
 
-if ($apcEnabled) {
-    Cache::config(array(
-        'files' => array('adapter' => 'File', 'strategies' => array('Serializer')),
-        'default' => array('adapter' => 'Apc')
-    ));
-}else {
-    Cache::config(array(
-        'files' => array('adapter' => 'File', 'strategies' => array('Serializer')),
-        'default' => array('adapter' => 'File', 'strategies' => array('Serializer')),
-    ));
-}
+Cache::config(array(
+    'files' => array('adapter' => 'File', 'strategies' => array('Serializer')),
+    'default' => array('adapter' => 'File', 'strategies' => array('Serializer')),
+));
 
 /**
  * Caches paths for auto-loaded and service-located classes.

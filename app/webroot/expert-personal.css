@@ -89,7 +89,7 @@ a.back:hover {
 
 .expert-personal .about h2 {
 	/* Text style for "Альберт Федчен" */
-	width: 162px;
+	/*width: 162px;*/
 	height: 16px;
 	color: #648fa4;
 	font-family: RodeoC;

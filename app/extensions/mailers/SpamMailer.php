@@ -103,37 +103,31 @@ class SpamMailer extends \li3_mailer\extensions\Mailer {
     }
 
     public static function newaddon($data) {
-        $addonsCount = 0;
-        $addonsList = '<br />';
+        $addonsArray = [];
         if ($data['addon']->experts == 1) {
-            $addonsCount++;
-            $addonsList .= 'экспертное мнение<br />';
+            $addonsArray[] = 'экспертное мнение';
         }
         if ($data['addon']->prolong == 1) {
-            $addonsCount++;
-            $addonsList .= 'продление<br />';
+            $addonsArray[] = 'продление';
         }
         if ($data['addon']->brief == 1) {
-            $addonsCount++;
-            $addonsList .= 'заполнение брифа<br />';
+            $addonsArray[] = 'заполнение брифа';
         }
         if ($data['addon']->pinned == 1) {
-            $addonsCount++;
-            $addonsList .= 'прокачать бриф<br />';
+            $addonsArray[] = 'прокачать бриф';
         }
         if ($data['addon']->guaranteed == 1) {
-            $addonsCount++;
-            $addonsList .= 'гарантированный проект<br />';
+            $addonsArray[] = 'гарантированный проект';
         }
         if ($data['addon']->private == 1) {
-            $addonsCount++;
-            $addonsList .= 'скрытый проект<br />';
+            $addonsArray[] = 'скрытый проект';
         }
         $stringSubject = 'Новая доп. опция!';
-        $data['stringAddons'] = 'КУПЛЕНА ДОПОЛНИТЕЛЬНАЯ ОПЦИЯ:' . $addonsList;
-        if ($addonsCount > 1) {
+        $data['stringAddons'] = implode(', ', $addonsArray);
+        $data['stringAction'] = 'куплена дополнительная опция';
+        if (count($addonsArray) > 1) {
             $stringSubject = 'Новые доп. опции!';
-            $data['stringAddons'] = 'КУПЛЕНЫ ДОПОЛНИТЕЛЬНЫЕ ОПЦИИ:' . $addonsList;
+            $data['stringAction'] = 'куплены дополнительная опции';
         }
 
         return self::_mail(array(
@@ -169,6 +163,11 @@ class SpamMailer extends \li3_mailer\extensions\Mailer {
         ));
     }
 
+    /**
+     * @deprecated
+     * @param $data
+     * @return bool
+     */
     public static function choosewinner($data) {
         return self::_mail(array(
                     'use-smtp' => true,

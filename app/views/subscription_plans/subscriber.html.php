@@ -71,7 +71,7 @@
                 if($discount == 0) {
                     $value = $plan['price'];
                 }else {
-                    $value = $plan['price'] - $this->MoneyFormatter->applyDiscount($plan['price'], $discount);
+                    $value = $this->MoneyFormatter->applyDiscount($plan['price'], $discount);
                 }
                 ?>
                 <h4 style="line-height: 30px;">Тариф «<?=$plan['title']?>» <?=$this->MoneyFormatter->formatMoney($value, array('suffix' => ' р.-'))?>
@@ -94,6 +94,11 @@
             <span class="label-fund-balance">Пополнить личный счет, руб.</span>
             <section id="fund-balance-container"></section>
 
+            <?php if(!$this->user->isLoggedIn()):?>
+                <span class="label-fund-balance">Оставьте номер телефона</span>
+                <section id="phone-number-container"></section>
+            <?php endif?>
+
             <div>
                 <h4>Выберите способ оплаты</h4>
                 <div id="payments-container" class="payments-container"></div>
@@ -109,6 +114,7 @@
     'common/receipt/ReceiptTotal.js',
     'common/receipt/Receipt.js',
     'subscription_plans/FundBalanceInput.js',
+    'subscription_plans/PhoneNumberInput.js',
     'subscription_plans/paymentSystems/BasePaymentSystem.js',
     'subscription_plans/paymentSystems/PaymentSeparator.js',
     'subscription_plans/paymentSystems/PaymentPayture.js',

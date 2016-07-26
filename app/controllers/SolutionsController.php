@@ -65,7 +65,7 @@ class SolutionsController extends AppController
     public function select()
     {
         if ($solution = Solution::first(['conditions' => ['Solution.id' => $this->request->id], 'with' => ['Pitch']])) {
-            if (!$this->userHelper->isPitchOwner($solution->pitch->user_id) && !$this->userHelper->isAdmin()) {
+            if (!$this->userHelper->isPitchOwner($solution->pitch->user_id) && !$this->userHelper->isManagerOfProject($solution->pitch->user_id) && !$this->userHelper->isAdmin()) {
                 $result = false;
                 return compact('result');
             }
@@ -366,5 +366,21 @@ class SolutionsController extends AppController
             $solution->save();
         }
         return $this->request->data;
+    }
+
+    public function get_logosale_status() {
+        if(isset($this->request->query['solutionsIds'])) {
+            $response = [];
+            foreach($this->request->query['solutionsIds'] as $id) {
+                $solution = Solution::first([
+                    'conditions' => ['Solution.id' => (int) $id],
+                    'with' => ['Pitch']
+                ]);
+                $readyForSale = Solution::isReadyForLogosale($solution, $solution->pitch);
+                $response[] = ['id' => $id, 'ready' => $readyForSale];
+            }
+            return ['status' => 200, 'data' => $response];
+        }
+        return ['status' => 500, 'error' => 'No solution ids provided'];
     }
 }

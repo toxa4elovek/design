@@ -21,11 +21,17 @@
     function highlight($text, $search) {
 
         if($search != '') {
-            $words = explode(' ', $search);
+            $words = array_unique(explode(' ', $search));
             $splitted = explode(' ', $text);
             foreach($splitted as &$textword) {
+                $found = false;
                 foreach($words as $word) {
-                    $textword = preg_replace('@('.$word.')@', '<span style="color: #ff585d;text-underline: none;">$1</span>', $textword);
+                    if((!$found) & (preg_match('@(.?' . $word . '.?)@ui', $textword, $matches))) {
+                        //var_dump($word);
+                        //var_dump($textword);
+                        $textword = preg_replace('@('.$matches[0].')@ui', '<span style="color: #ff585d;text-underline: none;">$1</span>', $textword);
+                        $found = true;
+                    }
                 }
             }
             $text = implode(' ', $splitted);
@@ -45,7 +51,7 @@
                     </section>
                     <div id="content_help_seach" style="background: none repeat scroll 0 0 #F3F3F3;box-shadow: 3px 3px #D2D2D2;margin:20px 0;padding:20px 30px;">
                         <form action="/answers" method="get">
-                            <input type="text" name="search" value="<?=$search?>" class="text">
+                            <input type="text" name="search" value="<?=$originalSearch?>" class="text">
                             <input type="submit" class="button second" style="margin-left: 30px" value="Поиск">
                         </form>
                     </div>

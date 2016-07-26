@@ -1,7 +1,7 @@
 <?=$this->view()->render(array('element' => 'scripts/viewsolution_init'), array('pitch' => $pitch));
 if (
-(($pitch->status > 0) && ($this->user->isAllowedToComment()) && (($this->user->isPitchOwner($pitch->user_id)) || ($this->user->isExpert()) || ($this->user->isAdmin()))) ||
-(($pitch->status == 0) && ($pitch->published == 1) && ($this->user->isAllowedToComment()))
+(($pitch->status > 0) && ($this->user->isAllowedToComment()) && (($this->user->isPitchOwner($pitch->user_id)) || ($this->user->isManagerOfProject($pitch->id)) || ($this->user->isExpert()) || ($this->user->isAdmin()))) ||
+(($pitch->status == 0) && ($pitch->published == 1) && ((($this->user->isPitchOwner($pitch->user_id)) || ($this->user->isManagerOfProject($pitch->id)) || ($this->user->isExpert()) || ($this->user->isAdmin())) || ($this->user->getTotalSolutionNum())) && ($this->user->isAllowedToComment()))
 
 && ($this->user->getId())
 ):?>
@@ -17,7 +17,7 @@ if (isset($fromDesignersTab)) return false; ?>
             </div>
             <div class="separator pre-comment-separator" style="<?php echo ($initialSeparator) ? 'display: none; ' : ''; ?>width: 810px; margin-left: 30px;"></div>
             <div class="comment" id="comment-anchor">
-            <?php if (($this->user->isPitchOwner($pitch->user_id)) || ($this->user->isExpert()) || ($this->user->isAdmin())):
+            <?php if (($this->user->isPitchOwner($pitch->user_id)) || ($this->user->isManagerOfProject($pitch->id)) || ($this->user->isExpert()) || ($this->user->isAdmin())):
             $buttonText = 'Отправить';
                 $publicComment = 1; ?>
                 Оставьте комментарий всем участникам

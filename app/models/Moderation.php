@@ -72,6 +72,17 @@ class Moderation extends AppModel {
                             break;
                         case 3:
                             // Block User for project
+                            if($solution) {
+                                $solutions = Solution::all([
+                                    'conditions' => [
+                                        'Solution.pitch_id' => $solution->pitch_id,
+                                        'Solution.user_id' => $solution->user_id,
+                                    ]
+                                ]);
+                                foreach ($solutions as $solutionToDelete) {
+                                    $solutionToDelete->delete();
+                                }
+                            }
                             $mailerTemplate = 'removeandblockforproject';
                             break;
                         default:

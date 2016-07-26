@@ -2370,6 +2370,13 @@ table.all-pitches{
     border-right:#575864 1px solid;
     cursor:pointer;
 }
+.all-pitches thead td{
+    vertical-align:middle;
+    text-align:center;
+    height:38px !important;
+    border-right:#575864 1px solid;
+    cursor:pointer;
+}
 .all-pitches a{
     text-decoration:none;
     color:#999;
@@ -2413,6 +2420,9 @@ thead .pitches-name{
 }
 .pitch-end td a:hover {
     color: #666666;
+}
+.pitch-title a:hover {
+    color: #fff !important;
 }
 .close-and-expert .icons{
     /*background:#e0e0e0 url(/img/icon-3.png) no-repeat 1px 5px;*/
@@ -2938,6 +2948,7 @@ ul.social li#rss {
 #after-fb-popup .button.third {
     width: 220px;
 }
+#popup-brief-saved .gotest-close,
 #date-confirmation .gotest-close,
 #gotest-popup .gotest-close,
 #gotest-popup_gallery .gotest-close,
@@ -2954,6 +2965,7 @@ ul.social li#rss {
     background-position: 0 -15px;
     cursor: pointer;
 }
+#popup-brief-saved .gotest-close,
 #date-confirmation .gotest-close:hover,
 #gotest-popup .gotest-close:hover,
 #gotest-popup_gallery .gotest-close:hover,
@@ -3034,7 +3046,12 @@ ul.social li#rss {
 .final-step-nav .button {
     margin: 0 5px;
 }
-#date-confirmation, #popup-need-agree-tos, #popup-request-sign, #popup-decline-warning {
+#date-confirmation,
+#popup-need-agree-tos,
+#popup-request-sign,
+#popup-decline-warning,
+#popup-brief-saved
+{
     display: none;
     position: relative;
     width: 480px;
@@ -3043,7 +3060,7 @@ ul.social li#rss {
     background-color: #e1e1e1;
     text-align: center;
 }
-#date-confirmation:after, #popup-need-agree-tos:after, #popup-request-sign:after, #popup-decline-warning:after {
+#popup-brief-saved:after, #date-confirmation:after, #popup-need-agree-tos:after, #popup-request-sign:after, #popup-decline-warning:after {
     content: "";
     display: block;
     position: absolute;
@@ -3053,7 +3070,7 @@ ul.social li#rss {
     height: 19px;
     background: url(/img/popup-submit-bottom.png) 0 100% no-repeat;
 }
-#date-confirmation .reqbutton:hover, #popup-need-agree-tos .reqbutton:hover, #popup-request-sign .reqbutton:hover, #popup-decline-warning .reqbutton:hover {
+#popup-brief-saved .reqbutton:hover, #date-confirmation .reqbutton:hover, #popup-need-agree-tos .reqbutton:hover, #popup-request-sign .reqbutton:hover, #popup-decline-warning .reqbutton:hover {
     color: #fff;
 }
 #date-confirmation p, #popup-need-agree-tos p, #popup-request-sign p, #popup-decline-warning p {
@@ -3113,6 +3130,19 @@ ul.social li#rss {
     text-align: center;
     text-shadow: 0 1px 0 rgb(240, 240, 240);
 }
+#popup-brief-saved h2 {
+    font-family: RodeoC, serif;
+    font-size: 22px;
+    font-weight: normal;
+    line-height: 32px;
+    color: #666;
+    text-align: center;
+    margin: 0 auto 0 auto;
+    text-shadow: 0 1px 0 rgb(240, 240, 240);
+    padding-bottom: 40px;
+    padding-top: 20px;
+
+}
 #project-delete .project-delete-close {
     position: absolute;
     top: 0;
@@ -3125,6 +3155,9 @@ ul.social li#rss {
     background-repeat: none;
     background-position: 0 -15px;
     cursor: pointer;
+}
+#popup-brief-saved {
+    padding-top: 20px;padding-left: 20px;padding-right: 20px;height: 190px;width: 440px;
 }
 #project-delete .project-delete-close:hover {
     background-position: 0 0;
@@ -4104,7 +4137,7 @@ div.no-result p {
     color:#999999;
     font:11px Arial;
 }
-.odd{background:#454650;height: 70px;}
+.odd{background:#454650 !important;height: 70px;}
 .event{height: 70px;}
 
 .spec_table tr:hover{background:#54555d}

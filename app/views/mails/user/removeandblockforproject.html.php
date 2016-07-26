@@ -15,7 +15,7 @@
     <tr><td width="5"></td><td valign="top"></td>
         <td>
             <span style="color: #444444; line-height: 17px; font-size: 12px; font-family: Arial, sans-serif;">
-                Здравствуйте <?=$user['first_name']?>! Мы блокировали вашу возможность участвовать в проекте «<a href="https://www.godesigner.ru/pitches/view/<?=$pitch->id?>" target="_blank"><?= $pitch->title?></a>» и удалили решени #<?= $solution_num ?> из-за несоблюдения правил платформы:
+                Здравствуйте <?=$user['first_name']?>! Мы блокировали вашу возможность участвовать в проекте «<a href="https://www.godesigner.ru/pitches/view/<?=$pitch->id?>" target="_blank"><?= $pitch->title?></a>» и удалили решение #<?= $solution_num ?> из-за несоблюдения правил платформы:
                 <a href="https://www.godesigner.ru/answers/view/37" target="_blank">https://www.godesigner.ru/answers/view/37</a><br><br>
 
                 <?php if (!empty($explanation)):?>

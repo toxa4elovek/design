@@ -7,7 +7,7 @@ $details = unserialize($pitch->specifics);
 
     <?php if(!empty($details['site-units'])):?>
     <h2 class="blueheading">Необходимые единицы фирменного стиля</h2>
-    <p class="regular"><?php echo nl2br($details['site-units'])?></p>
+    <p class="regular"><?php echo nl2br($this->brief->insertHtmlLinkInText($details['site-units']))?></p>
     <?php endif;?>
 
     <h2 class="blueheading">Целевая аудитория</h2>

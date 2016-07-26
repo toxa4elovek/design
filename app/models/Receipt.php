@@ -69,14 +69,22 @@ class Receipt extends AppModel
                 );
             }
         }
-        self::$fee = self::findOutFeeModifier($data);
-        $commission = self::__getCommissionWithEffectOfPromocodes($data);
-        $commission = self::__applyReferalDiscrountEffects($data, $commission);
-        $receiptData[] = array(
-            'pitch_id' => $projectId,
-            'name' => self::$dict['fee'] . ' ' . str_replace('.', ',', self::$fee * 100 . '%'),
-            'value' => $commission
-        );
+        if($data['commonPitchData']['category_id'] != 20) {
+            self::$fee = self::findOutFeeModifier($data);
+            $commission = self::__getCommissionWithEffectOfPromocodes($data);
+            $commission = self::__applyReferalDiscrountEffects($data, $commission);
+            $receiptData[] = array(
+                'pitch_id' => $projectId,
+                'name' => self::$dict['fee'] . ' ' . str_replace('.', ',', self::$fee * 100 . '%'),
+                'value' => $commission
+            );
+        }else{
+            $receiptData[] = array(
+                'pitch_id' => $projectId,
+                'name' => self::$dict['fee'] . ' 0%',
+                'value' => 0
+            );
+        }
         self::updateOrCreateReceiptForProject($projectId, $receiptData);
         return (int) $projectId;
     }

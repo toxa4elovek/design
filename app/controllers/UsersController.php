@@ -9,9 +9,14 @@ use app\extensions\smsfeedback\SmsUslugi;
 use app\extensions\social\TwitterAPI;
 use app\models\Addon;
 use app\models\Bill;
+use app\models\Lead;
 use app\models\Logreferal;
+use app\models\Manager;
+use app\models\Paymaster;
+use app\models\Payment;
 use app\models\SubscriptionPlan;
 use app\models\TextMessage;
+use app\models\Url;
 use \app\models\User;
 use \app\models\Sendemail;
 use \app\models\Category;
@@ -35,7 +40,6 @@ use \app\extensions\mailers\ContactMailer;
 use lithium\action\Response;
 use \lithium\storage\Session;
 use \lithium\security\Auth;
-use \li3_flash_message\extensions\storage\FlashMessage;
 use \lithium\util\String;
 use \lithium\analysis\Logger;
 use app\extensions\storage\Rcache;
@@ -212,6 +216,21 @@ class UsersController extends \app\controllers\AppController
         }
     }
 
+    /**
+     * Метод показывает страницу реферальной программы 10000 рублей за абонента,
+     * при необходимости, создает реферальный токен и сокращеннуюю ссылку
+     */
+    public function subscribers_referal()
+    {
+        if (empty($this->userRecord->subscriber_referal_token)) {
+            $this->userRecord->subscriber_referal_token = User::generateSubscriberReferalToken();
+            $this->userRecord->save(null, array('validate' => false));
+        }
+        $fullUrl = 'https://godesigner.ru/pages/subscribe?sref=' . $this->userRecord->subscriber_referal_token;
+        $shortUrl = 'https://godesigner.ru/urls/' . Url::getShortUrlFor($fullUrl);
+        return compact('shortUrl');
+    }
+
     public function deletePhone()
     {
         if ($this->request->is('json') && (Session::read('user.id') > 0) && ($user = User::first((int) Session::read('user.id')))) {
@@ -264,12 +283,18 @@ class UsersController extends \app\controllers\AppController
         }
         $multiWinnerOriginals = array();
         foreach ($unfilteredSolutions as $solution) {
-            if ($solution->multiwinner != 0) {
+            if (($solution->multiwinner != 0) && ($solution->awarded != 0)) {
                 $multiWinnerOriginals[] = $solution->multiwinner;
             }
         }
         $filteredSolutions = array();
         foreach ($unfilteredSolutions as $solution) {
+            if (($solution->pitch->multiwinner != 0) && ($solution->pitch->awarded != $solution->id)) {
+                continue;
+            }
+            if (($solution->pitch->multiwinner != 0) && ($solution->pitch->billed == 0)) {
+                continue;
+            }
             if (!in_array($solution->id, $multiWinnerOriginals)) {
                 $solution->tags = Solution::getTagsArrayForSolution($solution);
                 $filteredSolutions[] = $solution;
@@ -376,9 +401,23 @@ class UsersController extends \app\controllers\AppController
 
     public function step2()
     {
-        \lithium\net\http\Media::type('json', array('text/html'));
-        if (($solution = Solution::first(array('conditions' => array('Solution.id' => $this->request->id), 'with' => array('Pitch', 'User')))) && ($solution->nominated == 1 || $solution->awarded == 1)) {
-            if ((!$this->userHelper->isSolutionAuthor($solution->user_id)) && (!$this->userHelper->isAdmin()) && (!$this->userHelper->isPitchOwner($solution->pitch->user_id))) {
+        \lithium\net\http\Media::type('json', ['text/html']);
+        if (($solution = Solution::first([
+            'conditions' => ['Solution.id' => $this->request->id],
+                'with' => ['Pitch', 'User']]))
+            && ($solution->nominated == 1 || $solution->awarded == 1)) {
+
+            $canManageClosing = false;
+            if (((int) $solution->pitch->category_id === 20)
+                && (Manager::getTeamLeaderOfManager($this->userHelper->getId()) === (int) $solution->pitch->user_id)
+                && (Manager::isManagerAssignedToProject((int) $this->userHelper->getId(), (int) $solution->pitch->id))) {
+                $canManageClosing = true;
+            }
+
+            if ((!$this->userHelper->isSolutionAuthor($solution->user_id))
+                && (!$this->userHelper->isAdmin())
+                && (!$this->userHelper->isPitchOwner($solution->pitch->user_id))
+                && (!$canManageClosing)) {
                 return $this->redirect('Users::feed');
             }
             $solution->pitch->category = Category::first($solution->pitch->category_id);
@@ -393,7 +432,7 @@ class UsersController extends \app\controllers\AppController
                 $type = 'client';
                 $messageTo = $designer = User::first($solution->user_id);
             }
-            if ((Session::read('user.isAdmin') == 1) || User::checkRole('admin')) {
+            if ($this->userHelper->isAdmin()) {
                 $type = 'admin';
                 $messageTo = User::first($solution->pitch->user_id);
             }
@@ -460,8 +499,12 @@ class UsersController extends \app\controllers\AppController
             );
             if (0 == $commentCount) {
                 $timelimit = $solution->pitch->category->default_timelimit;
-                if(($solution->pitch->category_id == 20) && ($timelimit < 5)) {
-                    $timelimit = 5;
+                if ($solution->pitch->category_id == 20) {
+                    $diff = ceil((strtotime($solution->pitch->finishDate) - strtotime($solution->pitch->started)) / DAY);
+                    $timelimit = $diff;
+                    if ($timelimit < 5) {
+                        $timelimit = 5;
+                    }
                 }
                 $text = sprintf('Вся переписка до запроса исходников должна быть проведена в рамках этого кабинета. Мы не допускаем обмена контактами до момента одобрения исходников, т.о. в спорной ситуации мы сможем разрешить конфликт. Мы убедительно просим вас соблюдать правила платформы. Срок завершительного этапа %d дней. Предупреждайте, если правки или комментарии займут более 24 часов.', $timelimit);
                 $date = new \DateTime();
@@ -494,6 +537,7 @@ class UsersController extends \app\controllers\AppController
                     User::sendSpamWincomment($comment, $client);
                     if (!$client->hasActiveSubscriptionDiscountForRecord($client)) {
                         User::setSubscriptionDiscount($client->id, 10, date('Y-m-d H:i:s', time() + (DAY * 7)));
+                        Lead::resetLeadForUser($client->id);
                         if (!SubscriptionPlan::hasSubscriptionPlanDraft($client->id)) {
                             $plan = SubscriptionPlan::getPlan(1);
                             $paymentId = SubscriptionPlan::getNextSubscriptionPlanId($this->userHelper->getId());
@@ -591,6 +635,7 @@ class UsersController extends \app\controllers\AppController
                     User::sendSpamWincomment($comment, $client);
                     if (!$client->hasActiveSubscriptionDiscountForRecord($client)) {
                         User::setSubscriptionDiscount($client->id, 10, date('Y-m-d H:i:s', time() + (DAY * 7)));
+                        Lead::resetLeadForUser($client->id);
                         if (!SubscriptionPlan::hasSubscriptionPlanDraft($client->id)) {
                             $plan = SubscriptionPlan::getPlan(1);
                             $paymentId = SubscriptionPlan::getNextSubscriptionPlanId($this->userHelper->getId());
@@ -620,9 +665,20 @@ class UsersController extends \app\controllers\AppController
                 return $this->redirect(array('controller' => 'users', 'action' => 'step3', 'id' => $solution->id));
             }
 
-            if ((Session::read('user.id') != $solution->user_id) && (Session::read('user.isAdmin') != 1) && (!User::checkRole('admin')) && (Session::read('user.id') != $solution->pitch->user_id)) {
+            $canManageClosing = false;
+            if (((int) $solution->pitch->category_id === 20)
+                && (Manager::getTeamLeaderOfManager($this->userHelper->getId()) === (int) $solution->pitch->user_id)
+                && (Manager::isManagerAssignedToProject((int) $this->userHelper->getId(), (int) $solution->pitch->id))) {
+                $canManageClosing = true;
+            }
+
+            if ((!$this->userHelper->isSolutionAuthor($solution->user_id))
+                && (!$this->userHelper->isAdmin())
+                && (!$this->userHelper->isPitchOwner($solution->pitch->user_id))
+                && (!$canManageClosing)) {
                 return $this->redirect('Users::feed');
             }
+
             if ($solution->step < 3) {
                 return $this->redirect(array('controller' => 'users', 'action' => 'step2', 'id' => $this->request->id));
             }
@@ -777,9 +833,20 @@ class UsersController extends \app\controllers\AppController
                 return $this->redirect(array('controller' => 'users', 'action' => 'step4', 'id' => $solution->id));
             }
 
-            if (!$this->userHelper->isPitchOwner($solution->pitch->user_id) && !$this->userHelper->isAdmin() && !$this->userHelper->isSolutionAuthor($solution->user_id)) {
+            $canManageClosing = false;
+            if (((int) $solution->pitch->category_id === 20)
+                && (Manager::getTeamLeaderOfManager($this->userHelper->getId()) === (int) $solution->pitch->user_id)
+                && (Manager::isManagerAssignedToProject((int) $this->userHelper->getId(), (int) $solution->pitch->id))) {
+                $canManageClosing = true;
+            }
+
+            if ((!$this->userHelper->isSolutionAuthor($solution->user_id))
+                && (!$this->userHelper->isAdmin())
+                && (!$this->userHelper->isPitchOwner($solution->pitch->user_id))
+                && (!$canManageClosing)) {
                 return $this->redirect('Users::feed');
             }
+
             if ($solution->step < 4) {
                 return $this->redirect(array('controller' => 'users', 'action' => 'step3', 'id' => $this->request->id));
             }
@@ -986,6 +1053,7 @@ class UsersController extends \app\controllers\AppController
                                 SubscriptionPlan::setFundBalanceForPayment($paymentId, 0);
                             }
                             User::setSubscriptionDiscount($userToLog->id, 10, date('Y-m-d H:i:s', time() + (MONTH)));
+                            Lead::resetLeadForUser($userToLog->id);
                             $userToLog->subscription_discount = 10;
                             $userToLog->subscription_discount_end_date = User::getSubscriptionDiscountEndTime($userToLog->id);
                         }
@@ -1236,7 +1304,7 @@ class UsersController extends \app\controllers\AppController
     public function banned()
     {
         $shortTerm = false;
-        if($this->request->query['temp']) {
+        if ($this->request->query['temp']) {
             $shortTerm = true;
         }
         return compact('shortTerm');
@@ -1468,6 +1536,20 @@ class UsersController extends \app\controllers\AppController
                     'city' => $unserialized['city'],
                     'profession' => $unserialized['profession'],
                     'about' => $unserialized['about'],
+                    'accept_sms' => $unserialized['accept_sms']
+                ));
+            }
+            if (isset($this->request->data['accept_sms'])) {
+                $shortUpdate = true;
+                $unserialized = unserialize($user->userdata);
+                $smsValue = (int) $this->request->data['accept_sms'];
+                $smsValue = (bool) $smsValue;
+                $user->userdata = serialize(array(
+                    'birthdate' => $unserialized['birthdate'],
+                    'city' => $unserialized['city'],
+                    'profession' => $unserialized['profession'],
+                    'about' => $unserialized['about'],
+                    'accept_sms' => $smsValue
                 ));
             }
             if (isset($this->request->data['city'])) {
@@ -1478,6 +1560,7 @@ class UsersController extends \app\controllers\AppController
                     'city' => $this->request->data['city'],
                     'profession' => $unserialized['profession'],
                     'about' => $unserialized['about'],
+                    'accept_sms' => $unserialized['accept_sms']
                 ));
             }
             if ($shortUpdate) {
@@ -1526,9 +1609,9 @@ class UsersController extends \app\controllers\AppController
                 $phones = array($user->phone);
                 $smsService = new SmsUslugi();
                 $respond = $smsService->send($params, $phones);
-                if(!isset($respond['smsid'])) {
+                if (!isset($respond['smsid'])) {
                     $smsId = 0;
-                }else {
+                } else {
                     $smsId = $respond['smsid'];
                 }
                 $data = [
@@ -1701,7 +1784,7 @@ class UsersController extends \app\controllers\AppController
                 $solution->tags = Solution::getTagsArrayForSolution($solution);
             }
             $isClient = false;
-            $userPitches = Pitch::all(array('conditions' => array('billed' => 1, 'user_id' => $user->id)));
+            $userPitches = Pitch::all(array('order' => ['started' => 'desc'],  'with' => ['Category'], 'conditions' => array('OR' => [['type' => 'company_project'], ['type' => '']], 'billed' => 1, 'published' => 1, 'user_id' => $user->id, 'blank' => 0, 'multiwinner' => 0)));
             if (count($userPitches) > 0) {
                 $isClient = true;
                 $ids = array();
@@ -1715,7 +1798,8 @@ class UsersController extends \app\controllers\AppController
                     'with' => array('Pitch')
                 ));
             }
-            return compact('user', 'pitchCount', 'averageGrade', 'totalUserFavorite', 'totalFavoriteMe', 'totalViews', 'totalLikes', 'awardedSolutionNum', 'totalSolutionNum', 'selectedSolutions', 'isClient');
+            $userPitches = $userPitches->data();
+            return compact('user', 'pitchCount', 'averageGrade', 'totalUserFavorite', 'totalFavoriteMe', 'totalViews', 'totalLikes', 'awardedSolutionNum', 'totalSolutionNum', 'selectedSolutions', 'isClient', 'userPitches');
         }
     }
 
@@ -1751,7 +1835,7 @@ class UsersController extends \app\controllers\AppController
                 $moderations = Moderation::all(array('conditions' => array('model_user' => $user->id)));
             }
             $isClient = false;
-            $userPitches = Pitch::all(array('conditions' => array('billed' => 1, 'user_id' => $user->id)));
+            $userPitches = Pitch::all(array('order' => ['started' => 'desc'],  'with' => ['Category'], 'conditions' => array('OR' => [['type' => 'company_project'], ['type' => '']], 'billed' => 1, 'published' => 1, 'user_id' => $user->id, 'blank' => 0, 'multiwinner' => 0)));
             if (count($userPitches) > 0) {
                 $isClient = true;
                 $ids = array();
@@ -1765,7 +1849,8 @@ class UsersController extends \app\controllers\AppController
                             'with' => array('Pitch')
                 ));
             }
-            return compact('user', 'pitchCount', 'totalUserFavorite', 'isFav', 'totalFavoriteMe', 'averageGrade', 'totalViews', 'totalLikes', 'awardedSolutionNum', 'totalSolutionNum', 'selectedSolutions', 'isClient', 'moderations');
+            $userPitches = $userPitches->data();
+            return compact('user', 'pitchCount', 'totalUserFavorite', 'isFav', 'totalFavoriteMe', 'averageGrade', 'totalViews', 'totalLikes', 'awardedSolutionNum', 'totalSolutionNum', 'selectedSolutions', 'isClient', 'moderations', 'userPitches');
         }
         throw new Exception('Public:Такого пользователя не существует.', 404);
     }
@@ -2103,6 +2188,7 @@ class UsersController extends \app\controllers\AppController
             $idsForAddons[] = $row->id;
             $data = $row->data();
             $data['hasBill'] = false;
+            $data['timestamp'] = strtotime($data['billed_date']);
             if ($row->type == 'plan-payment') {
                 $amount = SubscriptionPlan::extractFundBalanceAmount($row->id);
                 if ($amount > 0) {
@@ -2117,11 +2203,19 @@ class UsersController extends \app\controllers\AppController
                 'billed' => 1
             ]]))) {
                 $reducePriceAmount = 0;
+                $addonTotal = 0;
+                $instantOptions = 0;
                 foreach ($addons as $addon) {
+                    $addonTotal += (int) $addon->total;
                     if ($addon->prolong == 1) {
-                        $reducePriceAmount = $addon->{'prolong-days'} * 1000;
+                        $reducePriceAmount += $addon->{'prolong-days'} * 1000;
                     }
                 }
+                if((!in_array('pinproject', $plan['free'])) && ($data['pinned'])) {
+                    $instantOptions += 1000;
+                }
+                $data['addonTotal'] = $addonTotal;
+                $data['finalPrice'] = (int) $data['price'] + $addonTotal + $instantOptions;
                 $data['price'] -= $reducePriceAmount;
             }
             if ($data['expert'] == 1) {
@@ -2158,53 +2252,64 @@ class UsersController extends \app\controllers\AppController
                 $data['formattedMoney'] = '+ ' . $moneyFormatter->formatMoney($data['total'], array('suffix' => ''));
             }
             $payments[] = $data;
+            if (($data['type'] === 'company_project') && ($data['status'] == 2) && ($data['awarded'] == 0)) {
+                $formattedRefund = $moneyFormatter->formatMoney((int) $data['finalPrice'] - (int) $data['extraFunds'], array('suffix' => ''));
+                $refundedObject = [
+                    "id" => $data['id'],
+                    "type" => "refund",
+                    "total" => $data['finalPrice'] - (int) $data['extraFunds'],
+                    "formattedMoney" => "+ $formattedRefund",
+                    "formattedDate" => date('d.m.Y', strtotime($data['finishDate'])),
+                    "timestamp" => strtotime($data['finishDate']),
+                    "projectTitle" => $data['title']
+                ];
+                $payments[] = $refundedObject;
+            }
         }
         $addons = Addon::all(['conditions' => [
             'Addon.pitch_id' => $idsForAddons,
-            'billed' => 1
-        ]]);
+            'Addon.billed' => 1
+        ], 'with' => ['Pitch']]);
         $numInflector = new NumInflector();
-        foreach($addons as $addon) {
+        foreach ($addons as $addon) {
+            if ($cardData = Paymaster::first(['conditions' => ['LMI_PAYMENT_NO' => $addon->id]])) {
+                continue;
+            }
+            if ($cardData = Payment::first(['conditions' => ['OrderId' => $addon->payture_id, 'Success' => 'True']])) {
+                continue;
+            }
             $data = $addon->data();
             $data['type'] = 'addon';
-            $data['formattedDate'] = date('d.m.Y', strtotime($row->created));
+            $data['timestamp'] = strtotime($addon->created);
+            $data['formattedDate'] = date('d.m.Y', strtotime($addon->created));
             $data['formattedMoney'] = '- ' . $moneyFormatter->formatMoney($data['total'], array('suffix' => ''));
-            $data['title'] = 'Оплата дополнительной опции';
+            $data['title'] = 'Оплата доп. опции';
             $title = [];
-            if($data['experts']) {
+            if ($data['experts']) {
                 $title[] = 'экспертное мнение';
             }
-            if($data['prolong']) {
+            if ($data['prolong']) {
                 $days = $numInflector->formatString($data['prolong-days'], array('string' => array('first' => 'день', 'second' => 'дня', 'third' => 'дней')));
                 $title[] = 'продление ' . $data['prolong-days'] . ' ' . $days  ;
             }
-            if($data['brief']) {
+            if ($data['brief']) {
                 $title[] = 'заполнение брифа';
             }
-            if($data['guaranteed']) {
+            if ($data['guaranteed']) {
                 $title[] = 'гарантированный проект';
             }
-            if($data['pinned']) {
+            if ($data['pinned']) {
                 $title[] = 'прокачать бриф';
             }
-            if($data['private']) {
+            if ($data['private']) {
                 $title[] = 'скрыть проект';
             }
-            $data['title'] .= " \n\r(" . implode(', ', $title) . ')';
+            $data['title'] .= " \n\r(" . implode(', ', $title) . ') в проекте «' . $data['pitch']['title'] . '»';
             $payments[] = $data;
         }
-
-        usort($payments, function($a, $b) {
-            if($a['type'] === 'addon') {
-                $firstDate = strtotime($a['created']);
-            }else {
-                $firstDate = strtotime($a['started']);
-            }
-            if($b['type'] === 'addon') {
-                $secondDate = strtotime($b['created']);
-            }else {
-                $secondDate = strtotime($b['started']);
-            }
+        usort($payments, function ($a, $b) {
+            $firstDate = $a['timestamp'];
+            $secondDate = $b['timestamp'];
             return ($firstDate > $secondDate) ? -1 : 1;
         });
         if ($this->request->is('json')) {

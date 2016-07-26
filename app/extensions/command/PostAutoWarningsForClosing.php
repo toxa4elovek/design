@@ -4,6 +4,8 @@ namespace app\extensions\command;
 
 use app\extensions\storage\Rcache;
 use app\models\Pitch;
+use app\models\Solution;
+use app\models\User;
 use app\models\Wincomment;
 
 class PostAutoWarningsForClosing extends CronJob {
@@ -32,7 +34,13 @@ class PostAutoWarningsForClosing extends CronJob {
                 'step' => $step,
                 'text' => Pitch::getAutoClosingWarningComment($project->id)
                 );
-                Wincomment::createComment($data);
+                $data = Wincomment::createComment($data);
+                $winComment = Wincomment::first($data['id']);
+                $solution = Solution::first($project->awarded);
+                $recipient = User::first($solution->user_id);
+                User::sendSpamWincomment($winComment, $recipient);
+                $recipient = User::first($project->user_id);
+                User::sendSpamWincomment($winComment, $recipient);
             }
         }
         $this->out('Command finished job.');

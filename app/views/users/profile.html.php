@@ -4,6 +4,9 @@
     <?php
     $userdata = unserialize($user->userdata);
     $company = unserialize($user->companydata);
+    if(!isset($userdata['accept_sms'])) {
+        $userdata['accept_sms'] = false;
+    }
     ?>
     <div class="middle">
         <div class="main">
@@ -174,6 +177,7 @@
                                             <input style="margin-top:0; margin-bottom: 2px;" type="checkbox" name="email_newcomments" <?php if($user->email_newcomments): echo 'checked'; endif;?>><?= $email_newcomments?>
                                         </label>
                                     </li>
+                                    <li data-value="<?php echo $smsStatus = ($userdata['accept_sms']) ? 'true' : 'false'; ?>" id="sms-notifications-status"></li>
                                 </ul>
                                 <ul>
                                     <li>
@@ -195,6 +199,7 @@
                                 </ul>
                                 <div class="clr"></div>
                             </div>
+                            <input type="hidden" name="notification-settings" value="1" />
                             <input type="submit" id="save-notifications" class="button" value="Сохранить настройки уведомлений" />
                         </form>
                     </section>
@@ -284,14 +289,13 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <input type="radio" disabled data-pay="wmr" class="rb1" name="cashintype" <?php if($paydata['cashintype'] == 'wmr') echo 'checked' ?> value="wmr">
+                                    <input type="radio" data-pay="wmr" class="rb1" name="cashintype" <?php if($paydata['cashintype'] == 'wmr') echo 'checked' ?> value="wmr">
                                 </td>
                                 <td class="s3_h">
                                     <img alt="Webmoney WMR" src="/img/wmr.png">
                                 </td>
                                 <td class="s3_text" style="margin-top: 14px;">
-                                    Выплата на WMR временно недоступна
-                                    <!--Получить вознаграждение в wmr (webmoney.ru)-->
+                                    Получить вознаграждение в wmr (webmoney.ru)
                                 </td>
                                 <td></td>
                             </tr>
@@ -326,13 +330,14 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <input type="radio" data-pay="yandex" class="rb1" name="cashintype" <?php if($paydata['cashintype'] == 'yandex') echo 'checked' ?> value="yandex">
+                                    <input type="radio" disabled data-pay="yandex" class="rb1" name="cashintype" <?php if($paydata['cashintype'] == 'yandex') echo 'checked' ?> value="yandex">
                                 </td>
                                 <td class="s3_h">
                                     <img alt="Yandex Деньги" style="width:120px; margin-left: 10px;" src="/img/yd.png">
                                 </td>
                                 <td class="s3_text" style="margin-top: 14px;">
-                                    Получить вознаграждение в Yandex деньгах (<a href="https://money.yandex.ru/doc.xml?id=526543" target="_blank">только на идентифицированные кошельки</a>)
+                                    Выплата на Yandex-деньги временно недоступна
+                                    <!-- Получить вознаграждение в Yandex деньгах (<a href="https://money.yandex.ru/doc.xml?id=526543" target="_blank">только на идентифицированные кошельки</a>) -->
                                 </td>
                                 <td></td>
                             </tr>
@@ -421,6 +426,7 @@
     '/js/jquery.tooltip.js',
     '/js/jquery-plugins/jquery.scrollto.min.js',
     '/js/users/office/PushNotificationsStatus.js',
+    '/js/users/office/SmsNotificationsStatus.js',
     '/js/users/office/ProfRadioList.js',
     '/js/users/office/ProfSelectBox.js',
     'users/office.js'), array('inline' => false))?>
