@@ -2216,7 +2216,7 @@ class UsersController extends \app\controllers\AppController
                     $instantOptions += 1000;
                 }
                 $data['addonTotal'] = $addonTotal;
-                $data['finalPrice'] = (int) $data['price'] + $addonTotal + $instantOptions;
+                $data['finalPrice'] = (int) $data['price'] + $addonTotal + $instantOptions - $reducePriceAmount;
                 $data['price'] -= $reducePriceAmount;
             }
             if ($data['expert'] == 1) {
