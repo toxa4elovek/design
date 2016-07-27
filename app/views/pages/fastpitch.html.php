@@ -61,27 +61,27 @@
                         </div>
 
                         <div class="fastpitch-step3">
-                            <h2 class="fastpitch-secondary-header">Оплатите 19 600 рублей,<br> остальное мы сделаем за вас!</h2>
+                            <h2 class="fastpitch-secondary-header">Оплатите 19 800 рублей,<br> остальное мы сделаем за вас!</h2>
                             <p>Мы подобрали для вас самый популярный набор опций, чтобы обеспечить пул хороших дизайнеров и&nbsp;подарить незабываемый опыт работы :</p>
-                            <a class="fastpitch button third" style="margin-top: 30px;color:#fff;cursor:pointer;">Оплатить 19 600 р.  и запустить проект</a>
+                            <a class="fastpitch button third" style="margin-top: 30px;color:#fff;cursor:pointer;">Оплатить 19 800 р.  и запустить проект</a>
                             <table>
                                 <tr height="22"><td width="160">гонорар дизайнеру</td><td>14000</td></tr>
                                 <tr height="22"><td><a class="tablelink" href="https://www.godesigner.ru/answers/view/79" target="_blank">гарантировать проект</a></td><td>950</td></tr>
                                 <tr height="22"><td><a class="tablelink" href="https://www.godesigner.ru/answers/view/68" target="_blank">заполнить бриф</a></td><td>2750</td></tr>
                                 <tr height="22"><td><a class="tablelink" href="https://www.godesigner.ru/answers/view/67" target="_blank">прокачать проект</a></td><td>1000</td></tr>
                                 <tr height="22"><td><a class="tablelink" href="https://www.godesigner.ru/answers/view/66" target="_blank">экспертное мнение</a></td><td>1500</td></tr>
-                                <tr height="22"><td>сбор сервиса</td><td>24,5%</td></tr>
-                                <tr height="22"><td>скидка</td><td><span class="table-left-price">-4030</span></td></tr>
+                                <tr height="22"><td>сбор сервиса</td><td>29,5%</td></tr>
+                                <tr height="22"><td>скидка</td><td><span class="table-left-price">-4530</span></td></tr>
                                 <tr height="31"><td colspan="2"></td></tr>
-                                <tr><td class="result">ИТОГО:</td><td class="result"><span class="table-left">19600р</span></td></tr>
+                                <tr><td class="result">ИТОГО:</td><td class="result"><span class="table-left">19800р</span></td></tr>
                             </table>
                         </div>
 
                         <div class="fastpitch-line"></div>
 
                         <div class="fastpitch-bottom">
-                            <h1 class="fastpitch-main-header second-part" style="margin-left: 0; margin-top: 20px; margin-bottom: 35px;">Что включено в 19600 р.-</h1>
-                            <p style="width: 640px; color: #666;">С нашим предложением вы экономите не только 2 часа на заполнение брифа,<br/>но и деньги.  Стоимость кейса «Логотип в один клик» — 19600 рублей, что на 4030  дешевле, как если бы вы создавали аналогичный проект обычным способом. </p>
+                            <h1 class="fastpitch-main-header second-part" style="margin-left: 0; margin-top: 20px; margin-bottom: 35px;">Что включено в 19800 р.-</h1>
+                            <p style="width: 640px; color: #666;">С нашим предложением вы экономите не только 2 часа на заполнение брифа,<br/>но и деньги.  Стоимость кейса «Логотип в один клик» — 19800 рублей, что на 4530  дешевле, как если бы вы создавали аналогичный проект обычным способом. </p>
                             <a class="fastpitch button third" style="margin-left: -2px;margin-top: 30px;color:#fff;cursor:pointer;">запустить проект на логотип в один клик</a>
                             <ul>
                                 <li>гонорар дизайнеру 14 000 р.</li>
@@ -89,8 +89,8 @@
                                 <li><a class="" href="https://www.godesigner.ru/answers/view/79" target="_blank">«Гарантировать проект»</a> 950 р.</li>
                                 <li><a class="" href="https://www.godesigner.ru/answers/view/67" target="_blank">«Прокачать проект»</a> 1000 р.</li>
                                 <li><a class="" href="https://www.godesigner.ru/answers/view/66" target="_blank">«Экспертное мнение»</a> 1500 р.</li>
-                                <li>сбор GoDesigner 24,5%</li>
-                                <li>скидка 4030 р. !</li>
+                                <li>сбор GoDesigner 29,5%</li>
+                                <li>скидка 4530 р. !</li>
                             </ul>
                         </div>
                     </div>

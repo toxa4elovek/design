@@ -2008,7 +2008,7 @@ Disallow: /pitches/upload/'.$pitch['id'];
                 $receiptData = [
                     'features' => [
                         'award' => $pitch->price,
-                        'discount' => -4030,
+                        'discount' => -4530,
                         'brief' => 2750,
                         'experts' => [1],
                         'guaranteed' => 950,
