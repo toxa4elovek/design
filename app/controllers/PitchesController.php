@@ -1017,11 +1017,11 @@ class PitchesController extends AppController
                 $limit = (isset($this->request->query['rest'])) ? 9999 : $limitSolutions;
             }
             $currentUser = Session::read('user');
-            if (($pitch->published == 0) && ((!$this->userHelper->isPitchOwner($pitch->user_id)) && (!$this->userHelper->isAdmin()) && (!$this->userHelper->isUserManagerOfCurrentUser($pitch->user_id)) && (!$this->userHelper->isUserManagerOfCurrentUser($pitch->user_id)))) {
+            if (($pitch->published == 0) && ((!$this->userHelper->isPitchOwner($pitch->user_id)) && (!$this->userHelper->isAdmin()) && (!$this->userHelper->isUserManagerOfCurrentUser($pitch->user_id)) && (!$this->userHelper->isManagerOfProject($pitch->id)))) {
                 return $this->redirect('/pitches');
             }
             if ($pitch->private == 1) {
-                if ((!$this->userHelper->isPitchOwner($pitch->user_id)) && (!$this->userHelper->isUserManagerOfCurrentUser($pitch->user_id)) && (!$this->userHelper->isManagerOfProject($pitch->user_id)) && (!$this->userHelper->isAdmin()) && (!$isExists = Request::first(['conditions' => ['user_id' => $currentUser['id'], 'pitch_id' => $pitch->id]]))) {
+                if ((!$this->userHelper->isPitchOwner($pitch->user_id)) && (!$this->userHelper->isUserManagerOfCurrentUser($pitch->user_id)) && (!$this->userHelper->isManagerOfProject($pitch->id)) && (!$this->userHelper->isAdmin()) && (!$isExists = Request::first(['conditions' => ['user_id' => $currentUser['id'], 'pitch_id' => $pitch->id]]))) {
                     return $this->redirect('/requests/sign/'.$pitch->id);
                 }
             }
