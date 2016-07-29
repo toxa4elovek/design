@@ -348,7 +348,8 @@
   })
 
   $(document).on('click', '.update-description-button', function () {
-    var textArea = $('.edit-description-textarea')
+    const parentBlock = $(this).parent()
+    const textArea = $('.edit-description-textarea', parentBlock).first()
     var updatedText = textArea.val()
     $.post('/solutions/update_description.json', {'updatedText': updatedText, 'id': $(this).data('solutionid')}, function () {})
     textArea.hide()
@@ -373,7 +374,8 @@
   })
 
   $(document).on('click', '.edit-description-link', function () {
-    var descriptionElement = $('.solution-description')
+    let parent = $(this).parent()
+    var descriptionElement = $('.solution-description', parent).first()
     $(this).after('<a data-solutionid="' + $(this).data('solutionid') + '" class="button update-description-button" href="#">сохранить</a>').hide()
     $('.description-more').click()
     var descriptionText = descriptionElement.text()
@@ -973,6 +975,8 @@
           if (result.solution.user_id == currentUserId) {
             $('.edit-description-link').remove()
             showMoreLink.after('<a href="#" data-solutionid="' + result.solution.id + '" class="edit-description-link">Редактировать</a>')
+          } else {
+            $('.edit-description-link').remove()
           }
         } else {
           solutionDescription.html(result.solution.description)
