@@ -5,60 +5,65 @@ namespace app\controllers;
 use \app\models\Pitchfile;
 use \lithium\storage\Session;
 
-class PitchfilesController extends \app\controllers\AppController {
+class PitchfilesController extends AppController
+{
 
-	public $publicActions = array(
-		'index', 'add', 'addDescription', 'testdelete', 'delete'
-	);
+    public $publicActions = [
+        'index', 'add', 'addDescription', 'delete'
+    ];
 
 
-	public function index() {
-	    $this->render(array('layout' => null, 'data' => null));
-	}
+    public function index()
+    {
+        $this->render(['layout' => null, 'data' => null]);
+    }
 
-	public function add() {
-		$file = Pitchfile::create();
-        if(Session::read('user.id')) {
-            $file->user_id = Session::read('user.id');
+    public function add()
+    {
+        $file = Pitchfile::create();
+        if ($this->userHelper->isLoggedIn()) {
+            $file->user_id = $this->userHelper->getId();
         }
-		$file->save($this->request->data);
+        $file->save($this->request->data);
         $file = Pitchfile::first($file->id);
         $res = json_encode($file->data());
         if ($this->request->is('json')) {
-		  return $res;
+            return $res;
         } else {
-            $this->render(array('layout' => null, 'template' => 'index', 'data' => array('res' => $res)));
+            $this->render(['layout' => null, 'template' => 'index', 'data' => ['res' => $res]]);
         }
-	}
+    }
 
-    public function delete() {
+    public function delete()
+    {
         $file = Pitchfile::first($this->request->data['id']);
 
         //if((($file->user_id) && ($file->user_id == Session::read('user.id'))) || ($file->user_id == 0)){
             $file->delete();
-            return 'true';
+        return 'true';
         //}
         //return false;
     }
 
-    public function testdelete() {
 
-
-        $file = Pitchfile::first(array('order' => array('id' => 'desc')));
-        $file->delete();
-        die();
-    }
-
-    public function download() {
-        if (!empty($this->request->filename) && $file = Pitchfile::first(array('conditions' => array('filename' => array('LIKE' => '%' . substr($this->request->filename, 1)))))) {
+    public function download()
+    {
+        if (!empty($this->request->filename) && $file = Pitchfile::first(['conditions' => ['filename' => ['LIKE' => '%' . substr($this->request->filename, 1)]]])) {
             if (file_exists($file->filename)) {
-                header('Content-Type: application/download');
+                $mimeType = $this->__getMimeType($file->filename);
+                header('Content-Type: ' . $mimeType);
                 header('Content-Disposition: attachment; filename="' . $file->originalbasename . '"');
                 readfile($file->filename);
             }
         }
-        exit;
+        die();
     }
-}
 
-?>
+    private function __getMimeType($filename) {
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $mime = finfo_file($finfo, $filename);
+        finfo_close($finfo);
+        return $mime;
+    }
+
+}
