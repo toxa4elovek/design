@@ -270,7 +270,7 @@ class UsersController extends \app\controllers\AppController
             'user_id' => $this->userHelper->getId(),
             'published' => 1, 'billed' => 1]]);
 
-        if ($myPitches->data()) {
+        if (($this->userRecord->isClient || $this->userRecord->is_company) && ($myPitches->data())) {
             $idList = [];
             foreach ($myPitches as $pitch) {
                 $idList[] = $pitch->id;
@@ -1786,7 +1786,7 @@ class UsersController extends \app\controllers\AppController
             }
             $isClient = false;
             $userPitches = Pitch::all(['order' => ['started' => 'desc'],  'with' => ['Category'], 'conditions' => ['OR' => [['type' => 'company_project'], ['type' => '']], 'billed' => 1, 'published' => 1, 'user_id' => $user->id, 'blank' => 0, 'multiwinner' => 0]]);
-            if (count($userPitches) > 0) {
+            if (($user->isClient || $user->is_company) && (count($userPitches) > 0)) {
                 $isClient = true;
                 $ids = [];
                 foreach ($userPitches as $pitch) {
@@ -1837,7 +1837,7 @@ class UsersController extends \app\controllers\AppController
             }
             $isClient = false;
             $userPitches = Pitch::all(['order' => ['started' => 'desc'],  'with' => ['Category'], 'conditions' => ['OR' => [['type' => 'company_project'], ['type' => '']], 'billed' => 1, 'published' => 1, 'user_id' => $user->id, 'blank' => 0, 'multiwinner' => 0]]);
-            if (count($userPitches) > 0) {
+            if (($user->isClient || $user->is_company) && (count($userPitches) > 0)) {
                 $isClient = true;
                 $ids = [];
                 foreach ($userPitches as $pitch) {
