@@ -1,10 +1,10 @@
 <div class="wrapper pitchpanel login">
 
-    <?=$this->view()->render(array('element' => 'header'), array('logo' => 'logo', 'header' => 'header2'))?>
+    <?=$this->view()->render(['element' => 'header'], ['logo' => 'logo', 'header' => 'header2'])?>
 
     <div class="middle">
         <div class="middle_inner_gallery" style="padding-top:25px">
-            <?=$this->view()->render(array('element' => 'pitch-info/infotable'), array('pitch' => $pitch))?>
+            <?=$this->view()->render(['element' => 'pitch-info/infotable'], ['pitch' => $pitch])?>
 
             <h1 class="largeHeading">Загрузить решение</h1>
 
@@ -26,7 +26,7 @@
                         <input type="file" multiple="multiple" name="solution[]" class="fileinput-button" style="display:block; opacity:0; position:relative;z-index:5; width: 190px; height: 50px;" />
                         <input type="button" class="button" style="position:absolute;z-index: 4;top:0;left:0;" value="Загрузить файлы">
                     </div>
-                    <div style="clear:both;margin-bottom:10;"></div>
+                    <div style="clear:both;margin-bottom:10px;"></div>
                     <ul id="filelist" style="margin-top: 10px;margin-bottom: 10px;">
                         <li class="fakeinput" style=" padding-top: 1px; margin-left:10px;">Файлы не выбран</li>
                     </ul>
@@ -38,13 +38,13 @@
                 <div style="height:2px;clear:both;width:807px;background: url('/img/obnovleniya_line.jpg') repeat-x scroll 0 100% transparent; margin-bottom: 15px;"></div>
 
                 <div class="tos-container supplement">
-                    <label><input type="checkbox" name="tos" style="margin-right:5px;"/>Я прочитал(а) и выражаю безусловное согласие с условиями настоящего <a href="/docs/dogovor.pdf" style="text-decoration: none;">конкурсного соглашения</a>.</label>
+                    <label><input type="checkbox" name="tos" style="margin-right:5px;"/>Я прочитал(а) и выражаю безусловное согласие с условиями настоящего <a href="/docs/dogovor_2016.pdf" style="text-decoration: none;">конкурсного соглашения</a>.</label>
                 </div>
 
 
 
                 <div class="group" style="background:none;">
-                    <?=$this->html->link('Отмена', array('controller' => 'pitches', 'action' => 'view', 'id' => $pitch->id), array('class' => 'button second', 'style' => 'width:80px;margin-right:40px;')); ?>
+                    <?=$this->html->link('Отмена', ['controller' => 'pitches', 'action' => 'view', 'id' => $pitch->id], ['class' => 'button second', 'style' => 'width:80px;margin-right:40px;']); ?>
                     <input id="uploadSolution" type="submit" class="button" value="Отправить"/>
                 </div>
 
@@ -80,5 +80,5 @@
 </div>
 
 
-<?=$this->html->script(array('jquery-ui-1.11.4.min.js', 'jquery.iframe-transport.js', 'jquery.fileupload.js', 'fancybox/jquery.mousewheel-3.0.4.pack.js', 'fancybox/jquery.fancybox-1.3.4.pack.js', 'jquery.simplemodal-1.4.2.js', 'jquery.charcount', 'pitches/upload-copy.js'), array('inline' => false))?>
-<?=$this->html->style(array('/view', '/messages12', '/pitches12', '/pitch_overview', '/upload','/jquery.fancybox-1.3.4.css'), array('inline' => false))?>
+<?=$this->html->script(['jquery-ui-1.11.4.min.js', 'jquery.iframe-transport.js', 'jquery.fileupload.js', 'fancybox/jquery.mousewheel-3.0.4.pack.js', 'fancybox/jquery.fancybox-1.3.4.pack.js', 'jquery.simplemodal-1.4.2.js', 'jquery.charcount', 'pitches/upload-copy.js'], ['inline' => false])?>
+<?=$this->html->style(['/view', '/messages12', '/pitches12', '/pitch_overview', '/upload', '/jquery.fancybox-1.3.4.css'], ['inline' => false])?>

@@ -1,5 +1,5 @@
 <?php
-$job_types = array(
+$job_types = [
     'realty' => 'Недвижимость / Строительство',
     'auto' => 'Автомобили / Транспорт',
     'finances' => 'Финансы / Бизнес',
@@ -15,15 +15,15 @@ $job_types = array(
     'children' => 'Дети',
     'security' => 'Охрана / Безопасность',
     'health' => 'Медицина / Здоровье',
-    'it' => 'Компьютеры / IT');
+    'it' => 'Компьютеры / IT'];
 ?>
 <div class="wrapper pitchpanel login">
 
-    <?= $this->view()->render(array('element' => 'header'), array('logo' => 'logo', 'header' => 'header2')) ?>
+    <?= $this->view()->render(['element' => 'header'], ['logo' => 'logo', 'header' => 'header2']) ?>
 
     <div class="middle">
         <div class="middle_inner_gallery" style="padding-top:25px; padding-left: 40px;">
-            <?= $this->view()->render(array('element' => 'pitch-info/infotable'), array('pitch' => $pitch)) ?>
+            <?= $this->view()->render(['element' => 'pitch-info/infotable'], ['pitch' => $pitch]) ?>
 
             <form action="/pitches/uploadfile/<?= $pitch->id ?>.json" method="post" id="solutionfiles" class="add-pitch upload-form" enctype="multipart/form-data">
                 <input type="hidden" name="uploadnonce" id="uploadnonce" value="<?php echo $uploadnonce; ?>">
@@ -45,16 +45,16 @@ $job_types = array(
                         <li class="fakeinput" style=" padding-top: 1px; margin-left:0;"></li>
                     </ul>
                     <p class="output-p">
-                        <label class="greyboldheader">Укажите 5 тегов, которые описывают <?php if($pitch->category_id == 1):?>логотип<?php else:?>решение<?php endif?> <?= $this->view()->render(array('element' => 'newbrief/required_star'), array('tooltipClass' => "tooltip3")) ?></label>
+                        <label class="greyboldheader">Укажите 5 тегов, которые описывают <?php if ($pitch->category_id == 1):?>логотип<?php else:?>решение<?php endif?> <?= $this->view()->render(['element' => 'newbrief/required_star'], ['tooltipClass' => "tooltip3"]) ?></label>
                     </p>
                     <div id="filterContainer">
                         <ul class="tags" id="filterbox" style="margin-left: 9px"></ul>
                         <?php
-                        $placeholders = array(
+                        $placeholders = [
                             'Мясо, комбинат, красный, вкусный, колбаса',
                             'Лаванда, фиолетовый, травы, успокаивающий, сон',
                             'Инвестиции, банк, деньги, синий, it'
-                        );
+                        ];
                         $key = array_rand($placeholders);
                         ?>
                         <input type="text" placeholder="<?= $placeholders[$key] ?>" id="searchTerm" style="padding-bottom:10px; width:545px; box-shadow:none;line-height:12px; height:13px; padding-top: 9px;margin-left:0; padding-left: 10px">
@@ -82,11 +82,11 @@ $job_types = array(
                         </p>
                     </div>
                 </div>
-                <div style="float:left; width: 230px; margin-bottom: 20px;"><p class="supplement"><?php if($pitch->category_id == 1):?>
+                <div style="float:left; width: 230px; margin-bottom: 20px;"><p class="supplement"><?php if ($pitch->category_id == 1):?>
                         Это поможет найти ваш логотип тем, кто захочет его купить. Т.о мы дарим вам возможность продать работу, если та не станет победителем с первого раза.
                     <?php endif ?>
                 </div>
-                <div style="float:left; width: 230px; margin-bottom: 20px;<?php if($pitch->category_id != 1):?>margin-top:188px;<?php else:?>margin-top:63px;<?php endif?>">
+                <div style="float:left; width: 230px; margin-bottom: 20px;<?php if ($pitch->category_id != 1):?>margin-top:188px;<?php else:?>margin-top:63px;<?php endif?>">
                     <p class="supplement">
                         Для копирайтинга достаточно написать идею в поле, или прикрепить документ в формате TXT, PDF или JPEG/RGB, не больше 5 Мбт, 800*800px. Если ваше решение победит в проекте, вы загрузите запрашиваемые заказчиком рабочие документы.
                     </p>
@@ -119,14 +119,14 @@ $job_types = array(
                 <div style="height:1px;clear:both;width:807px;background: url('/img/obnovleniya_line.jpg') repeat-x scroll 0 100% transparent; margin-bottom: 15px;"></div>
 
                 <div class="tos-container supplement">
-                    <label><input type="checkbox" name="tos" style="margin-right: 5px; margin-bottom: 2px;"/>Я прочитал и согласен с <a href="/docs/dogovor.pdf" style="text-decoration: none;">правилами и условиями</a> Go Designer</label>
-                    <?= $this->view()->render(array('element' => 'newbrief/required_star'), array('tooltipClass' => "tooltip3")) ?>
+                    <label><input type="checkbox" name="tos" style="margin-right: 5px; margin-bottom: 2px;"/>Я прочитал и согласен с <a href="/docs/dogovor_2016.pdf" style="text-decoration: none;">правилами и условиями</a> Go Designer</label>
+                    <?= $this->view()->render(['element' => 'newbrief/required_star'], ['tooltipClass' => "tooltip3"]) ?>
                 </div>
 
 
 
                 <div class="group" style="background:none;">
-                    <?= $this->html->link('Отмена', array('controller' => 'pitches', 'action' => 'view', 'id' => $pitch->id), array('class' => 'button second', 'style' => 'width:80px;margin-right:40px;')); ?>
+                    <?= $this->html->link('Отмена', ['controller' => 'pitches', 'action' => 'view', 'id' => $pitch->id], ['class' => 'button second', 'style' => 'width:80px;margin-right:40px;']); ?>
                     <input type="hidden" id="reSortable" name="reSortable" value="" />
                     <input id="uploadSolution" type="submit" class="button" value="Отправить"/>
                 </div>
@@ -166,9 +166,9 @@ $job_types = array(
     <div style="color: rgb(202, 202, 202); font-size: 14px; margin-top: 20px;">Пожалуйста, используйте эту паузу<br> с пользой для здоровья!</div>
 </div>
 
-<?= $this->view()->render(array('element' => 'popups/brief_tos')); ?>
+<?= $this->view()->render(['element' => 'popups/brief_tos']); ?>
 
-<?= $this->html->script(array(
+<?= $this->html->script([
     'jquery-ui-1.11.4.min.js',
     'typeahead.jquery.min.js',
     'bloodhound.min.js',
@@ -180,6 +180,6 @@ $job_types = array(
     'fancybox/jquery.fancybox-1.3.4.pack.js',
     'jquery.simplemodal-1.4.2.js',
     'jquery.tooltip.js',
-    'pitches/upload.js?' . mt_rand(100, 999)), array('inline' => false)) ?>
+    'pitches/upload.js?' . mt_rand(100, 999)], ['inline' => false]) ?>
 <?=
-$this->html->style(array('/view', '/messages12', '/pitches12', '/pitch_overview', '/upload', '/jquery.fancybox-1.3.4.css'), array('inline' => false))?>
+$this->html->style(['/view', '/messages12', '/pitches12', '/pitch_overview', '/upload', '/jquery.fancybox-1.3.4.css'], ['inline' => false])?>
