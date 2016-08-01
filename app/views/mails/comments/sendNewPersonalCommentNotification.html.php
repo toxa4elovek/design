@@ -21,7 +21,11 @@
         <td>
             <a style="color: #ff585d; line-height: 17px; font-size: 20px; font-weight: bold; font-family: Arial, sans-serif;text-decoration: none;" href="https://www.godesigner.ru/pitches/view/<?=$pitch->id?>"><?=$pitch->title?></a><br/>
             <span style="color: #AEAEAE; line-height: 17px; font-size: 11px; font-family: Arial, sans-serif;"><?=$this->view()->render(array('template' => 'pitch-info'), array('pitch' => $pitch));?></span><br/>
-            <span style="color: #444444; line-height: 17px; font-size: 12px; font-family: Arial, sans-serif;"><?=$comment->text?></span><br/>
+            <span style="color: #444444; line-height: 17px; font-size: 12px; font-family: Arial, sans-serif;"><?php
+                $breaks = array("<br />","<br>","<br/>");
+                $text = str_ireplace($breaks, "\r\n", $comment->text);
+                echo $text?>
+            </span><br/>
         </td></tr>
     <tr>
         <td colspan="3" height="100"></td>
