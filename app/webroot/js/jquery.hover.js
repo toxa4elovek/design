@@ -158,7 +158,7 @@
                         $ttContent.html('<img src="' + imageTag.attr('src') + '">');
                         break;
                     case 'data':
-                        let regExp = /^\/(.*).png|jpeg|jpg|gif$/
+                        var regExp = /^\/(.*).png|jpeg|jpg|gif$/
                         if (regExp.test($(e.currentTarget).data('thumbnail'))) {
                           $ttContent.html('<img src="' + $(e.currentTarget).data('thumbnail') + '">')
                         } else {
