@@ -152,20 +152,23 @@
 
 .lp-advantages li {
   float: left;
-  line-height: 30px;
   color: #52586b;
   font-family: 'OfficinaSansC Book', serif;
   font-size: 18px;
   font-style: italic;
   text-align: center;
+  line-height: 24px;
 }
 
 .lp-advantages li strong {
+  display: block;
   color: #353946;
   font-family: 'OfficinaSansC Bold', serif;
   font-size: 20px;
   font-weight: 400;
   font-style: normal;
+  line-height: 30px;
+  margin-bottom: 10px;
 }
 
 .lp-advantages li img {
@@ -194,4 +197,71 @@
 .lp-advantages li.guarantee {
   width: 268px;
   height: 212px;
+}
+
+.lp-how-to-profit {
+  height: 418px;
+  background-color: #f8f8f8;
+  padding-top: 81px;
+}
+
+.lp-how-to-profit .header-profit {
+  margin: 0 auto 21px;
+  width: 852px;
+}
+
+.lp-how-to-profit h2 {
+  color: #353946;
+  font-family: 'RodeoC', serif;
+  text-align: center;
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 30px;
+  text-transform: uppercase;
+  margin-bottom: 87px;
+}
+
+.lp-how-to-profit ul {
+  width: 1226px;
+  height: 239px;
+  margin: 0 auto 90px;
+}
+
+.lp-how-to-profit li {
+  float: left;
+  color: #52586b;
+  font-family: 'OfficinaSansC Book', serif;
+  font-size: 18px;
+  font-style: italic;
+  text-align: center;
+  line-height: 24px;
+}
+
+.lp-how-to-profit li strong {
+  display: block;
+  color: #353946;
+  font-family: 'OfficinaSansC Bold', serif;
+  font-size: 20px;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 30px;
+  margin-bottom: 10px;
+}
+
+.lp-how-to-profit li.publish {
+  width: 334px;
+  height: 105px;
+  margin-right: 60px;
+  margin-left: 69px;
+}
+
+.lp-how-to-profit li.choose {
+  width: 332px;
+  height: 128px;
+  margin-right: 50px;
+}
+
+.lp-how-to-profit li.sell {
+  width: 354px;
+  height: 80px;
 }
