@@ -1,5 +1,5 @@
 <?php
-$briefExamples = array(
+$briefExamples = [
     '4' => 'brief_visit_card.pdf',
     '5' => 'brief_visit_card.pdf',
     '9' => 'brief_illustration.pdf',
@@ -13,8 +13,8 @@ $briefExamples = array(
     '10' => 'brief_logo.pdf',
     '11' => 'brief_logo.pdf',
     '12' => 'brief_logo.pdf',
-);
-$specifics = array();
+];
+$specifics = [];
 
 switch ($category->id):
     case 1: $word1 = 'Логотип';
@@ -102,7 +102,7 @@ $word2 = 'Опишите вид деятельности. Что отличае�
 Что вы хотите получить на выходе от дизайнера?<br>
 Что должно быть прописано' . $str . '?<br>
 Где будет это размещаться?';
-if($category->id == 7):
+if ($category->id == 7):
     $word2 = 'Опишите вид деятельности. Что отличает вас от конкурентов?<br>
 Кто ваши клиенты/потребители/покупатели?<br>
 <br>
@@ -116,7 +116,7 @@ endif;
 
 <div class="wrapper">
 
-    <?= $this->view()->render(array('element' => 'header'), array('header' => 'header2')) ?>
+    <?= $this->view()->render(['element' => 'header'], ['header' => 'header2']) ?>
     <input type="hidden" id="referal" value="<?= $referal; ?>">
     <input type="hidden" id="referalId" value="<?= $referalId; ?>">
     <aside class="summary-price expanded">
@@ -132,7 +132,7 @@ endif;
 
         <div class="main" style="padding-top: 35px;">
 
-            <h2><?php if($category->title != 'Фирменный стиль и логотип'): echo $category->title;else: echo 'Фир. стиль и логотип'; endif; ?></h2>
+            <h2><?php if ($category->title != 'Фирменный стиль и логотип'): echo $category->title; else: echo 'Фир. стиль и логотип'; endif; ?></h2>
 
             <ol class="steps">
                 <li class="current"><a href="#" class="steps-link" data-step="1">1. Цена</a></li>
@@ -154,22 +154,23 @@ endif;
 
             <?php
 
-            function renderNumBox($category) {
-                $categoriesWithBox = array(2, 3, 4, 6, 8, 9, 10, 11, 12);
+            function renderNumBox($category)
+            {
+                $categoriesWithBox = [2, 3, 4, 6, 8, 9, 10, 11, 12];
                 if (!in_array($category, $categoriesWithBox)) {
                     return '';
                 }
-                $info = array(
-                    2 => array('text' => 'Сколько макетов вам нужно создать? Мы рекомендуем учитывать и адаптации под размеры тоже. Внимание, только дизайн, без кода HTML'),
-                    3 => array('text' => 'Сколько шаблонов страниц необходимо разработать для вашего сайта? Внимание, только дизайн,  без кода HTML', 'mult' => 2000),
-                    4 => array('text' => 'Сколько разворотов должно быть в буклете (не учитывать, если проект на флаер или листовку).'),
-                    6 => array('text' => 'Сколько страниц нужно создать. Если это серия, то укажите суммарное количество, даже если используется одна идея и стиль.'),
-                    8 => array('text' => 'Сколько шаблонов страниц необходимо разработать для вашей презентации?', 'mult' => 700),
-                    9 => array('text' => 'Сколько иллюстранций необходимо создать? Если серия, укажите суммарное число работ'),
-                    10 => array('text' => 'Сколько макетов вам нужно предоставить?  Если это серия, то укажите суммарное количество'),
-                    11 => array('text' => 'Сколько макетов вам нужно предоставить?  Если это серия, то укажите суммарное количество'),
-                    12 => array('text' => 'Сколько макетов вам нужно предоставить?  Если это серия, то укажите суммарное количество.'),
-                );
+                $info = [
+                    2 => ['text' => 'Сколько макетов вам нужно создать? Мы рекомендуем учитывать и адаптации под размеры тоже. Внимание, только дизайн, без кода HTML'],
+                    3 => ['text' => 'Сколько шаблонов страниц необходимо разработать для вашего сайта? Внимание, только дизайн,  без кода HTML', 'mult' => 2000],
+                    4 => ['text' => 'Сколько разворотов должно быть в буклете (не учитывать, если проект на флаер или листовку).'],
+                    6 => ['text' => 'Сколько страниц нужно создать. Если это серия, то укажите суммарное количество, даже если используется одна идея и стиль.'],
+                    8 => ['text' => 'Сколько шаблонов страниц необходимо разработать для вашей презентации?', 'mult' => 700],
+                    9 => ['text' => 'Сколько иллюстранций необходимо создать? Если серия, укажите суммарное число работ'],
+                    10 => ['text' => 'Сколько макетов вам нужно предоставить?  Если это серия, то укажите суммарное количество'],
+                    11 => ['text' => 'Сколько макетов вам нужно предоставить?  Если это серия, то укажите суммарное количество'],
+                    12 => ['text' => 'Сколько макетов вам нужно предоставить?  Если это серия, то укажите суммарное количество.'],
+                ];
 
                 $chosenCategory = $info[$category];
                 $text = $chosenCategory['text'];
@@ -202,25 +203,25 @@ endif;
                 </div>
             <?php endif; ?>
 
-            <?= $this->view()->render(array('element' => 'newbrief/setprice_block'), array('pitch' => $pitch, 'category' => $category)); ?>
+            <?= $this->view()->render(['element' => 'newbrief/setprice_block'], ['pitch' => $pitch, 'category' => $category]); ?>
 
             <div style="margin-top:5px;height:200px;">
 
                 <div style="margin-bottom:40px">
                     <input style="vertical-align: top;margin-top:3px" id="guaranteedTrue" type="radio" name="isGuaranteed" value="1" data-option-title="Гарантированный проект" data-option-value="950">
                     <label for="guaranteedTrue" style="text-shadow: 0 1px 1px #eee;font-size: 29px; color:#658fa5; font-family: 'RodeoC', 'Helvetica Neue';margin-left:10px;">Гарантированный проект&nbsp;&nbsp;&nbsp;+950р.</label>
-                    <p class="guaranteeExplanation" id="guaranteedTooltip">Вы гарантируете, что выберете победителя в любом случае, тем самым инициировав до 40% больше решений. Мы выделяем такой проект в списке. <?php if($category->id == 7): echo 'Копирайтеры'; else: 'Дизайнеры'; endif;?> увидят, что проект не останется без победителя, и вы получите больший выбор идей.</p>
+                    <p class="guaranteeExplanation" id="guaranteedTooltip">Вы гарантируете, что выберете победителя в любом случае, тем самым инициировав до 40% больше решений. Мы выделяем такой проект в списке. <?php if ($category->id == 7): echo 'Копирайтеры'; else: 'Дизайнеры'; endif;?> увидят, что проект не останется без победителя, и вы получите больший выбор идей.</p>
                 </div>
 
                 <div>
                     <input style="vertical-align: top;margin-top:3px" id="guaranteedFalse" type="radio" name="isGuaranteed" value="0" data-option-title="Гарантированный проект">
                     <label for="guaranteedFalse" style="text-shadow: 0 1px 1px #eee;font-size: 29px; color:#6f6f6f; font-family: 'RodeoC', 'Helvetica Neue';margin-left:10px;">Проект без гарантий&nbsp;&nbsp;&nbsp;0р.</label>
-                    <p class="guaranteeExplanation" id="nonguaranteedTooltip" style=" display:none;">При активном взаимодействии с <?php if($category->id == 7): echo 'копирайтерами'; else: 'дизайнерами'; endif;?> вы сможете <a href="/answers/view/71" target="_blank">вернуть деньги, если решения не понравятся</a>. Отсутствие гарантий, однако, спровоцирует меньший интерес к проекту.</p>
+                    <p class="guaranteeExplanation" id="nonguaranteedTooltip" style=" display:none;">При активном взаимодействии с <?php if ($category->id == 7): echo 'копирайтерами'; else: 'дизайнерами'; endif;?> вы сможете <a href="/answers/view/71" target="_blank">вернуть деньги, если решения не понравятся</a>. Отсутствие гарантий, однако, спровоцирует меньший интерес к проекту.</p>
                 </div>
 
             </div>
 
-            <?= $this->view()->render(array('element' => 'newbrief/time_block'), compact('category', 'pitch')); ?>
+            <?= $this->view()->render(['element' => 'newbrief/time_block'], compact('category', 'pitch')); ?>
 
             <h1 style="background: url('/img/images/faq.png') no-repeat scroll 55% 0 transparent;	font-family: 'RodeoC', serif;
                 font-size: 12px;
@@ -280,7 +281,7 @@ endif;
 
             <ul class="experts">
                 <?php
-                $imageArray = array(
+                $imageArray = [
                     1 => '/img/temp/expert-1.jpg',
                     2 => '/img/temp/expert-2.jpg',
                     3 => '/img/jara_174.png',
@@ -289,10 +290,11 @@ endif;
                     6 => '/img/experts/efremov174.jpg',
                     7 => '/img/experts/percia_174.png',
                     8 => '/img/experts/makarov_dmitry_174.png',
-                );
+                ];
 
-                foreach ($experts as $expert): if ($expert->enabled == 0)
-                    continue;
+                foreach ($experts as $expert): if ($expert->enabled == 0) {
+     continue;
+ }
                     ?>
                     <li>
                         <a href="/experts/view/<?= $expert->id ?>" target="_blank" class="photo"><img src="<?= $imageArray[$expert->id] ?>" alt="<?= $expert->name ?>"></a><!-- .photo -->
@@ -307,7 +309,7 @@ endif;
 
             <div class="ribbon" style="padding-top: 35px; height: 56px; padding-bottom: 0;" id="pinned-block">
                 <p class="option"><label><input type="checkbox" name="" class="single-check" data-option-title="«Прокачать» проект" data-option-value="1000" id="pinproject">«Прокачать» проект</label></p>
-                <!--p class="description">Увеличить количество решений <a href="#" class="second tooltip" title="Вы сможете увеличить количество предложенных вариантов на 15-40%. Для привлечения <?php if($category->id == 7): echo 'копирайтеров'; else: 'дизайнеров'; endif;?> мы используем e-mail рассылку, facebook, vkontakte, twitter, выделение синим цветом в списке и на главной странице">(?)</a></p-->
+                <!--p class="description">Увеличить количество решений <a href="#" class="second tooltip" title="Вы сможете увеличить количество предложенных вариантов на 15-40%. Для привлечения <?php if ($category->id == 7): echo 'копирайтеров'; else: 'дизайнеров'; endif;?> мы используем e-mail рассылку, facebook, vkontakte, twitter, выделение синим цветом в списке и на главной странице">(?)</a></p-->
                 <p class="label" style="text-transform: none;">1000р.</p>
             </div>
 
@@ -325,7 +327,7 @@ endif;
 
             <p class="brief-example"><a href="/docs/<?= $briefExamples[$category->id] ?>" target="_blank"></a></p><!-- .brief-example -->
 
-            <?= $this->view()->render(array('element' => 'newbrief/ad_block'), compact('pitch')) ?>
+            <?= $this->view()->render(['element' => 'newbrief/ad_block'], compact('pitch')) ?>
 
             <!--div class="ribbon">
                     <p class="option"><label><input type="checkbox" name="" class="single-check" data-option-title="Email рассылка" data-option-value="1000">Email рассылка</label></p>
@@ -359,7 +361,7 @@ endif;
 
         <div class="main" style="padding-top: 35px;">
 
-            <h2><?php if($category->title != 'Фирменный стиль и логотип'): echo $category->title;else: echo 'Фир. стиль и логотип'; endif; ?></h2>
+            <h2><?php if ($category->title != 'Фирменный стиль и логотип'): echo $category->title; else: echo 'Фир. стиль и логотип'; endif; ?></h2>
 
             <ol class="steps">
                 <li><a href="#" class="steps-link" data-step="1">1. Цена</a></li>
@@ -367,11 +369,11 @@ endif;
                 <li class="last"><a href="#" class="steps-link" data-step="3">3. оплата</a></li>
             </ol><!-- .steps -->
 
-            <?= $this->view()->render(array('element' => 'newbrief/pitchtitle_block'), compact('pitch', 'category', 'word1')) ?>
+            <?= $this->view()->render(['element' => 'newbrief/pitchtitle_block'], compact('pitch', 'category', 'word1')) ?>
 
-            <?= $this->view()->render(array('element' => 'newbrief/description_block'), compact('pitch', 'category', 'word2'))?>
+            <?= $this->view()->render(['element' => 'newbrief/description_block'], compact('pitch', 'category', 'word2'))?>
 
-            <?= $this->view()->render(array('element' => 'brief-create/' . $category->id)) ?>
+            <?= $this->view()->render(['element' => 'brief-create/' . $category->id]) ?>
 
             <div class="groupc" style="margin-top: 34px; margin-bottom: 25px;">
                 <label id ="show-types" class="greyboldheader">Выберите вид деятельности</label> 
@@ -441,7 +443,7 @@ endif;
                 <p class="brief-example"><a href="/docs/<?= $briefExamples[$category->id] ?>" target="_blank"></a></p><!-- .brief-example -->
             </div>
             <div class="groupc" style="margin-bottom: 19px; padding-bottom: 13px;">
-                <?= $this->view()->render(array('element' => 'newbrief/fileformat'), array('pitch' => $pitch, 'category' => $category)); ?>
+                <?= $this->view()->render(['element' => 'newbrief/fileformat'], ['pitch' => $pitch, 'category' => $category]); ?>
             </div>
             <div class="groupc" style="background: none repeat scroll 0% 0% transparent; margin-bottom: 7px;">
                 <p>
@@ -451,11 +453,11 @@ endif;
             </div>
             </div></div>
             <div class="tos-container supplement" style="margin-bottom: 20px; position: relative;">
-                <label><input type="checkbox" name="tos" style="vertical-align: middle; margin-right: 5px;"/>Я прочитал(а) и выражаю безусловное согласие с условиями настоящего <a target="_blank" href="/docs/dogovor.pdf" style="text-decoration: none;">конкурсного соглашения</a>.</label>
-                <?= $this->view()->render(array('element' => 'newbrief/required_star'), array('style' => "position: absolute; top:0;right:0")) ?>
+                <label><input type="checkbox" name="tos" style="vertical-align: middle; margin-right: 5px;"/>Я прочитал(а) и выражаю безусловное согласие с условиями настоящего <a target="_blank" href="/docs/dogovor_2016.pdf" style="text-decoration: none;">конкурсного соглашения</a>.</label>
+                <?= $this->view()->render(['element' => 'newbrief/required_star'], ['style' => "position: absolute; top:0;right:0"]) ?>
             </div>
             <p class="submit submit-brief">
-                <?= $this->view()->render(array('element' => 'newbrief/step2fullbuttons')); ?>
+                <?= $this->view()->render(['element' => 'newbrief/step2fullbuttons']); ?>
             </p><!-- .submit -->
 
         </div><!-- .main -->
@@ -465,7 +467,7 @@ endif;
 
         <div class="main" style="padding-top: 35px;">
 
-            <h2><?php if($category->title != 'Фирменный стиль и логотип'): echo $category->title;else: echo 'Фир. стиль и логотип'; endif; ?></h2>
+            <h2><?php if ($category->title != 'Фирменный стиль и логотип'): echo $category->title; else: echo 'Фир. стиль и логотип'; endif; ?></h2>
 
             <form action="" method="post">
                 <input type="hidden" id="pitch-id" name="id" value=""/>
@@ -475,7 +477,7 @@ endif;
                     <li class="last current"><a href="#" class="steps-link" data-step="3">3. оплата</a></li>
                 </ol><!-- .steps -->
             </form>
-            <?= $this->view()->render(array('element' => 'pitchpay'), array('pitch' => $pitch, 'category' => $category)); ?>
+            <?= $this->view()->render(['element' => 'pitchpay'], ['pitch' => $pitch, 'category' => $category]); ?>
         </div><!-- .main -->
 
     </div><!-- .middle -->
@@ -490,11 +492,11 @@ endif;
     <div style="color: rgb(202, 202, 202); font-size: 14px; margin-top: 20px;">Пожалуйста, используйте эту паузу<br> с пользой для здоровья!</div>
 </div>
 
-<?= $this->view()->render(array('element' => 'popups/brief_tos')); ?>
-<?= $this->view()->render(array('element' => 'popups/brief_saved')); ?>
+<?= $this->view()->render(['element' => 'popups/brief_tos']); ?>
+<?= $this->view()->render(['element' => 'popups/brief_saved']); ?>
 <script type="text/javascript" src="/js/jquery-1.8.3.min.js"></script>
 <script type="text/javascript" src="/js/tinymce/tinymce.min.js"></script>
-<?= $this->html->script(array(
+<?= $this->html->script([
     'jquery-ui-1.11.4.min.js',
     'jquery-plugins/jquery.scrollto.min.js',
     'jquery-deparam.js',
@@ -507,9 +509,9 @@ endif;
     'jquery.tooltip.js',
     'popup.js',
     'jquery.damnUploader.js'
-    ), array('inline' => false)) ?>
-<?= $this->html->style(array(
+    ], ['inline' => false]) ?>
+<?= $this->html->style([
     '/css/common/receipt.css',
     '/brief',
     '/step3'
-    ), array('inline' => false))?>
+    ], ['inline' => false])?>

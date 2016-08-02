@@ -151,6 +151,7 @@ $(function () {
           })
           uploader.duStart()
         } else {
+          Cart.isDirty = false
           Cart.saveData()
           _gaq.push(['_trackEvent', 'Создание проекта', 'Пользователь перешел на третий шаг брифа'])
         }
@@ -240,7 +241,12 @@ $(function () {
 
   /**/
   const Cart = new FeatureCart
+  Cart.isDirty = true
   Cart.init()
+
+  $(window).bind('beforeunload', function () {
+    if (Cart.isDirty) return 'Сохраните черновик проекта'
+  })
 })
 /* Class */
 
@@ -292,6 +298,7 @@ function FeatureCart () {
 
     if (window.location.hash == '#step3') {
       if (self.prepareData()) {
+        self.isDirty = false
         self.saveData()
         _gaq.push(['_trackEvent', 'Создание проекта', 'Пользователь перешел на третий шаг брифа'])
       }

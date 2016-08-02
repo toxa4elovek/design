@@ -158,7 +158,12 @@
                         $ttContent.html('<img src="' + imageTag.attr('src') + '">');
                         break;
                     case 'data':
-                        $ttContent.html('<img src="' + $(e.currentTarget).data('thumbnail') + '">');
+                        var regExp = /^\/(.*).png|jpeg|jpg|gif$/
+                        if (regExp.test($(e.currentTarget).data('thumbnail'))) {
+                          $ttContent.html('<img src="' + $(e.currentTarget).data('thumbnail') + '">')
+                        } else {
+                          $ttContent.html('<span style="width: 166px;height: 131px;background-color: #efefef;display: block;color: #666666;text-decoration: none;font-weight: bold;padding-top: 5px; padding-left: 10px;">' + $(e.currentTarget).data('thumbnail') + '</span>')
+                        }
                         break;
                     case 'attribute':/*/////////////////////////////// attribute //////////////////////////////////////////*/
                         $ttContent.text(s.titleAttributeContent);
