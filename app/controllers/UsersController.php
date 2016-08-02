@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\extensions\helper\Brief;
 use app\extensions\helper\MoneyFormatter;
 use app\extensions\helper\NumInflector;
 use app\extensions\smsfeedback\SmsFeedback;
@@ -481,11 +482,15 @@ class UsersController extends \app\controllers\AppController
                     $admin = User::first(5);
                     User::sendSpamWincomment($newComment, $admin, true);
                 }
-                $user = User::first(Session::read('user.id'));
+                $user = User::first($this->userHelper->getId());
                 $avatarHelper = new AvatarHelper;
                 $userAvatar = $avatarHelper->show($user->data(), false, true);
                 $comment = Wincomment::first(['conditions' => ['Wincomment.id' => $newComment->id], 'with' => ['User', 'Solution']]);
                 $comment = $comment->data();
+                $brief = new Brief();
+                $comment['text'] = html_entity_decode($brief->deleteHtmlTagsAndInsertHtmlLinkInTextAndMentions($comment['text']));
+                $comment['originalText'] = strip_tags($comment['originalText'], '<a>');
+                $comment['originalText'] = htmlentities($comment['originalText'], ENT_COMPAT, 'utf-8');
                 return json_encode(compact('newComment', 'comment', 'userAvatar'));
             }
             $files = [];
@@ -752,6 +757,10 @@ class UsersController extends \app\controllers\AppController
                 $userAvatar = $avatarHelper->show($user->data(), false, true);
                 $comment = Wincomment::first(['conditions' => ['Wincomment.id' => $newComment->id], 'with' => ['User', 'Solution']]);
                 $comment = $comment->data();
+                $brief = new Brief();
+                $comment['text'] = html_entity_decode($brief->deleteHtmlTagsAndInsertHtmlLinkInTextAndMentions($comment['text']));
+                $comment['originalText'] = strip_tags($comment['originalText'], '<a>');
+                $comment['originalText'] = htmlentities($comment['originalText'], ENT_COMPAT, 'utf-8');
                 return json_encode(compact('newComment', 'comment', 'userAvatar'));
             }
             $comments = Wincomment::all(['conditions' => ['step' => 3, 'solution_id' => $solution->id], 'order' => ['created' => 'desc'], 'with' => ['User']]);
