@@ -1,0 +1,197 @@
+.lp-golden-fish {
+  position: relative;
+  top: -7px;
+}
+
+.lp-golden-fish header {
+  background: url(/img/pages/golden-fish/header-bg.jpg) no-repeat;
+  background-size: cover;
+  height: 575px;
+  margin: 0 auto;
+  display: block;
+  padding-top: 87px;
+  position: relative;
+}
+
+.lp-golden-fish .text {
+  margin: 0 auto 58px;
+  background: url(/img/pages/golden-fish/header-lines.png) no-repeat 0 16px;
+  width: 390px;
+  height: 53px;
+}
+
+.lp-golden-fish header h1 {
+  text-align: center;
+  width: 390px;
+  height: 53px;
+  color: white;
+  font-family: 'RodeoC', serif;
+  font-weight: 700;
+  font-size: 41px;
+  line-height: 37px;
+  text-transform: uppercase;
+  margin: 0 auto;
+  display: block;
+}
+
+.lp-golden-fish header h3 {
+  text-align: center;
+  width: 390px;
+  color: white;
+  font-family: 'RodeoC', serif;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 30px;
+  margin: 0 auto;
+  display: block;
+}
+
+.lp-golden-fish header p {
+  width: 683px;
+  height: 78px;
+  color: white;
+  font-family: 'OfficinaSansC Book', serif;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 29px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.lp-golden-fish header .buttons {
+  margin: 56px auto 58px;
+  width: 438px;
+  height: 41px;
+}
+
+.yellow-button {
+  float: left;
+  width: 144px;
+  display: block;
+  height: 41px;
+  padding: 0 11px;
+  background-color: #f3f3f3;
+  background-image: linear-gradient(to top, #e4b02b 0%, #f5db34 100%);
+  color: #353946;
+  font-family: Arial;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 41px;
+  text-transform: uppercase;
+}
+
+.yellow-button:hover,
+.yellow-button:active {
+  color: #353946;
+  background-image: linear-gradient(180deg, #e4b02b 0%, #f5db34 100%);
+}
+
+.empty-button {
+  float: right;
+  width: 142px;
+  display: block;
+  height: 38px;
+  padding: 0 11px;
+  border: 1px solid white !important;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+  color: white;
+  font-family: Arial;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 38px;
+  text-transform: uppercase;
+}
+
+.empty-button:hover,
+.empty-button:active {
+  color: #353946;
+  background-color: white;
+  border: 1px solid white;
+}
+
+.wave {
+  background: url(/img/pages/golden-fish/wave.png) no-repeat;
+  background-size: cover;
+  height: 147px;
+  margin-top: 144px;
+}
+
+.lp-advantages {
+  background-color: white;
+  padding-top: 433px;
+}
+
+.lp-advantages .header-advantages {
+  padding-top: 49px;
+  color: #353946;
+  font-family: 'RodeoC', serif;
+  font-weight: 700;
+  text-align: center;
+  width: 550px;
+  height: 67px;
+  margin: 0 auto 57px;
+  background: url(/img/pages/golden-fish/star-with-lines.png) no-repeat center 0;
+}
+
+.lp-advantages .header-advantages h3 {
+  font-size: 20px;
+  line-height: 30px;
+}
+
+.lp-advantages .header-advantages h1 {
+  font-size: 41px;
+  line-height: 37px;
+  text-transform: uppercase;
+}
+
+.lp-advantages ul {
+  width: 1138px;
+  height: 239px;
+  margin: 0 auto 90px;
+}
+
+.lp-advantages li {
+  float: left;
+  line-height: 30px;
+  color: #52586b;
+  font-family: 'OfficinaSansC Book', serif;
+  font-size: 18px;
+  font-style: italic;
+  text-align: center;
+}
+
+.lp-advantages li strong {
+  color: #353946;
+  font-family: 'OfficinaSansC Bold', serif;
+  font-size: 20px;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.lp-advantages li img {
+  display: block;
+  margin: 0 auto 19px;
+}
+
+.lp-advantages li.time-place {
+  width: 254px;
+  height: 212px;
+  margin-right: 63px;
+}
+
+.lp-advantages li.ideas {
+  width: 209px;
+  height: 212px;
+  margin-right: 71px;
+}
+
+.lp-advantages li.profit {
+  width: 233px;
+  height: 212px;
+  margin-right: 37px;
+}
+
+.lp-advantages li.guarantee {
+  width: 268px;
+  height: 212px;
+}
