@@ -33,7 +33,6 @@ $(function () {
   const registrationElement = $('#registration')
 
   registrationElement.validate({
-    /*debug: true,*/
     rules: {
       first_name: 'required',
       email: {
@@ -731,6 +730,7 @@ function onSelectHandler (uploader, e, fileIds, Cart) {
     }
     if (self.duCount() === 0) {
       $.merge(Cart.fileIds, fileIds)
+      Cart.isDirty = false
       Cart.saveData()
       $.modal.close()
     }

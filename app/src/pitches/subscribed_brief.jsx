@@ -7,6 +7,12 @@
     {'id': 2, 'value': 'copyrighting', 'label': 'Проект на копирайтинг', 'checked': payload.isCopywriting}
   ]
 
+  Cart.isDirty = true
+
+  $(window).bind('beforeunload', function () {
+    if (Cart.isDirty) return 'Сохраните черновик проекта!'
+  })
+
   let endStep1DatePicker = $('.first-datepick')
   let finishChooseOfWinnerPicker = $('.second-datepick')
 
@@ -299,6 +305,7 @@
           uploader.duStart()
           SubscribedBriefActions.unlockButton()
         } else {
+          Cart.isDirty = false
           Cart.saveData(false)
           _gaq.push(['_trackEvent', 'Создание проекта', 'Пользователь сохранил черновик'])
         }
@@ -335,6 +342,7 @@
         })
         uploader.duStart()
       } else {
+        Cart.isDirty = false
         Cart.saveData(true)
         _gaq.push(['_trackEvent', 'Создание проекта', 'Пользователь сохранил черновик'])
       }
@@ -414,7 +422,7 @@
     url: '/pitchfiles/add.json'
   })
 
-  uploader.on('du.add', function(e) {
+  uploader.on('du.add', function (e) {
     return onSelectHandler.call(this, uploader, e, fileIds, Cart)
   })
 

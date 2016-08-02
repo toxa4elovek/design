@@ -83,6 +83,7 @@ $(document).ready(function () {
     if (Cart.validatetype == 1) {
       if ((stepNum == 3) && ((notExists == true) || (existsNotPublshed == true))) {
         if (Cart.prepareData()) {
+          Cart.isDirty = false
           Cart.saveData()
         } else {
           $.scrollTo($('.wrong-input').parent(), {duration: 600})
@@ -99,6 +100,7 @@ $(document).ready(function () {
       } else {
         if ((stepNum == 3) && ((notExists == true) || (existsNotPublshed == true))) {
           if (Cart.prepareData()) {
+            Cart.isDirty = false
             Cart.saveData()
             _gaq.push(['_trackEvent', 'Создание проекта', 'Пользователь перешел на третий шаг брифа'])
           } else {
@@ -361,6 +363,7 @@ $(document).ready(function () {
           })
           uploader.duStart()
         } else {
+          Cart.isDirty = false
           Cart.saveData(false)
           _gaq.push(['_trackEvent', 'Создание проекта', 'Пользователь сохранил черновик'])
         }
@@ -385,6 +388,7 @@ $(document).ready(function () {
           })
           uploader.duStart()
         } else {
+          Cart.isDirty = false
           Cart.saveData()
         }
         _gaq.push(['_trackEvent', 'Создание проекта', 'Пользователь перешел на третий шаг брифа'])
@@ -854,8 +858,13 @@ $(document).ready(function () {
   })
 
   /**/
-  Cart = new FeatureCart
+  Cart = new FeatureCart()
+  Cart.isDirty = true
   Cart.init()
+
+  $(window).bind('beforeunload', function () {
+    if (Cart.isDirty) return 'Сохраните черновик проекта'
+  })
 
   /* Pitch Init from various options */
   if (window.location.pathname.indexOf('brief') != -1) { // Pitch create only
@@ -1072,6 +1081,7 @@ function FeatureCart () {
         self.fillCheck(response)
         self._renderCheck()
         if (self.prepareData()) {
+          self.isDirty = false
           self.saveData()
         }
       })
