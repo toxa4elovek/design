@@ -265,3 +265,68 @@
   width: 354px;
   height: 80px;
 }
+.lp-agency {
+  height: 392px;
+  padding-top: 66px;
+  background: url(/img/pages/golden-fish/agency-bg.png) no-repeat;
+  background-size: cover;
+}
+.lp-agency .content img {
+  position: absolute;
+  top: -20px;
+  right: 30px;
+}
+.lp-agency .content{
+  width: 1200px;
+  margin: 0 auto;
+  text-align: left;
+  position: relative;
+}
+.lp-agency h2 {
+  height: 150px;
+   color: #353946;
+   font-family: 'RodeoC', serif;
+   font-size: 41px;
+   font-weight: 700;
+   line-height: 41px;
+   background: url(/img/pages/golden-fish/black-line.png) no-repeat 0 146px;
+ }
+.lp-agency p {
+  width: 524px;
+  height: 49px;
+  color: #353946;
+  font-family: 'OfficinaSansC Book', serif;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 29px;
+  margin-top: 31px;
+}
+.call-to-action h1 {
+  color: #353946;
+  font-family: 'OfficinaSansC Book', serif;
+  font-weight: 400;
+  line-height: 44px;
+  font-size: 55px;
+}
+.call-to-action h3 {
+  color: #353946;
+  font-size: 20px;
+  font-family: 'OfficinaSansC Bold', serif;
+  font-weight: 400;
+  line-height: 44px;
+  margin-bottom: -10px;
+}
+.call-to-action {
+  margin-top: 40px;
+}
+.price {
+  width: 230px;
+  height: 55px;
+  float: left;
+}
+.press-button {
+  float: left;
+}
+.press-button .yellow-button {
+  margin-top: 32px;
+}

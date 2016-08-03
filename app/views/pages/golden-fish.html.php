@@ -57,6 +57,26 @@
                     Зарабатывайте за ведение проекта на разнице: бюджет проекта (минус) гонорар исполнителю.</li>
             </ul>
         </section>
+        <section class="lp-agency">
+            <div class="content">
+                <h2>Cтаньте директором<br/>
+                    собственного рекламного<br/>
+                    агентства</h2>
+                <p>с нашим бизнес-предложением “Золотая рыбка” вам останется только искать клиентов, а дизайнеры найдутся у нас.</p>
+                <div>
+                    <ul class="call-to-action">
+                        <li class="price">
+                            <h3>всего за</h3>
+                            <h1>39 000 Р</h1>
+                        </li>
+                        <li class="press-button">
+                            <a href="#" class="yellow-button clean-style-button ">Начать зарабатывать</a>
+                        </li>
+                    </ul>
+                </div>
+                <img src="/img/pages/golden-fish/ipad.png" alt="IPad">
+            </div>
+        </section>
     </main>
 </div>
 <?=$this->html->style([
