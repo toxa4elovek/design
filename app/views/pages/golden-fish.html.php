@@ -77,6 +77,26 @@
                 <img src="/img/pages/golden-fish/ipad.png" alt="IPad">
             </div>
         </section>
+        <section class="lp-you-get">
+            <div class="header-youget">
+                <h3>что</h3>
+                <h1>вы получите</h1>
+            </div>
+            <ul>
+                <li class="rubles"><strong>Вернем деньги</strong>, если решения
+                    вам не понравятся</li>
+                <li class="glass"><strong>30 000</strong> дизайнеров
+                    и копирайтеров</li>
+                <li class="pig third"><strong>Отсутствие</strong> сервисного
+                    <strong>сбора</strong> в течение одного года</li>
+                <li class="files_projects">Проекты любой сложности
+                    и бюджета (<strong>от 500 руб.</strong>)</li>
+                <li class="presentation"><strong>Презентация в pdf</strong>
+                    для клиента</li>
+                <li class="eye third">Можно <strong>скрыть информацию</strong>
+                    из общего доступа</li>
+            </ul>
+        </section>
     </main>
 </div>
 <?=$this->html->style([

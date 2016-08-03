@@ -1,6 +1,7 @@
 .lp-golden-fish {
   position: relative;
   top: -7px;
+  background: #fff;
 }
 
 .lp-golden-fish header {
@@ -329,4 +330,76 @@
 }
 .press-button .yellow-button {
   margin-top: 32px;
+}
+.lp-you-get {
+  margin-top: 82px;
+  height: 390px;
+}
+.lp-you-get .header-youget {
+  padding-top: 49px;
+  color: #353946;
+  font-family: 'RodeoC', serif;
+  font-weight: 700;
+  text-align: center;
+  width: 550px;
+  height: 67px;
+  margin: 0 auto 57px;
+  background: url(/img/pages/golden-fish/star-with-lines.png) no-repeat center 0;
+}
+
+.lp-you-get .header-youget h3 {
+  font-size: 24px;  line-height: 30px;
+}
+
+.lp-you-get .header-youget h1 {
+  font-size: 41px;
+  line-height: 37px;
+  text-transform: uppercase;
+}
+.lp-you-get ul {
+  width: 1134px;
+  margin: 0 auto;
+}
+.lp-you-get li {
+  float: left;
+  height: 48px;
+  width: 278px;
+  padding-left: 66px;
+  color: #353946;
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 26px;
+  font-family: 'OfficinaSansC Book', serif;
+  margin-bottom: 44px;
+  margin-right: 48px;
+}
+.lp-you-get li strong {
+  font-family: 'OfficinaSansC Bold', serif;
+}
+.lp-you-get li.third {
+  margin-right: 0;
+}
+.lp-you-get ul .rubles {
+  background: url(/img/pages/golden-fish/icon_I.png) no-repeat 0 5px;
+  background-size: 43px;
+}
+.lp-you-get ul .glass {
+  background: url(/img/pages/golden-fish/icon_II.png) no-repeat 0 5px;
+  background-size: 43px;
+}
+.lp-you-get ul .pig {
+  background: url(/img/pages/golden-fish/icon_III.png) no-repeat 0 5px;
+  background-size: 43px;
+}
+.lp-you-get ul .files_projects {
+  background: url(/img/pages/golden-fish/icon_IV.png) no-repeat 0 5px;
+  background-size: 43px;
+}
+.lp-you-get ul .presentation {
+  background: url(/img/pages/golden-fish/icon_V.png) no-repeat 0 5px;
+  background-size: 43px;
+}
+.lp-you-get ul .eye {
+  background: url(/img/pages/golden-fish/icon_VI.png) no-repeat 0 5px;
+  background-size: 43px;
 }
