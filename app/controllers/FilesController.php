@@ -4,16 +4,47 @@ namespace app\controllers;
 
 use \app\models\File;
 
-class FilesController extends \app\controllers\AppController {
+class FilesController extends AppController
+{
 
-    public function download() {
-        if (!empty($this->request->filename) && $file = File::first(array('conditions' => array('filename' => array('LIKE' => '%' . substr($this->request->filename, 1)))))) {
+    public function download()
+    {
+        if (!empty($this->request->filename) && $file = File::first(['conditions' => ['filename' => ['LIKE' => '%' . substr($this->request->filename, 1)]]])) {
             if (file_exists($file->filename)) {
                 header('Content-Type: application/download');
                 header('Content-Disposition: attachment; filename="' . $file->originalbasename . '"');
-                readfile($file->filename);
+                $this->readfile_chunked($file->filename);
             }
         }
-        exit;
+        die();
+    }
+
+    private function readfile_chunked($filename, $retbytes = true)
+    {
+        $cnt    = 0;
+        $handle = fopen($filename, 'rb');
+
+        if ($handle === false) {
+            return false;
+        }
+
+        while (!feof($handle)) {
+            $buffer = fread($handle, 1024*1024);
+            echo $buffer;
+            ob_flush();
+            flush();
+
+            if ($retbytes) {
+                $cnt += strlen($buffer);
+            }
+        }
+
+        $status = fclose($handle);
+
+        if ($retbytes && $status) {
+            return $cnt;
+        }
+
+        return $status;
     }
 }
