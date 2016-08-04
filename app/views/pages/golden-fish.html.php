@@ -97,6 +97,23 @@
                     из общего доступа</li>
             </ul>
         </section>
+        <section class="lp-projects">
+            <h2>Реализованные проекты</h2>
+        </section>
+        <section class="lp-contact">
+            <div>
+                <ul>
+                    <li class="info">
+                        <h2>Остались вопросы?</h2>
+                        <p>Мы ответим в течение рабочего дня: <a href="mailto:team@godesigner.ru">team@godesigner.ru</a><br>
+                            или просто звоните по телефону +7 812 648-24-12 с 10-17 по Москве</p>
+                    </li>
+                    <li>
+
+                    </li>
+                </ul>
+            </div>
+        </section>
     </main>
 </div>
 <?=$this->html->style([

@@ -403,3 +403,56 @@
   background: url(/img/pages/golden-fish/icon_VI.png) no-repeat 0 5px;
   background-size: 43px;
 }
+.lp-projects {
+  height: 400px;
+  background-color: #f8f8f8;
+  padding-top: 82px;
+}
+.lp-projects h2 {
+  width: 550px;
+  height: 26px;
+  color: #353946;
+  font-family: 'RodeoC', serif;
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 30px;
+  text-transform: uppercase;
+  margin: 0 auto;
+}
+.lp-contact {
+  height: 179px;
+  background-color: #f2cf30;
+  padding-top: 77px;
+}
+.lp-contact div {
+  width: 1170px;
+  margin: 0 auto;
+}
+.lp-contact h2 {
+  color: #353946;
+  font-family: 'RodeoC', serif;
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 30px;
+  margin-bottom: 32px;
+}
+.lp-contact p {
+  color: #353946;
+  font-family: 'OfficinaSansC Book', serif;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 29px;
+
+}
+.lp-contact p a {
+  color: #353946;
+  text-decoration: underline;
+}
+.lp-contact .info {
+  width: 566px;
+  float: left;
+}
+.lp-contact .form {
+  width: 477px;
+  float: left;
+}
