@@ -17,11 +17,47 @@
             <div class="wave"></div>
         </header>
         <section class="lp-advantages">
-            <div class="header-advantages">
+
+            <div class="calculator">
+                <div class="sliders">
+                    <h2>Ваша прибыль:</h2>
+
+                    <ul>
+                        <li>Клиентов в месяц</li>
+                        <li id="clients" data-clients="10">10</li>
+                    </ul>
+                    <div class="clear"></div>
+                    <div class="gf-slider clients"></div>
+
+                    <ul>
+                        <li>Средний гонорар</li>
+                        <li id="award" data-award="50000">50 000 Р</li>
+                    </ul>
+                    <div class="clear"></div>
+                    <div class="gf-slider award"></div>
+
+                    <ul>
+                        <li>Наценка в % <span>(маржинальность)</span></li>
+                        <li id="margin" data-margin="25">25</li>
+                    </ul>
+                    <div class="clear"></div>
+                    <div class="gf-slider margin"></div>
+                </div>
+
+                <div class="profit-calc">
+                    <h3>За 12 месяцев я получу:</h3>
+                    <span>от</span> <h1 id="result">1 500 000 Р</h1>
+                    <a href="#" class="yellow-button clean-style-button ">Начать зарабатывать</a>
+                </div>
+            </div>
+
+
+            <div class="header-advantages clear">
                 <h3>ваши</h3>
                 <h1>супер-возможности:</h1>
+
             </div>
-            <ul>
+            <ul class="advantage-list">
                 <li class="time-place">
                     <img src="/img/pages/golden-fish/Icon_I.gif" alt="Любое время и место работы">
                     <strong>Любое время и место работы</strong>
@@ -117,12 +153,13 @@
     </main>
 </div>
 <?=$this->html->style([
+    '/css/ui-lightness/jquery-ui.css',
     '/css/common/buttons.css',
     '/css/common/clear.css',
     '/css/common/backgrounds.css',
     '/css/pages/golden-fish.css'
 ], ['inline' => false])?>
 <?=$this->html->script([
-    'jquery-plugins/jquery.scrollto.min.js',
+    'jquery-ui-1.11.4.min.js',
     'pages/golden-fish.js'
 ], ['inline' => false])?>
