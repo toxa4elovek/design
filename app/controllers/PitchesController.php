@@ -312,18 +312,18 @@ class PitchesController extends AppController
             $pitchTitleHelper = new PitchTitleFormatter();
             foreach ($tempPitchList as &$pitch) {
                 $pitch['showAct'] = true;
-                if($pitch['category_id'] == 20) {
+                if ($pitch['category_id'] == 20) {
                     $receipt = Receipt::first(['conditions' => ['pitch_id' => $pitch['id']]]);
                     $initialActs = 0;
-                    foreach($receipt as $item):
-                        if($item->name === 'Награда Дизайнеру'):
+                    foreach ($receipt as $item):
+                        if ($item->name === 'Награда Дизайнеру'):
                             continue;
-                        endif;
-                        $initialActs += $item->value;
+                    endif;
+                    $initialActs += $item->value;
                     endforeach;
-                    if($initialActs > 0) {
+                    if ($initialActs > 0) {
                         $pitch['showAct'] = true;
-                    }else {
+                    } else {
                         $pitch['showAct'] = false;
                     }
                 }
@@ -1990,11 +1990,11 @@ Disallow: /pitches/upload/'.$pitch['id'];
                 'brief' => 1,
                 'specifics' => 'a:2:{s:9:"qualities";s:64:"Прагматичный, надежный, элегантный";s:15:"logo-properties";a:7:{i:0;s:1:"5";i:1;s:1:"5";i:2;s:1:"5";i:3;s:1:"5";i:4;s:1:"5";i:5;s:1:"5";i:6;s:1:"5";}}',
                 'price' => 14000,
-                'total' => 19600,
+                'total' => 19800,
                 'ga_id' => $gaId
                 ]);
-            if (Session::read('user.id')) {
-                $pitch->user_id = Session::read('user.id');
+            if ($this->userHelper->isLoggedIn()) {
+                $pitch->user_id = $this->userHelper->getId();
             }
             if ($pitch->save()) {
                 $start = new \DateTime();
