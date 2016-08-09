@@ -11,7 +11,7 @@
             <p>Решение бизнес-задач ваших клиентов силами профессиональных дизайнеров и копирайтеров сервиса. Мы гарантируем, что вы получите широкий выбор решений даже для проектов от 500 рублей, или мы вернем вам деньги.
             </p>
             <div class="buttons">
-                <a href="#" class="yellow-button clean-style-button ">Начать зарабатывать</a>
+                <a href="/subscription_plans/subscriber/4" class="yellow-button clean-style-button ">Начать зарабатывать</a>
                 <a href="#" class="empty-button clean-style-button ">Как это работает</a>
             </div>
             <div class="wave"></div>
@@ -47,7 +47,7 @@
                 <div class="profit-calc">
                     <h3>За 12 месяцев я получу:</h3>
                     <span>от</span> <h1 id="result">1 500 000 Р</h1>
-                    <a href="#" class="yellow-button clean-style-button ">Начать зарабатывать</a>
+                    <a href="/subscription_plans/subscriber/4" class="yellow-button clean-style-button ">Начать зарабатывать</a>
                 </div>
             </div>
 
@@ -106,7 +106,7 @@
                             <h1>39 000 Р</h1>
                         </li>
                         <li class="press-button">
-                            <a href="#" class="yellow-button clean-style-button ">Начать зарабатывать</a>
+                            <a href="/subscription_plans/subscriber/4" class="yellow-button clean-style-button ">Начать зарабатывать</a>
                         </li>
                     </ul>
                 </div>

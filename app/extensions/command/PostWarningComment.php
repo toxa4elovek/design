@@ -38,7 +38,7 @@ class PostWarningComment extends CronJob
            if ((int) $project->category_id === 20) {
                $client = User::first($project->user_id);
                if ((User::isSubscriptionActive($client->id, $client))
-                   && (in_array((int) $client->subscription_status, [2, 3]))) {
+                   && (in_array((int) $client->subscription_status, [2, 3, 4]))) {
                    return false;
                }
            }

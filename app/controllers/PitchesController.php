@@ -1616,7 +1616,7 @@ Disallow: /pitches/upload/'.$pitch['id'];
                 ($this->userHelper->isPitchOwner($pitch->user_id)) &&
                 ($this->userHelper->isSubscriptionActive()) &&
                 ($pitch->category_id == 20) &&
-                (in_array($this->userHelper->read('user.subscription_status'), [2, 3]))
+                (in_array($this->userHelper->read('user.subscription_status'), [2, 3, 4]))
             ) {
                 $canViewFullImage = true;
             }
@@ -1810,7 +1810,7 @@ Disallow: /pitches/upload/'.$pitch['id'];
                 $mpdf->WriteHTML(PdfGetter::get('Bill', $options));
             }
             $mpdf->Output('godesigner-pitch-'.$pitch->id.'.pdf', 'd');
-            exit;
+            die();
         }
         die();
     }
