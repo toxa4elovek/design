@@ -137,18 +137,23 @@
             <h2>Реализованные проекты</h2>
         </section>
         <section class="lp-contact">
-            <div>
-                <ul>
-                    <li class="info">
-                        <h2>Остались вопросы?</h2>
-                        <p>Мы ответим в течение рабочего дня: <a href="mailto:team@godesigner.ru">team@godesigner.ru</a><br>
-                            или просто звоните по телефону +7 812 648-24-12 с 10-17 по Москве</p>
-                    </li>
-                    <li>
-
-                    </li>
-                </ul>
-            </div>
+            <ul>
+                <li class="info">
+                    <h2>Остались вопросы?</h2>
+                    <p>Мы ответим в течение рабочего дня: <a href="mailto:team@godesigner.ru">team@godesigner.ru</a><br>
+                        или просто звоните по телефону +7 812 648-24-12 с 10-17 по Москве</p>
+                </li>
+                <li class="form">
+                    <form action="/users/requesthelp" method="post">
+                        <input type="hidden" name="case" value="fu27fwkospf">
+                        <input type="hidden" value="0" name="target" />
+                        <input type="hidden" value="" name="name" />
+                        <textarea name="message" placeholder="Напишите здесь свой вопрос"></textarea>
+                        <input type="text" value="" name="email" placeholder="Ваш E-mail">
+                        <a href="#" id="send-message" class="teal-button clean-style-button ">отправить вопрос</a>
+                    </form>
+                </li>
+            </ul>
         </section>
     </main>
 </div>

@@ -1,7 +1,7 @@
-$( function() {
+$(function () {
   console.log('loaded')
 
-  const formatMoney = function(value) {
+  const formatMoney = function (value) {
     value = value.replace(/(.*)\.00/g, '$1')
     let counter = 1
     while (value.match(/\w\w\w\w/)) {
@@ -27,22 +27,33 @@ $( function() {
     updateSum()
   }
 
-  $( '.clients' ).slider({range: 'min', min: 1, max: 30, value: 10, slide: clients, change: clients})
+  $('.clients').slider({range: 'min', min: 1, max: 30, value: 10, slide: clients, change: clients})
 
-  const award = function(event, ui) {
+  const award = function (event, ui) {
     $('#award').html(formatMoney(ui.value.toString()) + ' Р')
     $('#award').data('award', ui.value)
     updateSum()
   }
 
-  $( '.award' ).slider({range: 'min', max: 100000, value: 50000, step: 1000, min: 1000, slide: award, change: award})
+  $('.award').slider({range: 'min', max: 100000, value: 50000, step: 1000, min: 1000, slide: award, change: award})
 
-  const margin = function(event, ui) {
+  const margin = function (event, ui) {
     $('#margin').html(ui.value)
     $('#margin').data('margin', ui.value)
     updateSum()
   }
 
-  $( '.margin' ).slider({range: 'min', max: 200, min: 1, value: 25, slide: margin, change: margin})
-  
-});
+  $('.margin').slider({range: 'min', max: 200, min: 1, value: 25, slide: margin, change: margin})
+
+  $(document).on('click', '#send-message', function () {
+    const button = $(this)
+    const data = button.parent().serialize()
+    $.post('/users/requesthelp.json', data, function () {
+      button.addClass('with-icon').text('')
+      setTimeout(function () {
+        button.removeClass('with-icon').text('отправить вопрос')
+      }, 5000)
+    })
+    return false
+  })
+})
