@@ -158,6 +158,8 @@ class UsersController extends \app\controllers\AppController
 
     public function feed()
     {
+        return $this->redirect('/');
+        die();
         $date = date('Y-m-d H:i:s');
         if (!$this->userHelper->isLoggedIn()) {
             //error_reporting(E_ALL);
