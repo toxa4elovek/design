@@ -1650,15 +1650,15 @@ class Pitch extends AppModel
     public static function getPitchesForHomePage()
     {
         return Pitch::all([
-                'order' => [
-                'pinned' => 'desc',
-                'ideas_count' => 'desc',
-                'price' => 'desc'
+                'Pitch.order' => [
+                'Pitch.pinned' => 'desc',
+                'Pitch.ideas_count' => 'desc',
+                'Pitch.price' => 'desc'
             ],
                 'conditions' => [
-                    'status' => ['<' => 1],
-                    'published' => 1,
-                    'multiwinner' => 0],
+                    'Pitch.status' => 0,
+                    'Pitch.published' => 1,
+                    'Pitch.multiwinner' => 0],
             'limit' => 3,
             'page' => 1,
         ]);

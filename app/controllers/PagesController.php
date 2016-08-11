@@ -29,9 +29,9 @@ class PagesController extends AppController
     /**
      * @var array публичные методы
      */
-    public $publicActions = array(
+    public $publicActions = [
         'view', 'home', 'contacts', 'howitworks', 'experts', 'fastpitch', 'subscribe'
-    );
+    ];
 
     /**
      * Метод для отображения статических страниц
@@ -46,8 +46,8 @@ class PagesController extends AppController
             return $this->redirect('/fastpitch');
         }
         $questions = $this->popularQuestions();
-        $answers = Answer::all(array('conditions' => array('questioncategory_id' => 2), 'limit' => 10, 'order' => array('hits' => 'desc')));
-        return $this->render(array('template' => join('/', $path), 'data' => array('questions' => $questions, 'answers' => $answers)));
+        $answers = Answer::all(['conditions' => ['questioncategory_id' => 2], 'limit' => 10, 'order' => ['hits' => 'desc']]);
+        return $this->render(['template' => join('/', $path), 'data' => ['questions' => $questions, 'answers' => $answers]]);
     }
 
     /**
@@ -57,38 +57,38 @@ class PagesController extends AppController
      */
     public function home()
     {
-        $pool = array(1, 3, 7);
+        $pool = [1, 3, 7];
         $category_id = $pool[array_rand($pool)];
         if (!$statistic = Rcache::read('statistic')) {
-            $statistic = array(
-                'numOfSolutionsPerProject' => array(
+            $statistic = [
+                'numOfSolutionsPerProject' => [
                     '1' => Pitch::getNumOfSolutionsPerProjectOfCategory(1),
                     '3' => Pitch::getNumOfSolutionsPerProjectOfCategory(3),
                     '7' => Pitch::getNumOfSolutionsPerProjectOfCategory(7),
-                ),
+                ],
                 'numOfCurrentPitches' => Pitch::getNumOfCurrentPitches(),
                 'totalAwards' => Pitch::getTotalAwards(),
                 'totalWaitingForClaim' => Pitch::getTotalWaitingForClaim(),
                 'totalParticipants' => Solution::getTotalParticipants(),
                 'lastDaySolutionNum' => Solution::getNumOfUploadedSolutionInLastDay(),
-            );
+            ];
             Rcache::write('statistic', $statistic, '+1 hour');
         }
         $pitches = Pitch::getPitchesForHomePage();
-        $promoSolutions = Solution::all(array(
-            'conditions' => array(
+        $promoSolutions = Solution::all([
+            'conditions' => [
                 'Promo.enabled' => 1,
-            ),
-            'with' => array('Promo', 'Pitch'),
-            'order' => array('RAND()'),
+            ],
+            'with' => ['Promo', 'Pitch'],
+            'order' => ['RAND()'],
             'limit' => 2
-        ));
+        ]);
         foreach ($promoSolutions as $promoSolution) {
             $promoSolution->pitch->days = ceil((strtotime($promoSolution->pitch->finishDate) - strtotime($promoSolution->pitch->started)) / DAY);
         }
-        $grades = Grade::all(array('limit' => 2, 'conditions' => array('enabled' => 1), 'order' => array('RAND()'), 'with' => array('Pitch')));
+        $grades = Grade::all(['limit' => 2, 'conditions' => ['enabled' => 1], 'order' => ['RAND()'], 'with' => ['Pitch']]);
         foreach ($grades as $grade) {
-            $grade->user = User::first(array('conditions' => array('id' => $grade->user_id)));
+            $grade->user = User::first(['conditions' => ['id' => $grade->user_id]]);
         }
         $experts = Expert::all();
         $totalCount = Solution::solutionsForSaleCount();
@@ -182,10 +182,10 @@ class PagesController extends AppController
             $data = compact('discount', 'discountEndTime');
             return $this->render(['template' => 'subscribe_discount', 'data' => $data]);
         }
-        if(($this->discountForSubscriberReferal > 0) && (isset($_COOKIE['sreftime']))) {
+        if (($this->discountForSubscriberReferal > 0) && (isset($_COOKIE['sreftime']))) {
             $startTime = strtotime(date(MYSQL_DATETIME_FORMAT, $_COOKIE['sreftime']));
             $delta = (time() - $startTime);
-            if(floor($delta / DAY) < 10) {
+            if (floor($delta / DAY) < 10) {
                 $discount = $this->discountForSubscriberReferal;
                 $discountEndTime = date(MYSQL_DATETIME_FORMAT, $startTime + 10 * DAY);
                 $data = compact('discount', 'discountEndTime');
