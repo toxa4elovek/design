@@ -1,6 +1,4 @@
 $(function () {
-  console.log('loaded')
-
   const formatMoney = function (value) {
     value = value.replace(/(.*)\.00/g, '$1')
     let counter = 1
@@ -55,5 +53,17 @@ $(function () {
       }, 5000)
     })
     return false
+  })
+
+  let gifs = $('img', '.advantage-list')
+  $(window).on('scroll', function () {
+    let scroll = $(window).scrollTop()
+    if (scroll >= 420) {
+      $.each(gifs, function (index, object) {
+        let gif = $(object)
+        gif.attr('src', gif.attr('src'))
+      })
+      $(window).off('scroll')
+    }
   })
 })
