@@ -23,7 +23,7 @@ class UpdateNewsWithCompanyInstagram extends CronJob
         $jsonString = file_get_contents('https://www.instagram.com/godesigner.ru/media/');
         $json = json_decode($jsonString, true);
         $json['items'] = array_filter($json['items'], function ($item) {
-            if ($item['created_time'] < time() - 4 * DAY) {
+            if ($item['created_time'] < time() - 1 * HOUR) {
                 return false;
             }
             return true;
