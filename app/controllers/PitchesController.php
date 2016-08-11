@@ -370,10 +370,13 @@ class PitchesController extends AppController
         return 'false';
     }
 
+    /**
+     * @return mixed|objectМ
+     */
     public function delete()
     {
         if ($pitch = Pitch::first($this->request->id)) {
-            if ((($pitch->user_id == Session::read('user.id')) || ($this->userHelper->isUserManagerOfCurrentUser($pitch->user_id))) && ($pitch->published == 0) && ($pitch->billed == 0) && ($pitch->ideas_count == 0)) {
+            if ((((int) $pitch->user_id === (int) $this->userHelper->getId()) || ($this->userHelper->isUserManagerOfCurrentUser($pitch->user_id))) && ((int) $pitch->published === 0) && ((int) $pitch->billed === 0) && (((int) $pitch->ideas_count === 0) || ((int) $pitch->multiwinner > 0))) {
                 $pitch->delete();
             }
             if (!$this->request->is('json')) {
