@@ -49,7 +49,9 @@ class PitchesController extends AppController
      */
     public $publicActions = [
         'crowdsourcing', 'promocode', 'index', 'printpitch', 'robots', 'fillbrief', 'add', 'create',
-        'brief', 'activate', 'view', 'details', 'paymaster', 'callback', 'payanyway', 'viewsolution', 'getlatestsolution', 'getpitchdata', 'designers', 'getcommentsnew', 'apipitchdata', 'addfastpitch', 'fastpitch',
+        'brief', 'activate', 'view', 'details', 'paymaster', 'callback', 'payanyway', 'viewsolution',
+        'getlatestsolution', 'getpitchdata', 'designers', 'getcommentsnew', 'apipitchdata', 'addfastpitch', 'fastpitch',
+        'getpdf'
     ];
 
     /**
@@ -368,10 +370,13 @@ class PitchesController extends AppController
         return 'false';
     }
 
+    /**
+     * @return mixed|objectМ
+     */
     public function delete()
     {
         if ($pitch = Pitch::first($this->request->id)) {
-            if ((($pitch->user_id == Session::read('user.id')) || ($this->userHelper->isUserManagerOfCurrentUser($pitch->user_id))) && ($pitch->published == 0) && ($pitch->billed == 0) && ($pitch->ideas_count == 0)) {
+            if ((((int) $pitch->user_id === (int) $this->userHelper->getId()) || ($this->userHelper->isUserManagerOfCurrentUser($pitch->user_id))) && ((int) $pitch->published === 0) && ((int) $pitch->billed === 0) && (((int) $pitch->ideas_count === 0) || ((int) $pitch->multiwinner > 0))) {
                 $pitch->delete();
             }
             if (!$this->request->is('json')) {
@@ -1797,10 +1802,11 @@ Disallow: /pitches/upload/'.$pitch['id'];
     public function getpdf()
     {
         if (($pitch = Pitch::first($this->request->id)) && ($bill = Bill::first($this->request->id))) {
-            if (Session::read('user.id') != $pitch->user_id) {
+            if ((int) $this->userHelper->getId() !== (int) $pitch->user_id) {
                 die();
             }
             require_once LITHIUM_APP_PATH.'/'.'libraries'.'/'.'MPDF54/MPDF54/mpdf.php';
+            error_reporting(0);
             $options = compact('pitch', 'bill');
             $mpdf = new \mPDF();
             if (($pitch->type == 'plan-payment') && ($extracted = SubscriptionPlan::extractFundBalanceAmount($pitch->id))) {

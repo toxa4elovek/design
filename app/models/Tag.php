@@ -11,19 +11,20 @@ use app\extensions\storage\Rcache;
  *
  * @package app\models
  */
-class Tag extends AppModel {
+class Tag extends AppModel
+{
 
     /**
      * @var array связь
      */
-    public $hasMany = array('Solutiontag');
+    public $hasMany = ['Solutiontag'];
 
     /**
      * Словарь соответствия латинских ключей и русских видов деятельности
      *
      * @var array
      */
-    private static $industryDictionary = array(
+    private static $industryDictionary = [
         'realty' => 'Недвижимость / Строительство',
         'auto' => 'Автомобили / Транспорт',
         'finances' => 'Финансы / Бизнес',
@@ -39,7 +40,7 @@ class Tag extends AppModel {
         'children' => 'Дети',
         'security' => 'Охрана / Безопасность',
         'health' => 'Медицина / Здоровье',
-        'it' => 'Компьютеры / IT');
+        'it' => 'Компьютеры / IT'];
 
     /**
      * Метод добавления тегов к решению через внешние запросы
@@ -47,11 +48,12 @@ class Tag extends AppModel {
      * @param $formdata
      * @param $solutionId
      */
-    public static function add($formdata, $solutionId) {
-        if(isset($formdata['tags']) && (is_array($formdata['tags']))) {
+    public static function add($formdata, $solutionId)
+    {
+        if (isset($formdata['tags']) && (is_array($formdata['tags']))) {
             self::__bulkArraySave($formdata['tags'], $solutionId);
         }
-        if((isset($formdata['job-type'])) && (is_array($formdata['job-type']))) {
+        if ((isset($formdata['job-type'])) && (is_array($formdata['job-type']))) {
             self::__jobTypesSave($formdata['job-type'], $solutionId);
         }
     }
@@ -62,9 +64,10 @@ class Tag extends AppModel {
      * @param $tagsList
      * @param $solutionId
      */
-    private static function __jobTypesSave($tagsList, $solutionId) {
+    private static function __jobTypesSave($tagsList, $solutionId)
+    {
         $filteredTags = array_intersect_key(self::$industryDictionary, array_flip($tagsList));
-        $saveTag = function($tag, $solutionId) {
+        $saveTag = function ($tag, $solutionId) {
             Tag::saveSolutionTag($tag, $solutionId);
         };
         foreach ($filteredTags as $tagString) {
@@ -85,7 +88,8 @@ class Tag extends AppModel {
      * @param $tagsList
      * @param $solutionId
      */
-    private static function __bulkArraySave($tagsList, $solutionId) {
+    private static function __bulkArraySave($tagsList, $solutionId)
+    {
         foreach ($tagsList as $tag) {
             Tag::saveSolutionTag($tag, $solutionId);
         }
@@ -98,14 +102,15 @@ class Tag extends AppModel {
      * @param $solutionId
      * @return object
      */
-    public static function saveSolutionTag($string, $solutionId) {
+    public static function saveSolutionTag($string, $solutionId)
+    {
         if (!Tag::isTagExists($string)) {
             Tag::saveTag($string);
         }
-        $solutionTag = Solutiontag::create(array(
+        $solutionTag = Solutiontag::create([
             'tag_id' => Tag::getTagId($string),
             'solution_id' => $solutionId
-        ));
+        ]);
         $solutionTag->save();
         $cacheKey = 'tags_for_solutions_' . $solutionId;
         Rcache::delete($cacheKey);
@@ -119,14 +124,15 @@ class Tag extends AppModel {
      * @param $solutionId
      * @return bool
      */
-    public static function removeTag($string, $solutionId) {
+    public static function removeTag($string, $solutionId)
+    {
         if (!Tag::isTagExists($string)) {
             Tag::saveTag($string);
         }
-        if($result = Solutiontag::remove(array('tag_id' => array(
+        if ($result = Solutiontag::remove(['tag_id' => [
             'tag_id' => Tag::getTagId($string),
             'solution_id' => $solutionId
-        )))) {
+        ]])) {
             $cacheKey = 'tags_for_solutions_' . $solutionId;
             Rcache::delete($cacheKey);
         }
@@ -139,8 +145,9 @@ class Tag extends AppModel {
      * @param $string
      * @return bool
      */
-    public static function isTagExists($string) {
-        return (bool) self::count(array('conditions' => array('name' => trim($string))));
+    public static function isTagExists($string)
+    {
+        return (bool) self::count(['conditions' => ['name' => trim($string)]]);
     }
 
     /**
@@ -150,9 +157,10 @@ class Tag extends AppModel {
      * @param $string
      * @return object
      */
-    public static function saveTag($string) {
-        if(!$tag = self::first(array('conditions' => array('name' => trim($string))))) {
-            $tag = self::create(array('name' => trim($string)));
+    public static function saveTag($string)
+    {
+        if (!$tag = self::first(['conditions' => ['name' => trim($string)]])) {
+            $tag = self::create(['name' => trim($string)]);
             $tag->save();
         }
         return $tag;
@@ -164,9 +172,10 @@ class Tag extends AppModel {
      * @param $string
      * @return bool
      */
-    public static function getTagId($string) {
+    public static function getTagId($string)
+    {
         $id = false;
-        if($tag = self::first(array('fields' => array('id'), 'conditions' => array('name' => trim($string))))) {
+        if ($tag = self::first(['fields' => ['id'], 'conditions' => ['name' => trim($string)]])) {
             $id = $tag->id;
         }
         return $id;
@@ -179,13 +188,14 @@ class Tag extends AppModel {
      * @param bool $cleanCache - нужно ли очистить теги
      * @return mixed
      */
-    public static function getSuggest($string, $cleanCache = false) {
+    public static function getSuggest($string, $cleanCache = false)
+    {
         $cacheKey = 'suggest_tags_' . $string;
-        if($cleanCache) {
+        if ($cleanCache) {
             Rcache::delete($cacheKey);
         }
         if (!$resultData = Rcache::read($cacheKey)) {
-            $tags = Tag::all(array('conditions' => array('name' => array('LIKE' => '%' . $string . '%'))));
+            $tags = Tag::all(['conditions' => ['name' => ['LIKE' => $string . '%']]]);
             $resultData = $tags->data();
             Rcache::write($cacheKey, $resultData, '+2 hours');
         }
@@ -199,17 +209,18 @@ class Tag extends AppModel {
      * @param $count
      * @return array|bool|mixed
      */
-    public static function getPopularTags($count) {
+    public static function getPopularTags($count)
+    {
         $sort_tags = Rcache::read('sort_tags');
         if (empty($sort_tags)) {
-            $solutionTags = Solutiontag::all(array(
-                'fields' => array('tag_id', 'count(id) AS total_count'),
-                'group' => array('tag_id'),
-                'order' => array('total_count' => 'desc'),
+            $solutionTags = Solutiontag::all([
+                'fields' => ['tag_id', 'count(id) AS total_count'],
+                'group' => ['tag_id'],
+                'order' => ['total_count' => 'desc'],
                 'limit' => $count
-            ));
-            $sort_tags = array();
-            foreach($solutionTags as $solutionTag) {
+            ]);
+            $sort_tags = [];
+            foreach ($solutionTags as $solutionTag) {
                 $tag = self::first($solutionTag->tag_id);
                 $sort_tags[$tag->name] = (int) $solutionTag->total_count;
             }
@@ -217,5 +228,4 @@ class Tag extends AppModel {
         }
         return $sort_tags;
     }
-
 }
