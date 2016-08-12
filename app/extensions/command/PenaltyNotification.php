@@ -30,10 +30,12 @@ class PenaltyNotification extends CronJob
             if ($lowestDelta <= time() && $highDelta >= time()) {
                 $count++;
                 $user = User::first($project->user_id);
-                if (($project->guaranteed == 0) && ($project->pitchData()['avgNum'] >= 3.0)) {
-                    NotificationsMailer::penaltyClientNotificationNonGuarantee($user, $project, $helper->getChooseWinnerTime($project));
-                } else {
-                    NotificationsMailer::penaltyClientNotificationGuarantee($user, $project, $helper->getChooseWinnerTime($project));
+                if(((int) $project->expert === 0) || ((int) $project->expert === 1 && $helper->expertOpinion($project->id) !== strtotime($project->finishDate) )) {
+                    if (($project->guaranteed == 0) && ($project->pitchData()['avgNum'] >= 3.0)) {
+                        NotificationsMailer::penaltyClientNotificationNonGuarantee($user, $project, $helper->getChooseWinnerTime($project));
+                    } else {
+                        NotificationsMailer::penaltyClientNotificationGuarantee($user, $project, $helper->getChooseWinnerTime($project));
+                    }
                 }
             }
 
