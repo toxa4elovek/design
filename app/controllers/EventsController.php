@@ -83,7 +83,6 @@ class EventsController extends AppController
      */
     public function feed()
     {
-die();
         $tag = null;
         if (isset($this->request->query['tag'])) {
             $tag = $this->request->query['tag'];
