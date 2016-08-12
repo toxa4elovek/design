@@ -601,7 +601,11 @@ class PitchesController extends AppController
                 if ((isset($this->request->query['date'])) && (!empty($this->request->query['date']))) {
                     $defaultFinishDate = $this->request->query['date'];
                 }
-                $defaultChooseWinnerFinishDate = date('Y-m-d H:i:s', strtotime($defaultFinishDate) + (4 * DAY));
+                if ((int) $this->userRecord->subscription_status === 4) {
+                    $defaultChooseWinnerFinishDate = date('Y-m-d H:i:s', strtotime($defaultFinishDate) + (7 * DAY));
+                } else {
+                    $defaultChooseWinnerFinishDate = date('Y-m-d H:i:s', strtotime($defaultFinishDate) + (4 * DAY));
+                }
                 $plan = $this->userHelper->getCurrentPlanData();
                 $balance = $this->userHelper->getBalance();
                 $expirationDate = $this->userHelper->getSubscriptionExpireDate('d.m.Y');

@@ -55,7 +55,7 @@ class SubscriptionPlan extends Pitch
             'price' => 39000,
             'title' => 'Золотая рыбка',
             'duration' => YEAR,
-            'free' => [],
+            'free' => ['chooseWinnerFinishDate', 'hideproject'],
         ]
     ];
 
