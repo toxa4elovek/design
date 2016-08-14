@@ -2,6 +2,7 @@
 
 namespace app\extensions\mailers;
 
+use app\models\Bill;
 use app\models\SubscriptionPlan;
 use app\models\Pitch;
 use app\models\User;
@@ -19,12 +20,12 @@ class NotificationsMailer extends \li3_mailer\extensions\Mailer
     public static function sendFillBalanceSuccess($user, $plan)
     {
         $value = SubscriptionPlan::extractFundBalanceAmount($plan->id);
-        return self::_mail(array(
+        return self::_mail([
             'use-smtp' => true,
             'to' => $user->email,
             'subject' => 'Ваш счёт успешно пополнен!',
             'data' => compact('user', 'value')
-        ));
+        ]);
     }
 
     /**
@@ -40,12 +41,12 @@ class NotificationsMailer extends \li3_mailer\extensions\Mailer
         if ($step < 2) {
             $step = 2;
         }
-        return self::_mail(array(
+        return self::_mail([
             'use-smtp' => true,
             'to' => $user->email,
             'subject' => 'Завершение затянулось',
             'data' => compact('user', 'project', 'step')
-        ));
+        ]);
     }
 
     /**
@@ -57,13 +58,13 @@ class NotificationsMailer extends \li3_mailer\extensions\Mailer
      */
     public static function penaltyNotification($project, $penalty)
     {
-        return self::_mail(array(
+        return self::_mail([
             'use-smtp' => true,
             'to' => 'm.elenevskaya@godesigner.ru',
             //'to' => 'nyudmitriy@gmail.com',
             'subject' => 'Штраф более 4500 рублей',
             'data' => compact('project', 'penalty')
-        ));
+        ]);
     }
 
     /**
@@ -77,13 +78,13 @@ class NotificationsMailer extends \li3_mailer\extensions\Mailer
      */
     public static function penaltyClientNotificationNonGuarantee($user, $project, $time)
     {
-        return self::_mail(array(
+        return self::_mail([
             'use-smtp' => true,
             'to' => $user->email,
             //'to' => 'nyudmitriy@gmail.com',
             'subject' => 'Проект на GoDesigner: примите решение',
             'data' => compact('user', 'project', 'time')
-        ));
+        ]);
     }
 
     /**
@@ -97,13 +98,13 @@ class NotificationsMailer extends \li3_mailer\extensions\Mailer
      */
     public static function penaltyClientNotificationGuarantee($user, $project, $time)
     {
-        return self::_mail(array(
+        return self::_mail([
             'use-smtp' => true,
             'to' => $user->email,
             //'to' => 'nyudmitriy@gmail.com',
             'subject' => 'Проект на GoDesigner: примите решение',
             'data' => compact('user', 'project', 'time')
-        ));
+        ]);
     }
 
     /**
@@ -115,13 +116,13 @@ class NotificationsMailer extends \li3_mailer\extensions\Mailer
     public static function sendSubscriberChooseWinnerWarning($project)
     {
         $user = User::first($project->user_id);
-        return self::_mail(array(
+        return self::_mail([
             'use-smtp' => true,
             'to' => $user->email,
             //'to' => 'nyudmitriy@gmail.com',
             'subject' => 'Время на выбор победителя истекает!',
             'data' => compact('user', 'project')
-        ));
+        ]);
     }
 
     /**
@@ -134,13 +135,13 @@ class NotificationsMailer extends \li3_mailer\extensions\Mailer
     public static function sendChooseWinnerNotificationForNonGuarantee($project)
     {
         $user = User::first($project->user_id);
-        return self::_mail(array(
+        return self::_mail([
                 'use-smtp' => true,
                 'to' => $user->email,
                 //'to' => 'nyudmitriy@gmail.com',
                 'subject' => 'Проект на GoDesigner: 4 дня на выбор лучшего решения',
                 'data' => compact('user', 'project')
-            ));
+            ]);
     }
 
     /**
@@ -153,13 +154,13 @@ class NotificationsMailer extends \li3_mailer\extensions\Mailer
     public static function sendChooseWinnerNotificationForGuarantee($project)
     {
         $user = User::first($project->user_id);
-        return self::_mail(array(
+        return self::_mail([
             'use-smtp' => true,
             'to' => $user->email,
             //'to' => 'nyudmitriy@gmail.com',
             'subject' => 'Проект на GoDesigner: 4 дня на выбор лучшего решения',
             'data' => compact('user', 'project')
-        ));
+        ]);
     }
 
     /**
@@ -172,13 +173,13 @@ class NotificationsMailer extends \li3_mailer\extensions\Mailer
     public static function sendPenaltyActiveReminder($project, $penalty)
     {
         $user = User::first($project->user_id);
-        return self::_mail(array(
+        return self::_mail([
             'use-smtp' => true,
             'to' => $user->email,
             //'to' => 'nyudmitriy@gmail.com',
             'subject' => sprintf('Напоминание про штраф: %d рублей', $penalty),
             'data' => compact('user', 'project')
-        ));
+        ]);
     }
 
     /**
@@ -191,13 +192,13 @@ class NotificationsMailer extends \li3_mailer\extensions\Mailer
     public static function sendStartPenaltyNotification($project)
     {
         $user = User::first($project->user_id);
-        return self::_mail(array(
+        return self::_mail([
             'use-smtp' => true,
             'to' => $user->email,
             //'to' => 'nyudmitriy@gmail.com',
             'subject' => 'Проект на GoDesigner: время на выбор истекло',
             'data' => compact('user', 'project')
-        ));
+        ]);
     }
 
     /**
@@ -210,12 +211,25 @@ class NotificationsMailer extends \li3_mailer\extensions\Mailer
     {
         $user = User::first($project->user_id);
         $time = (strtotime($project->finishDate) + 10 * DAY);
-        return self::_mail(array(
+        return self::_mail([
             'use-smtp' => true,
             'to' => $user->email,
             //'to' => 'nyudmitriy@gmail.com',
             'subject' => sprintf('Проект на GoDesigner будет закрыт %s', date('d.m.Y H:i:s', $time)),
             'data' => compact('user', 'project', 'time')
-        ));
+        ]);
+    }
+
+    public static function sendProjectFinishedNotifications($project, $targetEmail)
+    {
+        if ($bill = Bill::first($project->id)) {
+            return self::_mail([
+                'use-smtp' => true,
+                'to' => $targetEmail,
+                'subject' => 'Завершён проект на GoDesigner',
+                'data' => compact('project')
+            ]);
+        }
+        return false;
     }
 }

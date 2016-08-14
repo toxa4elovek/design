@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\extensions\helper\Brief;
 use app\extensions\helper\MoneyFormatter;
 use app\extensions\helper\NumInflector;
+use app\extensions\mailers\NotificationsMailer;
 use app\extensions\smsfeedback\SmsFeedback;
 use app\extensions\smsfeedback\SmsUslugi;
 use app\extensions\social\TwitterAPI;
@@ -826,6 +827,8 @@ class UsersController extends \app\controllers\AppController
                 }
                 $solution->step = 4;
                 $solution->save();
+                NotificationsMailer::sendProjectFinishedNotifications($solution->pitch, 'm.elenevskaya@godesigner.ru');
+                NotificationsMailer::sendProjectFinishedNotifications($solution->pitch, 'va@godesigner.ru');
                 Pitch::finishPitch($solution->pitch_id);
                 return $this->redirect(['controller' => 'users', 'action' => 'step4', 'id' => $solution->id]);
             }
