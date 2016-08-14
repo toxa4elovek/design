@@ -65,3 +65,5 @@ app/webroot/js/common/solutions/CopywritingSolution.js
 app/webroot/js/common/pushWidget/*
 app/webroot/js/common/pushWidget/PushWidget.js
 app/webroot/js/common/pushWidget/PushWidgetActions.js
+app/webroot/js/pages/golden-fish.js
+app/webroot/js/subscription_plans/subscriber.js
