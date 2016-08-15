@@ -1784,8 +1784,9 @@ class Pitch extends AppModel
                     $pitch->status = 1;
                     $pitch->confirmed = 0;
                     $pitch->title = $originalPitch->title;
-                    $pitch->started = date('Y-m-d H:i:s');
-                    $pitch->finishDate = date('Y-m-d H:i:s', time() + 10 * DAY);
+                    $pitch->started = date(MYSQL_DATETIME_FORMAT);
+                    $pitch->awardedDate = date(MYSQL_DATETIME_FORMAT);
+                    $pitch->finishDate = date(MYSQL_DATETIME_FORMAT, time() + 10 * DAY);
                     $pitch->save();
                     SolutionsMailer::sendSolutionBoughtNotification($pitch->awarded);
                     SpamMailer::sendNewLogosaleProject($pitch);
