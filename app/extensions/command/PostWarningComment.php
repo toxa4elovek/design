@@ -47,7 +47,7 @@ class PostWarningComment extends CronJob
         $count = count($projectArray);
         $this->out("Found $count projects for comment after filters");
         array_walk($projectArray, function ($project) {
-            $message = 'Нельзя также размещать ссылки на&nbsp;работы в&nbsp;100% разрешении. Те, кто нарушили правила сервиса, будут блокированы для участи в&nbsp;этом проекте. Подробнее тут:
+            $message = 'Нельзя размещать ссылки на&nbsp;работы в&nbsp;100% разрешении. Те, кто нарушили правила сервиса, будут блокированы для участи в&nbsp;этом проекте. Подробнее тут:
 https://www.godesigner.ru/answers/view/72';
             $data = [
                 'pitch_id' => $project->id,
