@@ -99,3 +99,4 @@
     })(document, window, 'Chatra');
 </script>
 <!-- /Chatra {/literal} -->
+<script type="text/javascript">(window.Image ? (new Image()) : document.createElement('img')).src = location.protocol + '//vk.com/rtrg?r=BycnZ*7at911xUrJSspJlXmFDG2UjWVzdkZxJYO1brLLyKPCLBHUV44b0Kwpbp30r4lbaTyb8FsZG*N7eqS0xiBx48Zkar0**T52jb2CyNZwXc7e29zkdpok0c*yD2Ardu9lxNb7dHaaGnay7O9r0HLRIU4/U39tisM5iAreJi4-';</script>
