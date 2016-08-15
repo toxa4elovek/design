@@ -11,6 +11,7 @@ use app\models\Grade;
 use app\models\Pitch;
 use app\models\Schedule;
 use app\models\Solution;
+use app\models\Solutionfile;
 use app\models\User;
 use app\models\Wp_post;
 use tmhOAuth\tmhOAuth;
@@ -30,7 +31,7 @@ class PagesController extends AppController
      * @var array публичные методы
      */
     public $publicActions = [
-        'view', 'home', 'contacts', 'howitworks', 'experts', 'fastpitch', 'subscribe'
+        'view', 'home', 'contacts', 'howitworks', 'experts', 'fastpitch', 'subscribe', 'goldenfish'
     ];
 
     /**
@@ -45,9 +46,62 @@ class PagesController extends AppController
         if (preg_match('/fastpitch/', $path[0])) {
             return $this->redirect('/fastpitch');
         }
+        if (preg_match('/golden-fish/', $path[0])) {
+            return $this->redirect('/golden-fish');
+        }
         $questions = $this->popularQuestions();
         $answers = Answer::all(['conditions' => ['questioncategory_id' => 2], 'limit' => 10, 'order' => ['hits' => 'desc']]);
         return $this->render(['template' => join('/', $path), 'data' => ['questions' => $questions, 'answers' => $answers]]);
+    }
+
+    public function goldenfish()
+    {
+        $solutions = Solution::all([
+            'conditions' => [
+                'Pitch.category_id' => 20,
+                'Solution.awarded' => 1,
+                'Pitch.multiwinner' => 0
+            ],
+            'limit' => 96,
+            'with' => ['Pitch']
+        ]);
+        foreach ($solutions as $solution) {
+            if(isset($solution->images['solution_promo'])) {
+                continue;
+            }
+            if (isset($solution->images['solution'][0])) {
+                $newfiledata = pathinfo($solution->images['solution'][0]['filename']);
+                $originalFilename = $solution->images['solution'][0]['filename'];
+
+            } else {
+                $newfiledata = pathinfo($solution->images['solution']['filename']);
+                $originalFilename = $solution->images['solution']['filename'];
+            }
+            $newfilename = $newfiledata['dirname'] . '/' . $newfiledata['filename'] . '_promo.' . $newfiledata['extension'];
+            $imageProcessor = new \upload($originalFilename);
+            $imageProcessor->upload($originalFilename);
+            $imageProcessor->init();
+            $imageProcessor->uploaded = true;
+            $imageProcessor->no_upload_check = true;
+            $imageProcessor->file_src_pathname = $originalFilename;
+            $imageProcessor->file_src_name_ext = $newfiledata['extension'];
+            $imageProcessor->file_new_name_body = $newfiledata['filename'] . '_promo';
+            $promoSize = ['image_resize' => true, 'image_ratio_crop' => 'T', 'image_x' => 322, 'image_y' => 322, 'file_overwrite' => true];
+            foreach ($promoSize as $param => $value) {
+                $imageProcessor->{$param} = $value;
+            }
+            $imageProcessor->process($newfiledata['dirname']);
+            $conditions = array('model' => '\app\models\Solution', 'model_id' => $solution->id, 'filekey' => 'solution' . '_promo', 'filename' => $newfilename);
+            $data = array('filename' => $newfilename) + $conditions;
+            if ($existingRow = Solutionfile::first(array('conditions' => $conditions))) {
+                $existingRow->set($data);
+                $existingRow->save();
+            } else {
+                Solutionfile::create($data)->save();
+            }
+            $solution = Solution::first($solution->id);
+        }
+        return compact('solutions');
     }
 
     /**

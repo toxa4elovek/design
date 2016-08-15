@@ -66,4 +66,23 @@ $(function () {
       $(window).off('scroll')
     }
   })
+
+  $('.lp-projects-slider').slick({
+    infinite: true,
+    slidesToShow: 6,
+    slidesToScroll: 6,
+    arrows: false,
+    variableWidth: true
+  })
+
+  $('.img-container').hover(
+    function () {
+      $('a', $(this), $(this)).fadeIn(300)
+    },
+    function () {
+      $('a', $(this), $(this)).fadeOut(300, function () {
+        $(this).hide()
+      })
+    }
+  )
 })

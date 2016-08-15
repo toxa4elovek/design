@@ -135,6 +135,21 @@
         </section>
         <section class="lp-projects">
             <h2>Реализованные проекты</h2>
+            <div class="lp-projects-slider">
+                <?php foreach ($solutions as $solution):
+                    if ((!isset($solution->images)) || (empty($solution->images)) || ($this->Solution->renderImageUrl($solution->images['solution_promo'], 0) === '')):
+                        continue;
+                    endif;
+                    ?>
+                    <div class="img-container">
+                        <img src="https://godesigner.ru/<?= $this->Solution->renderImageUrl($solution->images['solution_promo'], 0) ?>" alt="Решение" />
+                        <a class="overlay" href="/pitches/viewsolution/<?= $solution->id ?>">
+                            <?= $solution->pitch->title ?>
+                            <span><?php echo $this->moneyFormatter->formatMoney($solution->pitch->price, ['suffix' => ' Р']) ?></span>
+                        </a>
+                    </div>
+                <?php endforeach;?>
+            </div>
         </section>
         <section class="lp-contact">
             <ul>
@@ -162,9 +177,12 @@
     '/css/common/buttons.css',
     '/css/common/clear.css',
     '/css/common/backgrounds.css',
-    '/css/pages/golden-fish.css'
+    '/css/pages/golden-fish.css',
+    '/js/slick/slick.css',
+    '/js/slick/slick-theme.css'
 ], ['inline' => false])?>
 <?=$this->html->script([
     'jquery-ui-1.11.4.min.js',
+    '/js/slick/slick.min.js',
     'pages/golden-fish.js'
 ], ['inline' => false])?>
