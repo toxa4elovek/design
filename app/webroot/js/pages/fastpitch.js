@@ -3,7 +3,7 @@
 $(document).ready(function () {
   $('.fastpitch').click(function () {
     var phoneInput = $('input[name="phone"]');
-    if (phoneInput.val() !== '') {
+    if (phoneInput.val() !== '' && phoneInput.val() !== '7 911 123 45 67') {
       $.post('/pitches/addfastpitch.json', {
         'phone': phoneInput.val(),
         'date': $('input[name=time]:checked').data('date')
