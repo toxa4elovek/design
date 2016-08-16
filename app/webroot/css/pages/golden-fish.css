@@ -695,10 +695,10 @@ li .with-icon {
 li .teal-button {
   float: left;
   display: block;
-  width: 116px;
+  width: 118px;
   height: 41px;
-  padding-left: 25px;
-  padding-right: 25px;
+  padding-left: 24px;
+  padding-right: 24px;
   background-image: linear-gradient(to top, #1fe7d7 0%, #3be8b1 100%);
   color: #353946;
   font-family: 'OfficinaSansC Book', serif;
