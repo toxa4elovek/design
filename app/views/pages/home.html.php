@@ -1,6 +1,6 @@
 <div class="wrapper login" style="background:none;">
 
-  <?=$this->view()->render(array('element' => 'header'))?>
+  <?=$this->view()->render(['element' => 'header'])?>
   <div style="clear:both"></div>
   <div id="slides">
     <div class="slides_container" style="height:300px;">
@@ -30,23 +30,23 @@
               <span>предложите идею заказчику</span>
           </div>
           <div class="fill">
-              <?=$this->html->link('Заказчику', 'Pitches::create', array('class' => 'mainpage-create-project'))?><br>
+              <?=$this->html->link('Заказчику', 'Pitches::create', ['class' => 'mainpage-create-project'])?><br>
               <span>создайте проект для дизайнеров</span>
           </div>
       </div>
 
     <ul class="front_catalog">
-        <?php foreach($promoSolutions as $promo):
+        <?php foreach ($promoSolutions as $promo):
             $promo->promo = $promo->promos->current();
-            $getWebUrl = function($path) {
-                if(preg_match('#webroot(.*)#', $path, $matches)) {
+            $getWebUrl = function ($path) {
+                if (preg_match('#webroot(.*)#', $path, $matches)) {
                     return $matches[1];
-                }else {
+                } else {
                     return false;
                 }
             };
-            $addWebUrl = function($record) use ($getWebUrl){
-                if(isset($record->filename)) {
+            $addWebUrl = function ($record) use ($getWebUrl) {
+                if (isset($record->filename)) {
                     $record->weburl = $getWebUrl($record->filename);
                 }
                 return $record;
@@ -56,38 +56,44 @@
             <li style="height:259px;">
                 <img data-source="<?= $promo->promo->filename ?>" src="<?=$promo->promo->weburl?>" alt="" />
                 <a class="more_info" href="/pitches/view/<?=$promo->pitch_id?>">
-                  <p><span><?=(int) $promo->pitch->days?></span><br><?=$this->numInflector->formatString((int)$promo->pitch->days, array(
+                  <p><span><?=(int) $promo->pitch->days?></span><br><?=$this->numInflector->formatString((int)$promo->pitch->days, [
                       'first' => 'день',
                       'second' => 'дня',
                       'third' => 'дней'
-                  ))?></p>
-                  <p><span><?=(int) $promo->pitch->ideas_count?></span><br><?=$this->numInflector->formatString((int)$promo->pitch->ideas_count, array(
+                  ])?></p>
+                  <p><span><?=(int) $promo->pitch->ideas_count?></span><br><?=$this->numInflector->formatString((int)$promo->pitch->ideas_count, [
                       'string' => 'решен',
                       'first' => 'ие',
                       'second' => 'ия',
                       'third' => 'ий'
-                  ))?></p>
-                  <p><span><?=(int) $promo->pitch->price?>.-</span><br><?=$this->numInflector->formatString((int)$promo->pitch->price, array(
+                  ])?></p>
+                  <p><span><?=(int) $promo->pitch->price?>.-</span><br><?=$this->numInflector->formatString((int)$promo->pitch->price, [
                       'string' => 'рубл',
                       'first' => 'ь',
                       'second' => 'я',
                       'third' => 'ей'
-                  ))?></p>
+                  ])?></p>
                 </a>
             </li>
         <?php endforeach ?>
       <li>
        <?php $randonBanner = mt_rand(1, 3);?>
         <div style="height:261px;width:260px" id="bannerblock">
-            <div id="special_banner" style="position: absolute; <?php if($randonBanner != 1) echo 'display:none;'?>">
+            <div id="special_banner" style="position: absolute; <?php if ($randonBanner != 1) {
+    echo 'display:none;';
+}?>">
                 <img src="/img/vernem_dengi_feb-02.png" alt="" />
                 <a class="more_info" href="/pages/special"></a>
             </div>
-            <div id="brief_banner" style="position: absolute; <?php if($randonBanner != 2) echo 'display:none;'?>">
+            <div id="brief_banner" style="position: absolute; <?php if ($randonBanner != 2) {
+    echo 'display:none;';
+}?>">
                 <img src="/img/brief.png" alt="" />
                 <a class="more_info" href="/pages/brief"></a>
             </div>
-            <div id="referal_banner" style="position: absolute; <?php if($randonBanner != 3) echo 'display:none;'?>">
+            <div id="referal_banner" style="position: absolute; <?php if ($randonBanner != 3) {
+    echo 'display:none;';
+}?>">
                 <img src="/img/banner-referal.jpg" alt="" />
                 <a class="more_info" href="/pages/referal"></a>
             </div>
@@ -98,7 +104,7 @@
     <div class="use_table">
         <div id="pitch-table" style="height:280px;">
               <div class="to_use">
-                  <?=$this->html->link('Используя<br> сообщество<br> дизайнеров<br>в сети, Создайте<br> лого, название,<br> упаковку, сайт, <br> визитку, etc ...', 'Pages::howitworks', array('class' => '', 'id' => 'to_use_text', 'escape' => false))?>
+                  <?=$this->html->link('Используя<br> сообщество<br> дизайнеров<br>в сети, Создайте<br> лого, название,<br> упаковку, сайт, <br> визитку, etc ...', 'Pages::howitworks', ['class' => '', 'id' => 'to_use_text', 'escape' => false])?>
               </div>
               <div class="wap_table">
                 <table class="spec_table">
@@ -110,21 +116,21 @@
                   </tr>
                   <?php
                   $counter =1;
-                  foreach($pitches as $pitch):
-                  if(($counter % 2) == 1) {
-                    $class = 'odd';
-                  }else {
-                    $class = 'even';
+                  foreach ($pitches as $pitch):
+                  if (($counter % 2) == 1) {
+                      $class = 'odd';
+                  } else {
+                      $class = 'even';
                   }
-                  if(($pitch->status == '1') && ($pitch->awarded == 0)) {
+                  if (($pitch->status == '1') && ($pitch->awarded == 0)) {
                       $timeleft = 'Выбор победителя';
-                  }else {
+                  } else {
                       $timeleft = $pitch->startedHuman;
                   }
                   ?>
                   <tr class="<?=$class?>">
                     <td class="pitches-name">
-                    <?=$this->html->link($this->PitchTitleFormatter->renderTitle($pitch->title, 80), array('controller' => 'pitches', 'action' => 'view', 'id' => $pitch->id), array('class' => 'expand-link'))?><br>
+                    <?=$this->html->link($this->PitchTitleFormatter->renderTitle($pitch->title, 80), ['controller' => 'pitches', 'action' => 'view', 'id' => $pitch->id], ['class' => 'expand-link'])?><br>
                     </td>
                     <td><?=$this->moneyFormatter->formatMoney($pitch->price)?></td>
                     <td><?=$pitch->ideas_count?></td>
@@ -138,12 +144,12 @@
               </div>
         </div>
         <div style="margin-left: 61px; margin-top: -55px;">
-            <?=$this->html->link('Подробнее', 'Pages::howitworks', array('class' => 'new_more', 'id' => 'to_use_link'))?>
+            <?=$this->html->link('Подробнее', 'Pages::howitworks', ['class' => 'new_more', 'id' => 'to_use_link'])?>
             <?php //$this->html->link('показать все питчи', 'Pitches::index', array('class' => 'more', 'style' => 'float: right; border-right-width: 22px; margin-right: 52px;'))?>
         </div>
     </div>
     <?php
-    $imageArray = array(
+    $imageArray = [
         1 => '/img/4.jpg',
         3 => '/img/jara_174.png',
         2 => '/img/6.jpg',
@@ -152,24 +158,26 @@
         6 => '/img/experts/efremov174.jpg',
         7 => '/img/experts/percia_174.png',
         8 => '/img/experts/makarov_dmitry_174.png',
-    );
+    ];
     $expertsDB = $experts->data();
     ?>
 
     <div class="experts-main">
       <ul id="experts-zone">
-        <?php foreach($experts->data() as $expert): if ($expert['enabled'] == 0) continue; ?>
+        <?php foreach ($experts->data() as $expert): if ($expert['enabled'] == 0) {
+     continue;
+ } ?>
         <li class="expert-<?=$expert['id']?> expert_enabled" data-expert_id="<?=$expert['id']?>" style="display:none;">
-            <?=$this->html->link('<img style="width: 174px; height: 174px;" src="'. $imageArray[$expert['id']] .'" alt="" />', array('Experts::view', 'id' => $expert['id']), array('data-id' => $expert['id'], 'escape' => false))?>
-            <p><?=$this->html->link($expert['name'], array('Experts::view', 'id' => $expert['id']), array('data-id' => $expert['id']))?></p>
+            <?=$this->html->link('<img style="width: 174px; height: 174px;" src="'. $imageArray[$expert['id']] .'" alt="" />', ['Experts::view', 'id' => $expert['id']], ['data-id' => $expert['id'], 'escape' => false])?>
+            <p><?=$this->html->link($expert['name'], ['Experts::view', 'id' => $expert['id']], ['data-id' => $expert['id']])?></p>
             <span><?php echo strip_tags($expert['title'])?></span>
         </li>
         <?php endforeach;?>
       </ul>
       <div class="about_ex">
-          <?=$this->html->link('Опытные эксперты будут рады помочь вам с выбором варианта...', 'Experts::index', array('class' => 'experts_text','id' => 'experts_text', 'style' => 'color: #666666;'));?>
+          <?=$this->html->link('Опытные эксперты будут рады помочь вам с выбором варианта...', 'Experts::index', ['class' => 'experts_text', 'id' => 'experts_text', 'style' => 'color: #666666;']);?>
           <div style="margin-top:10px">
-            <?=$this->html->link('подробнее', 'Experts::index', array('class' => 'new_more', 'id' => 'experts_link'))?>
+            <?=$this->html->link('подробнее', 'Experts::index', ['class' => 'new_more', 'id' => 'experts_link'])?>
           </div>
       </div>
     </div>
@@ -191,13 +199,13 @@
           $grade1 = $grades->first();
           $grade2 = $grades->next();
         ?>
-    <?php if(($grade1) && ($grade2)):
+    <?php if (($grade1) && ($grade2)):
     $avatar1 = '/img/default_small_avatar.png';
     $avatar2 = '/img/default_small_avatar.png';
-    if(!empty($grade1->user->images)):
+    if (!empty($grade1->user->images)):
       $avatar1 = $grade1->user->images['avatar_small']['weburl'];
     endif;
-    if(!empty($grade2->user->images)):
+    if (!empty($grade2->user->images)):
       $avatar2 = $grade2->user->images['avatar_small']['weburl'];
     endif;
     ?>
@@ -212,7 +220,7 @@
             <div  style="float:left;width:320px;padding-left:12px;height:142px;">
                 <p class="regular" style=""><a target="_blank" href="/pitches/view/<?=$grade1->pitch->id?>" style="font: 17px RodeoC;color:#666666;text-decoration:none;"><?=$grade1->user->first_name . ' ' . $grade1->user->last_name?></a></p>
                 <p class="regular" style="font-style:italic; font-size:14px; font-family: Georgia;"><a target="_blank" href="/pitches/view/<?=$grade1->pitch->id?>" style="color:#666666;text-decoration:none;"><?=$grade1->pitch->title?></a></p>
-                <p class="regular regular_officina" style="color:#666666;margin-top:16px;">«<?php if($grade1->short != ''): echo trim($grade1->short); else: echo trim($grade1->text); endif?>»</p>
+                <p class="regular regular_officina" style="color:#666666;margin-top:16px;">«<?php if ($grade1->short != ''): echo trim($grade1->short); else: echo trim($grade1->text); endif?>»</p>
             </div>
 
           </div>
@@ -223,7 +231,7 @@
             <div style="float:left;width:320px;padding-left:12px;height:142px;">
                 <p class="regular" style="font-size: 17px;"><a target="_blank" href="/pitches/view/<?=$grade2->pitch->id?>" style="font:17px RodeoC;color:#666666;text-decoration:none;"><?=$grade2->user->first_name . ' ' . $grade2->user->last_name?></a></p>
                 <p class="regular" style="font-style:italic; font-size:14px; font-family: Georgia;"><a target="_blank" href="/pitches/view/<?=$grade2->pitch->id?>" style="color:#666666;text-decoration:none;"><?=$grade2->pitch->title?></a></p>
-                <p class="regular regular_officina" style="color:#666666;margin-top:16px;">«<?php if($grade2->short != ''): echo trim($grade2->short); else: echo trim($grade2->text); endif?>»</p>
+                <p class="regular regular_officina" style="color:#666666;margin-top:16px;">«<?php if ($grade2->short != ''): echo trim($grade2->short); else: echo trim($grade2->text); endif?>»</p>
             </div>
 
           </div>
@@ -235,7 +243,7 @@
     <div class="statistika">
       <dl class="dl_1">
         <dt><?=$statistic['numOfSolutionsPerProject'][$category_id]?></dt>
-        <?php switch($category_id):
+        <?php switch ($category_id):
             case 1: $string = '<dd>среднее кол-во <br>идей в категории<br>«логотип»</dd>'; break;
             case 3: $string = '<dd>среднее кол-во <br>идей в категории<br>«сайт»</dd>'; break;
             case 7: $string = '<dd>среднее кол-во <br>идей в категории<br>«копирайтинг»</dd>'; break;
@@ -247,11 +255,11 @@
         <dd>текущих<br> проектов</dd>
       </dl>
       <dl class="dl_3">
-        <dt><a href="#" style="color: #f9f9f9;"><?=$this->moneyFormatter->formatMoney($statistic['totalAwards'], array('suffix' => ''))?></a></dt>
+        <dt><a href="#" style="color: #f9f9f9;"><?=$this->moneyFormatter->formatMoney($statistic['totalAwards'], ['suffix' => ''])?></a></dt>
         <dd>заработанных<br> дизайнерами рублей</dd>
       </dl>
       <dl class="dl_4">
-        <dt><?=$this->moneyFormatter->formatMoney($statistic['totalParticipants'], array('suffix' => ''))?></dt>
+        <dt><?=$this->moneyFormatter->formatMoney($statistic['totalParticipants'], ['suffix' => ''])?></dt>
         <dd>дизайнеров и копирайтеров зарегистрировано на сайте</dd>
       </dl>
       <dl class="dl_5">
@@ -333,9 +341,10 @@
     </script>
 </div>
 
-<?=$this->html->script(array(
+<?=$this->html->script([
     'slides.min.jquery',
     'jquery.simplemodal-1.4.2.js',
-    '/dist/main.js'
-), array('inline' => false))?>
-<?=$this->html->style(array('/css/main_page.css', '/css/pages/home.css'), array('inline' => false))?>
+    /*'/dist/main.js',*/
+    '/js/pages/home.js'
+], ['inline' => false])?>
+<?=$this->html->style(['/css/main_page.css', '/css/pages/home.css'], ['inline' => false])?>
