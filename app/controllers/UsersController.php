@@ -888,6 +888,10 @@ class UsersController extends \app\controllers\AppController
                     $solution->awarded = 1;
                     $solution->save();
                 }
+                if($type === 'client') {
+                    $client = User::first($solution->pitch->user_id);
+                    UserMailer::sendEmailAfterGrade($grade, $client);
+                }
             }
 
             $step = 4;
