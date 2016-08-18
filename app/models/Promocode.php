@@ -6,31 +6,35 @@ use \app\models\Pitch;
 
 use \lithium\storage\Session;
 
-class Promocode extends \app\models\AppModel {
+class Promocode extends \app\models\AppModel
+{
 
-    public $belongsTo = array('User', 'Pitch');
+    public $belongsTo = ['User', 'Pitch'];
 
-    public static function __init() {
+    public static function __init()
+    {
         parent::__init();
-        self::applyFilter('find', function($self, $params, $chain){
+        self::applyFilter('find', function ($self, $params, $chain) {
             $results = $chain->next($self, $params, $chain);
-            if($params['type'] == 'all'):
-                foreach($results as $code){
+            if ($params['type'] == 'all'):
+                foreach ($results as $code) {
                     $code->humanPitch = $code->pitch_id;
-                    if(is_null($code->humanPitch)) {
+                    if (is_null($code->humanPitch)) {
                         $code->humanPitch = 'не использован';
-                    }else {
+                    } else {
                         $pitch = Pitch::first($code->pitch_id);
                         $code->humanPitch = '<a target="blank" href="/pitches/edit/' . $pitch->id . '">' . $pitch->title . '</a>';
                     }
-                    switch($code->type):
-                        case 'pinned': $code->humanType = 'прокачать бриф'; break;
-                        case 'custom_discount': $code->humanType = 'произвольная скидка'; break;
+                    switch ($code->type):
+                        case 'pinned': $code->humanType = 'прокачать бриф';
+                    break;
+                    case 'custom_discount': $code->humanType = 'произвольная скидка';
+                    break;
                     endswitch;
-                    if(!is_null($code->user_id)) {
+                    if (!is_null($code->user_id)) {
                         $user = User::first($code->user_id);
                         $code->humanUser = '<a target="blank" href="https://www.godesigner.ru/users/view/' . $user->id . '">' . $user->first_name . ' ' . $user->last_name . '</a>';
-                    }else {
+                    } else {
                         $code->humanUser = 'не привязан';
                     }
                 }
@@ -45,46 +49,52 @@ class Promocode extends \app\models\AppModel {
      * @param int $length
      * @return string
      */
-    public static function generateToken($length = 4) {
+    public static function generateToken($length = 4)
+    {
         $exists = true;
-        while($exists == true) {
+        while ($exists == true) {
             $randomString = uniqid();
             $token = substr($randomString, strlen($randomString) - $length, $length);
-            if(!self::first(array(
-                'fields' => array('id'),
-                'conditions' => array('code' => $token)))) {
+            if (!self::first([
+                'fields' => ['id'],
+                'conditions' => ['code' => $token]])) {
                 $exists = false;
             }
         }
         return $token;
     }
 
-    public static function createPromocode($userId) {
-        $data = array(
+    public static function createPromocode($userId)
+    {
+        $data = [
             'code' => self::generateToken(),
             'type' => 'pinned',
             'starts' => date('Y-m-d H:i:s'),
             'expires' => date('Y-m-d H:i:s', time() + (2 * MONTH)),
             'user_id' => $userId
-        );
+        ];
         $newCode = self::create($data);
         $newCode->save();
         return $newCode->code;
     }
 
-    public static function checkPromocode($codeString) {
+    public static function checkPromocode($codeString, $existingId = null)
+    {
         $result = 'false';
-        if($code = Promocode::first(array('conditions' => array(
+        if ($code = Promocode::first(['conditions' => [
             'code' => $codeString
 
-        )))) {
-            if(($code->pitch_id != null) && (!$code->isMultiUse())) {
+        ]])) {
+            if (($code->pitch_id != null) && (!$code->isMultiUse()) && (is_null($existingId))) {
                 return $result;
             }
-            if((time() < strtotime($code->starts)) || (time() > strtotime($code->expires))) {
+            if (($code->pitch_id != null) && (!$code->isMultiUse()) && (!is_null($existingId)) && ((int) $existingId !== (int) $code->pitch_id)) {
                 return $result;
             }
-            if(!$code->isMultiUse()) {
+            if ((time() < strtotime($code->starts)) || (time() > strtotime($code->expires))) {
+                return $result;
+            }
+            if (!$code->isMultiUse()) {
                 $code->user_id = Session::read('user.id');
                 $code->save();
             }
@@ -98,17 +108,18 @@ class Promocode extends \app\models\AppModel {
      *
      * @return mixed
      */
-    public static function getOldPromocodes() {
-        return self::all(array(
-            'fields' => array('id'),
-            'conditions' => array(
+    public static function getOldPromocodes()
+    {
+        return self::all([
+            'fields' => ['id'],
+            'conditions' => [
                 'type' => 'pinned',
                 'pitch_id' => null,
-                'expires' => array(
+                'expires' => [
                     '<' => date('Y-m-d H:i:s'),
-                )
-            ),
-        ));
+                ]
+            ],
+        ]);
     }
 
     /**
@@ -117,16 +128,16 @@ class Promocode extends \app\models\AppModel {
      * @param $record
      * @return bool
      */
-    public function isMultiUse($record) {
-        $multiUse = array(
+    public function isMultiUse($record)
+    {
+        $multiUse = [
             'discount',
             'misha',
             'in_twain'
-        );
-        if((in_array($record->type, $multiUse)) || ($record->multi)){
+        ];
+        if ((in_array($record->type, $multiUse)) || ($record->multi)) {
             return true;
         }
         return false;
     }
-
 }

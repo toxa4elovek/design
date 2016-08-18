@@ -302,11 +302,11 @@ endif?>
             </div-->
 
             <div class="ribbon complete-brief"  style="padding-top: 35px; height: 56px; padding-bottom: 0;">
-                <p class="option"><label><input type="checkbox" name=""  id="promocodecheck">Промокод</label></p>
+                <p class="option"><label><input type="checkbox" name=""  id="promocodecheck" <?php if($showHint):?>checked="checked"<?php endif?>>Промокод</label></p>
                 <p class="label"></p>
             </div>
 
-            <div class="explanation promo" style="margin-left: 24px; margin-top: 0; padding-bottom: 0; display: none;" id="explanation_promo">
+            <div class="explanation promo" style="margin-left: 24px; margin-top: 0; padding-bottom: 0; <?php if(!$showHint):?>display: none;<?php endif?>" id="explanation_promo">
                 <p><input style="height:44px; width:125px;padding-left:16px;padding-right:16px; background: none repeat scroll 0 0 #FFFFFF;box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) inset;font-size:29px;margin-top: 12px;color: #cccccc;" type="text" id="promocode" name="promocode" class="phone placeholder" placeholder="8888" value="<?php echo (isset($codeValue)) ? $codeValue : ''; ?>">
                 <?php if($showHint):?>
                 <span id="promo-hint" style="display: inline-block; position: relative; top: 7px; left: 10px;"><?=$text?></span>

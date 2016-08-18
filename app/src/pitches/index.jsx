@@ -11,7 +11,14 @@ $(function () {
   checkPlaceholder(searchTermSelector)
 
   function goSearch () {
-    Table.options.searchTerm = searchTerm
+    if (typeof searchTerm === 'string') {
+      Table.options.searchTerm = searchTerm
+    } else {
+      Table.options.searchTerm = $(searchTerm).val()
+    }
+    if (Table.options.searchTerm === 'НАЙТИ ПРОЕКТ ПО КЛЮЧЕВОМУ СЛОВУ ИЛИ ТИПУ') {
+      Table.options.searchTerm = ''
+    }
     if (!isCurrentTypeFilterExists()) {
       Table.setFilter('type', 'all')
     }
