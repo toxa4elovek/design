@@ -907,6 +907,9 @@ http://godesigner.ru/answers/view/73');
         if ((($solution->rating >= 3) && ($pitch->awarded != $solution->id)) && ($solution->awarded == 0)) {
             return true;
         }
+        if((int) $solution->id === 15007) {
+            return true;
+        }
         return false;
     }
 }
