@@ -250,7 +250,7 @@ function FeatureCart() {
                     self.addOption('экспертное мнение', 2000)
                 }
                 if($('#guaranteed').attr('checked')) {
-                    self.addOption('Гарантировать проект', 950)
+                    self.addOption('Гарантировать проект', 1400)
                 }
                 if($('#pinned').attr('checked')) {
                     self.addOption('“Прокачать” бриф', self.pinnedValue)
