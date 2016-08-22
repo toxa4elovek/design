@@ -53,7 +53,7 @@
             'disabledOnMobile' => true
         ];
         $chatraIntegration = [];
-
+        $isDesigner = 0;
         if($this->user->isLoggedIn()):
             $chatraIntegration['name'] = $this->user->getFullname();
             $chatraIntegration['email'] = $this->user->getEmail();
@@ -81,8 +81,12 @@
             endif;
             $projectsString = implode(' ', $projectsArray);
             $chatraIntegration['Проекты'] = $projectsString;
+            if(($this->user->isLoggedIn()) && ($this->user->read('user.isDesigner') || ($this->user->read('user.isCopy')))) {
+                $isDesigner = 1;
+            }
         ?>
     <?php endif?>
+    window.isDesigner = <?= $isDesigner?>;
     window.ChatraIntegration  = <?php echo json_encode($chatraIntegration);?>;
     window.ChatraSetup = <?php echo json_encode($chatraSetup);?>;
     ChatraID = 'c8KhbzjEvaNsKDeWD';

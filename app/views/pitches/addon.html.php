@@ -110,13 +110,13 @@
             endforeach?>
         </ul><!-- .experts -->
 
-        <?php /*if($pitch->guaranteed == '0'): ?>
+        <?php if($pitch->guaranteed == '0'): ?>
             <div class="ribbon" id="guaranteed-block">
                 <p class="option"><label><input type="checkbox" id="guaranteed" name="" <?php if(isset($this->_request->query['click']) && $this->_request->query['click'] == 'guarantee'): echo 'checked'; endif?> class="single-check" data-option-title="Гарантировать проект" data-option-value="1400">Гарантировать проект</label></p>
                 <p class="description">Гарантировать выбор победителя <a href="#" class="second tooltip" title="Вы гарантируете, что выберете победителя в любом случае, тем самым инициировав до 40% больше решений. Мы выделяем такой проект в списке. Дизайнеры увидят, что проект не останется без победителя, и вы получите больший выбор идей.">(?)</a></p>
                 <p class="label <?php if(isset($this->_request->query['click']) && $this->_request->query['click'] == 'guarantee'): echo 'unfold'; endif?>">+1400.-</p>
             </div>
-        <?php endif */?>
+        <?php endif ?>
 
         <?php
         $pinnedValue = 1450;
