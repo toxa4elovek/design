@@ -154,11 +154,13 @@
                     <!-- Solution Popup Dummy --><?=$this->view()->render(array('element' => 'popups/solution_sale'), array('data' => $data))?>
                 <?php endif?>
                 <?php if(($this->user->isPitchOwner($pitch->user_id)) && ($pitch->id != 103263)):?>
-                    <?php if(($pitch->status == 1) && ($pitch->awarded == 0)):?>
+                    <?php if(($pitch->status == 1) && ($pitch->awarded == 0)):
+                        if(($pitch->expert == 0) || (($pitch->expert == 1) && ($allowSelect = $this->pitch->expertOpinion($pitch->id)) && ($allowSelect != strtotime($pitch->finishDate)))):
+                        ?>
                     <div id="timer" data-expert="<?= ($this->pitch->expertOpinion($pitch->id) + 4 * DAY)?>" data-deadline="<?= $this->pitch->getChooseWinnerTime($pitch) ?>" data-currenttime="<?= time();?>">
                         <a href="/answers/view/70" target="_blank" class="lcd"></a>
                     </div>
-                    <?php endif?>
+                    <?php endif; endif?>
                     <!-- Rating Pancake -->
                 <div id="dinamic" style="display:none;position: fixed; z-index: 15; bottom: 0; opacity:0.8; margin-left: 740px">
                     <div class="bubble">
