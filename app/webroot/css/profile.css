@@ -69,12 +69,13 @@ a.show-preview {
 }
 /* Телефон */
 .user-mobile-section {
-    width: 400px;
-    float: left;
+    width: 835px;
+    float: none;
 }
 
 .user-mobile-section form {
     margin-top: 23px;
+    width: 470px;
 }
 .user-mobile-section .phone-input-container {
     position: relative;
@@ -162,8 +163,8 @@ ul .number {
 }
 /* Почта */
 .user-email-section {
-    width: 400px;
-    float: left;
+    width: 835px;
+    /*float: left;*/
 }
 .user-email-section a:hover {
     text-decoration: underline;
@@ -190,9 +191,10 @@ ul .number {
 }
 /* Пароль */
 .user-password-section {
-    width: 400px;
-    float: left;
-    margin-left: 35px;
+    width: 835px;
+    margin-top: 80px;
+    /*float: left;
+    margin-left: 35px;*/
 }
 .user-password-section input{
     color: #b6b6b6;
@@ -216,6 +218,7 @@ ul .number {
  }
 .user-password-section form {
     padding-top: 26px;
+    width: 400px;
 }
 #save-password {
     margin-top: 15px;
@@ -282,8 +285,8 @@ ul .number {
     margin-top: 35px;
 }
 #fieldblock4 label {
-    color: #999999;
-    width: 378px;
+    color: #666;
+    /*width: 378px;*/
     display: block;
     font-size: 18px;
     text-shadow: -1px 0 0 #FFFFFF;
@@ -293,7 +296,7 @@ ul .number {
     padding-left: 22px;
 }
 #fieldblock4 ul {
-    float: left;
+    /*float: left;*/
 }
 #fieldblock4 ul:nth-child(odd) {
     margin-right: 15px;
