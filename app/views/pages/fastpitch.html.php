@@ -1,8 +1,8 @@
-<?= $this->html->style(array('/fastpitch'), array('inline' => false)) ?>
+<?= $this->html->style(['/fastpitch'], ['inline' => false]) ?>
 
 <div class="wrapper">
 
-    <?= $this->view()->render(array('element' => 'header'), array('logo' => 'logo', 'header' => 'header')) ?>
+    <?= $this->view()->render(['element' => 'header'], ['logo' => 'logo', 'header' => 'header']) ?>
     <div id="top-logo-oneclick"></div>
     <div class="lp-fast-pitch-wrapper">
         <div class="lp-autocenter">
@@ -27,7 +27,7 @@
                                     if ($x < 6):
                                         ?>
                                         <li>
-                                            <label><input <?php if($x==1): echo 'checked="checked"'; endif;?> id="time" name="time" data-date="<?= $i ?>" type="radio"><?= $v ?></label>
+                                            <label><input <?php if ($x==1): echo 'checked="checked"'; endif;?> id="time" name="time" data-date="<?= $i ?>" type="radio"><?= $v ?></label>
                                         </li>
                                         <?php unset($allowTime[$i]);
                                     else: ?>
@@ -43,14 +43,14 @@
                             <ul class="date-hide">
                                 <?php
                                 $j = 1;
-                                if(isset($allowTime)):
+                                if (isset($allowTime)):
                                 foreach ($allowTime as $i => $v): ?>
                                     <li data-num="<?php echo $j; ?>">
                                         <label><input id="time" name="time" data-date="<?= $i ?>" type="radio"><?= $v ?></label>
                                     </li>
                                     <?php
                                     $j += 1;
-                                    if($j == 5):
+                                    if ($j == 5):
                                         $j = 1;
                                     endif;
                                 endforeach;
@@ -61,27 +61,27 @@
                         </div>
 
                         <div class="fastpitch-step3">
-                            <h2 class="fastpitch-secondary-header">Оплатите 19 600 рублей,<br> остальное мы сделаем за вас!</h2>
+                            <h2 class="fastpitch-secondary-header">Оплатите 19 800 рублей,<br> остальное мы сделаем за вас!</h2>
                             <p>Мы подобрали для вас самый популярный набор опций, чтобы обеспечить пул хороших дизайнеров и&nbsp;подарить незабываемый опыт работы :</p>
-                            <a class="fastpitch button third" style="margin-top: 30px;color:#fff;cursor:pointer;">Оплатить 19 600 р.  и запустить проект</a>
+                            <a class="fastpitch button third" style="margin-top: 30px;color:#fff;cursor:pointer;">Оплатить 19 800 р.  и запустить проект</a>
                             <table>
                                 <tr height="22"><td width="160">гонорар дизайнеру</td><td>14000</td></tr>
                                 <tr height="22"><td><a class="tablelink" href="https://www.godesigner.ru/answers/view/79" target="_blank">гарантировать проект</a></td><td>950</td></tr>
                                 <tr height="22"><td><a class="tablelink" href="https://www.godesigner.ru/answers/view/68" target="_blank">заполнить бриф</a></td><td>2750</td></tr>
                                 <tr height="22"><td><a class="tablelink" href="https://www.godesigner.ru/answers/view/67" target="_blank">прокачать проект</a></td><td>1000</td></tr>
                                 <tr height="22"><td><a class="tablelink" href="https://www.godesigner.ru/answers/view/66" target="_blank">экспертное мнение</a></td><td>1500</td></tr>
-                                <tr height="22"><td>сбор сервиса</td><td>24,5%</td></tr>
-                                <tr height="22"><td>скидка</td><td><span class="table-left-price">-4030</span></td></tr>
+                                <tr height="22"><td>сбор сервиса</td><td>29,5%</td></tr>
+                                <tr height="22"><td>скидка</td><td><span class="table-left-price">-4530</span></td></tr>
                                 <tr height="31"><td colspan="2"></td></tr>
-                                <tr><td class="result">ИТОГО:</td><td class="result"><span class="table-left">19600р</span></td></tr>
+                                <tr><td class="result">ИТОГО:</td><td class="result"><span class="table-left">19800р</span></td></tr>
                             </table>
                         </div>
 
                         <div class="fastpitch-line"></div>
 
                         <div class="fastpitch-bottom">
-                            <h1 class="fastpitch-main-header second-part" style="margin-left: 0; margin-top: 20px; margin-bottom: 35px;">Что включено в 19600 р.-</h1>
-                            <p style="width: 640px; color: #666;">С нашим предложением вы экономите не только 2 часа на заполнение брифа,<br/>но и деньги.  Стоимость кейса «Логотип в один клик» — 19600 рублей, что на 4030  дешевле, как если бы вы создавали аналогичный проект обычным способом. </p>
+                            <h1 class="fastpitch-main-header second-part" style="margin-left: 0; margin-top: 20px; margin-bottom: 35px;">Что включено в 19800 р.-</h1>
+                            <p style="width: 640px; color: #666;">С нашим предложением вы экономите не только 2 часа на заполнение брифа,<br/>но и деньги.  Стоимость кейса «Логотип в один клик» — 19800 рублей, что на 4530  дешевле, как если бы вы создавали аналогичный проект обычным способом. </p>
                             <a class="fastpitch button third" style="margin-left: -2px;margin-top: 30px;color:#fff;cursor:pointer;">запустить проект на логотип в один клик</a>
                             <ul>
                                 <li>гонорар дизайнеру 14 000 р.</li>
@@ -89,8 +89,8 @@
                                 <li><a class="" href="https://www.godesigner.ru/answers/view/79" target="_blank">«Гарантировать проект»</a> 950 р.</li>
                                 <li><a class="" href="https://www.godesigner.ru/answers/view/67" target="_blank">«Прокачать проект»</a> 1000 р.</li>
                                 <li><a class="" href="https://www.godesigner.ru/answers/view/66" target="_blank">«Экспертное мнение»</a> 1500 р.</li>
-                                <li>сбор GoDesigner 24,5%</li>
-                                <li>скидка 4030 р. !</li>
+                                <li>сбор GoDesigner 29,5%</li>
+                                <li>скидка 4530 р. !</li>
                             </ul>
                         </div>
                     </div>
@@ -100,5 +100,8 @@
     </div><!-- /middle -->
 
 </div><!-- .wrapper -->
-<?= $this->html->style(array('/css/pages/fastpitch.css'), array('inline' => false)) ?>
-<?= $this->html->script(array('pages/fastpitch.js'), array('inline' => false)) ?>
+<?= $this->html->style(['/css/pages/fastpitch.css'], ['inline' => false]) ?>
+<?= $this->html->script([
+    'jquery-plugins/jquery.scrollto.min.js',
+    'pages/fastpitch.js',
+], ['inline' => false]) ?>

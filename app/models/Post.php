@@ -31,6 +31,7 @@ class Post extends AppModel {
 
     public static function __init() {
         parent::__init();
+        /*
         self::applyFilter('save', function ($self, $params, $chain) {
             $record = $params['entity'];
             $postNonBreakList = array('и', 'в', 'для', 'не', 'на', 'с', '&mdash;', '-', 'по');
@@ -45,6 +46,7 @@ class Post extends AppModel {
             $result = $chain->next($self, $params, $chain);
             return $result;
         });
+        */
     }
 
     /**

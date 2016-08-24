@@ -11,6 +11,7 @@ use app\models\Grade;
 use app\models\Pitch;
 use app\models\Schedule;
 use app\models\Solution;
+use app\models\Solutionfile;
 use app\models\User;
 use app\models\Wp_post;
 use tmhOAuth\tmhOAuth;
@@ -29,9 +30,9 @@ class PagesController extends AppController
     /**
      * @var array публичные методы
      */
-    public $publicActions = array(
-        'view', 'home', 'contacts', 'howitworks', 'experts', 'fastpitch', 'subscribe'
-    );
+    public $publicActions = [
+        'view', 'home', 'contacts', 'howitworks', 'experts', 'fastpitch', 'subscribe', 'goldenfish'
+    ];
 
     /**
      * Метод для отображения статических страниц
@@ -45,9 +46,62 @@ class PagesController extends AppController
         if (preg_match('/fastpitch/', $path[0])) {
             return $this->redirect('/fastpitch');
         }
+        if (preg_match('/golden-fish/', $path[0])) {
+            return $this->redirect('/golden-fish');
+        }
         $questions = $this->popularQuestions();
-        $answers = Answer::all(array('conditions' => array('questioncategory_id' => 2), 'limit' => 10, 'order' => array('hits' => 'desc')));
-        return $this->render(array('template' => join('/', $path), 'data' => array('questions' => $questions, 'answers' => $answers)));
+        $answers = Answer::all(['conditions' => ['questioncategory_id' => 2], 'limit' => 10, 'order' => ['hits' => 'desc']]);
+        return $this->render(['template' => join('/', $path), 'data' => ['questions' => $questions, 'answers' => $answers]]);
+    }
+
+    public function goldenfish()
+    {
+        $solutions = Solution::all([
+            'conditions' => [
+                'Pitch.category_id' => 20,
+                'Solution.awarded' => 1,
+                'Pitch.multiwinner' => 0
+            ],
+            'limit' => 96,
+            'with' => ['Pitch']
+        ]);
+        foreach ($solutions as $solution) {
+            if(isset($solution->images['solution_promo'])) {
+                continue;
+            }
+            if (isset($solution->images['solution'][0])) {
+                $newfiledata = pathinfo($solution->images['solution'][0]['filename']);
+                $originalFilename = $solution->images['solution'][0]['filename'];
+
+            } else {
+                $newfiledata = pathinfo($solution->images['solution']['filename']);
+                $originalFilename = $solution->images['solution']['filename'];
+            }
+            $newfilename = $newfiledata['dirname'] . '/' . $newfiledata['filename'] . '_promo.' . $newfiledata['extension'];
+            $imageProcessor = new \upload($originalFilename);
+            $imageProcessor->upload($originalFilename);
+            $imageProcessor->init();
+            $imageProcessor->uploaded = true;
+            $imageProcessor->no_upload_check = true;
+            $imageProcessor->file_src_pathname = $originalFilename;
+            $imageProcessor->file_src_name_ext = $newfiledata['extension'];
+            $imageProcessor->file_new_name_body = $newfiledata['filename'] . '_promo';
+            $promoSize = ['image_resize' => true, 'image_ratio_crop' => 'T', 'image_x' => 322, 'image_y' => 322, 'file_overwrite' => true];
+            foreach ($promoSize as $param => $value) {
+                $imageProcessor->{$param} = $value;
+            }
+            $imageProcessor->process($newfiledata['dirname']);
+            $conditions = array('model' => '\app\models\Solution', 'model_id' => $solution->id, 'filekey' => 'solution' . '_promo', 'filename' => $newfilename);
+            $data = array('filename' => $newfilename) + $conditions;
+            if ($existingRow = Solutionfile::first(array('conditions' => $conditions))) {
+                $existingRow->set($data);
+                $existingRow->save();
+            } else {
+                Solutionfile::create($data)->save();
+            }
+            $solution = Solution::first($solution->id);
+        }
+        return compact('solutions');
     }
 
     /**
@@ -57,38 +111,38 @@ class PagesController extends AppController
      */
     public function home()
     {
-        $pool = array(1, 3, 7);
+        $pool = [1, 3, 7];
         $category_id = $pool[array_rand($pool)];
         if (!$statistic = Rcache::read('statistic')) {
-            $statistic = array(
-                'numOfSolutionsPerProject' => array(
+            $statistic = [
+                'numOfSolutionsPerProject' => [
                     '1' => Pitch::getNumOfSolutionsPerProjectOfCategory(1),
                     '3' => Pitch::getNumOfSolutionsPerProjectOfCategory(3),
                     '7' => Pitch::getNumOfSolutionsPerProjectOfCategory(7),
-                ),
+                ],
                 'numOfCurrentPitches' => Pitch::getNumOfCurrentPitches(),
                 'totalAwards' => Pitch::getTotalAwards(),
                 'totalWaitingForClaim' => Pitch::getTotalWaitingForClaim(),
                 'totalParticipants' => Solution::getTotalParticipants(),
                 'lastDaySolutionNum' => Solution::getNumOfUploadedSolutionInLastDay(),
-            );
+            ];
             Rcache::write('statistic', $statistic, '+1 hour');
         }
         $pitches = Pitch::getPitchesForHomePage();
-        $promoSolutions = Solution::all(array(
-            'conditions' => array(
+        $promoSolutions = Solution::all([
+            'conditions' => [
                 'Promo.enabled' => 1,
-            ),
-            'with' => array('Promo', 'Pitch'),
-            'order' => array('RAND()'),
+            ],
+            'with' => ['Promo', 'Pitch'],
+            'order' => ['RAND()'],
             'limit' => 2
-        ));
+        ]);
         foreach ($promoSolutions as $promoSolution) {
             $promoSolution->pitch->days = ceil((strtotime($promoSolution->pitch->finishDate) - strtotime($promoSolution->pitch->started)) / DAY);
         }
-        $grades = Grade::all(array('limit' => 2, 'conditions' => array('enabled' => 1), 'order' => array('RAND()'), 'with' => array('Pitch')));
+        $grades = Grade::all(['limit' => 2, 'conditions' => ['enabled' => 1], 'order' => ['RAND()'], 'with' => ['Pitch']]);
         foreach ($grades as $grade) {
-            $grade->user = User::first(array('conditions' => array('id' => $grade->user_id)));
+            $grade->user = User::first(['conditions' => ['id' => $grade->user_id]]);
         }
         $experts = Expert::all();
         $totalCount = Solution::solutionsForSaleCount();
@@ -173,11 +227,24 @@ class PagesController extends AppController
      */
     public function subscribe()
     {
+        if ((!empty($this->request->query['sref'])) && (User::isValidReferalCodeForSubscribers($this->request->query['sref']))) {
+            return $this->redirect($this->request->url);
+        }
         if ($this->userHelper->isLoggedIn() && $this->userRecord->hasActiveSubscriptionDiscountForRecord()) {
             $discount = $this->userRecord->getSubscriptionDiscountForRecord();
             $discountEndTime = $this->userRecord->getSubscriptionDiscountEndTimeForRecord();
             $data = compact('discount', 'discountEndTime');
             return $this->render(['template' => 'subscribe_discount', 'data' => $data]);
+        }
+        if (($this->discountForSubscriberReferal > 0) && (isset($_COOKIE['sreftime']))) {
+            $startTime = strtotime(date(MYSQL_DATETIME_FORMAT, $_COOKIE['sreftime']));
+            $delta = (time() - $startTime);
+            if (floor($delta / DAY) < 10) {
+                $discount = $this->discountForSubscriberReferal;
+                $discountEndTime = date(MYSQL_DATETIME_FORMAT, $startTime + 10 * DAY);
+                $data = compact('discount', 'discountEndTime');
+                return $this->render(['template' => 'subscribe_discount', 'data' => $data]);
+            }
         }
     }
 /*

@@ -1,4 +1,4 @@
-class ReceiptTotal extends React.Component{
+class ReceiptTotal extends React.Component {
     render() {
         let total = this.props.total;
         total += '.-';

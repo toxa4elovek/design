@@ -18,7 +18,7 @@
         <td>
             <a style="color: #648fa4; line-height: 17px; font-size: 20px; font-weight: bold; font-family: Arial, sans-serif;text-decoration: none;" href="https://www.godesigner.ru/pitches/view/<?=$project->id?>"><?=$project->title?></a><br/>
             <span style="color: #AEAEAE; line-height: 17px; font-size: 11px; font-family: Arial, sans-serif;"><?=$this->view()->render(array('template' => 'pitch-info'), array('pitch' => $project));?></span><br/>
-            <span style="color: #444444; line-height: 17px; font-size: 12px; font-family: Arial, sans-serif;">Завершение проекта затянулось. <a href="http://cp.godesigner.ru/users/loginasadmin?query=redirect&redirect=https://www.godesigner.ru/users/step<?= $step?>/<?= $project->awarded ?>">Войти как администратор</a><br/></span><br/>
+            <span style="color: #444444; line-height: 17px; font-size: 12px; font-family: Arial, sans-serif;">Завершение проекта затянулось. <a href="https://cp.godesigner.ru/users/loginasadmin?query=redirect&redirect=https://www.godesigner.ru/users/step<?= $step?>/<?= $project->awarded ?>">Войти как администратор</a><br/></span><br/>
         </td></tr>
     <tr>
         <td colspan="3" height="100"></td>

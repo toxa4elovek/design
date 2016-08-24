@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\extensions\mailers\NotificationsMailer;
 use app\extensions\social\TwitterAPI;
 use app\extensions\storage\Rcache;
 use \lithium\storage\Session;
@@ -42,20 +43,20 @@ use lithium\data\entity\Record;
 class Pitch extends AppModel
 {
 
-    public $belongsTo = array('Category', 'User');
-    public $hasMany = array('Solution');
+    public $belongsTo = ['Category', 'User'];
+    public $hasMany = ['Solution'];
 
     /**
      * @var array Валидные строчки для определения типа сортировки решений
      */
-    public $validSorts = array('rating', 'created', 'likes', 'number');
-    public static $attaches = array('files' => array(
-            'validateFile' => array(
-                'extensionForbid' => array('php', 'exe', 'sh', 'js'),
-            ),
-            'moveFile' => array('preserveFileName' => false, 'path' => '/webroot/pitchfiles/'),
-            'setPermission' => array('mode' => 0600),
-    ));
+    public $validSorts = ['rating', 'created', 'likes', 'number'];
+    public static $attaches = ['files' => [
+            'validateFile' => [
+                'extensionForbid' => ['php', 'exe', 'sh', 'js'],
+            ],
+            'moveFile' => ['preserveFileName' => false, 'path' => '/webroot/pitchfiles/'],
+            'setPermission' => ['mode' => 0600],
+    ]];
 
     public static function __init()
     {
@@ -89,6 +90,30 @@ class Pitch extends AppModel
                 if ($params['pitch']->expert == 1) {
                     Pitch::sendExpertMail($params);
                 }
+                if ($params['pitch']->type === '') {
+                    Lead::resetLeadForUser($params['pitch']->user_id);
+                }
+                $project = $params['pitch'];
+                if (($project->category_id != 20) && (!empty($project->ga_id))) {
+                    $options = ['client_id' => $project->ga_id, 'user_id' => $project->user_id];
+                    $tracking = new \Racecore\GATracking\GATracking('UA-9235854-5', $options);
+
+                    $transaction = $tracking->createTracking('Ecommerce\Transaction');
+                    $transaction->setID($project->id);
+                    $transaction->setRevenue($project->total);
+                    $transaction->setCurrency('RUB');
+                    $result = $tracking->sendTracking($transaction);
+
+                    $item = $tracking->createTracking('Ecommerce\Item');
+                    $item->setTransactionID($project->id);
+                    $item->setName($project->title);
+                    $item->setPrice($project->total);
+                    $item->setQuantity(1);
+                    $item->setSku($project->id . '_1');
+                    $item->setCategory('Проект');
+                    $item->setCurrency('RUB');
+                    $result = $tracking->sendTracking($item);
+                }
             }
             return $result;
         });
@@ -114,14 +139,21 @@ class Pitch extends AppModel
             $client = User::first($params['pitch']->user_id);
             $nameInflector = new nameInflector();
             if ($params['pitch']->expert == 0):
-                $message = '@' . $nameInflector->renderName($client->first_name, $client->last_name) . ', срок проекта подошел к концу! Дизайнеры больше не могут предлагать решения и оставлять комментарии! Настал момент анонсировать победителя. У вас есть 4 дня на выбор лучшего решения. Выбрав лучшее, вы получите возможность внесения поправок и время на получение исходников.';
+                $message = Comment::getWinnerSelectionCommentForClient($nameInflector->renderName($client->first_name, $client->last_name), Pitch::getDaysForWinnerSelection($params['pitch']->id));
             else:
                 $message = '@' . $nameInflector->renderName($client->first_name, $client->last_name) . ', проект завершен и ожидает мнения эксперта, который в течение 2 рабочих дней выберет 3 идеи, которые лучше всего отвечают поставленной задаче. Дизайнеры больше не могут предлагать решения и оставлять комментарии!';
             endif;
-            $data = array('pitch_id' => $params['pitch']->id, 'reply_to' => $client->id, 'user_id' => $admin, 'text' => $message, 'public' => 1);
+            $data = ['pitch_id' => $params['pitch']->id, 'reply_to' => $client->id, 'user_id' => $admin, 'text' => $message, 'public' => 1];
             Comment::createComment($data);
             if ($params['pitch']->expert == 1) {
                 Pitch::sendExpertTimeoutMail($params);
+            } elseif ($params['pitch']->category_id != 20) {
+                $project = $params['pitch'];
+                if (($project->guaranteed == 0) && ($project->pitchData()['avgNum'] >= 3.0)) {
+                    NotificationsMailer::sendChooseWinnerNotificationForNonGuarantee($project);
+                } else {
+                    NotificationsMailer::sendChooseWinnerNotificationForGuarantee($project);
+                }
             }
             $result = $chain->next($self, $params, $chain);
             return $result;
@@ -137,7 +169,7 @@ class Pitch extends AppModel
     {
         $experts = unserialize($params['pitch']->{'expert-ids'});
         foreach ($experts as $expert):
-            $expert = Expert::first(array('conditions' => array('id' => $expert)));
+            $expert = Expert::first(['conditions' => ['id' => $expert]]);
         $user = User::first($expert->user_id);
         $params['user'] = $user;
         SpamMailer::expertselected($params);
@@ -149,7 +181,7 @@ class Pitch extends AppModel
     {
         $experts = unserialize($params['pitch']->{'expert-ids'});
         foreach ($experts as $expert):
-            $expert = Expert::first(array('conditions' => array('id' => $expert)));
+            $expert = Expert::first(['conditions' => ['id' => $expert]]);
         $user = User::first($expert->user_id);
         $params['user'] = $user;
         SpamMailer::expertneedpostcomment($params);
@@ -177,24 +209,24 @@ class Pitch extends AppModel
         if ($hours > 0) {
             $hours = floor($hours / HOUR);
             $hoursString = ' ' . $hours;
-            $hourWord = $numInflector->formatString($hours, array(
+            $hourWord = $numInflector->formatString($hours, [
                 'string' => "час",
                 'first' => '',
                 'second' => 'а',
                 'third' => 'ов'
-            ));
+            ]);
             $hoursString .= ' ' . $hourWord;
         }
 
         if ($days > 0) {
-            $dayWord = $numInflector->formatString($days, array('string' => array('first' => 'день', 'second' => 'дня', 'third' => 'дней')));
+            $dayWord = $numInflector->formatString($days, ['string' => ['first' => 'день', 'second' => 'дня', 'third' => 'дней']]);
             $dayString = $days . ' ' . $dayWord;
         }
         if (($hours == 0) && ($days == 0)) {
             $dayString = '';
             $hoursString = '';
             $minutes = floor($diff / MINUTE);
-            $minuteWord = $numInflector->formatString($minutes, array('string' => array('first' => 'минута', 'second' => 'минуты', 'third' => 'минут')));
+            $minuteWord = $numInflector->formatString($minutes, ['string' => ['first' => 'минута', 'second' => 'минуты', 'third' => 'минут']]);
             $dayString = $minutes . ' ' . $minuteWord;
         }
 
@@ -205,36 +237,36 @@ class Pitch extends AppModel
 
     public static function getNumOfSolutionsPerProject()
     {
-        $result = self::find('all', array(
-                    'fields' => array('AVG(ideas_count) as averageCount'),
-                    'conditions' => array('published' => 1)
-        ));
+        $result = self::find('all', [
+                    'fields' => ['AVG(ideas_count) as averageCount'],
+                    'conditions' => ['published' => 1]
+        ]);
         return ceil($result->first()->averageCount);
     }
 
     public static function getNumOfSolutionsPerProjectOfCategory($category_id)
     {
-        $result = self::find('all', array(
-                    'fields' => array('AVG(ideas_count) as averageCount'),
-                    'conditions' => array(
+        $result = self::find('all', [
+                    'fields' => ['AVG(ideas_count) as averageCount'],
+                    'conditions' => [
                         'published' => 1,
                         'category_id' => $category_id,
-                        'started' => array('>' => date('Y-m-d H:i:s', time() - (365 * DAY)))
-                    )
-        ));
+                        'started' => ['>' => date('Y-m-d H:i:s', time() - (365 * DAY))]
+                    ]
+        ]);
         return ceil($result->first()->averageCount);
     }
 
     public static function getNumOfCurrentPitches()
     {
-        $result = self::all(array(
-                    'conditions' => array(
+        $result = self::all([
+                    'conditions' => [
                         'published' => 1,
-                        'status' => array('<' => 2),
-                    ),
-                    'fields' => array('id', 'Solution.nominated'),
-                    'with' => array('Solution'),
-        ));
+                        'status' => ['<' => 2],
+                    ],
+                    'fields' => ['id', 'Solution.nominated'],
+                    'with' => ['Solution'],
+        ]);
         $result = $result->data();
         foreach ($result as $key => $pitch) {
             $delete = false;
@@ -254,41 +286,42 @@ class Pitch extends AppModel
      * Метод возвращяет количество завершенных проектов
      * @return integer
      */
-    public static function getNumOfCompletedProjects() {
-        return self::count(array(
-            'conditions' => array(
+    public static function getNumOfCompletedProjects()
+    {
+        return self::count([
+            'conditions' => [
                 'published' => 1,
                 'blank' => '0',
                 'multiwinner' => '0',
                 'status' => 2,
-            ),
-            'fields' => array('id'),
-        ));
+            ],
+            'fields' => ['id'],
+        ]);
     }
 
     public static function getTotalAwards()
     {
-        $result = self::find('all', array(
-                    'fields' => array('SUM(price) as total'),
-                    'conditions' => array('published' => 1, 'status' => 2))
+        $result = self::find('all', [
+                    'fields' => ['SUM(price) as total'],
+                    'conditions' => ['published' => 1, 'status' => 2]]
         );
         return round($result->first()->total);
     }
 
     public static function getTotalWaitingForClaim()
     {
-        $result = self::find('all', array(
-                    'fields' => array('SUM(price) as total'),
-                    'conditions' => array('published' => 1, 'status' => array('<' => 2)))
+        $result = self::find('all', [
+                    'fields' => ['SUM(price) as total'],
+                    'conditions' => ['published' => 1, 'status' => ['<' => 2]]]
         );
         return round($result->first()->total);
     }
 
     public static function getTotalAwardsValue()
     {
-        $result = self::find('all', array(
-                    'fields' => array('SUM(price) as total'),
-                    'conditions' => array('published' => 1))
+        $result = self::find('all', [
+                    'fields' => ['SUM(price) as total'],
+                    'conditions' => ['published' => 1]]
         );
         return round($result->first()->total);
     }
@@ -337,16 +370,22 @@ class Pitch extends AppModel
         return false;
     }
 
+    /**
+     * Метод находит все проекты, где приём работ должен быть окончен,
+     * завершает их и отправляет письма заказчикам
+     *
+     * @return int
+     */
     public static function timeoutPitches()
     {
-        $pitches = self::all(array('conditions' => array(
+        $projects = self::all(['conditions' => [
                         'status' => 0,
-                        'finishDate' => array('<' => date('Y-m-d H:i:s')),
+                        'finishDate' => ['<' => date('Y-m-d H:i:s')],
                         'published' => 1
-        )));
+        ]]);
         $count = 0;
-        foreach ($pitches as $pitch) {
-            self::timeoutPitch($pitch);
+        foreach ($projects as $project) {
+            self::timeoutPitch($project);
             $count++;
         }
         return $count;
@@ -433,15 +472,19 @@ class Pitch extends AppModel
         if ($pitch = self::first($addon->pitch_id)) {
             $sumProlong = 1000 * $addon->{'prolong-days'};
             $pitch->price += $sumProlong;
-            $timeProlong = strtotime($pitch->finishDate) + ($addon->{'prolong-days'} * DAY);
+            $daysAdded = $addon->{'prolong-days'} * DAY;
+            $timeProlong = strtotime($pitch->finishDate) + ($daysAdded);
             $pitch->finishDate = date('Y-m-d H:i:s', $timeProlong);
+            if ($pitch->category_id == 20) {
+                $pitch->chooseWinnerFinishDate = date('Y-m-d H:i:s', (strtotime($pitch->chooseWinnerFinishDate) + $daysAdded));
+            }
             if ($pitch->save()) {
-                Comment::createComment(array(
+                Comment::createComment([
                     'pitch_id' => $pitch->id,
                     'user_id' => User::getAdmin(),
                     'text' => 'Дорогие друзья! Обратите внимание, что срок проекта продлен до ' . date('d.m.Y', strtotime($pitch->finishDate)) . ', а размер вознаграждения увеличен.',
                     'public' => 1,
-                ));
+                ]);
                 return true;
             }
         }
@@ -455,7 +498,7 @@ class Pitch extends AppModel
     public static function addExpert($addon)
     {
         if ($pitch = self::first($addon->pitch_id)) {
-            $expertsPitch = array();
+            $expertsPitch = [];
             if ($pitch->expert == 1) {
                 $expertsPitch = unserialize($pitch->{'expert-ids'});
             }
@@ -560,7 +603,7 @@ class Pitch extends AppModel
     public static function apiGetPitch($categoryId = null)
     {
         $fetch = false;
-        $catConditions = array();
+        $catConditions = [];
         if (!is_null($categoryId)) {
             if (preg_match('@,@', $categoryId)) {
                 $ids = (explode(',', $categoryId));
@@ -578,7 +621,7 @@ class Pitch extends AppModel
                     }
                 }
                 if (!is_null($categoryId)) {
-                    $categoryId = array();
+                    $categoryId = [];
                     foreach ($ids as $searchId) {
                         $categoryId[] = $searchId;
                     }
@@ -590,28 +633,28 @@ class Pitch extends AppModel
             }
         }
         if ($categoryId) {
-            $catConditions = array('category_id' => $categoryId);
+            $catConditions = ['category_id' => $categoryId];
         }
 
         $count = 0;
         while ($fetch == false):
 
-            $pitch = Pitch::first(array(
-                        'conditions' => array_merge(array('status' => 0, 'category_id' => array('!=' => 7), 'published' => 1, 'private' => 0), $catConditions),
-                        'order' => array('RAND()'),
-                        'with' => array('Solution')
-            ));
+            $pitch = Pitch::first([
+                        'conditions' => array_merge(['status' => 0, 'category_id' => ['!=' => 7], 'published' => 1, 'private' => 0], $catConditions),
+                        'order' => ['RAND()'],
+                        'with' => ['Solution']
+            ]);
 
         if (($pitch) && (!is_null($pitch->solutions->first()->id))) {
             $fetch = true;
         }
         $count ++;
         if ($count > 10) {
-            $solution = Solution::first(array('order' => array('created' => 'desc')));
-            $pitch = Pitch::first(array(
-                            'conditions' => array('status' => 0, 'published' => 1, 'private' => 0, 'Pitch.id' => $solution->pitch_id),
-                            'with' => array('Solution')
-                ));
+            $solution = Solution::first(['order' => ['created' => 'desc']]);
+            $pitch = Pitch::first([
+                            'conditions' => ['status' => 0, 'published' => 1, 'private' => 0, 'Pitch.id' => $solution->pitch_id],
+                            'with' => ['Solution']
+                ]);
             $pitch->latestSolution = $solution;
             return $pitch->data();
         }
@@ -630,20 +673,20 @@ class Pitch extends AppModel
 
     public static function promospam()
     {
-        $pitches = Pitch::all(array('conditions' => array('published' => 1, 'status' => 2, 'started' => array('>' => '2013-01-01 00:00::00'))));
+        $pitches = Pitch::all(['conditions' => ['published' => 1, 'status' => 2, 'started' => ['>' => '2013-01-01 00:00::00']]]);
         $count = 0;
         foreach ($pitches as $pitch) {
-            $promoted = Promoted::first(array('conditions' => array('pitch_id' => $pitch->id)));
+            $promoted = Promoted::first(['conditions' => ['pitch_id' => $pitch->id]]);
             if (!$promoted) {
-                $grade = Grade::first(array('conditions' => array('pitch_id' => $pitch->id, 'user_id' => $pitch->user_id)));
+                $grade = Grade::first(['conditions' => ['pitch_id' => $pitch->id, 'user_id' => $pitch->user_id]]);
                 if (($grade) && (($grade->site_rating == 4) || ($grade->site_rating == 5))) {
-                    $promocode = Promocode::first(array('conditions' => array('pitch_id' => $pitch->id)));
+                    $promocode = Promocode::first(['conditions' => ['pitch_id' => $pitch->id]]);
                     if (!$promocode) {
                         if (!User::isSubscriptionActive($pitch->user_id)) {
                             $count ++;
                             User::sendPromoCode($pitch->user_id);
                             $promoted = Promoted::create();
-                            $promoted->set(array('pitch_id' => $pitch->id));
+                            $promoted->set(['pitch_id' => $pitch->id]);
                             $promoted->save();
                         }
                     }
@@ -655,35 +698,35 @@ class Pitch extends AppModel
 
     public static function dailypitch()
     {
-        $pitches = Pitch::all(array('conditions' => array('published' => 1, 'blank' => 0, 'status' => 0, 'started' => array('>=' => date('Y-m-d H:i:s', time() - DAY)))));
+        $pitches = Pitch::all(['conditions' => ['published' => 1, 'blank' => 0, 'status' => 0, 'started' => ['>=' => date('Y-m-d H:i:s', time() - DAY)]]]);
         if (count($pitches) > 0) {
-            $users = User::all(array('conditions' => array('email_newpitchonce' => 1, 'confirmed_email' => 1, 'User.email' => array('!=' => ''))));
+            $users = User::all(['conditions' => ['email_newpitchonce' => 1, 'confirmed_email' => 1, 'User.email' => ['!=' => '']]]);
             foreach ($users as $user) {
                 User::sendDailyPitch($user, $pitches);
             }
         } else {
-            $users = array();
+            $users = [];
         }
         return count($users);
     }
 
     public static function openLetter()
     {
-        $pitches = Pitch::all(array(
-                    'conditions' => array(
+        $pitches = Pitch::all([
+                    'conditions' => [
                         'published' => 1,
                         'blank' => 0,
-                        'started' => array(
+                        'started' => [
                             '>=' => date('Y-m-d H:i:s', time() - DAY - HOUR),
                             '<=' => date('Y-m-d H:i:s', time() - DAY),
-                        ),
-                    ),
-                    'with' => array('User'),
-        ));
-        $res = array(
+                        ],
+                    ],
+                    'with' => ['User'],
+        ]);
+        $res = [
             'all' => count($pitches),
             'sent' => 0,
-        );
+        ];
         if ($res['all'] > 0) {
             foreach ($pitches as $pitch) {
                 if (User::sendOpenLetter($pitch)) {
@@ -697,18 +740,18 @@ class Pitch extends AppModel
 
     public static function addonBriefLetter($time)
     {
-        $conditions = array(
+        $conditions = [
             'brief' => 0,
-        );
+        ];
         $conditions += self::getAddonConditions($time);
-        $pitches = self::all(array(
+        $pitches = self::all([
                     'conditions' => $conditions,
-                    'with' => array('User'),
-        ));
+                    'with' => ['User'],
+        ]);
         $res = 0;
         if (count($pitches)) {
             foreach ($pitches as $pitch) {
-                if (Addon::first(array('conditions' => array('pitch_id' => $pitch->id, 'brief' => 1)))) {
+                if (Addon::first(['conditions' => ['pitch_id' => $pitch->id, 'brief' => 1]])) {
                     continue;
                 }
                 if (User::sendAddonBrief($pitch)) {
@@ -722,10 +765,10 @@ class Pitch extends AppModel
     public static function addonProlongLetter($time)
     {
         $conditions = self::getAddonConditions($time);
-        $pitches = self::all(array(
+        $pitches = self::all([
                     'conditions' => $conditions,
-                    'with' => array('User'),
-        ));
+                    'with' => ['User'],
+        ]);
         $res = 0;
         if (count($pitches)) {
             foreach ($pitches as $pitch) {
@@ -739,18 +782,18 @@ class Pitch extends AppModel
 
     public static function addonExpertLetter($time)
     {
-        $conditions = array(
+        $conditions = [
             'expert' => 0,
-        );
+        ];
         $conditions += self::getAddonConditions($time);
-        $pitches = self::all(array(
+        $pitches = self::all([
                     'conditions' => $conditions,
-                    'with' => array('User'),
-        ));
+                    'with' => ['User'],
+        ]);
         $res = 0;
         if (count($pitches)) {
             foreach ($pitches as $pitch) {
-                if (Addon::first(array('conditions' => array('pitch_id' => $pitch->id, 'experts' => 1)))) {
+                if (Addon::first(['conditions' => ['pitch_id' => $pitch->id, 'experts' => 1]])) {
                     continue;
                 }
                 if (User::sendAddonExpert($pitch)) {
@@ -763,18 +806,18 @@ class Pitch extends AppModel
 
     public static function ExpertReminder()
     {
-        $conditions = array(
+        $conditions = [
             'expert' => 1,
             'status' => 1,
             'awarded' => 0,
-            'finishDate' => array(
+            'finishDate' => [
                 '>=' => date('Y-m-d H:i:s', time() - 62 * HOUR),
                 '<' => date('Y-m-d H:i:s', time() - 61 * HOUR),
-            ),
-        );
-        $pitches = self::all(array(
+            ],
+        ];
+        $pitches = self::all([
                     'conditions' => $conditions,
-        ));
+        ]);
         $res = 0;
         if (count($pitches)) {
             foreach ($pitches as $pitch) {
@@ -789,37 +832,37 @@ class Pitch extends AppModel
     protected static function getAddonConditions($time)
     {
         if ((0 < $time) && ($time < 1)) {
-            $timeCond = array(
-                'TIMESTAMPADD(SECOND,(TIMESTAMPDIFF(SECOND,started,finishDate) * ' . $time . '),started)' => array(
+            $timeCond = [
+                'TIMESTAMPADD(SECOND,(TIMESTAMPDIFF(SECOND,started,finishDate) * ' . $time . '),started)' => [
                     '>=' => date('Y-m-d H:i:s', time() - HOUR),
                     '<' => date('Y-m-d H:i:s', time()),
-                ),
-            );
+                ],
+            ];
         }
 
         if ($time >= 1) {
-            $timeCond = array(
-                'started' => array(
+            $timeCond = [
+                'started' => [
                     '>=' => date('Y-m-d H:i:s', time() - DAY * $time - HOUR),
                     '<' => date('Y-m-d H:i:s', time() - DAY * $time),
-                ),
-            );
+                ],
+            ];
         }
 
         if ($time < 0) {
-            $timeCond = array(
-                'finishDate' => array(
+            $timeCond = [
+                'finishDate' => [
                     '>=' => date('Y-m-d H:i:s', time() + DAY * abs($time) - HOUR),
                     '<' => date('Y-m-d H:i:s', time() + DAY * abs($time)),
-                ),
-            );
+                ],
+            ];
         }
 
-        $conditions = array(
+        $conditions = [
             'published' => 1,
             'blank' => 0,
             'status' => 0,
-        );
+        ];
         $conditions += $timeCond;
         return $conditions;
     }
@@ -827,7 +870,7 @@ class Pitch extends AppModel
     public static function generatePdfAct($options)
     {
         $destination = PdfGetter::findPdfDestination($options['destination']);
-        $path = ($destination == 'f') ? LITHIUM_APP_PATH . '/' . 'libraries' . '/' . 'MPDF54/MPDF54/tmp/' : '';
+        $path = ($destination == 'f') ? LITHIUM_APP_PATH . '/' . 'resources' . '/' . 'tmp/' : '';
         $options['pitch']->moneyback = self::isMoneyBack($options['pitch']->id);
         if ($options['pitch']->type == 'plan-payment') {
             $planId = SubscriptionPlan::getPlanForPayment($options['pitch']->id);
@@ -880,22 +923,22 @@ class Pitch extends AppModel
     public static function generatePdfReport($options)
     {
         $destination = PdfGetter::findPdfDestination($options['destination']);
-        $path = ($destination == 'f') ? LITHIUM_APP_PATH . '/' . 'libraries' . '/' . 'MPDF54/MPDF54/tmp/' : '';
+        $path = ($destination == 'f') ? LITHIUM_APP_PATH . '/' . 'resources' . '/' . 'tmp/' : '';
         $layout = ($options['bill']->individual == 1) ? 'Report-fiz' : 'Report-yur';
         $options['transaction_id'] = self::getPaymentId($options['pitch']->id);
-        $receipt = Receipt::all(array(
-                    'conditions' => array(
+        $receipt = Receipt::all([
+                    'conditions' => [
                         'pitch_id' => $options['pitch']->id,
-                    ),
-        ));
+                    ],
+        ]);
         $totalfees = 0;
         $prolongfees = 0;
-        if ($addon = Addon::first(array(
-                    'conditions' => array(
+        if ($addon = Addon::first([
+                    'conditions' => [
                         'pitch_id' => $options['pitch']->id,
                         'billed' => 1,
-                    ),
-                ))) {
+                    ],
+                ])) {
             $totalfees = $addon->total;
             $prolongfees = ($addon->prolong == 1) ? $addon->{'prolong-days'} * 1000 : $prolongfees;
         }
@@ -962,20 +1005,25 @@ class Pitch extends AppModel
 
     public static function sendReports()
     {
-        $query = array(
-            'conditions' => array(
+        $query = [
+            'conditions' => [
                 'status' => 2,
-                'totalFinishDate' => array(
-                    '>=' => date('Y-m-d H:i:s', time() - 5 * MINUTE),
-                ),
-            ),
-        );
+                'totalFinishDate' => [
+                    '>=' => date('Y-m-d H:i:s', time() - 1 * DAY),
+                ],
+            ],
+        ];
         $res = 0;
         if ($pitches = Pitch::all($query)) {
             foreach ($pitches as $pitch) {
                 if ($bill = Bill::first($pitch->id)) {
                     $destination = 'File';
-                    $options = compact('pitch', 'bill', 'destination');
+                    $addons = Addon::all(['conditions' => [
+                        'pitch_id' => $pitch->id,
+                        'billed' => 1,
+                        'prolong' => ['>' => 0],
+                    ]]);
+                    $options = compact('pitch', 'bill', 'addons', 'destination');
                     self::generatePdfReport($options);
                     if ($bill->individual != 1) {
                         self::generatePdfAct($options);
@@ -1000,8 +1048,8 @@ class Pitch extends AppModel
 
     public static function getTransactions($pitchId)
     {
-        $transMaster = Transaction::all(array('conditions' => array('ORDER' => $pitchId)));
-        $transPay = Paymaster::all(array('conditions' => array('LMI_PAYMENT_NO' => $pitchId)));
+        $transMaster = Transaction::all(['conditions' => ['ORDER' => $pitchId]]);
+        $transPay = Paymaster::all(['conditions' => ['LMI_PAYMENT_NO' => $pitchId]]);
         return compact('transMaster', 'transPay');
     }
 
@@ -1016,7 +1064,7 @@ class Pitch extends AppModel
                     //$res = (int) $specifics['site-sub'] . ' ' . $numInflector->formatString($specifics['site-sub'], array('first' => 'макет', 'second' => 'макета', 'third' => 'макетов'));
                     break;
                 case 3:
-                    $res = (int) $specifics['site-sub'] . ' ' . $numInflector->formatString($specifics['site-sub'], array('first' => 'страница', 'second' => 'страницы', 'third' => 'страниц'));
+                    $res = (int) $specifics['site-sub'] . ' ' . $numInflector->formatString($specifics['site-sub'], ['first' => 'страница', 'second' => 'страницы', 'third' => 'страниц']);
                     break;
                 case 4:
                     //$res = (int) $specifics['site-sub'] . ' ' . $numInflector->formatString($specifics['site-sub'], array('first' => 'макет', 'second' => 'макета', 'third' => 'макетов'));
@@ -1083,7 +1131,7 @@ class Pitch extends AppModel
      */
     public static function getOwnerOfPitch($pitchId)
     {
-        if ($pitchData = self::first(array('fields' => array('user_id'), 'conditions' => array('id' => $pitchId)))) {
+        if ($pitchData = self::first(['fields' => ['user_id'], 'conditions' => ['id' => $pitchId]])) {
             return User::first($pitchData->user_id);
         }
     }
@@ -1100,32 +1148,32 @@ class Pitch extends AppModel
         if ($result = $this->__getSortingString($type)) {
             switch ($result) {
                 case 'rating':
-                    $array = array('awarded' => 'desc', 'nominated' => 'desc', 'rating' => 'desc', 'created' => 'desc');
+                    $array = ['awarded' => 'desc', 'nominated' => 'desc', 'rating' => 'desc', 'created' => 'desc'];
                     break;
                 case 'created':
-                    $array = array('awarded' => 'desc', 'nominated' => 'desc', 'created' => 'desc');
+                    $array = ['awarded' => 'desc', 'nominated' => 'desc', 'created' => 'desc'];
                     break;
                 case 'likes':
-                    $array = array('awarded' => 'desc', 'nominated' => 'desc', 'likes' => 'desc', 'created' => 'desc');
+                    $array = ['awarded' => 'desc', 'nominated' => 'desc', 'likes' => 'desc', 'created' => 'desc'];
                     break;
                 default:
-                    $array = array('awarded' => 'desc', 'nominated' => 'desc', 'created' => 'desc');
+                    $array = ['awarded' => 'desc', 'nominated' => 'desc', 'created' => 'desc'];
                     break;
             }
             if (Session::read('user.id') == $pitch->user_id) {
-                $array = array_merge($array, array('awarded' => 'desc', 'hidden' => 'asc'));
+                $array = array_merge($array, ['awarded' => 'desc', 'hidden' => 'asc']);
                 $array = array_slice($array, 0, 1, true) +
-                        array('hidden' => 'asc') +
+                        ['hidden' => 'asc'] +
                         array_slice($array, 1, null, true);
             }
             return $array;
         } else {
             if ((Session::read('user.id') == $pitch->user_id) && (strtotime($pitch->finishDate) > time()) && ($pitch->status == 0)) {
-                return array('hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'created' => 'desc');
+                return ['hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'created' => 'desc'];
             } elseif ((Session::read('user.id') == $pitch->user_id) || ($pitch->status > 0)) {
-                return array('awarded' => 'desc', 'nominated' => 'desc', 'rating' => 'desc', 'created' => 'desc', 'hidden' => 'asc',);
+                return ['awarded' => 'desc', 'nominated' => 'desc', 'rating' => 'desc', 'created' => 'desc', 'hidden' => 'asc',];
             } else {
-                return array('awarded' => 'desc', 'nominated' => 'desc', 'created' => 'desc');
+                return ['awarded' => 'desc', 'nominated' => 'desc', 'created' => 'desc'];
             }
         }
     }
@@ -1135,23 +1183,23 @@ class Pitch extends AppModel
         if ($result = $this->__getSortingString($type)) {
             switch ($result) {
                 case 'rating':
-                    $array = array('rating' => 'desc', 'created' => 'desc');
+                    $array = ['rating' => 'desc', 'created' => 'desc'];
                     break;
                 case 'created':
-                    $array = array('created' => 'desc');
+                    $array = ['created' => 'desc'];
                     break;
                 case 'number':
-                    $array = array('Num' => 'desc', 'created' => 'desc');
+                    $array = ['Num' => 'desc', 'created' => 'desc'];
                     break;
             }
             return $array;
         } else {
             if ((Session::read('user.id') == $pitch->user_id) && (strtotime($pitch->finishDate) > time()) && ($pitch->status == 0)) {
-                return array('hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'created' => 'desc');
+                return ['hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'created' => 'desc'];
             } elseif ((Session::read('user.id') == $pitch->user_id) || ($pitch->status > 0)) {
-                return array('hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'rating' => 'desc', 'created' => 'desc');
+                return ['hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'rating' => 'desc', 'created' => 'desc'];
             } else {
-                return array('hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'created' => 'desc');
+                return ['hidden' => 'asc', 'awarded' => 'desc', 'nominated' => 'desc', 'created' => 'desc'];
             }
         }
     }
@@ -1209,10 +1257,10 @@ class Pitch extends AppModel
         $interval = \DateInterval::createFromDateString('1 day');
         $period = new \DatePeriod($begin, $interval, $end);
 
-        $ratingArray = array();
-        $moneyArray = array();
-        $commentArray = array();
-        $dates = array();
+        $ratingArray = [];
+        $moneyArray = [];
+        $commentArray = [];
+        $dates = [];
         $pitch->firstSolutionTime = self::__getFirstSolutionTime($pitch);
         foreach ($period as $dt) {
             $time = strtotime($dt->format('Y-m-d'));
@@ -1226,11 +1274,11 @@ class Pitch extends AppModel
         $ratingAverage = (empty($ratingArray)) ? 0 : round(array_sum($ratingArray) / count($ratingArray), 1);
         $moneyAverage = (empty($moneyArray)) ? 0 : round(array_sum($moneyArray) / count($moneyArray), 1);
         $commentAverage = (empty($commentArray)) ? 0 : round(array_sum($commentArray) / count($commentArray), 1);
-        $percentages = array(
+        $percentages = [
             'rating' => round(($ratingAverage / 15) * 100),
             'money' => round(($moneyAverage / 15) * 100),
             'comment' => round(($commentAverage / 15) * 100),
-        );
+        ];
         $total = 0;
         foreach ($percentages as $key => $value) {
             $total += $value;
@@ -1255,11 +1303,11 @@ class Pitch extends AppModel
         $cacheKey = 'calc_ids_' . $pitch->id . '_' . date('Y-m-d_H_i_s', strtotime($plusDay));
         if (!$ids = Rcache::read($cacheKey)) {
             if (strtotime($pitch->started) > strtotime('2013-03-25 00:00:00')) {
-                $solutions = Historysolution::all(array('conditions' => array('pitch_id' => $pitch->id, 'date(created)' => array('<' => $plusDay))));
+                $solutions = Historysolution::all(['conditions' => ['pitch_id' => $pitch->id, 'date(created)' => ['<' => $plusDay]]]);
             } else {
-                $solutions = Solution::all(array('conditions' => array('pitch_id' => $pitch->id, 'date(created)' => array('<' => $plusDay))));
+                $solutions = Solution::all(['conditions' => ['pitch_id' => $pitch->id, 'date(created)' => ['<' => $plusDay]]]);
             }
-            $ids = array();
+            $ids = [];
             foreach ($solutions as $solution) {
                 $ids[] = $solution->id;
             }
@@ -1281,23 +1329,23 @@ class Pitch extends AppModel
         $cacheKey = 'calc_firstSolutionTime_' . $pitch->id;
         $time = null;
         //if (!$time = Rcache::read($cacheKey)) {
-            $pitch->firstSolution = Historysolution::first(array(
-                'conditions' => array(
-                    'pitch_id' => $pitch->id),
-                'order' => array(
-                    'created' => 'asc')
-            ));
-            if ($pitch->firstSolution) {
-                $time = strtotime($pitch->firstSolution->created);
+            $pitch->firstSolution = Historysolution::first([
+                'conditions' => [
+                    'pitch_id' => $pitch->id],
+                'order' => [
+                    'created' => 'asc']
+            ]);
+        if ($pitch->firstSolution) {
+            $time = strtotime($pitch->firstSolution->created);
                 //Rcache::write($cacheKey, $time);
-            }
+        }
         //}
         return $time;
     }
 
     private function calcAvg($first, $second, $third)
     {
-        $avgArray = array();
+        $avgArray = [];
         for ($i = 0; $i < count($first); $i++) {
             $avg = round((($first[$i] + $second[$i] + $third[$i]) / 3), 1);
             $avgArray[] = $avg;
@@ -1310,19 +1358,19 @@ class Pitch extends AppModel
         $cacheKey = 'calc_rating_' . $pitch->id . '_' . date('Y-m-d_H_i_s', strtotime($plusDay));
         //if (!$rating = Rcache::read($cacheKey)) {
             if (!empty($ids)) {
-                $ratingsNum = Ratingchange::all(array('conditions' => array('solution_id' => $ids, 'user_id' => $pitch->user_id, 'date(created)' => array('<' => $plusDay))));
+                $ratingsNum = Ratingchange::all(['conditions' => ['solution_id' => $ids, 'user_id' => $pitch->user_id, 'date(created)' => ['<' => $plusDay]]]);
             } else {
-                $ratingsNum = array();
+                $ratingsNum = [];
             }
-            $rating = 0;
-            $percents = 0;
-            if (count($ids) > 0) {
-                $percents = (count($ratingsNum) / count($ids)) * 100;
-            }
-            if ($percents > 100) {
-                $percents = 100;
-            }
-            switch ($percents) {
+        $rating = 0;
+        $percents = 0;
+        if (count($ids) > 0) {
+            $percents = (count($ratingsNum) / count($ids)) * 100;
+        }
+        if ($percents > 100) {
+            $percents = 100;
+        }
+        switch ($percents) {
                 case $percents < 50:
                     $rating = 1;
                     break;
@@ -1342,11 +1390,11 @@ class Pitch extends AppModel
             //$diff = strtotime(date('Y-m-d', $pitch->firstSolutionTime)) + DAY - $pitch->firstSolutionTime;
         if (($pitch->firstSolution) && ($pitch->firstSolutionTime < strtotime($dt->format('Y-m-d')) + DAY)) {
             $wasSolutionPostedOnThisDateOrBefore = true;
-        }else {
+        } else {
             $wasSolutionPostedOnThisDateOrBefore = false;
         }
-        if((!$pitch->firstSolution) || !$wasSolutionPostedOnThisDateOrBefore) {
-        //if ((!$pitch->firstSolution) || (($pitch->firstSolution) && ($pitch->firstSolutionTime > strtotime($dt->format('Y-m-d H:i:s')) + $diff))) {
+        if ((!$pitch->firstSolution) || !$wasSolutionPostedOnThisDateOrBefore) {
+            //if ((!$pitch->firstSolution) || (($pitch->firstSolution) && ($pitch->firstSolutionTime > strtotime($dt->format('Y-m-d H:i:s')) + $diff))) {
             $rating = 3;
         }
         return $rating;
@@ -1358,24 +1406,24 @@ class Pitch extends AppModel
         //if (!$comments = Rcache::read($cacheKey)) {
             if (!empty($ids)) {
                 if (strtotime($pitch->created) > strtotime('2013-03-24 18:00:00')) {
-                    $commentsNum = Historycomment::all(array('conditions' => array('pitch_id' => $pitch->id, 'user_id' => $pitch->user_id, 'date(created)' => array('<' => $plusDay))));
+                    $commentsNum = Historycomment::all(['conditions' => ['pitch_id' => $pitch->id, 'user_id' => $pitch->user_id, 'date(created)' => ['<' => $plusDay]]]);
                 } else {
-                    $commentsNum = Comment::all(array('nofilters' => true, 'conditions' => array('pitch_id' => $pitch->id, 'user_id' => $pitch->user_id, 'date(created)' => array('<' => $plusDay))));
+                    $commentsNum = Comment::all(['nofilters' => true, 'conditions' => ['pitch_id' => $pitch->id, 'user_id' => $pitch->user_id, 'date(created)' => ['<' => $plusDay]]]);
                 }
             } else {
-                $commentsNum = array();
+                $commentsNum = [];
             }
 
-            $comments = 0;
-            $percents = 0;
-            if (count($ids) > 0) {
-                $percents = (count($commentsNum) / count($ids)) * 100;
-            }
+        $comments = 0;
+        $percents = 0;
+        if (count($ids) > 0) {
+            $percents = (count($commentsNum) / count($ids)) * 100;
+        }
 
-            if ($percents > 100) {
-                $percents = 100;
-            }
-            switch ($percents) {
+        if ($percents > 100) {
+            $percents = 100;
+        }
+        switch ($percents) {
                 case $percents < 50: $comments = 1;
                     break;
                 case $percents < 63: $comments = 2;
@@ -1387,19 +1435,19 @@ class Pitch extends AppModel
                 case $percents <= 100: $comments = 5;
                     break;
             }
-            if (($pitch->firstSolution) && ($pitch->firstSolutionTime < strtotime($dt->format('Y-m-d')) + DAY)) {
-                $wasSolutionPostedOnThisDateOrBefore = true;
-            }else {
-                $wasSolutionPostedOnThisDateOrBefore = false;
-            }
+        if (($pitch->firstSolution) && ($pitch->firstSolutionTime < strtotime($dt->format('Y-m-d')) + DAY)) {
+            $wasSolutionPostedOnThisDateOrBefore = true;
+        } else {
+            $wasSolutionPostedOnThisDateOrBefore = false;
+        }
             //$diff = strtotime(date('Y-m-d', $pitch->firstSolutionTime)) + DAY - $pitch->firstSolutionTime;
-            if((!$pitch->firstSolution) || !$wasSolutionPostedOnThisDateOrBefore) {
-            //if ((!$pitch->firstSolution) || (($pitch->firstSolution) && ($pitch->firstSolutionTime > strtotime($dt->format('Y-m-d H:i:s')) + $diff))) {
+            if ((!$pitch->firstSolution) || !$wasSolutionPostedOnThisDateOrBefore) {
+                //if ((!$pitch->firstSolution) || (($pitch->firstSolution) && ($pitch->firstSolutionTime > strtotime($dt->format('Y-m-d H:i:s')) + $diff))) {
                 $comments = 3;
             }
-            if (strtotime($plusDay) < time()) {
-                //Rcache::write($cacheKey, $comments, [], '+2 hours');
-            }
+        if (strtotime($plusDay) < time()) {
+            //Rcache::write($cacheKey, $comments, [], '+2 hours');
+        }
         //}
         return $comments;
     }
@@ -1429,19 +1477,19 @@ class Pitch extends AppModel
     {
         switch ($priceFilter) {
             case 1:
-                $result = array('price' => array('>' => 5000, '<=' => 10000));
+                $result = ['price' => ['>' => 5000, '<=' => 10000]];
                 break;
             case 2:
-                $result = array('price' => array('>' => 10000, '<=' => 20000));
+                $result = ['price' => ['>' => 10000, '<=' => 20000]];
                 break;
             case 3:
-                $result = array('price' => array('>' => 20000));
+                $result = ['price' => ['>' => 20000]];
                 break;
             case 4:
-                $result = array('price' => 0);
+                $result = ['price' => 0];
                 break;
             default:
-                $result = array();
+                $result = [];
         }
         return $result;
     }
@@ -1456,19 +1504,19 @@ class Pitch extends AppModel
     {
         switch ($timeframe) {
             case 1:
-                $result = array('finishDate' => array('<=' => date('Y-m-d H:i:s', time() + (DAY * 3))));
+                $result = ['finishDate' => ['<=' => date('Y-m-d H:i:s', time() + (DAY * 3))]];
                 break;
             case 2:
-                $result = array('finishDate' => array('<=' => date('Y-m-d H:i:s', time() + (DAY * 7))));
+                $result = ['finishDate' => ['<=' => date('Y-m-d H:i:s', time() + (DAY * 7))]];
                 break;
             case 3:
-                $result = array('finishDate' => array('<=' => date('Y-m-d H:i:s', time() + (DAY * 10))));
+                $result = ['finishDate' => ['<=' => date('Y-m-d H:i:s', time() + (DAY * 10))]];
                 break;
             case 4:
-                $result = array('finishDate' => array('=>' => date('Y-m-d H:i:s', time() + (DAY * 14))));
+                $result = ['finishDate' => ['=>' => date('Y-m-d H:i:s', time() + (DAY * 14))]];
                 break;
             default:
-                $result = array();
+                $result = [];
         }
         return $result;
     }
@@ -1487,18 +1535,18 @@ class Pitch extends AppModel
             $firstUpper = (mb_strtoupper($firstLetter, 'utf-8'));
             $firstLower = (mb_strtolower($firstLetter, 'utf-8'));
             $string = $firstLower . mb_substr($word, 1, mb_strlen($word, 'utf-8'), 'utf-8') . '|' . $firstUpper . mb_substr($word, 1, mb_strlen($word, 'utf-8'), 'utf-8') . '|' . mb_strtoupper($word, 'utf-8') . '|' . str_replace('ё', 'е', $word);
-            $search = array('LOWER(Pitch.title)' => array('REGEXP' => $string));
+            $search = ['LOWER(Pitch.title)' => ['REGEXP' => $string]];
             if (strlen($word) > 3) {
-                $search['Pitch.description'] = array('LIKE' => '%' . $word . '%');
-                $search['Pitch.business-description'] = array('LIKE' => '%' . $word . '%');
+                $search['Pitch.description'] = ['LIKE' => '%' . $word . '%'];
+                $search['Pitch.business-description'] = ['LIKE' => '%' . $word . '%'];
             }
-            $search = array('OR' => array(
-                array("LOWER(Pitch.title) REGEXP '" . $string . "'"),
-                array("Pitch.description LIKE '%$word%'"),
-                array("'Pitch.business-description' LIKE '%$word%'"),
-            ));
+            $search = ['OR' => [
+                ["LOWER(Pitch.title) REGEXP '" . $string . "'"],
+                ["Pitch.description LIKE '%$word%'"],
+                ["'Pitch.business-description' LIKE '%$word%'"],
+            ]];
         } else {
-            $search = array();
+            $search = [];
         }
         return $search;
     }
@@ -1516,9 +1564,9 @@ class Pitch extends AppModel
             $allowedCategories[] = $cat->id;
         }
         if (!empty($category) && in_array($category, $allowedCategories)) {
-            $category = array('category_id' => $category);
+            $category = ['category_id' => $category];
         } else {
-            $category = array();
+            $category = [];
         }
         return $category;
     }
@@ -1531,31 +1579,31 @@ class Pitch extends AppModel
     */
     public static function getQueryOrder($order, $type = 'current')
     {
-        $allowedOrder = array('price', 'finishDate', 'ideas_count', 'title', 'category', 'started');
-        $allowedSortDirections = array('asc', 'desc');
+        $allowedOrder = ['price', 'finishDate', 'ideas_count', 'title', 'category', 'started'];
+        $allowedSortDirections = ['asc', 'desc'];
         $trigger = is_array($order);
         $field = $trigger ? key($order) : '';
         $dir = $trigger ? current($order) : '';
         if ($trigger && ((in_array($field, $allowedOrder)) && (in_array($dir, $allowedSortDirections)))) {
             switch ($field) {
                 case 'category':
-                    $order = array('category_id' => $dir,'started' => 'desc');
+                    $order = ['category_id' => $dir,'started' => 'desc'];
                     break;
                 case 'finishDate':
-                    $order = array('(finishDate - \'' . date('Y-m-d H:i:s') . '\')' => $dir);
+                    $order = ['(finishDate - \'' . date('Y-m-d H:i:s') . '\')' => $dir];
                     break;
                 case 'price':
                     if ($type == 'current') {
-                        $order = array('free' => 'desc', $field => $dir,'started' => 'desc');
+                        $order = ['free' => 'desc', $field => $dir,'started' => 'desc'];
                     } else {
-                        $order = array($field => $dir,'started' => 'desc');
+                        $order = [$field => $dir,'started' => 'desc'];
                     }
                     break;
                 default:
-                    $order = array($field => $dir,'started' => 'desc');
+                    $order = [$field => $dir,'started' => 'desc'];
             }
         } else {
-            $order = array('free' => 'desc','price' => 'desc','started' => 'desc');
+            $order = ['free' => 'desc','price' => 'desc','started' => 'desc'];
         }
         return $order;
     }
@@ -1570,26 +1618,26 @@ class Pitch extends AppModel
     {
         switch ($types) {
             case 'finished':
-                $result = array('OR' => array(array('status = 2'), array('(status = 1 AND awarded > 0)')));
+                $result = ['OR' => [['status = 2'], ['(status = 1 AND awarded > 0)']]];
                 break;
             case 'current':
-                $result = array('status' => array('<' => 2), 'awarded' => 0);
+                $result = ['status' => ['<' => 2], 'awarded' => 0];
                 break;
             case 'all':
-                $result = array();
+                $result = [];
                 break;
                         case 'completion-stage':
-                            $result = array('status' => 1, 'awarded' => array('>' => 0));
+                            $result = ['status' => 1, 'awarded' => ['>' => 0]];
                             break;
                         case 'awarded':
-                            $result = array('status' => 2);
+                            $result = ['status' => 2];
                             break;
             default:
-                $result = array(
-                    'OR' => array(
-                        array('awardedDate >= \'' . date('Y-m-d H:i:s', time() - DAY) . '\''),
-                        array('status < 2 AND awarded = 0'),
-                    ));
+                $result = [
+                    'OR' => [
+                        ['awardedDate >= \'' . date('Y-m-d H:i:s', time() - DAY) . '\''],
+                        ['status < 2 AND awarded = 0'],
+                    ]];
         }
         return $result;
     }
@@ -1601,32 +1649,32 @@ class Pitch extends AppModel
     */
     public static function getPitchesForHomePage()
     {
-        return Pitch::all(array(
-                'order' => array(
-                'pinned' => 'desc',
-                'ideas_count' => 'desc',
-                'price' => 'desc'
-            ),
-                'conditions' => array(
-                    'status' => array('<' => 1),
-                    'published' => 1,
-                    'multiwinner' => 0),
+        return Pitch::all([
+                'Pitch.order' => [
+                'Pitch.pinned' => 'desc',
+                'Pitch.ideas_count' => 'desc',
+                'Pitch.price' => 'desc'
+            ],
+                'conditions' => [
+                    'Pitch.status' => 0,
+                    'Pitch.published' => 1,
+                    'Pitch.multiwinner' => 0],
             'limit' => 3,
             'page' => 1,
-        ));
+        ]);
     }
 
     public static function getFreePitch()
     {
-        return Pitch::first(array('conditions' => array('status' => 0, 'published' => 1, 'free' => 1), 'order' => array('RAND()')));
+        return Pitch::first(['conditions' => ['status' => 0, 'published' => 1, 'free' => 1], 'order' => ['RAND()']]);
     }
 
     public static function createNewWinner($solutionId)
     {
-        if (($solution = Solution::first(array(
-                    'conditions' => array('Solution.id' => $solutionId),
-                    'with' => array('Pitch'),
-                ))) && count(self::all(array('conditions' => array('user_id' => $solution->pitch->user_id, 'billed' => 0, 'multiwinner' => $solution->pitch->id)))) == 0) {
+        if (($solution = Solution::first([
+                    'conditions' => ['Solution.id' => $solutionId],
+                    'with' => ['Pitch'],
+                ])) && count(self::all(['conditions' => ['user_id' => $solution->pitch->user_id, 'billed' => 0, 'multiwinner' => $solution->pitch->id]])) == 0) {
             $copyPitch = Pitch::create();
             $data = $solution->pitch->data();
             $data['type'] = 'multiwinner';
@@ -1641,13 +1689,13 @@ class Pitch extends AppModel
             $copyPitch->set($data);
             if ($copyPitch->save()) {
                 $copyPitch->awarded = Solution::copy($copyPitch->id, $solution->id);
-                $receiptData = array(
-                    'features' => array(
-                        'award' => $copyPitch->price),
-                    'commonPitchData' => array(
+                $receiptData = [
+                    'features' => [
+                        'award' => $copyPitch->price],
+                    'commonPitchData' => [
                         'id' => $copyPitch->id,
                         'category_id' => $copyPitch->category_id,
-                        'promocode' => $copyPitch->promocode));
+                        'promocode' => $copyPitch->promocode]];
                 Receipt::createReceipt($receiptData);
                 $commission = Receipt::getCommissionForProject($copyPitch->id);
                 $copyPitch->total = $commission + $copyPitch->price;
@@ -1661,7 +1709,7 @@ class Pitch extends AppModel
 
     public static function activateNewWinner($pitchId)
     {
-        if ($pitch = self::first(array('conditions' => array('Pitch.id' => $pitchId), 'with' => array('Solution'), ))) {
+        if ($pitch = self::first(['conditions' => ['Pitch.id' => $pitchId], 'with' => ['Solution'], ])) {
             $pitch->billed = 1;
             $pitch->published = 1;
             $pitch->finished = date('Y-m-d H:i:s');
@@ -1686,6 +1734,27 @@ class Pitch extends AppModel
                 //User::sendTweetWinner($solution);
                 Task::createNewTask($solution->id, 'victoryNotificationTwitter');
                 Task::createNewTask($solution->id, 'victoryNotification');
+                $project = $pitch;
+                if (($project->category_id != 20) && (!empty($project->ga_id))) {
+                    $options = ['client_id' => $project->ga_id, 'user_id' => $project->user_id];
+                    $tracking = new \Racecore\GATracking\GATracking('UA-9235854-5', $options);
+
+                    $transaction = $tracking->createTracking('Ecommerce\Transaction');
+                    $transaction->setID($project->id);
+                    $transaction->setRevenue($project->total);
+                    $transaction->setCurrency('RUB');
+                    $result = $tracking->sendTracking($transaction);
+
+                    $item = $tracking->createTracking('Ecommerce\Item');
+                    $item->setTransactionID($project->id);
+                    $item->setName($project->title);
+                    $item->setPrice($project->total);
+                    $item->setQuantity(1);
+                    $item->setSku($project->id . '_1');
+                    $item->setCategory('Дополнительный победитель');
+                    $item->setCurrency('RUB');
+                    $result = $tracking->sendTracking($item);
+                }
                 return true;
             }
         } else {
@@ -1701,7 +1770,7 @@ class Pitch extends AppModel
      */
     public static function activateLogoSalePitch($pitchId)
     {
-        if ($pitch = self::first(array('conditions' => array('Pitch.id' => $pitchId, 'Pitch.blank' => 1), 'with' => array('Solution')))) {
+        if ($pitch = self::first(['conditions' => ['Pitch.id' => $pitchId, 'Pitch.blank' => 1], 'with' => ['Solution']])) {
             if ($pitch->awarded == 0) {
                 return false;
             } else {
@@ -1715,11 +1784,33 @@ class Pitch extends AppModel
                     $pitch->status = 1;
                     $pitch->confirmed = 0;
                     $pitch->title = $originalPitch->title;
-                    $pitch->started = date('Y-m-d H:i:s');
-                    $pitch->finishDate = date('Y-m-d H:i:s', time() + 10 * DAY);
+                    $pitch->started = date(MYSQL_DATETIME_FORMAT);
+                    $pitch->awardedDate = date(MYSQL_DATETIME_FORMAT);
+                    $pitch->finishDate = date(MYSQL_DATETIME_FORMAT, time() + 10 * DAY);
                     $pitch->save();
                     SolutionsMailer::sendSolutionBoughtNotification($pitch->awarded);
                     SpamMailer::sendNewLogosaleProject($pitch);
+                    $project = $pitch;
+                    if (($project->category_id != 20) && (!empty($project->ga_id))) {
+                        $options = ['client_id' => $project->ga_id, 'user_id' => $project->user_id];
+                        $tracking = new \Racecore\GATracking\GATracking('UA-9235854-5', $options);
+
+                        $transaction = $tracking->createTracking('Ecommerce\Transaction');
+                        $transaction->setID($project->id);
+                        $transaction->setRevenue($project->total);
+                        $transaction->setCurrency('RUB');
+                        $result = $tracking->sendTracking($transaction);
+
+                        $item = $tracking->createTracking('Ecommerce\Item');
+                        $item->setTransactionID($project->id);
+                        $item->setName($project->title);
+                        $item->setPrice($project->total);
+                        $item->setQuantity(1);
+                        $item->setSku($project->id . '_1');
+                        $item->setCategory('Распродажа логотипов');
+                        $item->setCurrency('RUB');
+                        $result = $tracking->sendTracking($item);
+                    }
                     return true;
                 }
             }
@@ -1737,20 +1828,41 @@ class Pitch extends AppModel
     public static function activatePenalty($penaltyId)
     {
         $penalty = self::first($penaltyId);
-        $solution = Solution::first(array('conditions' => array('Solution.id' => $penalty->awarded), 'with' => array('Pitch')));
+        $solution = Solution::first(['conditions' => ['Solution.id' => $penalty->awarded], 'with' => ['Pitch']]);
         Solution::selectSolution($solution);
-        $data = array(
+        $data = [
             'billed' => 1,
             'status' => 2,
             'started' => date('Y-m-d H:i:s'),
             'finishDate' => date('Y-m-d H:i:s')
-        );
+        ];
+        $project = $penalty;
+        if (($project->category_id != 20) && (!empty($project->ga_id))) {
+            $options = ['client_id' => $project->ga_id, 'user_id' => $project->user_id];
+            $tracking = new \Racecore\GATracking\GATracking('UA-9235854-5', $options);
+
+            $transaction = $tracking->createTracking('Ecommerce\Transaction');
+            $transaction->setID($project->id);
+            $transaction->setRevenue($project->total);
+            $transaction->setCurrency('RUB');
+            $result = $tracking->sendTracking($transaction);
+
+            $item = $tracking->createTracking('Ecommerce\Item');
+            $item->setTransactionID($project->id);
+            $item->setName($project->title);
+            $item->setPrice($project->total);
+            $item->setQuantity(1);
+            $item->setSku($project->id . '_1');
+            $item->setCategory('Штраф');
+            $item->setCurrency('RUB');
+            $result = $tracking->sendTracking($item);
+        }
         return $penalty->save($data);
     }
 
     public static function declineLogosalePitch($pitchId, $designerId)
     {
-        if ($pitch = self::first(array('conditions' => array('Pitch.id' => $pitchId, 'Pitch.blank' => 1), 'with' => array('Solution')))) {
+        if ($pitch = self::first(['conditions' => ['Pitch.id' => $pitchId, 'Pitch.blank' => 1], 'with' => ['Solution']])) {
             $solutionCopy = Solution::first($pitch->awarded);
             if ($designerId == $solutionCopy->user_id) {
                 $pitch->awarded = 0;
@@ -1771,7 +1883,7 @@ class Pitch extends AppModel
 
     public static function acceptLogosalePitch($pitchId, $designerId)
     {
-        if ($pitch = self::first(array('conditions' => array('Pitch.id' => $pitchId, 'Pitch.blank' => 1), 'with' => array('Solution')))) {
+        if ($pitch = self::first(['conditions' => ['Pitch.id' => $pitchId, 'Pitch.blank' => 1], 'with' => ['Solution']])) {
             $solutionCopy = Solution::first($pitch->awarded);
             if ($designerId == $solutionCopy->user_id) {
                 $pitch->confirmed = 1;
@@ -1787,7 +1899,7 @@ class Pitch extends AppModel
     public static function getCountBilledMultiwinner($pitchId)
     {
         if ($pitch = self::first($pitchId)) {
-            return count(self::all(array('conditions' => array('user_id' => $pitch->user_id, 'billed' => 1, 'multiwinner' => $pitch->id))));
+            return count(self::all(['conditions' => ['user_id' => $pitch->user_id, 'billed' => 1, 'multiwinner' => $pitch->id]]));
         }
     }
 
@@ -1800,22 +1912,22 @@ class Pitch extends AppModel
     public static function getPaymentId($projectId)
     {
         // есть запись с мастербанка
-        if ($transaction = Transaction::first(array('conditions' => array(
+        if ($transaction = Transaction::first(['conditions' => [
             "`ORDER`" => $projectId,
             'TRTYPE' => 21,
-        )))) {
+        ]])) {
             return $transaction->RRN;
         }
         // Paymaster
-        if ($transaction = Paymaster::first(array('conditions' => array(
+        if ($transaction = Paymaster::first(['conditions' => [
             'LMI_PAYMENT_NO' => $projectId,
-        )))) {
+        ]])) {
             return $transaction->LMI_SYS_PAYMENT_ID;
         }
         // Payanyway
-        if ($transaction = Payanyway::first(array('conditions' => array(
+        if ($transaction = Payanyway::first(['conditions' => [
             'MNT_TRANSACTION_ID' => $projectId,
-        )))) {
+        ]])) {
             return $transaction->MNT_OPERATION_ID;
         }
         return null;
@@ -1829,7 +1941,7 @@ class Pitch extends AppModel
      */
     public static function isMoneyBack($projectId)
     {
-        if ($note = Note::first(array('conditions' => array('pitch_id' => $projectId))) and $note->status == 2) {
+        if ($note = Note::first(['conditions' => ['pitch_id' => $projectId]]) and $note->status == 2) {
             return true;
         }
         return false;
@@ -1851,7 +1963,7 @@ class Pitch extends AppModel
                 return false;
             }
             if (($pitch['status'] == 2) && ($pitch['category_id'] == 1) &&
-                ($pitch['private'] == 0) && ($pitch['totalFinishDate'] < date('Y-m-d H:i:s', time() - 30 * DAY))) {
+                ($pitch['private'] == 0) && ($pitch['totalFinishDate'] !== '0000-00-00 00:00:00') && (strtotime($pitch['totalFinishDate']) < (time() - (30 * DAY)))) {
                 return true;
             } else {
                 return false;
@@ -1912,34 +2024,34 @@ class Pitch extends AppModel
         $cacheKey = $categoryId . '_' . $type;
         if (!$result = Rcache::read($cacheKey)) {
             $category = Category::first($categoryId);
-            $conditions = array(
+            $conditions = [
                 'category_id' => $categoryId,
                 'billed' => 1,
                 'published' => 1,
-                'ideas_count' => array('>' => 0),
-                'started' => array('>' => '2015-01-01 00:00:00'),
-            );
+                'ideas_count' => ['>' => 0],
+                'started' => ['>' => '2015-01-01 00:00:00'],
+            ];
             switch ($type) {
                 case 'good':
-                    $conditions += array(
-                        'price' => array('>=' => $category->goodAward)
-                    );
+                    $conditions += [
+                        'price' => ['>=' => $category->goodAward]
+                    ];
                     break;
                 case 'normal':
-                    $conditions += array(
-                        'price' => array('>=' => $category->normalAward, '<' => $category->goodAward)
-                    );
+                    $conditions += [
+                        'price' => ['>=' => $category->normalAward, '<' => $category->goodAward]
+                    ];
                     break;
                 case 'minimal':
-                    $conditions += array(
-                        'price' => array('<' => $category->normalAward)
-                    );
+                    $conditions += [
+                        'price' => ['<' => $category->normalAward]
+                    ];
                     break;
             }
-            $pitches = Pitch::all(array(
-                'fields' => array('id', 'category_id', 'price', 'ideas_count'),
+            $pitches = Pitch::all([
+                'fields' => ['id', 'category_id', 'price', 'ideas_count'],
                 'conditions' => $conditions
-            ));
+            ]);
             $count = count($pitches->data());
             if ($count > 0) {
                 $total = 0;
@@ -1950,7 +2062,7 @@ class Pitch extends AppModel
             } else {
                 $result = 0;
             }
-            Rcache::write($cacheKey, $result, array(), '+1 month');
+            Rcache::write($cacheKey, $result, [], '+1 month');
         }
         return $result;
     }
@@ -1962,15 +2074,15 @@ class Pitch extends AppModel
         $commonPitchData = $inputData['commonPitchData'];
         if (!isset($featuresData['experts'])) {
             $expert = 0;
-            $expertId = serialize(array());
+            $expertId = serialize([]);
         } else {
             $expert = 1;
             $expertId = serialize($featuresData['experts']);
         }
         if (!isset($commonPitchData['fileIds'])) {
-            $commonPitchData['fileIds'] = array();
+            $commonPitchData['fileIds'] = [];
         }
-        $data = array(
+        $data = [
             'user_id' => $commonPitchData['user_id'],
             'type' => 'company_project',
             'category_id' => 20,
@@ -2017,7 +2129,7 @@ class Pitch extends AppModel
             'filesId' => serialize($commonPitchData['fileIds']),
             'specifics' => serialize($specificPitchData),
             'ga_id' => $commonPitchData['ga_id']
-        );
+        ];
         if ((isset($commonPitchData['id'])) && (!empty($commonPitchData['id']))) {
             $pitch = Pitch::first((int) $commonPitchData['id']);
         } else {
@@ -2074,20 +2186,20 @@ class Pitch extends AppModel
     public static function markAsRefunded($id)
     {
         if (($project = self::first($id)) && ($project->status != 2)) {
-            if (!$note = Note::first(array('conditions' => array('pitch_id' => $id)))) {
+            if (!$note = Note::first(['conditions' => ['pitch_id' => $id]])) {
                 $note = Note::create();
             }
-            $note->set(array(
+            $note->set([
                 'pitch_id' => $id,
                 'status' => 2
-            ));
+            ]);
             $note->save();
-            $data = array(
+            $data = [
                 'user_id' => 108,
                 'pitch_id' => $id,
                 'public' => 1,
                 'text' => 'Друзья, заказчик отказался от всех предложенных решений. К сожалению, такое случается. Мы благодарим всех за участие, и хотим напомнить, что права на свои идеи сохраняются за авторами, и вы можете адаптировать их для участия в другом питче!
-Подробнее читайте тут: http://godesigner.ru/answers/view/51');
+Подробнее читайте тут: http://godesigner.ru/answers/view/51'];
             Comment::createComment($data);
             User::fillBalance($project->user_id, $project->price);
             $project->status = 2;
@@ -2110,7 +2222,7 @@ class Pitch extends AppModel
             return false;
         }
         $daysBeforeAutoComment = 12;
-        if (in_array($project->category_id, array(3, 4))) {
+        if (in_array($project->category_id, [3, 4])) {
             $daysBeforeAutoComment = 14;
         }
         $diff = (time() - strtotime($project->awardedDate)) / DAY;
@@ -2128,13 +2240,13 @@ class Pitch extends AppModel
      */
     public static function getAutoClosingWarningComment($projectId)
     {
-        $project = Pitch::first($projectId);
+        $project = Pitch::first(['conditions' => ['Pitch.id' => $projectId], 'with' => ['Category']]);
         $projectOwner = User::first($project->user_id);
         $solution = Solution::first($project->awarded);
         $designer = User::first($solution->user_id);
         $nameInflector = new NameInflector();
-        $planDaysDefault = 10;
-        if (in_array($project->category_id, array(3, 4))) {
+        $planDaysDefault = $project->category->default_timelimit;
+        if (in_array($project->category_id, [3, 4])) {
             $planDaysDefault = 17;
         }
         $planDateToComplete = date('d.m.Y H:i', (strtotime($project->awardedDate) + $planDaysDefault * DAY));
@@ -2161,10 +2273,10 @@ class Pitch extends AppModel
         $project = Pitch::first($projectId);
         $solution = Solution::first($project->awarded);
         $text = 'Мы убедительно просим вас активизироваться на сайте, внести финальную правку';
-        if ($winComment = Wincomment::first(array('conditions' => array(
+        if ($winComment = Wincomment::first(['conditions' => [
             'solution_id' => $solution->id,
-            'text' => array('LIKE' => '%' . $text .  '%')
-        )))) {
+            'text' => ['LIKE' => '%' . $text .  '%']
+        ]])) {
             return true;
         }
         return false;
@@ -2192,20 +2304,23 @@ class Pitch extends AppModel
      */
     public static function getNextPenaltyId($userId, $solutionId)
     {
-        if (!$payment = self::first(array(
-            'conditions' => array(
+        if (!$payment = self::first([
+            'conditions' => [
                 'user_id' => $userId,
                 'billed' => 0,
                 'type' => 'penalty',
-            )
-        ))) {
-            $data = array(
+            ]
+        ])) {
+            $gatracking = new \Racecore\GATracking\GATracking('UA-9235854-5');
+            $gaId = $gatracking->getClientId();
+            $data = [
                 'user_id' => $userId,
                 'type' => 'penalty',
                 'category' => 98,
                 'title' => 'Оплата штрафа',
-                'awarded' => $solutionId
-            );
+                'awarded' => $solutionId,
+                'ga_id' => $gaId
+            ];
             $payment = self::create($data);
             $payment->save();
             return $payment->id;
@@ -2246,5 +2361,83 @@ class Pitch extends AppModel
             return true;
         }
         return false;
+    }
+
+    /**
+     * Метод возвращает целое количество дней (округлённое вниз), отведенное на выбор победителей
+     * нужно для отображения в уведомлениях для заказчиков
+     *
+     * @param $projectId
+     * @return int
+     */
+    public static function getDaysForWinnerSelection($projectId)
+    {
+        $project = self::first($projectId);
+        if ((int) $project->category_id === 20) {
+            $finishDate = new \DateTime($project->finishDate);
+            $chooseWinnerFinishDate = new \DateTime($project->chooseWinnerFinishDate);
+            $interval = $finishDate->diff($chooseWinnerFinishDate);
+            return (int) $interval->format('%a');
+        }
+        return 4;
+    }
+
+    /**
+     * Метод возвращает дату, когда у заказчика заканчивается время на выбор победителя
+     *
+     * @param $record
+     * @return \DateTime
+     */
+    public function getEndOfWinnerSelectionDateTime($record)
+    {
+        if ((int) $record->category_id === 20) {
+            $finishDateTimeFormattedString = $record->chooseWinnerFinishDate;
+        } else {
+            $finishDateTimeFormattedString = date('Y-m-d H:i:s', strtotime($record->finishDate) + 4 * DAY);
+        }
+        return new \DateTime($finishDateTimeFormattedString);
+    }
+
+    /**
+     * Метод определяет, допустимо ли отправлять смс клиенту с учетом сдвига в 4-5 часов.
+     * Запретные часы 23-07
+     *
+     * @param $record
+     * @return bool
+     */
+    public function isOkToSendSmsForFinishWinnerSelectionWarning($record)
+    {
+        $date = $record->getEndOfWinnerSelectionDateTime();
+        $hour = $date->format('G');
+        if (($hour >= 3) && ($hour < 11)) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Метод возвращяет минимальную награду на указанную дату с учётом скидки на выходных
+     *
+     * @param $categoryId
+     * @param \DateTime $dateTime
+     * @return int
+     */
+    public static function getMinimalAwardForCategoryForDate($categoryId, \DateTime $dateTime)
+    {
+        $category = Category::first($categoryId);
+        $defaultLow = ((int) $dateTime->format('N') > 5) ? $category->discountPrice : $category->minAward;
+        return (int) $defaultLow;
+    }
+
+    /**
+     * Метод определяет, выше или равна ли награда минимальной на указанной день (с учётом возможных скидок по выходным)
+     *
+     * @param $record
+     * @param \DateTime $dateTime
+     * @return bool
+     */
+    public function isAwardValidForDate($record, \DateTime $dateTime)
+    {
+        return $record->price >= self::getMinimalAwardForCategoryForDate($record->category_id, $dateTime);
     }
 }

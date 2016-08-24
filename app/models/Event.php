@@ -13,16 +13,19 @@ use \app\extensions\helper\MoneyFormatter;
 use \lithium\storage\Session;
 use app\extensions\storage\Rcache;
 
-class Event extends \app\models\AppModel {
+class Event extends AppModel
+{
 
-    public $belongsTo = array('Pitch', 'User', 'Comment', 'Solution', 'News');
+    public $belongsTo = ['Pitch', 'User', 'Comment', 'Solution', 'News'];
 
-    public static function __init() {
+    public static function __init()
+    {
         parent::__init();
-        self::applyFilter('find', function($self, $params, $chain) {
+
+        self::applyFilter('find', function ($self, $params, $chain) {
             $result = $chain->next($self, $params, $chain);
             if (is_object($result)) {
-                $addUpdateText = function($record) {
+                $addUpdateText = function ($record) {
                     $record->updateText = '';
                     if ($record->type == 'SolutionAdded') {
                         $record->updateText = '';
@@ -30,7 +33,7 @@ class Event extends \app\models\AppModel {
                     if ($record->type == 'SolutionPicked') {
                         $moneyFormatter = new MoneyFormatter();
                         $solution = Solution::first($record->solution_id);
-                        $record->updateText = '#' . $solution->num . ' стал победителем проекта. Поздравляем! Вознаграждение ' . $moneyFormatter->formatMoney($record->pitch->price, array('suffix' => ' Р.-'));
+                        $record->updateText = '#' . $solution->num . ' стал победителем проекта. Поздравляем! Вознаграждение ' . $moneyFormatter->formatMoney($record->pitch->price, ['suffix' => ' Р.-']);
                     }
                     if (($record->type == 'CommentAdded') || ($record->type == 'CommentCreated')) {
                         $commentText = '';
@@ -41,25 +44,25 @@ class Event extends \app\models\AppModel {
                     }
                     return $record;
                 };
-                $addBindings = function($record) {
+                $addBindings = function ($record) {
                     if ((isset($record->solution_id)) && ($record->solution_id > 0)) {
-                        $record->solution = Solution::first(array('with' => array('Pitch'), 'conditions' => array('Solution.id' => $record->solution_id, 'category_id' => array('!=' => 7))));
+                        $record->solution = Solution::first(['with' => ['Pitch'], 'conditions' => ['Solution.id' => $record->solution_id, 'category_id' => ['!=' => 7]]]);
                         if ($record->type == 'SolutionAdded') {
                             $record->pitchesCount = Pitch::getCountBilledMultiwinner($record->pitch_id);
                             $selectedsolution = false;
-                            $nominatedSolutionOfThisPitch = Solution::first(array(
-                                        'conditions' => array('nominated' => 1, 'pitch_id' => $record->solution->pitch->id)
-                            ));
+                            $nominatedSolutionOfThisPitch = Solution::first([
+                                        'conditions' => ['nominated' => 1, 'pitch_id' => $record->solution->pitch->id]
+                            ]);
                             if ($nominatedSolutionOfThisPitch) {
                                 $selectedsolution = true;
                             }
                             $record->selectedSolutions = $selectedsolution;
                             $allowLike = 0;
-                            if (Session::read('user.id') && (!$like = Like::first('first', array('conditions' => array('solution_id' => $record->solution->id, 'user_id' => Session::read('user.id')))))) {
+                            if (Session::read('user.id') && (!$like = Like::first('first', ['conditions' => ['solution_id' => $record->solution->id, 'user_id' => Session::read('user.id')]]))) {
                                 $allowLike = 1;
                             }
                             $record->allowLike = $allowLike;
-                            $record->likes = Event::all(array('conditions' => array('Event.type' => 'LikeAdded', 'solution_id' => $record->solution_id), 'order' => array('Event.created' => 'desc')));
+                            $record->likes = Event::all(['conditions' => ['Event.type' => 'LikeAdded', 'solution_id' => $record->solution_id], 'order' => ['Event.created' => 'desc']]);
                         }
                     } else {
                         //$record->solution = Solution::getBestSolution($record->pitch_id);
@@ -85,19 +88,19 @@ class Event extends \app\models\AppModel {
                     if ((isset($record->comment_id)) && ($record->comment_id > 0)) {
                         $record->comment = Comment::first($record->comment_id);
                         $allowLike = 0;
-                        if (Session::read('user.id') && (!$like = Like::first('first', array('conditions' => array('solution_id' => $record->solution->id, 'user_id' => Session::read('user.id')))))) {
+                        if (Session::read('user.id') && (!$like = Like::first('first', ['conditions' => ['solution_id' => $record->solution->id, 'user_id' => Session::read('user.id')]]))) {
                             $allowLike = 1;
                         }
                         $record->allowLike = $allowLike;
                     }
                     if ((isset($record->user_id)) && ($record->user_id > 0)) {
-                        $record->user = User::first(array('conditions' => array('id' => $record->user_id), 'fields' => array('id', 'first_name', 'last_name', 'isAdmin', 'gender')));
+                        $record->user = User::first(['conditions' => ['id' => $record->user_id], 'fields' => ['id', 'first_name', 'last_name', 'isAdmin', 'gender']]);
                     }
-                    if ($record->type == 'newsAdded') {
+                    if (($record->type == 'newsAdded') && ((int) $record->news_id > 0)) {
                         $news = News::first($record->news_id);
-                        $news->likes = Event::all(array('conditions' => array('Event.type' => 'LikeAdded', 'news_id' => $record->news_id), 'order' => array('Event.created' => 'asc')));
+                        $news->likes = Event::all(['conditions' => ['Event.type' => 'LikeAdded', 'news_id' => $record->news_id], 'order' => ['Event.created' => 'asc']]);
                         $allowLike = 0;
-                        if (Session::read('user.id') && (!$like = Like::first('first', array('conditions' => array('news_id' => $record->news_id, 'user_id' => Session::read('user.id')))))) {
+                        if (Session::read('user.id') && (!$like = Like::first('first', ['conditions' => ['news_id' => $record->news_id, 'user_id' => Session::read('user.id')]]))) {
                             $allowLike = 1;
                         }
                         $record->allowLike = $allowLike;
@@ -107,19 +110,19 @@ class Event extends \app\models\AppModel {
                         }
                         $host = parse_url($news->link);
                         $record->host = '';
-                        if(isset($host['host'])) {
+                        if (isset($host['host'])) {
                             $record->host = $host['host'];
                         }
-                        if($news->admin == 0) {
+                        if ($news->admin == 0) {
                             $news->short = html_entity_decode($news->short, ENT_COMPAT, 'UTF-8');
                             $news->short = mb_strimwidth($news->short, 0, 250, '...', 'UTF-8');
                         }
                         $record->news = $news;
                     } elseif ($record->type == 'FavUserAdded') {
-                        $record->user_fav = User::first(array('conditions' => array('id' => $record->fav_user_id), 'fields' => array('id', 'first_name', 'last_name', 'isAdmin', 'gender')));
+                        $record->user_fav = User::first(['conditions' => ['id' => $record->fav_user_id], 'fields' => ['id', 'first_name', 'last_name', 'isAdmin', 'gender']]);
                     } elseif ($record->type == 'RetweetAdded') {
                         $cache = \app\extensions\storage\Rcache::read('RetweetsFeed');
-                        if(is_array($cache)) {
+                        if (is_array($cache)) {
                             foreach ($cache as $k => $v) {
                                 if ($k == $record->tweet_id) {
                                     $record->html = $v;
@@ -128,23 +131,24 @@ class Event extends \app\models\AppModel {
                             }
                         }
                     }
+
                     return $record;
                 };
-                $addHumanDate = function($record) {
+                $addHumanDate = function ($record) {
                     if (isset($record->created)) {
                         $record->humanCreated = date('d.m.Y H:i', strtotime($record->created));
                         $record->humanCreatedShort = date('d.m.Y', strtotime($record->created));
                     }
                     return $record;
                 };
-                $addJSDate = function($record) {
+                $addJSDate = function ($record) {
                     if (isset($record->created)) {
                         $record->jsCreated = date('Y/m/d H:i:s', strtotime($record->created));
                     }
                     return $record;
                 };
-                $addCreator = function($record) {
-                    $autoCreators = array('SolutionPicked', 'PitchFinished');
+                $addCreator = function ($record) {
+                    $autoCreators = ['SolutionPicked', 'PitchFinished'];
                     if (in_array($record->type, $autoCreators)) {
                         $record->creator = 'Go Designer';
                     } else {
@@ -158,9 +162,9 @@ class Event extends \app\models\AppModel {
                     }
                     return $record;
                 };
-                $addHumanType = function($record) {
+                $addHumanType = function ($record) {
                     $record->humanType = '';
-                    $typesMap = array(
+                    $typesMap = [
                         'SolutionPicked' => 'Выбран победитель',
                         'CommentAdded' => 'Добавлен комментарий',
                         'CommentCreated' => 'Добавлен комментарий',
@@ -169,7 +173,7 @@ class Event extends \app\models\AppModel {
                         'PitchCreated' => 'Новый проект',
                         'newsAdded' => 'Добавлена новость',
                         'RatingAdded' => 'Добавлен рейтинг'
-                    );
+                    ];
                     if (isset($typesMap[$record->type])) {
                         $record->humanType = $typesMap[$record->type];
                     }
@@ -197,7 +201,8 @@ class Event extends \app\models\AppModel {
         });
     }
 
-    public static function createEvent($pitchId, $type, $userId, $solutionId = 0, $commentId = 0, $news_id = 0) {
+    public static function createEvent($pitchId, $type, $userId, $solutionId = 0, $commentId = 0, $news_id = 0)
+    {
         $newEvent = self::create();
         $newEvent->created = date('Y-m-d H:i:s');
         $newEvent->pitch_id = $pitchId;
@@ -211,63 +216,63 @@ class Event extends \app\models\AppModel {
         return $newEvent->save();
     }
 
-    public static function createEventNewsAdded($news_id, $pitch_id, $created) {
+    public static function createEventNewsAdded($news_id, $pitch_id, $created)
+    {
         $newEvent = Event::create();
         $newEvent->created = $created;
         $newEvent->pitch_id = $pitch_id;
         $newEvent->type = 'newsAdded';
         $newEvent->news_id = $news_id;
         $result =  $newEvent->save();
-        if($result) {
+        if ($result) {
             $id = 'https://www.godesigner.ru/news?event=' . $newEvent->id;
             try {
                 $url = 'https://graph.facebook.com';
-                $data = array('id' => $id, 'scrape' => 'true');
-                $options = array(
-                    'http' => array(
+                $data = ['id' => $id, 'scrape' => 'true'];
+                $options = [
+                    'http' => [
                         'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
                         'method'  => 'POST',
                         'content' => http_build_query($data),
-                    ),
-                );
+                    ],
+                ];
                 $context  = stream_context_create($options);
                 $postResult = file_get_contents($url, false, $context);
             } catch (Exception $e) {
-
             }
         }
         return $result;
     }
 
-    public static function getEvents($pitchIds, $page = 1, $created = null, $user = false, $tag = null) {
-        $eventList = $conditions = array();
+    public static function getEvents($pitchIds, $page = 1, $created = null, $user = false, $tag = null)
+    {
+        $eventList = $conditions = [];
         $limit = 14;
-        $with = array();
+        $with = [];
         if (isset($created)) {
             $page = 1;
             $limit = 100;
-            $conditions = array('Event.created' => array('>' => $created));
+            $conditions = ['Event.created' => ['>' => $created]];
         }
         if ((!empty($pitchIds)) && (empty($tag))) {
             $conditions += Event::createConditions($pitchIds, $user);
-        }elseif(!empty($tag)) {
-            $with = array('News');
-            $conditions += array('type' => 'newsAdded', 'News.tags' => $tag);
-        }else {
-            $conditions += array('type' => array('RetweetAdded', 'newsAdded'));
+        } elseif (!empty($tag)) {
+            $with = ['News'];
+            $conditions += ['type' => 'newsAdded', 'News.tags' => $tag];
+        } else {
+            $conditions += ['type' => ['RetweetAdded', 'newsAdded']];
         }
-        $events = Event::find('all', array(
+        $events = Event::find('all', [
                 'conditions' => $conditions,
-                'order' => array('Event.created' => 'desc'),
+                'order' => ['Event.created' => 'desc'],
                 'limit' => $limit,
                 'page' => $page,
                 'with' => $with
-            )
+            ]
         );
         $i = 1;
         foreach ($events as $event) {
             if (($event->type == 'CommentAdded' || $event->type == 'CommentCreated') && ($event->user_id != Session::read('user.id')) && ($event->pitch->user_id != Session::read('user.id'))) {
-
                 if ($event->type == 'SolutionAdded' && !$event->solution) {
                     $event->delete();
                 } elseif ($event->type == 'CommentAdded' && !$event->comment) {
@@ -278,14 +283,14 @@ class Event extends \app\models\AppModel {
 
                 // Parent
                 if (($event->comment->question_id == 0) && ($event->comment->public != 1)) {
-                    if (Comment::find('count', array('conditions' => array('question_id' => $event->comment->id, array('public = 1 OR user_id = ' . Session::read('user.id'))))) == 0) {
+                    if (Comment::find('count', ['conditions' => ['question_id' => $event->comment->id, ['public = 1 OR user_id = ' . Session::read('user.id')]]]) == 0) {
                         continue;
                     }
                 }
 
                 // Child
                 if (($event->comment->question_id != 0) && ($event->comment->public != 1) && ($event->comment->reply_to != Session::read('user.id'))) {
-                    if (Comment::find('count', array('conditions' => array('id' => $event->comment->question_id, array('public = 1 OR user_id = ' . Session::read('user.id'))))) == 0) {
+                    if (Comment::find('count', ['conditions' => ['id' => $event->comment->question_id, ['public = 1 OR user_id = ' . Session::read('user.id')]]]) == 0) {
                         continue;
                     }
                 }
@@ -298,68 +303,70 @@ class Event extends \app\models\AppModel {
         return $eventList;
     }
 
-    public static function getEventSolutions($user = null, $page = 1) {
-        if($user) {
-            return Event::all(array('conditions' => array('Event.type' => 'SolutionAdded', 'private' => 0, 'category_id' => array('!=' => 7), 'multiwinner' => 0), 'order' => array('Event.created' => 'desc'), 'limit' => 10, 'page' => $page, 'with' => array('Pitch')));
+    public static function getEventSolutions($user = null, $page = 1)
+    {
+        if ($user) {
+            return Event::all(['conditions' => ['Event.type' => 'SolutionAdded', 'private' => 0, 'category_id' => ['!=' => 7], 'multiwinner' => 0], 'order' => ['Event.created' => 'desc'], 'limit' => 10, 'page' => $page, 'with' => ['Pitch']]);
         } else {
-            $solutions = Solution::all(array(
-                'conditions' => array(
+            $solutions = Solution::all([
+                'conditions' => [
                     'Pitch.private' => 0,
-                    'Pitch.category_id' => array('!=' => 7),
+                    'Pitch.category_id' => ['!=' => 7],
                     'Pitch.multiwinner' => 0,
-                    'Solution.created' => array('>' => date('Y-m-d H:i:s', time() - 2 * DAY))
-                ),
-                'order' => array('Solution.likes' => 'desc', 'Solution.views' => 'desc'),
+                    'Solution.created' => ['>' => date('Y-m-d H:i:s', time() - 2 * DAY)]
+                ],
+                'order' => ['Solution.likes' => 'desc', 'Solution.views' => 'desc'],
                 'limit' => 10,
                 'page' => $page,
-                'with' => array('Pitch')
-            ));
-            if($solutions) {
-                $solutionHolder = array();
-                foreach($solutions as $solution) {
+                'with' => ['Pitch']
+            ]);
+            if ($solutions) {
+                $solutionHolder = [];
+                foreach ($solutions as $solution) {
                     $solutionHolder[$solution->id] = $solution->images;
                 }
                 $data = $solutions->data();
-                if(count($data) > 0) {
+                if (count($data) > 0) {
                     $keys = array_keys($data);
                     $cacheKey = 'geteventssolutionguest_' .serialize($keys);
-                    if(!$solpages = Rcache::read($cacheKey)) {
-                        $solpages = Event::all(array(
-                            'conditions' => array(
+                    if (!$solpages = Rcache::read($cacheKey)) {
+                        $solpages = Event::all([
+                            'conditions' => [
                                 'Event.type' => 'SolutionAdded',
                                 'Event.solution_id' => $keys
-                            ),
-                            'order' => array('Solution.likes' => 'desc', 'Solution.views' => 'desc'),
-                            'with' => array('Pitch', 'Solution')
-                        ));
-                        foreach($solpages as $event) {
+                            ],
+                            'order' => ['Solution.likes' => 'desc', 'Solution.views' => 'desc'],
+                            'with' => ['Pitch', 'Solution']
+                        ]);
+                        foreach ($solpages as $event) {
                             $event->solution->images = $solutionHolder[$event->solution->id];
                         }
-                        Rcache::write($cacheKey, $solpages, array(), '+1 hour');
+                        Rcache::write($cacheKey, $solpages, [], '+1 hour');
                     }
-                }else {
-                    $solpages = array();
+                } else {
+                    $solpages = [];
                 }
-            }else {
-                $solpages = array();
+            } else {
+                $solpages = [];
             }
             return $solpages;
         }
     }
 
-    public static function getSidebarEvents($created, $limit = null) {
-        $eventList = $conditions = array();
+    public static function getSidebarEvents($created, $limit = null)
+    {
+        $eventList = $conditions = [];
         if ($created == false) {
-            $conditions = array('Event.type' => array('PitchCreated', 'PitchFinished'));
+            $conditions = ['Event.type' => ['PitchCreated', 'PitchFinished']];
         } else {
-            $conditions = array('created' => array('>' => $created), 'Event.type' => array('PitchCreated', 'PitchFinished'));
+            $conditions = ['created' => ['>' => $created], 'Event.type' => ['PitchCreated', 'PitchFinished']];
         }
-        $events = Event::all(array(
+        $events = Event::all([
                     'conditions' => $conditions,
-                    'order' => array('created' => 'desc'),
+                    'order' => ['created' => 'desc'],
                     'limit' => $limit,
-                    'with' => array('Pitch')
-        ));
+                    'with' => ['Pitch']
+        ]);
         $i = 1;
         foreach ($events as $event) {
             if (($event->type == 'SolutionAdded') && (($event->pitch->private == 1) || ($event->pitch->category_id))) {
@@ -373,48 +380,49 @@ class Event extends \app\models\AppModel {
         return $eventList;
     }
 
-    public static function createConditions($input, $user = false) {
-        $list = array();
+    public static function createConditions($input, $user = false)
+    {
+        $list = [];
         foreach ($input as $pitchId => $created) {
             //if($user != '32') {
-                $list[] = array('AND' => array('type' => array('CommentAdded', 'CommentCreated', 'SolutionAdded', 'RatingAdded'), 'pitch_id' => $pitchId, 'created' => array('>=' => $created)));
+                $list[] = ['AND' => ['type' => ['CommentAdded', 'CommentCreated', 'SolutionAdded', 'RatingAdded'], 'pitch_id' => $pitchId, 'created' => ['>=' => $created]]];
             //}
         }
         //if($user != '32') {
-            $list[] = array('AND' => array('type' => array('PitchCreated', 'newsAdded', 'RetweetAdded')));
+            $list[] = ['AND' => ['type' => ['PitchCreated', 'newsAdded', 'RetweetAdded']]];
         //}
-        if($user) {
+        if ($user) {
             // заволловили меня или я кого-то
             // смотрим, кого зафоловили те, кого зафоловил я
 
-            $favourites = Favourite::all(array('conditions' => array('pitch_id' => 0, 'user_id' => $user)));
-            $idsOfFollowing = array();
-            foreach($favourites as $favourite) {
+            $favourites = Favourite::all(['conditions' => ['pitch_id' => 0, 'user_id' => $user]]);
+            $idsOfFollowing = [];
+            foreach ($favourites as $favourite) {
                 $idsOfFollowing[] = $favourite->fav_user_id;
             }
             $idsOfFollowing[] = $user;
             //$idsOfFollowing[] = '108';
-            $list[] = array('type' => 'FavUserAdded', 'user_id' => $idsOfFollowing);
-            $list[] = array('AND' => array('type' => array('FavUserAdded'), 'OR' => array(array('user_id' => $idsOfFollowing), array('fav_user_id' => $user))));
-            $list[] = array('AND' => array('type' => array('CommentAdded', 'CommentCreated', 'SolutionAdded'), 'user_id' => $idsOfFollowing));
-            $list[] = array('AND' => array('type' => 'LikeAdded', 'user_id' => $idsOfFollowing, 'news_id' => 0));
+            $list[] = ['type' => 'FavUserAdded', 'user_id' => $idsOfFollowing];
+            $list[] = ['AND' => ['type' => ['FavUserAdded'], 'OR' => [['user_id' => $idsOfFollowing], ['fav_user_id' => $user]]]];
+            $list[] = ['AND' => ['type' => ['CommentAdded', 'CommentCreated', 'SolutionAdded'], 'user_id' => $idsOfFollowing]];
+            $list[] = ['AND' => ['type' => 'LikeAdded', 'user_id' => $idsOfFollowing, 'news_id' => 0]];
         }
-        $output = array('OR' => $list);
+        $output = ['OR' => $list];
         return $output;
     }
 
-    public static function getBingAccessToken() {
+    public static function getBingAccessToken()
+    {
         $accesstoken = null;
-        if(!$accesstoken = Rcache::read('bingaccesstoken')) {
+        if (!$accesstoken = Rcache::read('bingaccesstoken')) {
             $url = 'https://www.godesigner.ru/microsoft.php';
             $response = file_get_contents($url, false);
             $decoded = json_decode($response, true);
             $accesstoken = $decoded['access_token'];
-            if(isset($decoded['expires_in']) and (isset($accesstoken))) {
+            if (isset($decoded['expires_in']) and (isset($accesstoken))) {
                 Rcache::write('bingaccesstoken', $accesstoken, '+' . ($decoded['expires_in'] - 100) . ' seconds');
             }
         }
         return $accesstoken;
     }
-
 }

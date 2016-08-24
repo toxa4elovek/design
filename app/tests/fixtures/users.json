@@ -3,6 +3,6 @@
     {"id": 2, "email_sol": 0, "first_name": "Дмитрий", "last_name": "Ню", "email": "nyudmitriy@godesigner.ru", "email_newsol": 1, "facebook_uid": 1777051461, "vkontakte_uid": 96385962},
     {"id": 3, "isAdmin": 1, "balance": 23500, "short_company_name": "ООО Проверка", "vkontakte_uid": 157747886},
     {"id": 4, "email_sol": 0, "first_name": "Алексей", "last_name": "Иванов"},
-    {"id": 5, "email_sol": 0, "first_name": "Алексей", "last_name": "Иванов"},
-    {"id": 108, "email_sol": 0, "first_name": "Алексей", "last_name": "Иванов", "isAdmin": 1}
+    {"id": 5, "email_sol": 0, "first_name": "Алексей", "last_name": "Иванов", "subscriber_referal_token": ""},
+    {"id": 108, "email_sol": 0, "first_name": "Алексей", "last_name": "Иванов", "isAdmin": 1, "subscriber_referal_token": "fl18f"}
 ]

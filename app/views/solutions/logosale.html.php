@@ -200,6 +200,8 @@
 <?= $this->view()->render(array('element' => 'popups/solution_sale'), array('data' => $data)) ?>
 <?= $this->view()->render(array('element' => 'popups/warning')) ?>
 <?= $this->html->script(array(
+    'flux/flux.min.js',
+    '/js/common/comments/actions/CommentsActions.js',
     'http://userapi.com/js/api/openapi.js',
     '//assets.pinterest.com/js/pinit.js',
     'jquery.simplemodal-1.4.2.js',

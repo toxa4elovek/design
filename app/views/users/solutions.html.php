@@ -18,7 +18,7 @@
                     <h3 style="text-shadow: 0 1px 1px #FFFFFF;
 font-family: OfficinaSansC Bold, serif; text-align: center; font-size: 25px; font-weight: normal; color: #666666;">Укажите 5 тегов, которые описывают ваше решение</h3>
                     <p style="line-height: 20px; text-shadow: 0 1px 1px #FFFFFF; margin-top: 20px;font-family: OfficinaSansC Book, serif; font-size: 16px; text-align: center; color: #666; margin-bottom: 40px;">
-                        Это поможет найти вашу идею тем, кто захочет его купить.<br> Т. о. мы дарим вам возможность продать работу, если та не станет<br> победителем с первого раза. Отметьте работы, которые будут<br> достпуны в профиле и на распродаже. <a href="https://www.godesigner.ru/answers/view/100" target="_blank">Подробнее</a>
+                        Это поможет найти вашу идею тем, кто захочет его купить.<br> Т. о. мы дарим вам возможность продать работу, если та не станет<br> победителем с первого раза. Отметьте работы, которые будут<br> доступны в профиле и на распродаже. <a href="https://www.godesigner.ru/answers/view/100" target="_blank">Подробнее</a>
                     </p>
                     <?php endif?>
                     <ul class="list_portfolio">
@@ -121,5 +121,5 @@ font-family: OfficinaSansC Bold, serif; text-align: center; font-size: 25px; fon
 
 
 
-<?=$this->html->script(array('jcarousellite_1.0.1.js', 'jquery.timers.js', 'jquery.simplemodal-1.4.2.js', 'tableloader.js', 'jquery.timeago.js', 'fileuploader', 'jquery.tooltip.js', 'users/office.js', 'users/preview.js'), array('inline' => false))?>
+<?=$this->html->script(array(    '/js/users/office/PushNotificationsStatus.js', 'jcarousellite_1.0.1.js', 'jquery.timers.js', 'jquery.simplemodal-1.4.2.js', 'tableloader.js', 'jquery.timeago.js', 'fileuploader', 'jquery.tooltip.js', 'users/office.js', 'users/preview.js'), array('inline' => false))?>
 <?=$this->html->style(array('/main2.css', '/pitches2.css', '/edit','/view', '/messages12', '/pitches12', '/win_steps1.css', '/win_steps2_final3.css', '/portfolio.css',), array('inline' => false))?>

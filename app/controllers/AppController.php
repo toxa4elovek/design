@@ -7,6 +7,7 @@ use app\extensions\helper\MoneyFormatter as Money;
 use app\extensions\helper\User as UserHelper;
 use app\models\Answer;
 use app\models\Favourite;
+use app\models\Manager;
 use app\models\Pitch;
 use app\models\Post;
 use app\models\Solution;
@@ -35,6 +36,11 @@ class AppController extends \lithium\action\Controller
      * @var null
      */
     public $userRecord = null;
+
+    /**
+     * @var int текущий размер скидки для абонентного плана
+     */
+    public $discountForSubscriberReferal = 0;
 
     /**
      * @return object инициализация каждого запроса
@@ -73,6 +79,14 @@ class AppController extends \lithium\action\Controller
                 $ids = $this->userHelper->getId();
                 if($this->userHelper->isAdmin() && $ids != '108') {
                     $ids .= ' OR Pitch.user_id = 108';
+                }
+                if($this->userHelper->isSubscriptionActive()) {
+                //if ($this->userHelper->isLoggedIn()) {
+                    if ($records = Manager::all(['conditions' => ['subscriber_id' => $this->userHelper->getId()]])) {
+                        foreach($records as $record) {
+                            $ids .= ' OR Pitch.user_id = ' . $record->manager_id;
+                        }
+                    }
                 }
                 $topPanel = Pitch::all(
                     [
@@ -170,6 +184,13 @@ class AppController extends \lithium\action\Controller
             User::setReferalCookie($this->request->query['ref']);
         }
 
+        if ((!empty($this->request->query['sref'])) && (User::isValidReferalCodeForSubscribers($this->request->query['sref']))) {
+            User::setReferalForSubscriberCookie($this->request->query['sref']);
+        }
+        $this->discountForSubscriberReferal = 0;
+        if ((isset($_COOKIE['sref'])) && (User::isValidReferalCodeForSubscribers($_COOKIE['sref']))) {
+            $this->discountForSubscriberReferal = 20;
+        }
         if (($this->userHelper->isLoggedIn()) && (isset($userRecord))) {
             $this->userRecord = $userRecord;
         }

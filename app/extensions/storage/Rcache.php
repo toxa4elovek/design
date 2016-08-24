@@ -157,9 +157,6 @@ class Rcache extends StaticObject
      */
     public static function deleteByTag($tag)
     {
-        //$operation = __FUNCTION__;
-        //$params = compact('tag', 'operation');
-        //$tag = $params['tag'];
         $listOfKeysForTag = self::read($tag);
         foreach ($listOfKeysForTag as $key) {
             self::delete($key);

@@ -1,19 +1,19 @@
 #content_help {
-	margin-right: 250px;
-	float: none;
-	width: auto;
+	margin-right: 250px !important;
+	float: none !important;
+	width: auto !important;
 }
 
 #right_sidebar_help {
-	width: 250px;
-	float: right;
-	padding: 0;
-	margin: 55px 0 0;
+	width: 250px !important;
+	float: right !important;
+	padding: 0 !important;
+	margin: 55px 0 0 !important;
 }
 
 
 #right_sidebar_help div {
-	margin-left: 50px;
+	margin-left: 50px !important;
 }
 
 
@@ -30,6 +30,10 @@
 
 .answer p/*, .answer ul li*/ {
 	margin: 0 0 20px;
+}
+
+.answer p strong {
+	font-weight: bold;
 }
 
 .answer ul {

@@ -52,10 +52,16 @@ class Og extends \lithium\template\Helper
         if (empty($description)) {
             $description = $defaultTitle;
         } else {
-            if (mb_strlen($description, 'UTF-8') > 100) {
+            $pos = mb_strpos($description, ' ', 140);
+            $description = mb_substr($description, 0, $pos) . '...';
+            /*if (preg_match('/^.{1,100}\b/su', $description, $match)) {
+                $description = $match[0] . '...';
+            }*/
+            /*if (mb_strlen($description, 'UTF-8') > 100) {
                 $description = mb_substr($description, 0, 100, 'UTF-8') . '...';
-            }
+            }*/
             $description = str_replace('"', '\'', str_replace("\n\r", '', str_replace('&nbsp;', ' ', strip_tags($description))));
+            $description = trim(preg_replace('/\s+/', ' ', $description));
         }
         $template = '<meta property="og:description" content="{description}"/>';
         return str_replace('{description}', $description, $template);

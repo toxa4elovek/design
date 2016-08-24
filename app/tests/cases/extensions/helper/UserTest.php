@@ -4,6 +4,7 @@ namespace app\tests\cases\extensions\helper;
 
 use app\extensions\tests\AppUnit;
 use app\extensions\helper\User;
+use app\models\Manager;
 use app\models\User as UserModel;
 
 class UserTest extends AppUnit {
@@ -30,11 +31,11 @@ class UserTest extends AppUnit {
             'inflector' => $this->_inflector
         ));
         $this->user->clear();
-        $this->rollUp(array('User'));
+        $this->rollUp(array('User', 'Manager', 'Pitch'));
     }
 
     public function tearDown() {
-        $this->rollDown(array('User'));
+        $this->rollDown(array('User', 'Manager', 'Pitch'));
     }
 
     public function testIsAdmin() {
@@ -67,6 +68,30 @@ class UserTest extends AppUnit {
         $this->assertFalse($this->user->isPitchOwner($pitchOwnerId));
         $this->user->write('user.id', $pitchOwnerId);
         $this->assertTrue($this->user->isPitchOwner($pitchOwnerId));
+    }
+
+    public function testIsManagerOfProject() {
+        $pitchOwnerId = 1;
+        $managerId = 2;
+        $projectId = 1;
+        $this->assertFalse($this->user->isManagerOfProject($projectId));
+        Manager::addManagerForSubscriber($managerId, $pitchOwnerId);
+        $this->user->write('user.id', $managerId);
+        $this->assertFalse($this->user->isManagerOfProject($managerId, $projectId));
+        Manager::assignManagerToProject($managerId, $projectId);
+        $this->assertTrue($this->user->isManagerOfProject($projectId));
+        Manager::removeManagerFromProject($managerId, $projectId);
+        $this->assertFalse($this->user->isManagerOfProject($managerId, $projectId));
+    }
+
+    public function testIsUserManagerOfCurrentUser() {
+        $managerId = 1;
+        $subscriberId = 2;
+        $this->assertFalse($this->user->isUserManagerOfCurrentUser($managerId));
+        $this->user->write('user.id', $subscriberId);
+        $this->assertFalse($this->user->isUserManagerOfCurrentUser($managerId));
+        Manager::addManagerForSubscriber($managerId, $subscriberId);
+        $this->assertTrue($this->user->isUserManagerOfCurrentUser($managerId));
     }
 
     public function testIsSolutionAuthor() {

@@ -1,5 +1,6 @@
 <?php
 namespace app\extensions\helper;
+use app\models\Manager;
 use lithium\core\Environment;
 
 /**
@@ -147,6 +148,32 @@ class User extends \lithium\storage\Session {
         return $this->_filter(__FUNCTION__, [], function($self, $params) use ($pitchUserId) {
             return $this->__detectOwnership($pitchUserId);
         });
+    }
+
+    /**
+     * Метод определяет, является ли текущий пользователь менеджером для проекта
+     *
+     * @param $projectId
+     * @return bool
+     */
+    public function isManagerOfProject($projectId) {
+        if(!$this->isLoggedIn()) {
+            return false;
+        }
+        return Manager::isManagerAssignedToProject($this->getId(), $projectId);
+    }
+
+    /**
+     * Метод определяет, является ли пользователь с айди менеджером текущего пользователя
+     *
+     * @param $possibleManagerId
+     * @return bool
+     */
+    public function isUserManagerOfCurrentUser($possibleManagerId) {
+        if(!$this->isLoggedIn()) {
+            return false;
+        }
+        return Manager::isManagerInTeamOfSubscriber($possibleManagerId, $this->getId());
     }
 
     /**
@@ -671,6 +698,32 @@ class User extends \lithium\storage\Session {
             $userModel = $this->_options['userModel'];
             return $userModel::getSubscriptionDiscount($userId);
         });
+    }
+
+    /**
+     * Метод-обёртка, возвращяет количество побед
+     *
+     * @return int
+     */
+    public function getAwardedSolutionNum() {
+        if($this->isLoggedIn()) {
+            $userModel = $this->_options['userModel'];
+            return $userModel::getAwardedSolutionNum($this->getId());
+        }
+        return 0;
+    }
+
+    /**
+     * Метод-обёртка, возвращяет количество загруженных решений
+     *
+     * @return int
+     */
+    public function getTotalSolutionNum() {
+        if($this->isLoggedIn()) {
+            $userModel = $this->_options['userModel'];
+            return (int) $userModel::getTotalSolutionNum($this->getId());
+        }
+        return 0;
     }
 
 }

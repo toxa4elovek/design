@@ -16,7 +16,7 @@ use \lithium\analysis\Logger;
 class SolutionsController extends AppController
 {
 
-    public $publicActions = array('like', 'unlike', 'logosale', 'search_logo', 'testmail');
+    public $publicActions = ['like', 'unlike', 'logosale', 'search_logo', 'get_logosale_status'];
 
     public function hide()
     {
@@ -65,7 +65,7 @@ class SolutionsController extends AppController
     public function select()
     {
         if ($solution = Solution::first(['conditions' => ['Solution.id' => $this->request->id], 'with' => ['Pitch']])) {
-            if (!$this->userHelper->isPitchOwner($solution->pitch->user_id) && !$this->userHelper->isAdmin()) {
+            if (!$this->userHelper->isPitchOwner($solution->pitch->user_id) && !$this->userHelper->isManagerOfProject($solution->pitch->user_id) && !$this->userHelper->isAdmin()) {
                 $result = false;
                 return compact('result');
             }
@@ -101,21 +101,21 @@ class SolutionsController extends AppController
         $result = false;
         if (($solution = Solution::first($this->request->id)) && (($this->userHelper->isAdmin()) || User::checkRole('admin') || ($this->userHelper->isSolutionAuthor($solution->user_id)))) {
             $projectId = $solution->pitch_id;
-            $data = array(
+            $data = [
                 'id' => $solution->id,
                 'num' => $solution->num,
                 'user_who_deletes' => $this->userHelper->getId(),
                 'user_id' => $solution->user_id,
                 'date' => date('Y-m-d H:i:s'),
                 'isAdmin' => $this->userHelper->isAdmin()
-            );
-            Logger::write('info', serialize($data), array('name' => 'deleted_solutions'));
+            ];
+            Logger::write('info', serialize($data), ['name' => 'deleted_solutions']);
             $result = $solution->delete();
         }
         if ($this->request->is('json')) {
             return compact('result');
         } else {
-            $this->redirect(array('Pitches::view', 'id' => $projectId));
+            $this->redirect(['Pitches::view', 'id' => $projectId]);
         }
     }
 
@@ -123,7 +123,7 @@ class SolutionsController extends AppController
     {
         $user = Session::read('user');
         if ($solution = Solution::first($this->request->params['id'])) {
-            $data = array('text' => $this->request->data['text'], 'user' => $user, 'solution' => $solution->data());
+            $data = ['text' => $this->request->data['text'], 'user' => $user, 'solution' => $solution->data()];
             UserMailer::warn_solution($data);
         }
         return $this->request->params['id'];
@@ -147,8 +147,8 @@ class SolutionsController extends AppController
     public function logosale()
     {
         $count = 0;
-        $sort_tags = array();
-        $search_tags = array();
+        $sort_tags = [];
+        $search_tags = [];
         if ((isset($this->request->query['search'])) && (!empty($this->request->query['search']))) {
             $words = Solution::stringToWordsForSearchQuery($this->request->query['search']);
             $industries = Solution::getListOfIndustryKeys($words);
@@ -156,16 +156,16 @@ class SolutionsController extends AppController
 
             $tags_id = 0;
             if (!is_null($words)) {
-                $tag_params = array('conditions' => array());
+                $tag_params = ['conditions' => []];
                 // сохранение поиска в статистику
-                $search_tags = Searchtag::all(array('conditions' => array('name' => $words)));
+                $search_tags = Searchtag::all(['conditions' => ['name' => $words]]);
                 if (count($search_tags) < 1) {
                     foreach ($words as $w) {
-                        $tag_params['conditions']['OR'][] = array('name' => $w);
+                        $tag_params['conditions']['OR'][] = ['name' => $w];
                         if (!empty($w)) {
-                            $result = Searchtag::create(array(
+                            $result = Searchtag::create([
                                 'name' => $w
-                            ));
+                            ]);
                             $result->save();
                         }
                     }
@@ -175,7 +175,7 @@ class SolutionsController extends AppController
                     }
                     $search_tags->save();
                     foreach ($words as $w) {
-                        $tag_params['conditions']['OR'][] = array('name' => $w);
+                        $tag_params['conditions']['OR'][] = ['name' => $w];
                     }
                 }
                 // конец страницы поика в статистику
@@ -202,10 +202,10 @@ class SolutionsController extends AppController
         } else {
             $params['page'] = 1;
             $sort_tags = Tag::getPopularTags(15);
-            $search_tags = Searchtag::all(array('order' => array('searches' => 'desc'), 'limit' => 15));
+            $search_tags = Searchtag::all(['order' => ['searches' => 'desc'], 'limit' => 15]);
             $total_count = Solution::solutionsForSaleCount();
         }
-        $userHelper = new UserHelper(array());
+        $userHelper = new UserHelper([]);
         if ($userHelper->isLoggedIn()) {
             $data = Solution::addBlankPitchForLogosale($userHelper->getId(), 0);
         }
@@ -253,16 +253,16 @@ class SolutionsController extends AppController
 
             $tags_id = 0;
             if (!is_null($words)) {
-                $tag_params = array('conditions' => array());
+                $tag_params = ['conditions' => []];
                 // сохранение поиска в статистику
-                $search_tags = Searchtag::all(array('conditions' => array('name' => $words)));
+                $search_tags = Searchtag::all(['conditions' => ['name' => $words]]);
                 if (count($search_tags) < 1) {
                     foreach ($words as $w) {
-                        $tag_params['conditions']['OR'][] = array('name' => $w);
+                        $tag_params['conditions']['OR'][] = ['name' => $w];
                         if (!empty($w)) {
-                            $result = Searchtag::create(array(
+                            $result = Searchtag::create([
                                         'name' => $w
-                            ));
+                            ]);
                             $result->save();
                         }
                     }
@@ -272,7 +272,7 @@ class SolutionsController extends AppController
                     }
                     $search_tags->save();
                     foreach ($words as $w) {
-                        $tag_params['conditions']['OR'][] = array('name' => $w);
+                        $tag_params['conditions']['OR'][] = ['name' => $w];
                     }
                 }
                 // конец страницы поика в статистику
@@ -343,7 +343,7 @@ class SolutionsController extends AppController
 
     public function add_tag()
     {
-        if (($solution = Solution::first(array('conditions' => array('Solution.id' => $this->request->data['id']), 'with' => array()))) && ($this->userHelper->getId() == $solution->user_id)) {
+        if (($solution = Solution::first(['conditions' => ['Solution.id' => $this->request->data['id']], 'with' => []])) && ($this->userHelper->getId() == $solution->user_id)) {
             $result = Tag::saveSolutionTag($this->request->data['tag'], $solution->id);
             return compact($result);
         }
@@ -352,7 +352,7 @@ class SolutionsController extends AppController
 
     public function remove_tag()
     {
-        if (($solution = Solution::first(array('conditions' => array('Solution.id' => $this->request->data['id']), 'with' => array()))) && ($this->userHelper->getId() == $solution->user_id)) {
+        if (($solution = Solution::first(['conditions' => ['Solution.id' => $this->request->data['id']], 'with' => []])) && ($this->userHelper->getId() == $solution->user_id)) {
             $result = Tag::removeTag($this->request->data['tag'], $solution->id);
             return compact($result);
         }
@@ -361,10 +361,27 @@ class SolutionsController extends AppController
 
     public function update_description()
     {
-        if (($solution = Solution::first(array('conditions' => array('Solution.id' => $this->request->data['id']), 'with' => array()))) && ($this->userHelper->getId() == $solution->user_id)) {
+        if (($solution = Solution::first(['conditions' => ['Solution.id' => $this->request->data['id']], 'with' => []])) && ($this->userHelper->getId() == $solution->user_id)) {
             $solution->description = $this->request->data['updatedText'];
             $solution->save();
         }
         return $this->request->data;
+    }
+
+    public function get_logosale_status()
+    {
+        if (isset($this->request->query['solutionsIds'])) {
+            $response = [];
+            foreach ($this->request->query['solutionsIds'] as $id) {
+                $solution = Solution::first([
+                    'conditions' => ['Solution.id' => (int) $id],
+                    'with' => ['Pitch']
+                ]);
+                $readyForSale = Solution::isReadyForLogosale($solution, $solution->pitch);
+                $response[] = ['id' => $id, 'ready' => $readyForSale];
+            }
+            return ['status' => 200, 'data' => $response];
+        }
+        return ['status' => 500, 'error' => 'No solution ids provided'];
     }
 }

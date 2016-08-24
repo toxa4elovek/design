@@ -126,10 +126,8 @@ Libraries::add('app', array('default' => true));
 /**
  * Add some plugins:
  */
-// Libraries::add('li3_docs');
 Libraries::add('li3_fixtures');
 Libraries::add('li3_mailer');
-Libraries::add('li3_flash_message');
 Libraries::add('li3_oauth');
 Libraries::add('tmhOAuth');
 Libraries::add('li3_assets', array(
@@ -153,4 +151,3 @@ Libraries::add('li3_assets', array(
         ),
     ),
 ));
-//Libraries::add('li3_quality');

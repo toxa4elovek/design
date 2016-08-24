@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\extensions\helper\NumInflector;
 use \app\models\Expert;
 use \app\models\Solution;
 use \app\models\Historycomment;
@@ -13,26 +14,28 @@ use \lithium\storage\Session;
 use app\extensions\mailers\CommentsMailer;
 use app\extensions\storage\Rcache;
 
-class Comment extends AppModel {
+class Comment extends AppModel
+{
 
     public static $result = '';
     public static $level = 0;
 
-	public $belongsTo = array('Pitch', 'User');
+    public $belongsTo = array('Pitch', 'User');
 
-	public static function __init() {
-		parent::__init();
-        self::applyFilter('save', function($self, $params, $chain){
-            if(($params['entity']->data()) && (isset($params['entity']->id) && $params['entity']->id > 0) && (isset($params['entity']->text))) {
+    public static function __init()
+    {
+        parent::__init();
+        self::applyFilter('save', function ($self, $params, $chain) {
+            if (($params['entity']->data()) && (isset($params['entity']->id) && $params['entity']->id > 0) && (isset($params['entity']->text))) {
                 $comment = $params['entity'];
                 $cacheKey = 'commentsraw_' . $comment->pitch_id;
                 Rcache::delete($cacheKey);
-                if($original = Comment::first($comment->id)) {
+                if ($original = Comment::first($comment->id)) {
                     $comment = $params['entity'];
                     $historyArchive = $comment->history;
-                    if($historyArchive == '') {
+                    if ($historyArchive == '') {
                         $history = array();
-                    }else {
+                    } else {
                         $history = unserialize($historyArchive);
                     }
                     $history[] = array('date' => date('Y-m-d H:i:s'), 'text' => $original->text);
@@ -41,30 +44,30 @@ class Comment extends AppModel {
             }
             return $chain->next($self, $params, $chain);
         });
-		self::applyFilter('createComment', function($self, $params, $chain){
+        self::applyFilter('createComment', function ($self, $params, $chain) {
             $params['solution_id'] = 0;
             $change = array(4, 5);
             $admin = 108;
-            if(in_array($params['user_id'], $change)) {
+            if (in_array($params['user_id'], $change)) {
                 $params['user_id'] = $admin;
             }
-            if(false == $self::isCommentRepeat($params['user_id'], $params['pitch_id'], $params['text'])) {
+            if (false == $self::isCommentRepeat($params['user_id'], $params['pitch_id'], $params['text'])) {
                 $params['error'] = 'repeated';
                 return $params;
             }
-            if($num = $self::parseComment($params['text'])) {
-                if($solutionId = Solution::getSolutionIdFromOrder($params['pitch_id'], $num)) {
+            if ($num = $self::parseComment($params['text'])) {
+                if ($solutionId = Solution::getSolutionIdFromOrder($params['pitch_id'], $num)) {
                     $params['solution_id'] = $solutionId;
                 }
             }
-            if((isset($params['comment_id'])) && (!empty($params['comment_id']))) {
+            if ((isset($params['comment_id'])) && (!empty($params['comment_id']))) {
                 $repliedComment = Comment::first($params['comment_id']);
-                if(($repliedComment) && ($repliedComment->solution_id > 0)) {
+                if (($repliedComment) && ($repliedComment->solution_id > 0)) {
                     $params['solution_id'] = $repliedComment->solution_id;
                 }
             }
 
-            if(false == $self::checkComment($params['text'])) {
+            if (false == $self::checkComment($params['text'])) {
                 $params['error'] = 'empty';
                 return $params;
             }
@@ -72,37 +75,37 @@ class Comment extends AppModel {
             $pitch = Pitch::first($params['pitch_id']);
             // Expert writing
             $experts = unserialize($pitch->{'expert-ids'});
-            if($pitch->status > 0 && in_array($params['user_id'], Expert::getExpertUserIds($experts))) {
+            if ($pitch->status > 0 && in_array($params['user_id'], Expert::getExpertUserIds($experts))) {
                 $params['private'] = 1;
             }
 
             $params = $chain->next($self, $params, $chain);
 
-			if($params) {
-				Event::createEvent($params['pitch_id'], 'CommentAdded', $params['user_id'], $params['solution_id'], $params['id']);
-			    $cacheKey = 'commentsraw_' . $params['pitch_id'];
+            if ($params) {
+                Event::createEvent($params['pitch_id'], 'CommentAdded', $params['user_id'], $params['solution_id'], $params['id']);
+                $cacheKey = 'commentsraw_' . $params['pitch_id'];
                 Rcache::delete($cacheKey);
             }
             preg_match_all('@(#\d*)@', $params['text'], $matches);
             $nums = array();
-            foreach($matches[1] as $hashtag){
+            foreach ($matches[1] as $hashtag) {
                 $nums[] = substr($hashtag, 1);
             }
             $sender = User::first($params['user_id']);
             $admin = User::getAdmin();
             $pitch = Pitch::first($params['pitch_id']);
             // Expert writing
-            if($pitch->status > 0 && in_array($params['user_id'], Expert::getExpertUserIds($experts))) {
+            if ($pitch->status > 0 && in_array($params['user_id'], Expert::getExpertUserIds($experts))) {
                 $data = array(
                     'pitch' => $pitch,
                     'text' => $params['text'],
                 );
                 User::sendSpamExpertSpeaking($data);
             }
-            if($pitch->status > 0 && $params['user_id'] != $admin) {
+            if ($pitch->status > 0 && $params['user_id'] != $admin) {
                 // notify admin
                 User::sendAdminNotification($params);
-                if((!empty($num)) || ((isset($params['reply_to'])) && ($params['reply_to'] != 0))) {
+                if ((!empty($num)) || ((isset($params['reply_to'])) && ($params['reply_to'] != 0))) {
                     // Отправить комментарий владельцу питча
                     $client = User::first($pitch->user_id);
                     $nameInflector = new nameInflector();
@@ -113,39 +116,39 @@ class Comment extends AppModel {
                 return $params;
             }
             // Если упоминаются номера решения, отправляем комментарии их владельцам
-            if(!empty($num) && $pitch->status == 0) {
+            if (!empty($num) && $pitch->status == 0) {
                 $solutions = Solution::all(array('with' => array('User'), 'conditions' => array('pitch_id' => $params['pitch_id'], 'num' => $nums)));
                 $emails = array();
-                foreach($solutions as $solution) {
+                foreach ($solutions as $solution) {
                     $emails[$solution->user->email] = $solution;
                 }
-                foreach($emails as $email => $solution) {
+                foreach ($emails as $email => $solution) {
                     $data = $params;
                     $data['solution_id'] = $solution->id;
                     User::sendSpamNewcomment($data);
                 }
             }
             // Если коммент написал админ всем пользователям, отправляем уведомление об этом всем участникам питча
-            if(($sender->isAdmin == 1) && ($params['solution_id'] == 0) && ((!isset($params['reply_to'])) || ((isset($params['reply_to'])) && $params['reply_to'] == 0))) {
+            if (($sender->isAdmin == 1) && ($params['solution_id'] == 0) && ((!isset($params['reply_to'])) || ((isset($params['reply_to'])) && $params['reply_to'] == 0))) {
                 Task::createNewTask($params['id'], 'newCommentFromAdminNotification');
             }
             // Если ответ какому-то пользователю, отправляем уведомление пользователю
-            if((isset($params['reply_to'])) && ($params['reply_to'] != 0) && ($pitch->status == 0)) {
+            if ((isset($params['reply_to'])) && ($params['reply_to'] != 0) && ($pitch->status == 0)) {
                 Task::createNewTask($params['id'], 'newPersonalCommentNotification');
             }
             // Если комментарий владельца питча, запишем в историю для статистики
-            if($pitch->user_id == $sender->id) {
+            if ($pitch->user_id == $sender->id) {
                 $historyComment = Historycomment::create();
                 $historyComment->set($params);
                 $historyComment->created = date('Y-m-d H:i:s');
                 $historyComment->save();
             }
-			return $params;
-		});
-        self::applyFilter('delete', function($self, $params, $chain){
-            if($result = $chain->next($self, $params, $chain)) {
+            return $params;
+        });
+        self::applyFilter('delete', function ($self, $params, $chain) {
+            if ($result = $chain->next($self, $params, $chain)) {
                 $record = $params['entity'];
-                if($event = Event::first(array('conditions' => array('comment_id' => $record->id)))) {
+                if ($event = Event::first(array('conditions' => array('comment_id' => $record->id)))) {
                     $event->delete();
                 }
                 if ($childComment = Comment::first(array('conditions' => array('question_id' => $record->id)))) {
@@ -153,11 +156,11 @@ class Comment extends AppModel {
                 }
             }
         });
-        self::applyFilter('find', function($self, $params, $chain){
+        self::applyFilter('find', function ($self, $params, $chain) {
             $result = $chain->next($self, $params, $chain);
-            if((!isset($params['options']['nofilters'])) && (is_object($result))) {
-                $addMentionLink = function($record) {
-                    if(isset($record->text)) {
+            if ((!isset($params['options']['nofilters'])) && (is_object($result))) {
+                $addMentionLink = function ($record) {
+                    if (isset($record->text)) {
                         $record->text = nl2br($record->text);
                         $pitchId = $record->pitch_id;
                         if (preg_match_all('/(#\d+)/', $record->text, $matches)) {
@@ -183,39 +186,37 @@ class Comment extends AppModel {
                             }
                         }
                         $record->text = preg_replace('/@([^@]*? [^@]\.)(,?)/u', '<a href="#" class="mention-link" data-comment-to="$1">@$1$2</a>', strip_tags($record->text, '<br><a>'));
-
                     }
                     return $record;
                 };
-                $addSolutionNumLinkIfNotExists = function($record) {
-                    if((isset($record->text)) && (!preg_match('/^(#|@)/', $record->text)) && ($record->solution_id > 0)) {
+                $addSolutionNumLinkIfNotExists = function ($record) {
+                    if ((isset($record->text)) && (!preg_match('/^(#|@)/', $record->text)) && ($record->solution_id > 0)) {
                         $solution = Solution::first($record->solution_id);
-                        if($solution) {
+                        if ($solution) {
                             $prependText = '<a href="#" class="solution-link" data-comment-to="#' . $solution->num . '">#' . $solution->num . '</a>, ';
                             $record->text = $prependText . $record->text;
                         }
                     }
                     return $record;
                 };
-                $addHyperlink = function($record){
-                    if(isset($record->text)) {
+                $addHyperlink = function ($record) {
+                    if (isset($record->text)) {
                         $regex = '!(^|\s)([-a-zA-Z0-9:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?)!';
                         $regex2 = '!(^|\s)([-a-zA-Z0-9:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?)!';
-                        while(preg_match($regex, $record->text)) {
+                        while (preg_match($regex, $record->text)) {
                             $record->text = preg_replace($regex2, '$1<a href="$2" target="_blank">$2</a>', $record->text);
-
                         }
                         $record->text = preg_replace('#href="(?!(http|https)://)(.*)"#', 'href="http://$2"', $record->text);
                     }
                     return $record;
                 };
-                $addOriginalText = function($record){
-                    if(isset($record->text)) {
+                $addOriginalText = function ($record) {
+                    if (isset($record->text)) {
                         $record->originalText = $record->text;
                     }
                     return $record;
                 };
-                $stripEmail = function($record) {
+                $stripEmail = function ($record) {
                     if (isset($record->text)) {
                         $briefHelper = new Brief;
                         $record->text = $briefHelper->stripEmail($record->text);
@@ -223,39 +224,39 @@ class Comment extends AppModel {
                     }
                     return $record;
                 };
-                if(get_class($result) == 'lithium\data\entity\Record') {
+                if (get_class($result) == 'lithium\data\entity\Record') {
                     //$result = $addSolutionNumLinkIfNotExists($result);
                     $result = $addOriginalText($result);
                     $result = $addMentionLink($result);
                     $result = $addHyperlink($result);
                     $result = $stripEmail($result);
-
-                }else {
-                    foreach($result as $foundItem) {
+                } else {
+                    foreach ($result as $foundItem) {
                         //$foundItem = $addSolutionNumLinkIfNotExists($foundItem);
                         $foundItem = $addOriginalText($foundItem);
                         $foundItem = $addMentionLink($foundItem);
                         $foundItem = $addHyperlink($foundItem);
                         $foundItem = $stripEmail($foundItem);
-
                     }
                 }
             }
             return $result;
         });
-	}
+    }
 
-    public static function filterComments($currentNum, $allcomments) {
+    public static function filterComments($currentNum, $allcomments)
+    {
         $solutionComments = new \lithium\util\Collection();
-        foreach($allcomments as $comment) {
-            if(preg_match('@#' . $currentNum . '\D@', $comment->text)) {
+        foreach ($allcomments as $comment) {
+            if (preg_match('@#' . $currentNum . '\D@', $comment->text)) {
                 $solutionComments->append($comment);
             }
         }
         return $solutionComments;
     }
 
-    public static function filterCommentsTree($commentsRaw, $pitchUserId) {
+    public static function filterCommentsTree($commentsRaw, $pitchUserId)
+    {
         self::$result = new \lithium\util\Collection();
         $commentsFiltered = self::fetchCommentsTree($commentsRaw);
         $currentUser = Session::read('user');
@@ -267,7 +268,7 @@ class Comment extends AppModel {
             // Parent
             if ($comment->isChild == 1 && $comment->public == 1) {
                 $question_id = $comment->question_id;
-                $parent = $commentsFiltered->find(function($comment) use ($question_id) {
+                $parent = $commentsFiltered->find(function ($comment) use ($question_id) {
                     if ($comment->id == $question_id) {
                         return true;
                     }
@@ -278,7 +279,7 @@ class Comment extends AppModel {
             // Child
             if ($comment->user_id == $pitchUserId) {
                 $comment_id = $comment->id;
-                $child = $commentsFiltered->find(function($comm) use ($comment_id) {
+                $child = $commentsFiltered->find(function ($comm) use ($comment_id) {
                     if ($comm->question_id == $comment_id) {
                         return true;
                     }
@@ -317,7 +318,7 @@ class Comment extends AppModel {
         }
 
         // Delete marked forbidden comment
-        $commentsFiltered = $commentsFiltered->find(function($comment) {
+        $commentsFiltered = $commentsFiltered->find(function ($comment) {
             if ($comment->text != '__must be unset__') {
                 return true;
             }
@@ -328,7 +329,7 @@ class Comment extends AppModel {
         foreach ($commentsFiltered as $comment) {
             if ($comment->isChild == 1) {
                 $question_id = $comment->question_id;
-                $emptyParent = $commentsFiltered->find(function($comm) use ($question_id) {
+                $emptyParent = $commentsFiltered->find(function ($comm) use ($question_id) {
                     if ($comm->id == $question_id) {
                         return true;
                     }
@@ -342,7 +343,8 @@ class Comment extends AppModel {
         return $commentsFiltered;
     }
 
-    public static function fetchCommentsTree($commentsRaw) {
+    public static function fetchCommentsTree($commentsRaw)
+    {
         self::$level++;
         foreach ($commentsRaw as $comment) {
             $avatarHelper = new AvatarHelper;
@@ -371,17 +373,19 @@ class Comment extends AppModel {
         }
     }
 
-    public static function addAvatars($comments) {
+    public static function addAvatars($comments)
+    {
         $avatarHelper = new AvatarHelper;
-        foreach($comments as $comment) {
+        foreach ($comments as $comment) {
             $comment->avatar = $avatarHelper->show($comment->user->data(), false, true);
         }
         return $comments;
     }
 
-    public static function addSolutionUrl($comments) {
-        foreach($comments as $comment) {
-            if($comment->solution_id != 0) {
+    public static function addSolutionUrl($comments)
+    {
+        foreach ($comments as $comment) {
+            if ($comment->solution_id != 0) {
                 $solution = Solution::first($comment->solution_id);
                 $comment->solution_url = $solution->images;
             }
@@ -389,10 +393,11 @@ class Comment extends AppModel {
         return $comments;
     }
 
-	public static function createComment($data) {
-		return static::_filter(__FUNCTION__, $data, function($self, $params) {
+    public static function createComment($data)
+    {
+        return static::_filter(__FUNCTION__, $data, function ($self, $params) {
             $comment = $self::create();
-            if((isset($params['comment_id'])) && ($mentionedComment = $self::first($params['comment_id']))) {
+            if ((isset($params['comment_id'])) && ($mentionedComment = $self::first($params['comment_id']))) {
                 $params['reply_to'] = $mentionedComment->user_id;
                 unset($params['comment_id']);
             }
@@ -403,14 +408,15 @@ class Comment extends AppModel {
             $comment->created = date('Y-m-d H:i:s');
             $comment->save();
             $params['id'] = $comment->id;
-			return $params;
-		});
-	}
+            return $params;
+        });
+    }
 
-    public static function parseComment($text) {
-        if(preg_match('/^#(\d*),/', $text, $matches)) {
+    public static function parseComment($text)
+    {
+        if (preg_match('/#(\d*)/', $text, $matches)) {
             return $matches[1];
-        }else {
+        } else {
             return 0;
         }
     }
@@ -421,7 +427,8 @@ class Comment extends AppModel {
      * $text - текст для проверки
      * return boolean
      */
-    public static function checkComment($text) {
+    public static function checkComment($text)
+    {
         $patterns = array(
             '/#\d+,/', // #15,
             '/#\d+ ,/', // #15 ,
@@ -434,7 +441,8 @@ class Comment extends AppModel {
         return (bool) mb_strlen(trim($text), 'UTF-8');
     }
 
-    public static function isCommentRepeat($user_id, $pitch_id, $currentText) {
+    public static function isCommentRepeat($user_id, $pitch_id, $currentText)
+    {
         if (User::first(array('conditions' => array('id' => $user_id, 'isAdmin' => 1)))) {
             return true;
         }
@@ -451,5 +459,25 @@ class Comment extends AppModel {
             return false;
         }
         return true;
+    }
+
+    /**
+     * Метод возвращает строчку для создания комментария об обончании приёма работ в проекте.
+     *
+     * @param $name
+     * @param $days
+     * @return string
+     */
+    public static function getWinnerSelectionCommentForClient($name, $days)
+    {
+        $numInflector = new NumInflector();
+        $dayWord = $numInflector->formatString((int) $days, [
+            'string' => [
+                'first' => 'день',
+                'second' => 'дня',
+                'third' => 'дней'
+            ]
+        ]);
+        return sprintf('@%s, срок проекта подошел к концу! Дизайнеры больше не могут предлагать решения и оставлять комментарии! Настал момент анонсировать победителя. У вас есть %d %s на выбор лучшего решения. Выбрав лучшее, вы получите возможность внесения поправок и время на получение исходников.', (string) $name, $days, $dayWord);
     }
 }

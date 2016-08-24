@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\extensions\helper\Pitch as PitchHekper;
 use app\extensions\storage\Rcache;
 use app\extensions\helper\NameInflector;
 use lithium\analysis\Logger;
@@ -11,6 +12,7 @@ use lithium\data\entity\Record;
 use app\models\User;
 use OneSignal\Config;
 use OneSignal\OneSignal;
+use app\models\Manager;
 
 /**
  * Class Solution
@@ -255,6 +257,7 @@ http://godesigner.ru/answers/view/73');
         if ($userId && (!$like = Like::find('first', array('conditions' => array('solution_id' => $solutionId, 'user_id' => $userId))))) {
             $allowUser = true;
         }
+        $pitchHelper = new PitchHekper();
         if (($allowUser || $allowAnon) && ($pitch->status == 0)) {
             $solution->likes += 1;
             $solution->save();
@@ -315,7 +318,13 @@ http://godesigner.ru/answers/view/73');
     {
         $solution = Solution::first($solutionId);
         $pitch = Pitch::first($solution->pitch_id);
-        if(in_array($userId, User::$admins)) {
+        $canManageRating = false;
+        if (((int) $pitch->category_id === 20)
+            && (Manager::getTeamLeaderOfManager($userId) === (int) $pitch->user_id)
+            && (Manager::isManagerAssignedToProject((int) $userId, (int) $pitch->id))) {
+            $canManageRating = true;
+        }
+        if((in_array($userId, User::$admins)) || ($canManageRating)) {
             $userId = $pitch->user_id;
         }
         $history = Ratingchange::create();
@@ -586,6 +595,8 @@ http://godesigner.ru/answers/view/73');
             $pitch->save();
             $result['receipt'] = Receipt::all(array('conditions' => array('pitch_id' => $pitch->id)))->data();
         } else {
+            $gatracking = new \Racecore\GATracking\GATracking('UA-9235854-5');
+            $gaId = $gatracking->getClientId();
             $pitch = Pitch::create(array(
                         'category_id' => 1,
                         'title' => 'Logosale Pitch',
@@ -593,7 +604,8 @@ http://godesigner.ru/answers/view/73');
                         'total' => $total,
                         'user_id' => $user_id,
                         'awarded' => $solution_id,
-                        'blank' => 1
+                        'blank' => 1,
+                        'ga_id' => $gaId
             ));
             if ($pitch->save()) {
                 $data = array(
@@ -892,7 +904,10 @@ http://godesigner.ru/answers/view/73');
         if (!Pitch::isReadyForLogosale($pitch)) {
             return false;
         }
-        if (($solution->rating >= 3) && ($pitch->awarded != $solution->id)) {
+        if ((($solution->rating >= 3) && ($pitch->awarded != $solution->id)) && ($solution->awarded == 0)) {
+            return true;
+        }
+        if((int) $solution->id === 15007) {
             return true;
         }
         return false;

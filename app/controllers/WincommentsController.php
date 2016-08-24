@@ -2,30 +2,36 @@
 
 namespace app\controllers;
 
-use app\extensions\helper\Brief;
 use app\extensions\helper\User;
 use app\models\Wincomment;
-use lithium\action\Response;
-use lithium\storage\Session;
+use \lithium\storage\Session;
+use \app\extensions\helper\Brief;
 
-class WincommentsController extends AppController
-{
+class WincommentsController extends \lithium\action\Controller {
 
-    /**
-     * Метод удаления комментария на завершающем этапе
-     *
-     * @return Response|string
-     */
-    public function delete()
-    {
-        $allowedSteps = [2, 3];
-        if (!in_array((int) $this->request->query['step'], $allowedSteps)) {
-            $step = 3;
-        } else {
-            $step = (int) $this->request->query['step'];
+    /*public function add() {
+        $allowedAction = array('view', 'viewsolution');
+        if((!isset($this->request->data['action'])) || (!in_array($this->request->data['action'], $allowedAction))) {
+            $this->request->redirectAction = 'view';
         }
-        $comment = Wincomment::first($this->request->id);
-        if ($comment && ($this->userHelper->isAdmin() || $this->userHelper->isCommentAuthor($comment->user_id))) {
+        $this->request->data['user_id'] = Session::read('user.id');
+        $result = Comment::createComment($this->request->data);
+        if($this->request->redirectAction == 'view') {
+            return $this->redirect(array('controller' => 'pitches', 'action' => 'view', 'id' => $this->request->data['pitch_id']));
+        }else {
+            return $this->redirect(array('controller' => 'pitches', 'action' => 'viewsolution', 'id' => $result['solution_id']));
+        }
+    }*/
+
+    public function delete() {
+        $allowedSteps = array('2', '3');
+        if(!in_array($this->request->query['step'], $allowedSteps)) {
+            $step = '3';
+        }else {
+            $step = $this->request->query['step'];
+        }
+        $userHelper = new User();
+        if(($userHelper->isAdmin() && ($comment = Wincomment::first($this->request->id))) || (($comment = Wincomment::first($this->request->id)) && (Session::read('user.id') == $comment->user_id))) {
             $comment->delete();
             if (is_null($this->request->env('HTTP_X_REQUESTED_WITH'))) {
                 return $this->redirect('/users/step' . $step . '/' . $comment->solution_id);
@@ -36,20 +42,14 @@ class WincommentsController extends AppController
         return json_encode('false');
     }
 
-    /**
-     * Метод редактирования существующего комментария на завершающем этапе
-     *
-     * @return string
-     */
-    public function edit()
-    {
-        $comment = Wincomment::first($this->request->id);
-        if ($comment && ($this->userHelper->isAdmin() || $this->userHelper->isCommentAuthor($comment->user_id))) {
-            $comment->text = $this->request->data['text'];
+    public function edit() {
+        if (($comment = Wincomment::first($this->request->id)) && (Session::read('user.isAdmin') == 1 || Session::read('user.id') == $comment->user_id || \app\models\User::checkRole('admin') )) {
+            $comment->text = nl2br($this->request->data['text']);
             $comment->save();
-            $comment = Wincomment::first($comment->id);
+            $comment = Wincomment::first($this->request->id);
             $brief = new Brief();
             return html_entity_decode($brief->deleteHtmlTagsAndInsertHtmlLinkInTextAndMentions($comment->text));
         }
     }
 }
+?>

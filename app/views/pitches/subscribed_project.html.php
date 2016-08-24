@@ -1,10 +1,10 @@
 <div class="wrapper">
 
-    <?= $this->view()->render(array('element' => 'header'), array('header' => 'header2')) ?>
+    <?= $this->view()->render(['element' => 'header'], ['header' => 'header2']) ?>
 
     <?php
         $word1 = 'Бланк ';
-        $job_types = array(
+        $job_types = [
             'realty' => 'Недвижимость / Строительство',
             'auto' => 'Автомобили / Транспорт',
             'finances' => 'Финансы / Бизнес',
@@ -21,11 +21,11 @@
             'security' => 'Охрана / Безопасность',
             'health' => 'Медицина / Здоровье',
             'it' => 'Компьютеры / IT'
-        );
-        if(isset($pitch)):
+        ];
+        if (isset($pitch)):
         $specifics = unserialize($pitch->specifics);
     ?>
-    <?php if(isset($specifics["audience"])):?>
+    <?php if (isset($specifics["audience"])):?>
         <script type="text/javascript">var slidersValue = <?php echo json_encode($specifics["audience"])?>;</script>
     <?php else:?>
         <script type="text/javascript">var slidersValue = <?php echo json_encode($specifics["logo-properties"])?>;</script>
@@ -34,13 +34,13 @@
     $startValue = 9000;
     ?>
     <script>
-        var projectId = <?php if(isset($pitch)): echo "$pitch->id"; else: echo "null"; endif;?>;
+        var projectId = <?php if (isset($pitch)): echo "$pitch->id"; else: echo "null"; endif;?>;
         var balance = <?php echo (int) $this->user->getBalance();?>;
         var payload = {
             "receipt": <?php echo json_encode($receipt);?>,
             "startValue": <?= $startValue ?>,
-            "isCopywriting": <?php if(isset($pitch)):
-            if($pitch->isCopyrighting()):
+            "isCopywriting": <?php if (isset($pitch)):
+            if ($pitch->isCopyrighting()):
                 echo 'true';
             else:
                 echo 'false';
@@ -62,7 +62,7 @@
 
             <label style="
                 font-family: Helvetica, serif; font-size: 11px; text-transform: uppercase; color: #666666;
-            ">1. Вознаграждение победителю, руб.<?= $this->view()->render(array('element' => 'newbrief/required_star')) ?></label>
+            ">1. Вознаграждение победителю, руб.<?= $this->view()->render(['element' => 'newbrief/required_star']) ?></label>
             <div>
                 <div id="project-reward"></div>
                 <div style="float: left; margin-left: 16px; margin-top: 4px;">
@@ -88,7 +88,7 @@
                     <?php
                     $defaultFinishDateTime = strtotime($defaultFinishDate);
                     $defaultChooseWinnerFinishDateTime = strtotime($defaultChooseWinnerFinishDate);
-                    $months = array(
+                    $months = [
                         1 => 'Январь',
                         2 => 'Февраль',
                         3 => 'Март',
@@ -101,8 +101,8 @@
                         10 => 'Октябрь',
                         11 => 'Ноябрь',
                         12 => 'Декабрь',
-                    );
-                    $days = array(
+                    ];
+                    $days = [
                         '0' => 'ПН',
                         '1' => 'ВТ',
                         '2' => 'СР',
@@ -110,7 +110,7 @@
                         '4' => 'ПТ',
                         '5' => 'СБ',
                         '6' => 'ВС',
-                    );
+                    ];
                     $dayFinishDate = $days[strftime('%w', $defaultFinishDateTime)];
                     $dayChooseWinnerFinishDate = $days[strftime('%w', $defaultChooseWinnerFinishDateTime)];
                     $monthFinishDate = $months[date('n', $defaultFinishDateTime)];
@@ -129,12 +129,12 @@
 
                     <div style="float: left; width: 71px; height: 150px; background: url(/img/brief/arrow_right.png) no-repeat center center;"></div>
 
-                    <div class="chooseWinnerFinishDate brief-datetime-select <?php if(in_array('chooseWinnerFinishDate', $plan['free'])): echo 'editable_calendar';endif;?>">
-                        <input style="padding-bottom: 10px; width: 112px; height: 144px; cursor: pointer; position: absolute; opacity: 0; z-index:1;" type="text" class="second-datepick <?php if(in_array('chooseWinnerFinishDate', $plan['free'])): echo 'editable';endif;?>"/>
+                    <div class="chooseWinnerFinishDate brief-datetime-select <?php if (in_array('chooseWinnerFinishDate', $plan['free'])): echo 'editable_calendar';endif;?>">
+                        <input style="padding-bottom: 10px; width: 112px; height: 144px; cursor: pointer; position: absolute; opacity: 0; z-index:1;" type="text" class="second-datepick <?php if (in_array('chooseWinnerFinishDate', $plan['free'])): echo 'editable';endif;?>"/>
                         <h6 class="month" style="height: 27px; padding-top: 14px;color: #ffffff; text-transform: uppercase;font-size: 14px;text-align:center;"><?= $monthChooseWinnerFinishDate?></h6>
                         <h5 class="day_cal" style="text-align: center; padding-top: 22px; font-size: 53px; color: #666666; "><?= date('d', $defaultChooseWinnerFinishDateTime) ?></h5>
                         <h6 class="weekday_time" style="padding-top: 22px;text-align: center;text-transform: uppercase; color: #666666; font-size: 14px"><?= $dayChooseWinnerFinishDate?>, <?= date('h:i', $defaultChooseWinnerFinishDateTime) ?></h6>
-                        <?php if(in_array('chooseWinnerFinishDate', $plan['free'])):?>
+                        <?php if (in_array('chooseWinnerFinishDate', $plan['free'])):?>
                         <a href="#"  style="display: block; text-align: center; font-size: 12px;">изменить</a>
                         <?php endif?>
                         <input type="hidden" name="chooseWinnerFinishDate" value="<?= $defaultChooseWinnerFinishDate ?>" />
@@ -162,12 +162,12 @@
                 text-transform: uppercase;margin-bottom:30px;">Дополнительные опции</h1>
 
             <div class="ribbon complete-brief" style="padding-top: 35px; height: 56px; padding-bottom: 0;">
-                <p class="option"><label><input type="checkbox"  name="" <?php if($pitch->brief): echo "checked"; endif;?> class="single-check" data-option-title="Заполнение брифа" data-option-value=<?php if(in_array('phonebrief', $plan['free'])):?>"0"<?php else:?>"2750"<?php endif?> id="phonebrief">Заполнить бриф</label></p>
-                <?php if(in_array('phonebrief', $plan['free'])):?>
+                <p class="option"><label><input type="checkbox"  name="" <?php if ($pitch->brief): echo "checked"; endif;?> class="single-check" data-option-title="Заполнение брифа" data-option-value=<?php if (in_array('phonebrief', $plan['free'])):?>"0"<?php else:?>"2750"<?php endif?> id="phonebrief">Заполнить бриф</label></p>
+                <?php if (in_array('phonebrief', $plan['free'])):?>
                     <img class="brief-free-label" src="/img/brief/free_option.png" alt="" />
                 <?php endif;?>
-                <?php if(!in_array('phonebrief', $plan['free'])):?>
-                <p class="label <?php if($pitch->brief): echo "unfold"; endif;?>" style="text-transform: none;">2750р.</p>
+                <?php if (!in_array('phonebrief', $plan['free'])):?>
+                <p class="label <?php if ($pitch->brief): echo "unfold"; endif;?>" style="text-transform: none;">2750р.</p>
                 <?php endif;?>
             </div>
 
@@ -184,14 +184,14 @@
             <div class="ribbon" style="padding-top: 35px; height: 56px; padding-bottom: 0;">
                 <p class="option">
                     <label>
-                        <input type="checkbox" name="" <?php if($pitch->private): echo "checked"; endif;?> class="single-check" data-option-title="Скрыть проект" data-option-value=<?php if(in_array('hideproject', $plan['free'])):?>"0"<?php else:?>"3500"<?php endif?> id="hideproject">Скрыть проект
+                        <input type="checkbox" name="" <?php if ($pitch->private): echo "checked"; endif;?> class="single-check" data-option-title="Скрыть проект" data-option-value=<?php if (in_array('hideproject', $plan['free'])):?>"0"<?php else:?>"3500"<?php endif?> id="hideproject">Скрыть проект
                     </label>
                 </p>
-                <?php if(in_array('hideproject', $plan['free'])):?>
+                <?php if (in_array('hideproject', $plan['free'])):?>
                 <img class="brief-free-label" src="/img/brief/free_option.png" alt="" />
                 <?php endif;?>
-                <?php if(!in_array('hideproject', $plan['free'])):?>
-                <p class="label <?php if($pitch->private): echo "unfold"; endif;?>" style="text-transform: none;">3500р.</p>
+                <?php if (!in_array('hideproject', $plan['free'])):?>
+                <p class="label <?php if ($pitch->private): echo "unfold"; endif;?>" style="text-transform: none;">3500р.</p>
                 <?php endif;?>
             </div>
 
@@ -208,13 +208,13 @@
             </div>
 
             <div class="ribbon" style="padding-top: 35px; height: 56px; padding-bottom: 0;">
-                <p class="option"><label><input type="checkbox" name="" <?php if($pitch->expert): echo "checked"; endif;?> class="multi-check" data-option-title="экспертное мнение" data-option-value="1500" id="experts-checkbox">Экспертное мнение</label></p>
-                <p class="label <?php if($pitch->expert): echo "unfold"; endif;?>" style="text-transform: none;" id="expert-label">1000р.</p>
+                <p class="option"><label><input type="checkbox" name="" <?php if ($pitch->expert): echo "checked"; endif;?> class="multi-check" data-option-title="экспертное мнение" data-option-value="1500" id="experts-checkbox">Экспертное мнение</label></p>
+                <p class="label <?php if ($pitch->expert): echo "unfold"; endif;?>" style="text-transform: none;" id="expert-label">1000р.</p>
             </div>
 
-            <ul class="experts" <?php if((isset($pitch)) && (count(unserialize($pitch->{'expert-ids'})) > 0)): echo 'style="display:block;"';else: echo 'style="display: none;"'; endif;?>>
+            <ul class="experts" <?php if ((isset($pitch)) && (count(unserialize($pitch->{'expert-ids'})) > 0)): echo 'style="display:block;"'; else: echo 'style="display: none;"'; endif;?>>
                 <?php
-                $imageArray = array(
+                $imageArray = [
                     1 => '/img/temp/expert-1.jpg',
                     2 => '/img/temp/expert-2.jpg',
                     3 => '/img/jara_174.png',
@@ -223,14 +223,15 @@
                     6 => '/img/experts/efremov174.jpg',
                     7 => '/img/experts/percia_174.png',
                     8 => '/img/experts/makarov_dmitry_174.png',
-                );
+                ];
 
-                foreach ($experts as $expert): if ($expert->enabled == 0)
-                    continue;
+                foreach ($experts as $expert): if ($expert->enabled == 0) {
+     continue;
+ }
                     ?>
                     <li>
                         <a href="/experts/view/<?= $expert->id ?>" target="_blank" class="photo"><img src="<?= $imageArray[$expert->id] ?>" alt="<?= $expert->name ?>"></a><!-- .photo -->
-                        <p class="select"><input type="checkbox" name="" <?php if((isset($pitch)) && (in_array($expert->id, unserialize($pitch->{'expert-ids'})))): echo "checked"; endif;?> class="expert-check" data-id="<?= $expert->id ?>" data-option-title="экспертное мнение" data-option-value="<?= $expert->price ?>"></p><!-- .select -->
+                        <p class="select"><input type="checkbox" name="" <?php if ((isset($pitch)) && (in_array($expert->id, unserialize($pitch->{'expert-ids'})))): echo "checked"; endif;?> class="expert-check" data-id="<?= $expert->id ?>" data-option-title="экспертное мнение" data-option-value="<?= $expert->price ?>"></p><!-- .select -->
                         <dl>
                             <dt><strong><a style="font-family:OfficinaSansC Bold,serif;"  href="/experts/view/<?= $expert->id ?>" target="_blank"><?= $expert->name ?></a></strong></dt>
                             <dd><a style="font-family:OfficinaSansC Book,serif; color:#666666;font-size: 14px" href="/experts/view/<?= $expert->id ?>" target="_blank"><?= $expert->spec ?> <?= $expert->price ?>&nbsp;р.-</a></dd>
@@ -240,12 +241,12 @@
             </ul><!-- .experts -->
 
             <div class="ribbon" style="padding-top: 35px; height: 56px; padding-bottom: 0;" id="pinned-block">
-                <p class="option"><label><input type="checkbox" name="" <?php if($pitch->pinned): echo "checked"; endif;?> class="single-check" data-option-title="«Прокачать» проект" data-option-value=<?php if(in_array('pinproject', $plan['free'])):?>"0"<?php else:?>"1000"<?php endif?> id="pinproject">«Прокачать» проект</label></p>
-                <?php if(in_array('pinproject', $plan['free'])):?>
+                <p class="option"><label><input type="checkbox" name="" <?php if ($pitch->pinned): echo "checked"; endif;?> class="single-check" data-option-title="«Прокачать» проект" data-option-value=<?php if (in_array('pinproject', $plan['free'])):?>"0"<?php else:?>"1000"<?php endif?> id="pinproject">«Прокачать» проект</label></p>
+                <?php if (in_array('pinproject', $plan['free'])):?>
                     <img class="brief-free-label" src="/img/brief/free_option.png" alt="" />
                 <?php endif;?>
-                <?php if(!in_array('pinproject', $plan['free'])):?>
-                <p class="label <?php if($pitch->pinned): echo "unfold"; endif;?>" style="text-transform: none;">1000р.</p>
+                <?php if (!in_array('pinproject', $plan['free'])):?>
+                <p class="label <?php if ($pitch->pinned): echo "unfold"; endif;?>" style="text-transform: none;">1000р.</p>
                 <?php endif?>
             </div>
 
@@ -263,7 +264,7 @@
 
             <p class="brief-example"><a href="/docs/brief_logo.pdf" target="_blank"></a></p>
 
-            <?= $this->view()->render(array('element' => 'newbrief/ad_block'), compact('pitch')) ?>
+            <?= $this->view()->render(['element' => 'newbrief/ad_block'], compact('pitch')) ?>
 
             <div class="ribbon complete-brief"  style="padding-top: 35px; height: 56px; padding-bottom: 0;">
                 <p class="option"><label><input type="checkbox" name=""  id="promocodecheck">Промокод</label></p>
@@ -293,29 +294,29 @@
                 <!--li class="last"><a href="#" class="steps-link" data-step="3">3. Оплата</a></li-->
             </ol>
 
-            <?= $this->view()->render(array('element' => 'newbrief/pitchtitle_block'), compact('pitch', 'category', 'word1', 'defaultTitle')) ?>
+            <?= $this->view()->render(['element' => 'newbrief/pitchtitle_block'], compact('pitch', 'category', 'word1', 'defaultTitle')) ?>
 
-            <?= $this->view()->render(array('element' => 'newbrief/description_block'), compact('pitch', 'category', 'word2'))?>
+            <?= $this->view()->render(['element' => 'newbrief/description_block'], compact('pitch', 'category', 'word2'))?>
 
-            <?php if(isset($pitch)): ?>
-                <?= $this->view()->render(array('element' => 'brief-edit/' . $category->id), array('specifics' => $specifics, 'pitch' => $pitch))?>
+            <?php if (isset($pitch)): ?>
+                <?= $this->view()->render(['element' => 'brief-edit/' . $category->id], ['specifics' => $specifics, 'pitch' => $pitch])?>
             <?php else: ?>
-                <?= $this->view()->render(array('element' => 'brief-create/' . $category->id)) ?>
+                <?= $this->view()->render(['element' => 'brief-create/' . $category->id]) ?>
             <?php endif;?>
 
             <div class="groupc" style="margin-top: 34px; margin-bottom: 25px;">
                 <label id ="show-types" class="greyboldheader">Выберите вид деятельности</label> 
                 <ul id="list-job-type" style="margin-bottom: 20px;"> 
                     <?php
-                    $industry = array();
-                    if($pitch) {
+                    $industry = [];
+                    if ($pitch) {
                         $industry = (unserialize($pitch->industry));
                     }
                     $_empty = empty($industry);
                     foreach ($job_types as $k => $v):
                         ?>
                         <li>
-                            <label><input type="checkbox" name="job-type[]" value="<?= $k ?>" <?php if(!$_empty):  if(in_array($k, $industry)): echo ' checked'; endif; endif;?>><?= $v ?></label>
+                            <label><input type="checkbox" name="job-type[]" value="<?= $k ?>" <?php if (!$_empty):  if (in_array($k, $industry)): echo ' checked'; endif; endif;?>><?= $v ?></label>
                         </li>
                     <?php endforeach; ?>
                  </ul>
@@ -327,10 +328,10 @@
                     <label>Можно ли дополнительно использовать материал из банков с изображениями или шрифтами? <a href="#" class="second tooltip" title="Это даст возможность дизайнерам добиться лучшего результата. Профессионалы из мира рекламы часто прибегают к помощи фото-банков для экономии сил, времени или бюджета.">(?)</a></label>
                 </p>
                 <div style="float:left;width:50px;height:44px;padding-top:10px;">
-                    <input style="vertical-align: middle" type="radio" name="materials" value="0" <?php if(!$pitch->materials): echo 'checked';endif;?>/><span class="radiospan">Нет</span>
+                    <input style="vertical-align: middle" type="radio" name="materials" value="0" <?php if (!$pitch->materials): echo 'checked';endif;?>/><span class="radiospan">Нет</span>
                 </div>
                 <div style="float:left;width:50px;height:44px;padding-top:10px;">
-                    <input style="vertical-align: middle" type="radio" name="materials" value="1" <?php if($pitch->materials): echo 'checked';endif;?> /><span class="radiospan">Да</span>
+                    <input style="vertical-align: middle" type="radio" name="materials" value="1" <?php if ($pitch->materials): echo 'checked';endif;?> /><span class="radiospan">Да</span>
                 </div>
                 <div style="margin-bottom: 15px;"><input type="text" placeholder="допустимая стоимость одного изображения" style="width: 300px;" name="materials-limit" value="<?=$pitch->{'materials-limit'}?>"></div>
 
@@ -360,8 +361,8 @@
 
                 <ul id="filezone">
                     <?php
-                    if(isset($files)):?>
-                        <?php foreach($files as $file):?>
+                    if (isset($files)):?>
+                        <?php foreach ($files as $file):?>
                             <?php if (empty($file->originalbasename)):?>
                                 <li data-id="<?=$file->id?>"><a style="float:left;width:300px" class="filezone-filename" href="<?=$file->weburl?>"><?=$file->basename?></a><a class="filezone-delete-link" style="float:right;width:100px;margin-left:0" href="#">удалить</a><div style="clear:both;"></div><p><?=$file->{'file-description'}?></p></li>
                             <?php else:?>
@@ -376,7 +377,7 @@
             </div>
 
             <div class="groupc" style="margin-bottom: 19px; padding-bottom: 13px;">
-                <?= $this->view()->render(array('element' => 'newbrief/fileformat'), array('pitch' => $pitch, 'category' => $category)); ?>
+                <?= $this->view()->render(['element' => 'newbrief/fileformat'], ['pitch' => $pitch, 'category' => $category]); ?>
             </div>
 
             <div class="groupc" style="background: none repeat scroll 0 0 transparent; margin-bottom: 7px;">
@@ -388,11 +389,11 @@
         </div></div>
 
         <div class="tos-container supplement" style="margin-bottom: 20px; position: relative;">
-            <label><input type="checkbox" name="tos" style="vertical-align: middle; margin-right: 5px;"/>Я прочитал(а) и выражаю безусловное согласие с условиями настоящего <a target="_blank" href="/docs/dogovor.pdf" style="text-decoration: none;">конкурсного соглашения</a>.</label>
-            <?= $this->view()->render(array('element' => 'newbrief/required_star'), array('style' => "position: absolute; top:0;right:0")) ?>
+            <label><input type="checkbox" name="tos" style="vertical-align: middle; margin-right: 5px;"/>Я прочитал(а) и выражаю безусловное согласие с условиями настоящего <a target="_blank" href="/docs/dogovor_2016.pdf" style="text-decoration: none;">конкурсного соглашения</a>.</label>
+            <?= $this->view()->render(['element' => 'newbrief/required_star'], ['style' => "position: absolute; top:0;right:0"]) ?>
         </div>
         <p class="submit submit-brief">
-            <?= $this->view()->render(array('element' => 'newbrief/subscribe_step2fullbuttons')); ?>
+            <?= $this->view()->render(['element' => 'newbrief/subscribe_step2fullbuttons']); ?>
         </p><!-- .submit -->
 
         </div>
@@ -408,11 +409,12 @@
     <div style="color: rgb(202, 202, 202); font-size: 14px; margin-top: 20px;">Пожалуйста, используйте эту паузу<br> с пользой для здоровья!</div>
 </div>
 
-<?= $this->view()->render(array('element' => 'popups/brief_tos')); ?>
-<?= $this->view()->render(array('element' => 'popups/date_confirmation')); ?>
+<?= $this->view()->render(['element' => 'popups/brief_tos']); ?>
+<?= $this->view()->render(['element' => 'popups/date_confirmation']); ?>
+<?= $this->view()->render(['element' => 'popups/brief_saved']); ?>
 <script type="text/javascript" src="/js/jquery-1.8.3.min.js"></script>
 <script type="text/javascript" src="/js/tinymce/tinymce.min.js"></script>
-<?= $this->html->script(array(
+<?= $this->html->script([
     '/js/flux/flux.min.js',
     'jquery-ui-1.11.4.min.js',
     'jquery-plugins/jquery.scrollto.min.js',
@@ -441,8 +443,8 @@
     'jquery.simplemodal-1.4.2.js',
     'jquery.tooltip.js',
     'popup.js'
-), array('inline' => false)) ?>
-<?= $this->html->style(array(
+], ['inline' => false]) ?>
+<?= $this->html->style([
     '/css/common/receipt.css',
     '/css/common/clear.css',
     '/css/common/buttons.css',
@@ -454,4 +456,4 @@
     '/brief',
     '/step3',
     '/css/brief/subscribed_project.css'
-), array('inline' => false))?>
+], ['inline' => false])?>

@@ -6,6 +6,7 @@ use app\models\BlogAd;
 use \app\models\Post;
 use \lithium\storage\Session;
 use app\models\User;
+use PHPHtmlParser\Dom;
 
 class PostsController extends AppController
 {
@@ -13,7 +14,7 @@ class PostsController extends AppController
     /**
      * @var array Массив экшенов, доступных не залогинненым пользователям
      */
-    public $publicActions = array('index', 'view', 'search');
+    public $publicActions = ['index', 'view', 'search'];
 
     /**
      * @var int переменная отвечает за количество выводимых постов на страницах-списков (оглавление и поиск)
@@ -29,16 +30,16 @@ class PostsController extends AppController
     {
         $limit = $this->postsOnIndexPage;
         $page = 1;
-        $conditions = array();
+        $conditions = [];
         if (isset($this->request->query['page'])) {
             $page = abs(intval($this->request->query['page']));
         }
         if (isset($this->request->query['tag'])) {
             $tag = $this->request->query['tag'];
-            $conditions += array('tags' => array('LIKE' => '%' . $tag . '%'));
+            $conditions += ['tags' => ['LIKE' => '%' . $tag . '%']];
         }
         if (isset($this->request->query['author'])) {
-            $conditions += array('user_id' => (int) $this->request->query['author']);
+            $conditions += ['user_id' => (int) $this->request->query['author']];
         }
         if ((Session::write('user.id' > 0)) && (Session::read('user.blogpost') != null)) {
             setcookie('counterdata', "", time() - 3600, '/');
@@ -46,12 +47,12 @@ class PostsController extends AppController
         }
 
         if (User::checkRole('editor') || User::checkRole('author')) {
-            $posts = Post::all(array('conditions' => $conditions, 'page' => $page, 'limit' => $limit, 'order' => array('created' => 'desc'), 'with' => array('User')));
+            $posts = Post::all(['conditions' => $conditions, 'page' => $page, 'limit' => $limit, 'order' => ['created' => 'desc'], 'with' => ['User']]);
             $editor = 1;
         } else {
-            $posts = Post::all(array('conditions' => array('published' => 1, 'Post.created' => array('<=' => date('Y-m-d H:i:s'))) + $conditions, 'page' => $page, 'limit' => $limit, 'order' => array('created' => 'desc'), 'with' => array('User')));
+            $posts = Post::all(['conditions' => ['published' => 1, 'Post.created' => ['<=' => date('Y-m-d H:i:s')]] + $conditions, 'page' => $page, 'limit' => $limit, 'order' => ['created' => 'desc'], 'with' => ['User']]);
         }
-        $postsList = array();
+        $postsList = [];
         foreach ($posts as $post) {
             $post->timezonedCreated = date('c', strtotime($post->created));
             $postsList[] = $post->data();
@@ -73,14 +74,14 @@ class PostsController extends AppController
             $client = new \SphinxClient();
             $client->open();
             error_reporting(0);
-            $client->SetMatchMode( SPH_MATCH_ANY  );
+            $client->SetMatchMode(SPH_MATCH_ANY);
             $limit = $this->postsOnIndexPage;
             $page = 1;
             if (isset($this->request->query['page'])) {
                 $page = abs(intval($this->request->query['page']));
             }
             $client->SetLimits($page - 1, $limit);
-            $client->SetFilter('published', array(1));
+            $client->SetFilter('published', [1]);
             $searchCondition = urldecode(filter_var($this->request->query['search'], FILTER_SANITIZE_STRING));
             $tempWords = explode(' ', $searchCondition);
             foreach ($tempWords as $index => &$searchWord) {
@@ -91,7 +92,7 @@ class PostsController extends AppController
                 $searchWord = mb_eregi_replace('[^A-Za-z0-9а-яА-Я]', '', $searchWord);
                 $searchWord = trim($searchWord);
             }
-            $words = array($searchCondition);
+            $words = [$searchCondition];
             foreach ($tempWords as $subwords) {
                 $words[] = $subwords;
             }
@@ -123,7 +124,7 @@ class PostsController extends AppController
             $search = implode(' ', $words);
 
             $editor = (User::checkRole('editor') || User::checkRole('author')) ? 1 : 0;
-            $postsList = array();
+            $postsList = [];
             foreach ($posts as $post) {
                 $post->timezonedCreated = date('c', strtotime($post->created));
                 $postsList[] = $post->data();
@@ -132,7 +133,7 @@ class PostsController extends AppController
                 return compact('postsList', 'posts', 'search', 'editor');
             }
             $search = (isset($this->request->query['search'])) ? urldecode(filter_var($this->request->query['search'], FILTER_SANITIZE_STRING)) : '';
-            return $this->render(array('template' => 'index', 'data' => compact('postsList', 'posts', 'search', 'editor')));
+            return $this->render(['template' => 'index', 'data' => compact('postsList', 'posts', 'search', 'editor')]);
         }
         return $this->redirect('/posts');
     }
@@ -150,10 +151,10 @@ class PostsController extends AppController
             } else {
                 unset($this->request->data['id']);
                 $post = Post::create();
-                $post->user_id = Session::read('user.id');
+                $post->user_id = $this->userHelper->getId();
             }
             $post->set($this->request->data);
-            $tagsArray = array();
+            $tagsArray = [];
             foreach (explode(',', preg_replace('/[\[\]@\"]/', '', $this->request->data['tags'])) as $tag) {
                 $tagsArray[] = trim($tag);
             }
@@ -161,14 +162,16 @@ class PostsController extends AppController
             if ((isset($this->request->data['published'])) && (($this->request->data['published'] == 'on') || ($this->request->data['published'] == 1))) {
                 $published = '1';
             } else {
-                $published = '0';
+                if (!isset($this->request->data['id'])) {
+                    $published = '0';
+                } else {
+                    $published = $post->published;
+                }
             }
-
             $post->tags = $tagsString;
             $post->published = $published;
-
             $post->save();
-            Post::lock($post->id, Session::read('user.id'));
+            Post::lock($post->id, $this->userHelper->getId());
             Post::updateLastEditTime($post->id);
             return $post->data();
         } else {
@@ -187,7 +190,7 @@ class PostsController extends AppController
             return $this->redirect('/posts/search?search=' . $this->request->query['search']);
         }
 
-        if (($post = Post::first(array('conditions' => array('Post.id' => $this->request->id), 'with' => array('User')))) && ($post->published == 1 || (User::checkRole('author') || User::checkRole('editor')))) {
+        if (($post = Post::first(['conditions' => ['Post.id' => $this->request->id], 'with' => ['User']])) && ($post->published == 1 || (User::checkRole('author') || User::checkRole('editor')))) {
             if ((Session::write('user.id' > 0)) && (Session::read('user.blogpost') != null)) {
                 Session::delete('user.blogpost');
                 setcookie('counterdata', '', time() - 3600, '/');
@@ -196,14 +199,14 @@ class PostsController extends AppController
             Post::increaseCounter($this->request->id);
             $post->views += 1;
             $post->save();
-            $searchIds = array();
+            $searchIds = [];
             foreach ($tags as $tag) {
-                $related = Post::all(array('conditions' => array(
-                    'tags' => array('LIKE' => '%' . $tag . '%'),
-                    'id' => array('!=' => $post->id),
+                $related = Post::all(['conditions' => [
+                    'tags' => ['LIKE' => '%' . $tag . '%'],
+                    'id' => ['!=' => $post->id],
                     'published' => 1,
-                    'Post.created' => array('<=' => date('Y-m-d H:i:s'))
-                ),                    'order' => array('RAND()')));
+                    'Post.created' => ['<=' => date('Y-m-d H:i:s')]
+                ],                    'order' => ['RAND()']]);
                 foreach ($related as $relatedPost) {
                     if (isset($searchIds[$relatedPost->id])) {
                         $searchIds[$relatedPost->id] += 1;
@@ -214,7 +217,7 @@ class PostsController extends AppController
             }
             $top = array_keys(array_slice($searchIds, 0, 3, true));
             if ($top) {
-                $related = Post::all(array('conditions' => array('id' => $top)));
+                $related = Post::all(['conditions' => ['id' => $top]]);
             }
             if ($post->blog_ad_id != 0) {
                 function getFirstParagraph($string)
@@ -225,6 +228,15 @@ class PostsController extends AppController
                 $snippet = BlogAd::first($post->blog_ad_id);
                 $paragraph = getFirstParagraph($post->full);
                 $post->full = str_replace($paragraph, $paragraph . $snippet->text, $post->full);
+            }
+            $postNonBreakList = ['и', 'в', 'для', 'не', 'на', 'с', '&mdash;', 'по'];
+            foreach ($postNonBreakList as $word) {
+                $postNonBreakList[] = Post::mb_ucfirst($word);
+            }
+            foreach ($postNonBreakList as $word) {
+                $pattern = "(\s)($word)\s";
+                $post->full = preg_replace("/$pattern/im", '$1$2&nbsp;', $post->full);
+                $post->short = preg_replace("/$pattern/im", '$1$2&nbsp;', $post->short);
             }
             return compact('post', 'related');
         } else {

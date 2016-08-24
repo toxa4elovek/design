@@ -4,6 +4,7 @@ namespace app\models;
 
 use app\models\Pitch;
 use lithium\net\http\Service;
+use lithium\storage\session\adapter\Cookie;
 use \lithium\util\Validator;
 use \lithium\util\String;
 use \lithium\storage\Session;
@@ -51,7 +52,8 @@ class User extends AppModel
      *
      * @var array
      */
-    public static $admins = array(32, 4, 5, 108, 81, 8472, 47);
+    public static $admins = array(32, 4, 5, 108, 81, 47);
+    public static $adminNotifications = [32, 4, 5, 47, 108];
     public static $experts = array();
 
     /**
@@ -292,6 +294,18 @@ class User extends AppModel
         while ($exists == true) {
             $token = substr(md5(rand() . rand()), 0, $length);
             if (!self::first(array('conditions' => array('referal_token' => $token)))) {
+                $exists = false;
+            }
+        }
+        return $token;
+    }
+
+    public static function generateSubscriberReferalToken($length = 4)
+    {
+        $exists = true;
+        while ($exists == true) {
+            $token = substr(md5(rand() . rand()), 0, $length);
+            if (!self::first(array('conditions' => array('subscriber_referal_token' => $token)))) {
                 $exists = false;
             }
         }
@@ -611,7 +625,7 @@ class User extends AppModel
 
     public static function sendAdminNewAddon($addon)
     {
-        $users = self::all(array('conditions' => array('id' => User::$admins)));
+        $users = self::all(array('conditions' => array('id' => User::$adminNotifications)));
         $pitch = Pitch::first($addon->pitch_id);
         foreach ($users as $user) {
             $data = array('user' => $user, 'addon' => $addon, 'pitchName' => $pitch->title);
@@ -621,7 +635,7 @@ class User extends AppModel
 
     public static function sendAdminNewAddonBrief($addon)
     {
-        $users = self::all(array('conditions' => array('id' => User::$admins)));
+        $users = self::all(array('conditions' => array('id' => User::$adminNotifications)));
         $pitch = Pitch::first($addon->pitch_id);
         foreach ($users as $user) {
             $data = array('user' => $user, 'addon' => $addon, 'pitchName' => $pitch->title);
@@ -659,7 +673,7 @@ class User extends AppModel
             $text = 'Ваши макеты были одобрены, вы переходите на следующую стадию предоставления исходников.';
         }
         if ($step == 4) {
-            $text = 'Ваши исходники одобрены заказчиком, вы переходите на стадию выставления оценок. Деньги поступят вам на счетв течение 5 рабочих дней.';
+            $text = 'Ваши исходники одобрены заказчиком, вы переходите на стадию выставления оценок. Деньги поступят вам на счет течение 10 рабочих дней.';
         }
         $data = array('user' => $user, 'pitch' => $pitch, 'text' => $text, 'solution' => $solution);
         SpamMailer::winstep($data);
@@ -688,7 +702,7 @@ class User extends AppModel
 
     public static function sendAdminNotification($params)
     {
-        $admin = 'fedchenko@godesigner.ru';
+        $admin = 'm.elenevskaya@godesigner.ru';
         $pitch = Pitch::first($params['pitch_id']);
         $data = array('admin' => $admin, 'pitch' => $pitch, 'comment' => $params);
         SpamMailer::newadminnotification($data);
@@ -959,6 +973,12 @@ class User extends AppModel
         return $count;
     }
 
+    /**
+     * Метод отправки уведомлений о об окончании уведомлений о необходиомсти выбрать победителя
+     *
+     * @deprecated
+     * @return array
+     */
     public static function sendChooseWinnerSpam()
     {
         $pitches = Pitch::all(array('conditions' => array('status' => 1, 'awarded' => 0, 'multiwinner' => 0, 'blank' => 0, 'finishDate' => array('<' => date('Y-m-d H:i:s', time() - (4 * DAY))))));
@@ -1120,7 +1140,7 @@ class User extends AppModel
     public static function sendFinishReports($pitch)
     {
         $user = self::first($pitch->user_id);
-        $path = LITHIUM_APP_PATH . '/' . 'libraries' . '/' . 'MPDF54/MPDF54/tmp/';
+        $path = LITHIUM_APP_PATH . '/' . 'resources' . '/' . 'tmp/';
         $files = array();
         foreach (new DirectoryIterator($path) as $fileInfo) {
             if ($fileInfo->isDot() || !$fileInfo->isFile() || (false == strpos($fileInfo->getFilename(), $pitch->id))) {
@@ -1943,5 +1963,32 @@ class User extends AppModel
             return $data;
         }
         return null;
+    }
+
+    /**
+     * Метод определяет, является ли указанная строчка реальным реферальным кодом или нет
+     *
+     * @param $code
+     * @return bool
+     */
+    public static function isValidReferalCodeForSubscribers($code) {
+        if(((is_string($code)) || (is_numeric($code))) && (!empty($code))) {
+            return (bool) self::count(['conditions' => ['subscriber_referal_token' => (string) $code]]);
+        }
+        return false;
+    }
+
+    /**
+     * Метод устанавливает куки для отслеживания перехода по реферальной ссылке на год
+     *
+     * @param $code
+     * @return bool
+     */
+    public static function setReferalForSubscriberCookie($code) {
+        if(((is_string($code)) || (is_numeric($code))) && (!empty($code))) {
+            setcookie('sreftime', time(), strtotime('+1 year'), '/');
+            return setcookie('sref', $code, strtotime('+1 year'), '/');
+        }
+        return false;
     }
 }

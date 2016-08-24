@@ -11,9 +11,11 @@ use app\extensions\storage\Rcache;
 use OneSignal\Config;
 use OneSignal\OneSignal;
 
-class BestSolutionInTwitter extends CronJob {
+class BestSolutionInTwitter extends CronJob
+{
 
-    public function run() {
+    public function run()
+    {
         Rcache::init();
         $lastDay = time() - (DAY);
         $day = date('Y-m-d', $lastDay);
@@ -30,7 +32,7 @@ class BestSolutionInTwitter extends CronJob {
                     'order' => array('Solution.likes' => 'desc', 'Solution.views' => 'desc'),
                     'with' => array('Pitch')
         ));
-        if($solution) {
+        if ($solution) {
             $mediaManager = new SocialMediaManager;
             $id = $mediaManager->postBestSolutionMessage($solution, $lastDay);
             if ($id) {
@@ -61,8 +63,8 @@ class BestSolutionInTwitter extends CronJob {
                 $api = new OneSignal($config);
                 $api->notifications->add([
                     'contents' => [
-                        'en' => 'Самое популярное решение за' . date('d.m.Y', $lastDay),
-                        'ru' => 'Самое популярное решение за' . date('d.m.Y', $lastDay)
+                        'en' => 'Самое популярное решение за ' . date('d.m.Y', $lastDay),
+                        'ru' => 'Самое популярное решение за ' . date('d.m.Y', $lastDay)
                     ],
                     'headings' => [
                         'en' => $mediaManager->getProjectTitleForSocialNetwork($project),
@@ -74,8 +76,8 @@ class BestSolutionInTwitter extends CronJob {
                 ]);
                 $api->notifications->add([
                     'contents' => [
-                        'en' => 'Самое популярное решение за' . date('d.m.Y', $lastDay) ,
-                        'ru' => 'Самое популярное решение за' . date('d.m.Y', $lastDay)
+                        'en' => 'Самое популярное решение за ' . date('d.m.Y', $lastDay),
+                        'ru' => 'Самое популярное решение за ' . date('d.m.Y', $lastDay)
                     ],
                     'included_segments' => ['All'],
                     'url' => 'https://www.godesigner.ru/pitches/viewsolution/' . $solution->id,
@@ -88,5 +90,4 @@ class BestSolutionInTwitter extends CronJob {
             }
         }
     }
-
 }

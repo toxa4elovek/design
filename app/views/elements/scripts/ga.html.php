@@ -53,7 +53,7 @@
             'disabledOnMobile' => true
         ];
         $chatraIntegration = [];
-
+        $isDesigner = 0;
         if($this->user->isLoggedIn()):
             $chatraIntegration['name'] = $this->user->getFullname();
             $chatraIntegration['email'] = $this->user->getEmail();
@@ -65,22 +65,28 @@
             endif;
 
             $projectsArray = [];
-            foreach($this->user->getCurrentPitches() as $project):
-                if(($project->type == 'plan-payment') && ($project->billed == 1)):
-                    continue;
-                endif;
-                if(($project->blank == 1) && ($project->billed == 0)):
-                    continue;
-                endif;
-                if(($project->type == 'penalty') or ($project->type == 'fund-balance')):
-                    continue;
-                endif;
-                $projectsArray[] = "$project->title ($project->id)\n\r";
-            endforeach;
+            if($this->user->getCurrentPitches()):
+                foreach($this->user->getCurrentPitches() as $project):
+                    if(($project->type == 'plan-payment') && ($project->billed == 1)):
+                        continue;
+                    endif;
+                    if(($project->blank == 1) && ($project->billed == 0)):
+                        continue;
+                    endif;
+                    if(($project->type == 'penalty') or ($project->type == 'fund-balance')):
+                        continue;
+                    endif;
+                    $projectsArray[] = "$project->title ($project->id)\n\r";
+                endforeach;
+            endif;
             $projectsString = implode(' ', $projectsArray);
             $chatraIntegration['Проекты'] = $projectsString;
+            if(($this->user->isLoggedIn()) && ($this->user->read('user.isDesigner') || ($this->user->read('user.isCopy')))) {
+                $isDesigner = 1;
+            }
         ?>
     <?php endif?>
+    window.isDesigner = <?= $isDesigner?>;
     window.ChatraIntegration  = <?php echo json_encode($chatraIntegration);?>;
     window.ChatraSetup = <?php echo json_encode($chatraSetup);?>;
     ChatraID = 'c8KhbzjEvaNsKDeWD';
@@ -97,3 +103,4 @@
     })(document, window, 'Chatra');
 </script>
 <!-- /Chatra {/literal} -->
+<script type="text/javascript">(window.Image ? (new Image()) : document.createElement('img')).src = location.protocol + '//vk.com/rtrg?r=BycnZ*7at911xUrJSspJlXmFDG2UjWVzdkZxJYO1brLLyKPCLBHUV44b0Kwpbp30r4lbaTyb8FsZG*N7eqS0xiBx48Zkar0**T52jb2CyNZwXc7e29zkdpok0c*yD2Ardu9lxNb7dHaaGnay7O9r0HLRIU4/U39tisM5iAreJi4-';</script>

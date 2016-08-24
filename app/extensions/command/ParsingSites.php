@@ -155,10 +155,11 @@ class ParsingSites extends \app\extensions\command\CronJob
         $this->out('Finished parsing monsterchildren [' . (time() - $startTimeStamp) . ' sec]');
 
         self::ParsingWordpress('http://illusion.scene360.com/feed/');
-*/
+
         $this->out("Starting fixing tags");
         self::fixTags();
         $this->out('Finished fixing tags [' . (time() - $startTimeStamp) . ' sec]');
+        */
     }
 
     private function ParsingGodesigner()

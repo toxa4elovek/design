@@ -49,8 +49,12 @@
     заключительного этапа.</span>
         <span class="supplement">Со дня определения победителя у вас есть <?php
             $timelimit = $solution->pitch->category->default_timelimit;
-            if(($solution->pitch->category_id == 20) && ($timelimit < 5)) {
-                $timelimit = 5;
+            if($solution->pitch->category_id == 20) {
+                $diff = ceil((strtotime($solution->pitch->finishDate) - strtotime($solution->pitch->started)) / DAY);
+                $timelimit = $diff;
+                if($timelimit < 5) {
+                    $timelimit = 5;
+                }
             }
             echo $timelimit;
             ?> дней, чтобы доработать макеты <?php if($solution->pitch->category_id == 1):?>(3 поправки)<?php endif?> и исходники.

@@ -12,7 +12,7 @@ namespace app\models;
 class Receipt extends AppModel
 {
 
-    public static $dict = array(
+    public static $dict = [
         'award' => 'Награда Дизайнеру',
         'private' => 'Скрыть проект',
         'social' => 'Рекламный Кейс',
@@ -23,7 +23,7 @@ class Receipt extends AppModel
         'guaranteed' => 'Гарантированный проект',
         'fee' => 'Сбор GoDesigner',
         'discount' => 'Скидка'
-    );
+    ];
 
     public static $fee = FEE_LOW;
 
@@ -39,9 +39,9 @@ class Receipt extends AppModel
         if ($data['commonPitchData']['category_id'] == 7) {
             self::$dict['award'] = 'Награда копирайтеру';
         }
-        $receiptData = array();
+        $receiptData = [];
         $projectId = $data['commonPitchData']['id'];
-        $keys = array(
+        $keys = [
             'award',
             'private',
             'social',
@@ -51,7 +51,7 @@ class Receipt extends AppModel
             'brief',
             'discount',
             'guaranteed',
-        );
+        ];
         foreach ($keys as $key) {
             if (isset($data['features'][$key])) {
                 $value = $data['features'][$key];
@@ -62,21 +62,29 @@ class Receipt extends AppModel
                         $value += $expert->price;
                     }
                 }
-                $receiptData[] = array(
+                $receiptData[] = [
                     'pitch_id' => $projectId,
                     'name' => self::$dict[$key],
                     'value' => $value
-                );
+                ];
             }
         }
-        self::$fee = self::findOutFeeModifier($data);
-        $commission = self::__getCommissionWithEffectOfPromocodes($data);
-        $commission = self::__applyReferalDiscrountEffects($data, $commission);
-        $receiptData[] = array(
-            'pitch_id' => $projectId,
-            'name' => self::$dict['fee'] . ' ' . str_replace('.', ',', self::$fee * 100 . '%'),
-            'value' => $commission
-        );
+        if ($data['commonPitchData']['category_id'] != 20) {
+            self::$fee = self::findOutFeeModifier($data);
+            $commission = self::__getCommissionWithEffectOfPromocodes($data);
+            $commission = self::__applyReferalDiscrountEffects($data, $commission);
+            $receiptData[] = [
+                'pitch_id' => $projectId,
+                'name' => self::$dict['fee'] . ' ' . str_replace('.', ',', self::$fee * 100 . '%'),
+                'value' => $commission
+            ];
+        } else {
+            $receiptData[] = [
+                'pitch_id' => $projectId,
+                'name' => self::$dict['fee'] . ' 0%',
+                'value' => 0
+            ];
+        }
         self::updateOrCreateReceiptForProject($projectId, $receiptData);
         return (int) $projectId;
     }
@@ -104,8 +112,11 @@ class Receipt extends AppModel
      */
     private static function __getCommissionWithEffectOfPromocodes($data)
     {
+        if (!isset($data['commonPitchData']['id'])) {
+            $data['commonPitchData']['id'] = null;
+        }
         $commission = round($data['features']['award'] * self::$fee);
-        if (isset($data['commonPitchData']['promocode']) && ($promocode = Promocode::checkPromocode($data['commonPitchData']['promocode'])) && ($promocode != 'false')) {
+        if (isset($data['commonPitchData']['promocode']) && ($promocode = Promocode::checkPromocode($data['commonPitchData']['promocode'], $data['commonPitchData']['id'])) && ($promocode != 'false')) {
             $commission = self::__processPromocodes($promocode, $commission, $data['features']['award']);
         }
         return $commission;
@@ -145,7 +156,7 @@ class Receipt extends AppModel
      */
     public static function fetchReceipt($projectId)
     {
-        return self::all(array('conditions' => array('pitch_id' => $projectId)));
+        return self::all(['conditions' => ['pitch_id' => $projectId]]);
     }
 
     /**
@@ -213,11 +224,11 @@ class Receipt extends AppModel
     {
         if (is_array($data)) {
             foreach ($data as $row) {
-                $data = array(
+                $data = [
                     'pitch_id' => $projectId,
                     'name' => $row['name'],
                     'value' => $row['value']
-                );
+                ];
                 $row = self::create($data);
                 $row->save();
             }
@@ -236,16 +247,16 @@ class Receipt extends AppModel
     public static function updateOrCreateReceiptForProject($projectId, $data)
     {
         if (is_array($data)) {
-            $existingRows = self::all(array('conditions' => array(
+            $existingRows = self::all(['conditions' => [
                 'pitch_id' => $projectId
-            )));
+            ]]);
             $existingRows->delete();
             foreach ($data as $row) {
-                $rowData = array(
+                $rowData = [
                     'pitch_id' => $projectId,
                     'name' => $row['name'],
                     'value' => $row['value']
-                );
+                ];
                 $row = self::create($rowData);
                 $row->save();
             }
@@ -262,12 +273,12 @@ class Receipt extends AppModel
      */
     public static function exportToArray($projectId)
     {
-        $receiptRows = self::all(array('conditions' => array(
+        $receiptRows = self::all(['conditions' => [
             'pitch_id' => $projectId
-        )));
-        $array = array();
+        ]]);
+        $array = [];
         foreach ($receiptRows as $row) {
-            $array[] = array('name' => $row->name, 'value' => (int) $row->value);
+            $array[] = ['name' => $row->name, 'value' => (int) $row->value];
         }
         return $array;
     }
@@ -335,10 +346,10 @@ class Receipt extends AppModel
      */
     public static function getCommissionForProject($projectId)
     {
-        $record = self::first(array('conditions' => array(
+        $record = self::first(['conditions' => [
             'pitch_id' => (int) $projectId,
-            'name' => array('LIKE' => 'Сбор GoDesigner%')
-        )));
+            'name' => ['LIKE' => 'Сбор GoDesigner%']
+        ]]);
         return (int) $record->value;
     }
 
@@ -352,7 +363,7 @@ class Receipt extends AppModel
      */
     public static function addRow($array, $name, $value)
     {
-        $array[] = array('name' => $name, 'value' => $value);
+        $array[] = ['name' => $name, 'value' => $value];
         return $array;
     }
 

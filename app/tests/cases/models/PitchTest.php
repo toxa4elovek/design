@@ -3,6 +3,7 @@
 namespace app\tests\cases\models;
 
 use app\extensions\tests\AppUnit;
+use app\models\Category;
 use app\models\Pitch;
 use lithium\storage\Session;
 use app\models\Grade;
@@ -14,16 +15,19 @@ use app\models\User;
 use app\extensions\storage\Rcache;
 use app\extensions\helper\NameInflector;
 
-class PitchTest extends AppUnit {
+class PitchTest extends AppUnit
+{
 
-    public function setUp() {
+    public function setUp()
+    {
         Rcache::init();
-        $this->rollUp(array('Pitch', 'User','Solution','Comment','Transaction','Paymaster','Payanyway', 'Note', 'Grade', 'Category', 'Expert', 'Wincomment'));
+        $this->rollUp(array('Pitch', 'User', 'Solution', 'Comment', 'Transaction', 'Paymaster', 'Payanyway', 'Note', 'Grade', 'Category', 'Expert', 'Wincomment'));
     }
 
-    public function tearDown() {
+    public function tearDown()
+    {
         Rcache::flushdb();
-        $this->rollDown(array('Pitch', 'User','Solution','Comment','Transaction','Paymaster','Payanyway', 'Note', 'Grade', 'Category', 'Expert', 'Wincomment'));
+        $this->rollDown(array('Pitch', 'User', 'Solution', 'Comment', 'Transaction', 'Paymaster', 'Payanyway', 'Note', 'Grade', 'Category', 'Expert', 'Wincomment'));
         Session::clear();
     }
 /*
@@ -318,7 +322,7 @@ class PitchTest extends AppUnit {
                     $this->assertEqual(0,$pitch->multiwinner);
                 }
             }*/
-
+/*
             public function testCreateNewWinner() {
                 $this->assertFalse(Pitch::createNewWinner(0));
                 $this->assertTrue(Pitch::createNewWinner(2));
@@ -759,6 +763,129 @@ class PitchTest extends AppUnit {
         $penalty = Pitch::first($penaltyId);
         $this->assertEqual(1, $penalty->billed);
         $this->assertEqual(2, $penalty->status);
+    }
+*/
+    public function testGetDaysForWinnerSelection()
+    {
+        $days = Pitch::getDaysForWinnerSelection(1);
+        $this->assertEqual(4, $days);
+
+        $project = Pitch::first(1);
+        $project->category_id = 20;
+        $finishDate = '2016-01-01 00:00:00';
+        $endOfWinnerSelection = '2016-01-11 00:00:00';
+        $project->finishDate = $finishDate;
+        $project->chooseWinnerFinishDate = $endOfWinnerSelection;
+        $project->save();
+        $days = Pitch::getDaysForWinnerSelection(1);
+        $this->assertEqual(10, $days);
+
+        $project = Pitch::first(1);
+        $project->category_id = 20;
+        $finishDate = '2016-01-01 00:00:00';
+        $endOfWinnerSelection = '2016-01-16 00:00:00';
+        $project->finishDate = $finishDate;
+        $project->chooseWinnerFinishDate = $endOfWinnerSelection;
+        $project->save();
+        $days = Pitch::getDaysForWinnerSelection(1);
+        $this->assertEqual(15, $days);
+    }
+
+    public function testGetEndOfWinnerSelectionDateTime()
+    {
+        // Проверяем обычный проект
+        $project = Pitch::first(1);
+        $finishDate = '2016-01-01 00:00:00';
+        $project->finishDate = $finishDate;
+        $project->category_id = 1;
+        $project->save();
+
+        $project = Pitch::first(1);
+        $expected = new \DateTime('2016-01-05 00:00:00');
+        $result = $project->getEndOfWinnerSelectionDateTime();
+        $this->assertTrue(is_object($result));
+        $this->assertTrue($result instanceof \DateTime);
+        $this->assertEqual($result->format('Y-m-d H:i:s'), $expected->format('Y-m-d H:i:s'));
+
+        // Проверяем абонентский проект
+        $project = Pitch::first(1);
+        $finishDate = '2016-01-01 00:00:00';
+        $endOfWinnerSelection = '2016-01-20 00:00:00';
+        $project->finishDate = $finishDate;
+        $project->chooseWinnerFinishDate = $endOfWinnerSelection;
+        $project->category_id = 20;
+        $project->save();
+
+        $project = Pitch::first(1);
+        $expected = new \DateTime('2016-01-20 00:00:00');
+        $result = $project->getEndOfWinnerSelectionDateTime();
+        $this->assertTrue(is_object($result));
+        $this->assertTrue($result instanceof \DateTime);
+        $this->assertEqual($result->format('Y-m-d H:i:s'), $expected->format('Y-m-d H:i:s'));
+    }
+
+    public function testIsOkToSendSmsForFinishWinnerSelectionWarning()
+    {
+        $project = Pitch::first(1);
+        $finishDate = '2016-01-01 12:00:00';
+        $project->finishDate = $finishDate;
+        $project->save();
+        $this->assertTrue($project->isOkToSendSmsForFinishWinnerSelectionWarning());
+
+        $finishDate = '2016-01-01 15:00:00';
+        $project->finishDate = $finishDate;
+        $project->save();
+        $this->assertTrue($project->isOkToSendSmsForFinishWinnerSelectionWarning());
+
+        $finishDate = '2016-01-01 02:00:00';
+        $project->finishDate = $finishDate;
+        $project->save();
+        $this->assertTrue($project->isOkToSendSmsForFinishWinnerSelectionWarning());
+
+        $finishDate = '2016-01-01 05:00:00';
+        $project->finishDate = $finishDate;
+        $project->save();
+        $this->assertFalse($project->isOkToSendSmsForFinishWinnerSelectionWarning());
+
+        $finishDate = '2016-01-01 07:00:00';
+        $project->finishDate = $finishDate;
+        $project->save();
+        $this->assertFalse($project->isOkToSendSmsForFinishWinnerSelectionWarning());
+
+        $finishDate = '2016-01-01 10:00:00';
+        $project->finishDate = $finishDate;
+        $project->save();
+        $this->assertFalse($project->isOkToSendSmsForFinishWinnerSelectionWarning());
+    }
+
+    public function testGetMinimalAwardForCategoryForDate() {
+        $result = Pitch::getMinimalAwardForCategoryForDate(1, new \DateTime('2016-07-12 12:00:00'));
+        $this->assertEqual((int) Category::first(1)->minAward, $result);
+
+        $result = Pitch::getMinimalAwardForCategoryForDate(3, new \DateTime('2016-07-12 12:00:00'));
+        $this->assertEqual((int) Category::first(3)->minAward, $result);
+
+        $result = Pitch::getMinimalAwardForCategoryForDate(1, new \DateTime('2016-07-09 12:00:00'));
+        $this->assertEqual((int) Category::first(1)->discountPrice, $result);
+
+        $result = Pitch::getMinimalAwardForCategoryForDate(3, new \DateTime('2016-07-10 12:00:00'));
+        $this->assertEqual((int) Category::first(3)->discountPrice, $result);
+    }
+
+    public function testIsAwardValidForDate() {
+        $project = Pitch::first(1);
+        $this->assertFalse($project->isAwardValidForDate(new \DateTime('2016-07-12 12:00:00')));
+        $project->price = 10000;
+        $project->save();
+        $this->assertTrue($project->isAwardValidForDate(new \DateTime('2016-07-12 12:00:00')));
+
+        $project = Pitch::first(1);
+        $project->price = 6000;
+        $project->save();
+        $this->assertTrue($project->isAwardValidForDate(new \DateTime('2016-07-10 09:00:00')));
+        $project->price = 10000;
+        $project->save();
+        $this->assertTrue($project->isAwardValidForDate(new \DateTime('2016-07-12 12:00:00')));
     }
 
 }

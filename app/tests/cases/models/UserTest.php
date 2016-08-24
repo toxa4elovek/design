@@ -16,12 +16,14 @@ class UserTest extends AppUnit
     {
         Rcache::init();
         $this->rollUp($this->models);
+        unset($_COOKIE['sref']);
     }
 
     public function tearDown()
     {
         Rcache::flushdb();
         $this->rollDown($this->models);
+        //unset($_COOKIE['sref']);
     }
 /*
     public function testGetAuthorsIds() {
@@ -416,5 +418,26 @@ class UserTest extends AppUnit
         $this->assertEqual(1, $count);
         $count = User::getPitchCount(2);
         $this->assertEqual(11, $count);
+    }
+
+    public function testIsValidReferalCodeForSubscribers() {
+        $this->assertFalse(User::isValidReferalCodeForSubscribers('213121'));
+        $this->assertFalse(User::isValidReferalCodeForSubscribers(false));
+        $this->assertFalse(User::isValidReferalCodeForSubscribers([]));
+        $this->assertFalse(User::isValidReferalCodeForSubscribers(null));
+        $this->assertFalse(User::isValidReferalCodeForSubscribers(new \stdClass()));
+        $this->assertTrue(User::isValidReferalCodeForSubscribers('fl18f'));
+    }
+
+    public function testSetReferalForSubscriberCookie() {
+        $this->assertNoCookie(['key' => 'sref', 'value' => 'fl18f']);
+        $this->assertFalse(isset($_COOKIE['sref']));
+        $this->assertTrue(User::setReferalForSubscriberCookie('fl18f'));
+        /**
+         * @TODO - настроить проверку кукисов
+         */
+        //$this->assertCookie(['key' => 'sref', 'value' => 'fl18f']);
+        //$this->assertTrue(isset($_COOKIE['sref']));
+
     }
 }

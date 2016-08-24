@@ -24,11 +24,12 @@
                 <?php if(($solution->pitch->blank == 1) && ($type == 'designer')  &&  ($solution->pitch->confirmed == 0)):?>
                     <div class="regular" style="text-align: center;">
                         Та-дам! Посетитель платформы предлагает выкупить ваше решение <a style="text-decoration: none;color: #6990a0;" href="https://www.godesigner.ru/pitches/viewsolution/<?= $solution->id?>">#<?= $solution->num?></a> для<br> проекта <a style="text-decoration: none;color: #6990a0;" href="https://www.godesigner.ru/pitches/view/<?=$solution->pitch->id?>">«<?= $solution->pitch->title?>»</a> в рамках <a style="text-decoration: none;color: #6990a0;" href="https://www.godesigner.ru/logosale">распродажи логотипов</a>,
-                        а мы поздравляем<br> вас с возможностью заработать 6000р. В случае отказа, мы вернем ему деньги.<br> На подтверждение запроса у вас есть:
+                        а мы поздравляем<br> вас с возможностью заработать 6000р. В случае отказа, мы вернем ему деньги.<br> На подтверждение* запроса у вас есть:
                     </div>
                     <h3 style="font-size: 20px; color: #60879c; text-align: center; margin-top: 40px;" class="countdown" data-deadline="<?=(strtotime($solution->pitch->started)) + 3 * DAY;?>"><?php echo ($interval = $this->pitch->confirmationTimeRemain($solution->pitch)) ? $interval->format('%d дн. %H:%I:%S') : ''; ?></h3>
                     <a href="/pitches/accept/<?=$solution->pitch->id?>" style="margin-left: auto; margin-right: auto; width: 220px;display: block; margin-top: 32px" class="button">Подтвердить</a>
                     <a href="/pitches/decline/<?=$solution->pitch->id?>" data-title="<?=$solution->pitch->title?>" data-solutionid="<?=$solution->pitch->awarded?>" data-solutionnum="<?=$solution->num?>" data-pitchid="<?=$solution->pitch->id?>" class="popup-decline" style="text-shadow: -1px 0 0 #FFFFFF; margin-left: auto; margin-right: auto; width: 220px;display: block; margin-top: 9px; color: #666666; font-size: 14px; text-align: center; text-decoration: underline;">Отказать</a>
+                    <p class="regular" style="margin-top: 40px;">Подтверждение означает согласие на доработку макетов: вы обязуетесь внести в исходный макет 3 правки, включая адаптацию названия</p>
                 <?php else: ?>
                 <?php if ($solution->pitch->category_id == 7):?>
                     <?php if($type == 'designer'):?>
@@ -55,7 +56,7 @@
 
                 <div class="comment" style="margin-left:0px;">
                     <h4>Комментарии</h4>
-                    <?php if(($solution->step < 3) && ($solution->pitch->status < 2)):?>
+                    <?php if(($solution->pitch->category_id == 7) && ($solution->step >= 0) || ($solution->pitch->category_id != 7 && ($solution->step < 3) && ($solution->pitch->status < 2))):?>
                     <form id="wincomment" method="post" action="/users/step2/<?=$solution->id?>.json" enctype="multipart/form-data">
                         <textarea id="newComment" data-user-autosuggest="true" name="text" style="margin:10px 0 0 0;">@<?=$this->user->getFormattedName($messageTo->first_name, $messageTo->last_name); ?>,</textarea>
                         <div></div>
@@ -148,12 +149,22 @@
                         <div class="toolbar">
                         <?php if ($this->user->isAdmin()):?>
                             <a class="delete-link-in-comment" style="float:right;" href="/wincomments/delete/<?=$comment->id?>?step=2">Удалить</a>
-                            <a href="#" style="float:right;" class="edit-link-in-comment" data-id="<?=$comment->id?>" data-text="<?=htmlentities($comment->originalText, ENT_COMPAT, 'utf-8')?>">Редактировать</a>
+                            <?php
+                            $originalText = $comment->originalText;
+                            $originalText = strip_tags($originalText, '<a>');
+                            $originalText = htmlentities($originalText, ENT_COMPAT, 'utf-8');
+                            ?>
+                            <a href="#" style="float:right;" data-user-admin="true" class="edit-link-in-comment" data-id="<?=$comment->id?>" data-text="<?=$originalText?>">Редактировать</a>
                         <?php else: ?>
                             <?php if (($solution->step <= 2) && ($solution->pitch->status < 2)):?>
                                 <?php if($this->user->isCommentAuthor($comment->user_id)):?>
                                     <a class="delete-link-in-comment" style="float:right;" href="/wincomments/delete/<?=$comment->id?>?step=2">Удалить</a>
-                                    <a href="#" style="float:right;" class="edit-link-in-comment" data-id="<?=$comment->id?>" data-text="<?=htmlentities($comment->originalText, ENT_COMPAT, 'utf-8')?>">Редактировать</a>
+                                    <?php
+                                    $originalText = $comment->originalText;
+                                    $originalText = strip_tags($originalText, '<a>');
+                                    $originalText = htmlentities($originalText, ENT_COMPAT, 'utf-8');
+                                    ?>
+                                    <a href="#" style="float:right;" class="edit-link-in-comment" data-id="<?=$comment->id?>" data-text="<?=$originalText?>">Редактировать</a>
                                 <?php endif; ?>
 
                                 <?php if(($this->user->isLoggedIn()) && ((!$this->user->isCommentAuthor($comment->user_id)))):?>

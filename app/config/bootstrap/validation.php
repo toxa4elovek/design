@@ -8,11 +8,7 @@ use \lithium\storage\Session;
 */
 Validator::add('userUniqueEmail', function($value) {
 	if($user = User::find('first', array('conditions' => array('email' => $value)))) {
-		//if() {
-			
-		//}else {
-			return false;	
-		//}
+        return false;
 	}else {
 		return true;
 	}

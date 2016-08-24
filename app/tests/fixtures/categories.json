@@ -1,5 +1,5 @@
 [
-    {"id": 1, "title": "Test title", "minAward": 9800, "normalAward": 18600, "goodAward": 30800},
-    {"id": 3, "title": "Test title 2", "minAward": 11800, "normalAward": 23600, "goodAward": 35400},
+    {"id": 1, "title": "Test title", "minAward": 9800, "normalAward": 18600, "goodAward": 30800, "discountPrice": 5000},
+    {"id": 3, "title": "Test title 2", "minAward": 11800, "normalAward": 23600, "goodAward": 35400, "discountPrice": 6000},
     {"id": 7, "title": "Test title 3", "minAward": 7000, "normalAward": 14000, "goodAward": 21000}
 ]
