@@ -104,4 +104,4 @@
 
 </div><!-- .wrapper -->
 <?=$this->html->script(array('/js/fotorama/jquery-1.8.0.min.js','/js/fotorama/jquery.validate.min.js','/js/fotorama/jquery.countdown.min.js', 'jquery.timeago', '/js/fotorama/fotorama.js', 'social-likes.min.js', 'posts/view'), array('inline' => false))?>
-<?=$this->html->style(array('/js/fotorama/fotorama.css', '/help', '/blog', 'disqus', '/css/social-likes_flat'), array('inline' => false))?>
+<?=$this->html->style(array('/js/fotorama/fotorama.css', '/help', '/blog', '/css/common/buttons.css', '/css/posts/view.css', 'disqus', '/css/social-likes_flat'), array('inline' => false))?>

@@ -130,18 +130,3 @@ a.more-editor:hover {
 .blogtaglink:hover {
     text-decoration: underline
 }
-a.buy-solution {
-	position: absolute;
-    top: 23px;
-    right: 17px;
-	width: 171px;
-	height: 48px !important;
-	line-height: 48px !important;
-	background-color: #fbfbfb;
-	background-image: linear-gradient(to top, #537587 0%, #658fa5 100%);
-	border: 4px solid #eaeaea;
-	color: #fbfbfb;
-	font-family: Arial;
-	font-size: 13px;
-	font-weight: 700;
-}
