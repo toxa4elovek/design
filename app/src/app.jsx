@@ -827,14 +827,14 @@ function warningModal () {
 /*
  * Fetch Comments data from response. Hierarchial
  */
-function fetchCommentsNew (result) {
+function fetchCommentsNew (result, popup) {
   var fetchedComments = ''
   $.each(result.comments, function (idx, comment) {
     var commentData = prepareCommentData(comment, result)
-    fetchedComments += populateComment(commentData)
+    fetchedComments += populateComment(commentData, popup)
     if (comment.child) {
       var commentChildData = prepareCommentData(comment.child, result)
-      fetchedComments += populateComment(commentChildData)
+      fetchedComments += populateComment(commentChildData, popup)
     }
   })
   return fetchedComments
@@ -908,7 +908,7 @@ function prepareCommentData (comment, result) {
 /*
  * Populate each comment layout
  */
-function populateComment (data) {
+function populateComment (data, popup) {
   var toolbar = ''
   var manageToolbar = '<a href="/comments/delete/' + data.commentId + '" style="float:right;" class="delete-link-in-comment ajax">Удалить</a> \
                         <a href="#" style="float:right;" class="edit-link-in-comment" data-id="' + data.commentId + '" data-text="' + data.commentPlainText + '">Редактировать</a>'
@@ -952,6 +952,11 @@ function populateComment (data) {
     var commentTitle = 'Этот комментарий виден всем'
     var commentImage = 'public-comment-eye.png'
   }
+  let rightStyle = '0'
+  if((typeof(popup) !== undefined) && (popup === true)) {
+    rightStyle = '-38px'
+  }
+
   return '<section class="' + sectionClass + '" data-id="' + data.commentId + '" data-type="' + data.commentType + '"> \
                 <div class="separator"></div> \
                 <div class="' + data.messageInfo + '">'
@@ -964,7 +969,7 @@ function populateComment (data) {
                 </div> \
                 <div data-id="' + data.commentId + '" class="message_text' + data.publicClass + '"> \
                     <a href="#" class="tooltip_comments" title="' + commentTitle + '" style="position: absolute; \
-    top: 0;right: 0;"><img src="/img/' + commentImage + '" alt="' + commentTitle + '"></a><span class="regular comment-container">'
+    top: 0;right: ' + rightStyle + ';"><img src="/img/' + commentImage + '" alt="' + commentTitle + '"></a><span class="regular comment-container">'
   + data.commentText +
   '</span> \
         </div> \
@@ -1214,7 +1219,7 @@ function enableToolbar () {
         var commentData = preparePitchCommentData(result)
         // ViewSolution or Popup
         if ($('.solution-comments').length > 0) {
-          $('.solution-comments').prepend(populateComment(commentData))
+          $('.solution-comments').prepend(populateComment(commentData, true))
           if (result.result.solution_num) {
             textarea.val('#' + result.result.solution_num + ', ')
           } else {

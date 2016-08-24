@@ -641,7 +641,7 @@ $(document).ready(function () {
       solutionId = result.solution.id
 
       if (result.comments) {
-        $('.solution-comments').html(fetchCommentsNew(result))
+        $('.solution-comments').html(fetchCommentsNew(result, true))
         solutionTooltip()
       }
 
