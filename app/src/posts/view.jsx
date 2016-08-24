@@ -33,9 +33,9 @@ $(document).ready(function () {
       response.data.forEach(function (solution) {
         if (solution.ready === true) {
           let imageContainer = $(`a[data-solution-id=${solution.id}]`)
+          imageContainer[0].className += ' logosale-container'
           let url = `https://www.godesigner.ru/pitches/viewsolution/${solution.id}`
-          imageContainer.css({'position': 'relative'})
-          imageContainer.append(`<a href="${url}" class="buy-solution button">Купить лого за 9500 руб.</a>`)
+          imageContainer.append(`<a href="${url}" class="buy-solution clean-style-button">Купить лого за 9500 руб.</a>`)
         }
       })
     }
