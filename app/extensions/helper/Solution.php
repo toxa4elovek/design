@@ -51,7 +51,7 @@ class Solution extends \lithium\template\Helper
     public function renderImageUrlRights($solution, $size, $project, $index=0)
     {
         $user = new UserHelper([]);
-        if (((int) $project->category === 7) || ((int) $project->category_id === 20 && $project->isSubscriberProjectForCopyrighting())) {
+        if (((int) $project->category_id === 7) || ((int) $project->category_id === 20 && $project->isSubscriberProjectForCopyrighting())) {
             if ($user->isPitchOwner($project->user_id) || $user->isManagerOfProject($project->id) || $user->isExpert() || $user->isAdmin() || $user->isSolutionAuthor($solution->user_id)) {
                 if (mb_strlen(trim($solution->description)) > 100) {
                     $description = mb_substr(trim($solution->description), 0, 100, 'UTF-8');

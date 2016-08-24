@@ -1777,10 +1777,10 @@ function addAnswerComment (button) {
 function hideSolutionPopup () {
   if ($('.solution-overlay').is(':visible')) {
     window.history.pushState('object or string', 'Title', '/pitches/view/' + pitchNumber); // @todo Check params
-    $(window).scrollTop(beforeScrollTop)
     $('#pitch-panel').show()
     $('.wrapper', 'body').first().removeClass('wrapper-frozen')
     $('.solution-overlay').hide().remove()
+    $(window).scrollTop(beforeScrollTop)
   }
 }
 

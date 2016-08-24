@@ -26,6 +26,10 @@ class PromocodesController extends AppController
      */
     public function check()
     {
-        return Promocode::checkPromocode($this->request->data['code']);
+        $projectId = null;
+        if (isset($this->request->data['id'])) {
+            $projectId = (int) $this->request->data['id'];
+        }
+        return Promocode::checkPromocode($this->request->data['code'], $projectId);
     }
 }

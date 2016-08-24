@@ -1,0 +1,751 @@
+.lp-golden-fish {
+  position: relative;
+  top: -7px;
+  background: #fff;
+}
+
+.lp-golden-fish header {
+  background: url(/img/pages/golden-fish/header-bg.jpg) no-repeat;
+  background-size: cover;
+  height: 575px;
+  margin: 0 auto;
+  display: block;
+  padding-top: 87px;
+  position: relative;
+}
+
+.lp-golden-fish .text {
+  margin: 0 auto 58px;
+  background: url(/img/pages/golden-fish/header-lines.png) no-repeat 0 16px;
+  width: 390px;
+  height: 53px;
+}
+
+.lp-golden-fish header h1 {
+  text-align: center;
+  width: 390px;
+  height: 53px;
+  color: white;
+  font-family: 'RodeoC', serif;
+  font-weight: 700;
+  font-size: 41px;
+  line-height: 37px;
+  text-transform: uppercase;
+  margin: 0 auto;
+  display: block;
+}
+
+.lp-golden-fish header h3 {
+  text-align: center;
+  width: 390px;
+  color: white;
+  font-family: 'RodeoC', serif;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 30px;
+  margin: 0 auto;
+  display: block;
+}
+
+.lp-golden-fish header p {
+  width: 683px;
+  height: 78px;
+  color: white;
+  font-family: 'OfficinaSansC Book', serif;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 29px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.lp-golden-fish header .buttons {
+  margin: 56px auto 58px;
+  width: 438px;
+  height: 41px;
+}
+
+.yellow-button {
+  float: left;
+  width: 144px;
+  display: block;
+  height: 41px;
+  padding: 0 11px;
+  background-color: #f3f3f3;
+  background-image: linear-gradient(to top, #e4b02b 0%, #f5db34 100%);
+  color: #353946;
+  font-family: Arial;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 41px;
+  text-transform: uppercase;
+}
+
+.yellow-button:hover,
+.yellow-button:active {
+  color: #353946;
+  background-image: linear-gradient(180deg, #e4b02b 0%, #f5db34 100%);
+}
+
+.empty-button {
+  float: right;
+  width: 142px;
+  display: block;
+  height: 38px;
+  padding: 0 11px;
+  border: 1px solid white !important;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+  color: white;
+  font-family: Arial;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 38px;
+  text-transform: uppercase;
+}
+
+.empty-button:hover,
+.empty-button:active {
+  color: #353946;
+  background-color: white;
+  border: 1px solid white;
+}
+
+.wave {
+  background: url(/img/pages/golden-fish/wave.png) no-repeat;
+  background-size: cover;
+  height: 147px;
+  margin-top: 144px;
+}
+
+.lp-advantages {
+  background-color: white;
+  padding-top: 76px;
+}
+
+.lp-advantages .header-advantages {
+  padding-top: 49px;
+  color: #353946;
+  font-family: 'RodeoC', serif;
+  font-weight: 700;
+  text-align: center;
+  width: 550px;
+  height: 67px;
+  margin: 0 auto 57px;
+  background: url(/img/pages/golden-fish/star-with-lines.png) no-repeat center 0;
+}
+
+.lp-advantages .header-advantages h3 {
+  font-size: 20px;
+  line-height: 30px;
+}
+
+.lp-advantages .header-advantages h1 {
+  font-size: 41px;
+  line-height: 37px;
+  text-transform: uppercase;
+}
+
+.lp-advantages .advantage-list {
+  width: 1138px;
+  height: 239px;
+  margin: 0 auto 90px;
+}
+
+.lp-advantages .advantage-list li {
+  float: left;
+  color: #52586b;
+  font-family: 'OfficinaSansC Book', serif;
+  font-size: 18px;
+  font-style: italic;
+  text-align: center;
+  line-height: 24px;
+}
+
+.lp-advantages .advantage-list li strong {
+  display: block;
+  color: #353946;
+  font-family: 'OfficinaSansC Bold', serif;
+  font-size: 20px;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 30px;
+  margin-bottom: 10px;
+}
+
+.lp-advantages .advantage-list li img {
+  display: block;
+  margin: 0 auto 19px;
+}
+
+.lp-advantages .advantage-list li.time-place {
+  width: 254px;
+  height: 212px;
+  margin-right: 63px;
+}
+
+.lp-advantages .advantage-list li.ideas {
+  width: 209px;
+  height: 212px;
+  margin-right: 71px;
+}
+
+.lp-advantages .advantage-list li.profit {
+  width: 233px;
+  height: 212px;
+  margin-right: 37px;
+}
+
+.lp-advantages .advantage-list li.guarantee {
+  width: 268px;
+  height: 212px;
+}
+
+.lp-how-to-profit {
+  height: 418px;
+  background-color: #f8f8f8;
+  padding-top: 81px;
+}
+
+.lp-how-to-profit .header-profit {
+  margin: 0 auto 21px;
+  width: 852px;
+}
+
+.lp-how-to-profit h2 {
+  color: #353946;
+  font-family: 'RodeoC', serif;
+  text-align: center;
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 30px;
+  text-transform: uppercase;
+  margin-bottom: 87px;
+}
+
+.lp-how-to-profit ul {
+  width: 1226px;
+  height: 239px;
+  margin: 0 auto 90px;
+}
+
+.lp-how-to-profit li {
+  float: left;
+  color: #52586b;
+  font-family: 'OfficinaSansC Book', serif;
+  font-size: 18px;
+  font-style: italic;
+  text-align: center;
+  line-height: 24px;
+}
+
+.lp-how-to-profit li strong {
+  display: block;
+  color: #353946;
+  font-family: 'OfficinaSansC Bold', serif;
+  font-size: 20px;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 30px;
+  margin-bottom: 10px;
+}
+
+.lp-how-to-profit li.publish {
+  width: 334px;
+  height: 105px;
+  margin-right: 60px;
+  margin-left: 69px;
+}
+
+.lp-how-to-profit li.choose {
+  width: 332px;
+  height: 128px;
+  margin-right: 50px;
+}
+
+.lp-how-to-profit li.sell {
+  width: 354px;
+  height: 80px;
+}
+
+.lp-agency {
+  height: 392px;
+  padding-top: 66px;
+  background: url(/img/pages/golden-fish/agency-bg.png) no-repeat;
+  background-size: cover;
+}
+
+.lp-agency .content img {
+  position: absolute;
+  top: -20px;
+  right: 30px;
+}
+
+.lp-agency .content {
+  width: 1200px;
+  margin: 0 auto;
+  text-align: left;
+  position: relative;
+}
+
+.lp-agency h2 {
+  height: 150px;
+  color: #353946;
+  font-family: 'RodeoC', serif;
+  font-size: 41px;
+  font-weight: 700;
+  line-height: 41px;
+  background: url(/img/pages/golden-fish/black-line.png) no-repeat 0 146px;
+}
+
+.lp-agency p {
+  width: 524px;
+  height: 49px;
+  color: #353946;
+  font-family: 'OfficinaSansC Book', serif;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 29px;
+  margin-top: 31px;
+}
+
+.call-to-action h1 {
+  color: #353946;
+  font-family: 'OfficinaSansC Book', serif;
+  font-weight: 400;
+  line-height: 44px;
+  font-size: 55px;
+}
+
+.call-to-action h3 {
+  color: #353946;
+  font-size: 20px;
+  font-family: 'OfficinaSansC Bold', serif;
+  font-weight: 400;
+  line-height: 44px;
+  margin-bottom: -10px;
+}
+
+.call-to-action {
+  margin-top: 40px;
+}
+
+.price {
+  width: 230px;
+  height: 55px;
+  float: left;
+}
+
+.press-button {
+  float: left;
+}
+
+.press-button .yellow-button {
+  margin-top: 32px;
+}
+
+.lp-you-get {
+  margin-top: 82px;
+  height: 390px;
+}
+
+.lp-you-get .header-youget {
+  padding-top: 49px;
+  color: #353946;
+  font-family: 'RodeoC', serif;
+  font-weight: 700;
+  text-align: center;
+  width: 550px;
+  height: 67px;
+  margin: 0 auto 57px;
+  background: url(/img/pages/golden-fish/star-with-lines.png) no-repeat center 0;
+}
+
+.lp-you-get .header-youget h3 {
+  font-size: 24px;
+  line-height: 30px;
+}
+
+.lp-you-get .header-youget h1 {
+  font-size: 41px;
+  line-height: 37px;
+  text-transform: uppercase;
+}
+
+.lp-you-get ul {
+  width: 1134px;
+  margin: 0 auto;
+}
+
+.lp-you-get li {
+  float: left;
+  height: 48px;
+  width: 278px;
+  padding-left: 66px;
+  color: #353946;
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 26px;
+  font-family: 'OfficinaSansC Book', serif;
+  margin-bottom: 44px;
+  margin-right: 48px;
+}
+
+.lp-you-get li strong {
+  font-family: 'OfficinaSansC Bold', serif;
+}
+
+.lp-you-get li.third {
+  margin-right: 0;
+}
+
+.lp-you-get ul .rubles {
+  background: url(/img/pages/golden-fish/icon_I.png) no-repeat 0 5px;
+  background-size: 43px;
+}
+
+.lp-you-get ul .glass {
+  background: url(/img/pages/golden-fish/icon_II.png) no-repeat 0 5px;
+  background-size: 43px;
+}
+
+.lp-you-get ul .pig {
+  background: url(/img/pages/golden-fish/icon_III.png) no-repeat 0 5px;
+  background-size: 43px;
+}
+
+.lp-you-get ul .files_projects {
+  background: url(/img/pages/golden-fish/icon_IV.png) no-repeat 0 5px;
+  background-size: 43px;
+}
+
+.lp-you-get ul .presentation {
+  background: url(/img/pages/golden-fish/icon_V.png) no-repeat 0 5px;
+  background-size: 43px;
+}
+
+.lp-you-get ul .eye {
+  background: url(/img/pages/golden-fish/icon_VI.png) no-repeat 0 5px;
+  background-size: 43px;
+}
+
+.lp-projects {
+  height: 400px;
+  background-color: #f8f8f8;
+  padding-top: 82px;
+}
+
+.lp-projects h2 {
+  width: 550px;
+  height: 26px;
+  color: #353946;
+  font-family: 'RodeoC', serif;
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 30px;
+  text-transform: uppercase;
+  margin: 0 auto 52px;
+}
+
+.lp-contact {
+  height: 193px;
+  background-color: #f2cf30;
+  padding-top: 64px;
+}
+
+.lp-contact ul {
+  width: 1230px;
+  margin: 0 auto;
+}
+
+.lp-contact h2 {
+  color: #353946;
+  font-family: 'RodeoC', serif;
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 30px;
+  margin-bottom: 32px;
+}
+
+.lp-contact p {
+  color: #353946;
+  font-family: 'OfficinaSansC Book', serif;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 29px;
+}
+
+.lp-contact p a {
+  color: #353946;
+  text-decoration: underline;
+}
+
+.lp-contact .info {
+  width: 566px;
+  float: left;
+  margin-right: 133px;
+  padding-top: 14px;
+}
+
+.lp-contact .form {
+  width: 512px;
+  float: left;
+}
+
+.sliders .gf-slider {
+  width: 695px;
+  height: 4px;
+  display: block;
+  border: 0;
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+.sliders .gf-slider .ui-widget-content {
+  background-color: #ebebeb;
+}
+
+.sliders .gf-slider .ui-slider-range {
+  background: #1fe8d7; /* Old browsers */
+  background: -moz-linear-gradient(left, #1fe8d7 1%, #3be8b1 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(left, #1fe8d7 1%, #3be8b1 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to right, #1fe8d7 1%, #3be8b1 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:dximagetransform.microsoft.gradient(startColorstr='#1fe8d7', endColorstr='#3be8b1', GradientType=1); /* IE6-9 */
+}
+
+.sliders .gf-slider .ui-corner-all,
+.ui-corner-bottom,
+.ui-corner-right,
+.ui-corner-br {
+  border-bottom-right-radius: 15px;
+}
+
+.sliders .gf-slider .ui-corner-all,
+.ui-corner-bottom,
+.ui-corner-left,
+.ui-corner-bl {
+  border-bottom-left-radius: 15px;
+}
+
+.sliders .gf-slider .ui-corner-all,
+.ui-corner-top,
+.ui-corner-right,
+.ui-corner-tr {
+  border-top-right-radius: 15px;
+}
+
+.sliders .gf-slider .ui-corner-all,
+.ui-corner-bottom,
+.ui-corner-left,
+.ui-corner-tl {
+  border-top-left-radius: 15px;
+}
+
+.sliders .gf-slider .ui-state-focus,
+.sliders .gf-slider .ui-state-hover {
+  border: 1px solid #ebebeb;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.35);
+}
+
+.sliders .gf-slider .ui-slider-handle {
+  height: 1.8em;
+  width: 1.8em;
+  outline: none;
+  top: -0.8em;
+  border: 1px solid #ebebeb;
+  background-color: white;
+}
+
+.sliders .gf-slider.ui-slider a {
+  outline: none;
+}
+
+.sliders h2 {
+  color: #353946;
+  font-family: 'RodeoC', serif;
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 30px;
+  margin-bottom: 42px;
+}
+
+.lp-advantages .sliders {
+  width: 696px;
+  float: left;
+  margin-right: 38px;
+}
+
+.sliders ul li:first-child {
+  float: left;
+  color: #353946;
+  font-family: 'OfficinaSansC Book', serif;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 30px;
+}
+
+.sliders ul li:first-child span {
+  color: #858891;
+  font-size: 14px;
+}
+
+.sliders ul li:last-child {
+  float: right;
+  color: #282a34;
+  font-family: 'OfficinaSansC Book', serif;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 30px;
+}
+
+.profit-calc {
+  position: relative;
+  padding-left: 93px;
+  padding-top: 35px;
+  background: url(/img/pages/golden-fish/profit-bg.png) no-repeat;
+  width: 345px;
+  height: 189px;
+  float: left;
+  margin-top: 50px;
+}
+
+.profit-calc h3,
+.profit-calc span {
+  color: #353946;
+  font-family: 'OfficinaSansC Book', serif;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 30px;
+}
+
+.profit-calc h3 {
+  margin-left: 5px;
+}
+
+.profit-calc span {
+  position: absolute;
+  left: 60px;
+  top: 87px;
+}
+
+.profit-calc a {
+  position: absolute;
+  bottom: 42px;
+  left: 60px;
+}
+
+.profit-calc h1 {
+  height: 42px;
+  color: #353946;
+  font-family: 'OfficinaSansC Bold', serif;
+  font-size: 58px;
+  font-weight: 400;
+  line-height: 30px;
+  margin-top: 10px;
+  margin-bottom: 34px;
+}
+
+.calculator {
+  width: 1172px;
+  height: 284px;
+  margin: 0 auto 82px;
+}
+
+.lp-contact textarea {
+  float: left;
+  width: 477px;
+  height: 74px;
+  background-color: #f3f3f3;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
+  color: #353946;
+  font-family: 'OfficinaSansC Book', serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 30px;
+  margin-bottom: 14px;
+}
+
+.lp-contact textarea.placeholder {
+  color: #c1c0c0 !important;
+}
+
+.lp-contact input[type=text] {
+  float: left;
+  width: 294px;
+  height: 41px;
+  background-color: #f3f3f3;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
+  margin-right: 16px;
+  color: #353946;
+  font-family: 'OfficinaSansC Book', serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 30px;
+}
+
+.lp-contact input.placeholder {
+  color: #c1c0c0 !important;
+}
+
+li .with-icon {
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-image: url(/img/pages/golden-fish/icon-check.png), linear-gradient(to top, #1fe7d7 0%, #3be8b1 100%) !important;
+}
+
+li .teal-button {
+  float: left;
+  display: block;
+  width: 118px;
+  height: 41px;
+  padding-left: 24px;
+  padding-right: 24px;
+  background-image: linear-gradient(to top, #1fe7d7 0%, #3be8b1 100%);
+  color: #353946;
+  font-family: 'OfficinaSansC Book', serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 43px;
+  text-transform: uppercase;
+}
+
+li .teal-button:hover,
+li .teal-button:active {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+}
+
+.lp-projects .slick-slide,
+.lp-projects .slick-slide img {
+  width: 322px;
+  height: 322px;
+}
+
+.lp-projects-slider {
+  display: none;
+}
+
+.lp-projects-slider .overlay {
+  display: none;
+  position: absolute;
+  padding: 20px;
+  width: 302px;
+  height: 302px;
+  background: url(/img/pages/golden-fish/overlay.png) no-repeat;
+  background-size: 322px 322px;
+  top: 0;
+  left: 0;
+  color: white;
+  font-family: 'OfficinaSansC Book', serif;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 24px;
+}
+
+.lp-projects .img-container {
+  position: relative;
+}
+
+.overlay span {
+  position: absolute;
+  bottom: 35px;
+  left: 20px;
+}

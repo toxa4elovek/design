@@ -23,29 +23,30 @@ class SubscribersProjectsTimeout extends CronJob
         ]]);
         $count = 0;
         foreach ($subscribersProjects as $project) {
-            if($project->expert == 0) {
+            if ($project->expert == 0) {
                 Pitch::markAsRefunded($project->id);
                 $this->out("Project found #$project->id, marking as refunded.");
                 $count++;
-            }else {
+            } else {
                 $this->out("Project found #$project->id, checking if waiting for expert...");
-                if(!$projectHelper->isWaitingForExperts($project)) {
+                if (!$projectHelper->isWaitingForExperts($project)) {
                     $this->out("Project #$project->id is not waiting for experts anymore...");
                     $expertOpinionDate = $projectHelper->expertOpinion($project->id);
                     $client = \app\models\User::first($project->user_id);
-                    if((int) $client->subscription_status === 1) {
+                    if ((int) $client->subscription_status === 1) {
                         $delayedChooseWinnerTime = $expertOpinionDate + (3 * DAY);
-                    }else {
+                    } elseif ((int) $client->subscription_status === 4) {
+                        $delayedChooseWinnerTime = $expertOpinionDate + (7 * DAY);
+                    } else {
                         $delayedChooseWinnerTime = $expertOpinionDate + strtotime($project->chooseWinnerFinishDate) - strtotime($project->finishDate);
                     }
-                    if($delayedChooseWinnerTime < time()) {
+                    if ($delayedChooseWinnerTime < time()) {
                         $this->out("Time to close project #$project->id");
                         Pitch::markAsRefunded($project->id);
                         $count++;
                     }
                 }
             }
-
         }
         $this->_renderFooter("$count projects refunded");
     }

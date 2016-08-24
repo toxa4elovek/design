@@ -414,7 +414,7 @@ class Comment extends AppModel
 
     public static function parseComment($text)
     {
-        if (preg_match('/^#(\d*),/', $text, $matches)) {
+        if (preg_match('/#(\d*)/', $text, $matches)) {
             return $matches[1];
         } else {
             return 0;

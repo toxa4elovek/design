@@ -174,7 +174,14 @@ $(document).ready(function () {
     if (promoCodeInput.prop('disabled') || value.length == 0) {
       return false
     }
-    $.post('/promocodes/check.json', {'code': value}, function (response) {
+    let data = {};
+    if ($('#pitch_id').length === 1) {
+      data = {'code': value, 'id': $('#pitch_id').val()}
+    } else {
+      data = {'code': value}
+    }
+
+    $.post('/promocodes/check.json', data, function (response) {
       const promoHint = $('#promo-hint')
       if (response == 'false') {
         if (value != '8888') {

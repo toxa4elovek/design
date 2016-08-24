@@ -33,6 +33,7 @@ Router::connect('/twitter', 'Pages::twitter');
 Router::connect('/pages/contacts', 'Pages::contacts');
 Router::connect('/pages/subscribe', 'Pages::subscribe');
 Router::connect('/fastpitch', 'Pages::fastpitch');
+Router::connect('/golden-fish', 'Pages::goldenfish');
 Router::connect('/stats', 'Pages::stats');
 Router::connect('/events/updates.{:type}', 'Events::updates');
 Router::connect('/users/checkform.{:type}', 'Users::checkform');

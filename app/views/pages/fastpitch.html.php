@@ -1,8 +1,8 @@
-<?= $this->html->style(array('/fastpitch'), array('inline' => false)) ?>
+<?= $this->html->style(['/fastpitch'], ['inline' => false]) ?>
 
 <div class="wrapper">
 
-    <?= $this->view()->render(array('element' => 'header'), array('logo' => 'logo', 'header' => 'header')) ?>
+    <?= $this->view()->render(['element' => 'header'], ['logo' => 'logo', 'header' => 'header']) ?>
     <div id="top-logo-oneclick"></div>
     <div class="lp-fast-pitch-wrapper">
         <div class="lp-autocenter">
@@ -27,7 +27,7 @@
                                     if ($x < 6):
                                         ?>
                                         <li>
-                                            <label><input <?php if($x==1): echo 'checked="checked"'; endif;?> id="time" name="time" data-date="<?= $i ?>" type="radio"><?= $v ?></label>
+                                            <label><input <?php if ($x==1): echo 'checked="checked"'; endif;?> id="time" name="time" data-date="<?= $i ?>" type="radio"><?= $v ?></label>
                                         </li>
                                         <?php unset($allowTime[$i]);
                                     else: ?>
@@ -43,14 +43,14 @@
                             <ul class="date-hide">
                                 <?php
                                 $j = 1;
-                                if(isset($allowTime)):
+                                if (isset($allowTime)):
                                 foreach ($allowTime as $i => $v): ?>
                                     <li data-num="<?php echo $j; ?>">
                                         <label><input id="time" name="time" data-date="<?= $i ?>" type="radio"><?= $v ?></label>
                                     </li>
                                     <?php
                                     $j += 1;
-                                    if($j == 5):
+                                    if ($j == 5):
                                         $j = 1;
                                     endif;
                                 endforeach;
@@ -100,5 +100,8 @@
     </div><!-- /middle -->
 
 </div><!-- .wrapper -->
-<?= $this->html->style(array('/css/pages/fastpitch.css'), array('inline' => false)) ?>
-<?= $this->html->script(array('pages/fastpitch.js'), array('inline' => false)) ?>
+<?= $this->html->style(['/css/pages/fastpitch.css'], ['inline' => false]) ?>
+<?= $this->html->script([
+    'jquery-plugins/jquery.scrollto.min.js',
+    'pages/fastpitch.js',
+], ['inline' => false]) ?>

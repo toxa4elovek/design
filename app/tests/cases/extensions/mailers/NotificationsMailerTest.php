@@ -4,6 +4,7 @@ namespace app\tests\cases\extensions\mailers;
 
 use app\extensions\tests\AppUnit;
 use \app\extensions\mailers\NotificationsMailer;
+use app\models\Bill;
 use app\models\User;
 use app\models\Pitch;
 use app\models\SubscriptionPlan;
@@ -13,25 +14,25 @@ class NotificationsMailerTest extends  AppUnit
 
     public function setUp()
     {
-        SubscriptionPlan::config(array('connection' => 'test'));
-        $this->rollUp(array('Pitch', 'User', 'Solution'));
+        SubscriptionPlan::config(['connection' => 'test']);
+        $this->rollUp(['Pitch', 'User', 'Solution', 'Bill']);
     }
 
     public function tearDown()
     {
-        $this->rollDown(array('Pitch', 'User', 'Solution'));
+        $this->rollDown(['Pitch', 'User', 'Solution', 'Bill']);
     }
 
     public function testSendFillBalanceSuccess()
     {
         $user = User::first(2);
-        $user->save(null, array('validate' => false));
-        $data = array(
+        $user->save(null, ['validate' => false]);
+        $data = [
             'id' => 8,
             'type' => 'fund-balance',
             'specifics' => 'a:2:{s:7:"plan_id";i:0;s:12:"fund_balance";i:9000;}',
             'billed' => 1
-        );
+        ];
         $plan = Pitch::create($data);
         $plan->save();
         $html = NotificationsMailer::sendFillBalanceSuccess($user, $plan);
@@ -122,5 +123,18 @@ class NotificationsMailerTest extends  AppUnit
         $this->assertPattern("@Вы можете номинировать работу, перейти к завершительному этапу и вносить правки после оплаты штрафа из расчёта 25 руб\./час@", $html);
         $this->assertPattern('/В случае вашей неактивности победитель в проекте будет назначен автоматически\. Подробнее/', $html);
         $this->assertPattern("@https://www\.godesigner\.ru/answers/view/53@", $html);
+    }
+
+    public function testSendProjectFinishedNotifications()
+    {
+        $project = Pitch::first(1);
+        $date = date(MYSQL_DATETIME_FORMAT);
+        $project->totalFinishDate = $date;
+        $project->save();
+        $html = NotificationsMailer::sendProjectFinishedNotifications($project, 'nyudmitriy@godesigner.ru');
+        $this->assertPattern('/Необходимо связаться с заказчиком по вопросу предоставления закрывающих документов/', $html);
+        $this->assertPattern('/Добрый день!/', $html);
+        $this->assertPattern("/$date завершен проект «<a style=\"color: #6590a3;
+text-decoration: underline;\" href=\"http:\/\/cp.godesigner.ru\/pitches\/edit\/1\">Проверка названия<\/a>»/", $html);
     }
 }

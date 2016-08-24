@@ -107,3 +107,9 @@ app/webroot/js/pitches/components/ProjectTypesRadioWrapper.js
 app/webroot/js/pitches/components/ProjectTypesRadio.js
 app/webroot/js/pages/home/ClientsLogosShowcase.js
 app/webroot/js/pages/home/ClientLogo.js
+app/webroot/js/components.js
+app/webroot/js/pages/golden-fish.js
+app/webroot/js/subscription_plans/subscriber.js
+app/webroot/js/pages/fastpitch.js
+app/webroot/js/pages/howitworks.js
+app/webroot/js/pages/home.js

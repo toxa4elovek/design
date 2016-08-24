@@ -9,12 +9,13 @@ namespace app\models;
  *
  * @package app\models
  */
-class Favourite extends AppModel {
+class Favourite extends AppModel
+{
 
     /**
      * @var array связи
      */
-    public $belongsTo = array('User', 'Pitch');
+    public $belongsTo = ['User', 'Pitch'];
 
     /**
      * Метод добавляет в избранное для пользоватея $userId проект $projectId
@@ -23,13 +24,17 @@ class Favourite extends AppModel {
      * @param $projectId integer
      * @return bool
      */
-    public static function add($userId, $projectId) {
+    public static function add($userId, $projectId)
+    {
         $user = User::count((int) $userId);
         $pitch = Pitch::count((int) $projectId);
-        if (($user) && ($pitch) && (!$fav = self::first(array('conditions' => array('user_id' => $userId, 'pitch_id' => $projectId))))) {
-            $data = array('user_id' => $userId, 'pitch_id' => $projectId, 'created' => date('Y-m-d H:i:s'));
-            $fav = self::create($data);
-            return $fav->save();
+        if (($user) && ($pitch) && (!$fav = self::first(['conditions' => ['user_id' => $userId, 'pitch_id' => $projectId]]))) {
+            $data = [
+                'user_id' => $userId,
+                'pitch_id' => $projectId,
+                'created' => date(MYSQL_DATETIME_FORMAT)
+            ];
+            return self::create($data)->save();
         }
         return false;
     }
@@ -41,39 +46,50 @@ class Favourite extends AppModel {
      * @param $projectId integer
      * @return bool
      */
-    public static function unfav($userId, $projectId) {
+    public static function unfav($userId, $projectId)
+    {
         $user = User::count((int) $userId);
         $pitch = Pitch::count((int) $projectId);
-        if (($user) && ($pitch) && ($fav = self::first(array('conditions' => array('user_id' => $userId, 'pitch_id' => $projectId))))) {
+        if (($user) && ($pitch) && ($fav = self::first([
+            'conditions' => [
+                'user_id' => $userId,
+                'pitch_id' => $projectId
+            ]]))) {
             return $fav->delete();
         }
         return false;
     }
 
     /**
-     * Метод добавляет в избранное для пользоватея $userId проект $favUserId
+     * Метод добавляет в избранное для пользоватея $userId пользователя $favUserId
      *
      * @param $userId
      * @param $favUserId
      * @return bool
      */
-    public static function addUser($userId, $favUserId) {
+    public static function addUser($userId, $favUserId)
+    {
         $user = User::count((int) $userId);
         $favUser = User::count((int) $favUserId);
-        if (($user) && ($favUser) && (!$record = self::first(array('conditions' => array('user_id' => $userId, 'pitch_id' => 0, 'fav_user_id' => $favUserId))))) {
-            $date = date('Y-m-d H:i:s');
-            $record = self::create(array(
+        if (($user) && ($favUser) && (!$record = self::first([
+            'conditions' => [
+                'user_id' => (int) $userId,
+                'pitch_id' => 0,
+                'fav_user_id' => (int) $favUserId]
+            ]))) {
+            $date = date(MYSQL_DATETIME_FORMAT);
+            $record = self::create([
                         'user_id' => $userId,
                         'created' => $date,
                         'fav_user_id' => $favUserId
-            ));
+            ]);
             if ($record->save()) {
-                Event::create(array(
+                Event::create([
                     'type' => 'FavUserAdded',
                     'created' => $date,
                     'user_id' => $userId,
                     'fav_user_id' => $favUserId
-                ))->save();
+                ])->save();
             }
             return true;
         }
@@ -87,12 +103,21 @@ class Favourite extends AppModel {
      * @param $favUserId
      * @return bool
      */
-    public static function unfavUser($userId, $favUserId) {
+    public static function unfavUser($userId, $favUserId)
+    {
         $user = User::count((int) $userId);
         $favUser = User::count((int) $favUserId);
-        if (($user) && ($favUser) && ($fav = self::first(array('conditions' => array('user_id' => $userId, 'pitch_id' => 0, 'fav_user_id' => $favUserId))))) {
+        if (($user) && ($favUser) && ($fav = self::first(['conditions' => [
+            'user_id' => (int) $userId,
+                'pitch_id' => 0,
+                'fav_user_id' => (int) $favUserId
+            ]]))) {
             if ($fav->delete()) {
-                if ($event = Event::first(array('conditions' => array('type' => 'FavUserAdded', 'user_id' => $userId, 'fav_user_id' => $favUserId)))) {
+                if ($event = Event::first(['conditions' => [
+                    'type' => 'FavUserAdded',
+                    'user_id' => (int) $userId,
+                    'fav_user_id' => (int) $favUserId]
+                ])) {
                     $event->delete();
                 }
             }
@@ -107,18 +132,26 @@ class Favourite extends AppModel {
      * @param $userId int
      * @return int
      */
-    public static function getNumberOfTimesAddedToFavourite($userId) {
-        return (int) self::count(array('conditions' => array('pitch_id' => 0, 'fav_user_id' => $userId)));
+    public static function getNumberOfTimesAddedToFavourite($userId)
+    {
+        return (int) self::count(['conditions' => [
+            'pitch_id' => 0,
+            'fav_user_id' => (int) $userId]
+        ]);
     }
 
     /**
-     * Метод возвращяет количество людей. добавивших в избранное пользователя $userId
+     * Метод возвращяет количество людей, добавивших в избранное пользователя $userId
      *
      * @param $userId int
      * @return int
      */
-    public static function getCountFavoriteUsersForUser($userId) {
-        return (int) self::count(array('conditions' => array('pitch_id' => 0, 'user_id' => $userId)));
+    public static function getCountFavoriteUsersForUser($userId)
+    {
+        return (int) self::count(['conditions' => [
+            'pitch_id' => 0,
+            'user_id' => (int) $userId]
+        ]);
     }
 
     /**
@@ -128,12 +161,14 @@ class Favourite extends AppModel {
      * @param $userId
      * @return array
      */
-    public static function getFavouriteProjectsIdsForUser($userId) {
-        $favs = self::all(array('fields' => array('pitch_id'), 'conditions' => array('user_id' => $userId)));
-        $result = array_map(function($fav) {
+    public static function getFavouriteProjectsIdsForUser($userId)
+    {
+        $favs = self::all(['fields' => ['pitch_id'], 'conditions' => [
+            'user_id' => (int) $userId
+        ]]);
+        $result = array_map(function ($fav) {
             return $fav['pitch_id'];
         }, $favs->data());
         return $result;
     }
-
 }

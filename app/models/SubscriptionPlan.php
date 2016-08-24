@@ -9,6 +9,7 @@ use lithium\data\entity\Record;
  * Модель для работы с тарифными планами
  *
  * @package app\models
+ * @method Record|null first(int|array $conditions) static
  */
 class SubscriptionPlan extends Pitch
 {
@@ -18,38 +19,45 @@ class SubscriptionPlan extends Pitch
      *
      * @var array
      */
-    protected $_meta = array(
+    protected $_meta = [
         'source' => 'pitches',
-    );
+    ];
 
     /**
      * Данные тарифных планов
      *
      * @var array
      */
-    protected static $_plans = array(
-        1 => array(
+    protected static $_plans = [
+        1 => [
             'id' => 1,
             'price' => 49000,
             'title' => 'Предпринимательский',
             'duration' => YEAR,
-            'free' => array(),
-        ),
-        2 => array(
+            'free' => [],
+        ],
+        2 => [
             'id' => 2,
             'price' => 69000,
             'title' => 'Фирменный',
             'duration' => YEAR,
-            'free' => array('chooseWinnerFinishDate', 'hideproject'),
-        ),
-        3 => array(
+            'free' => ['chooseWinnerFinishDate', 'hideproject'],
+        ],
+        3 => [
             'id' => 3,
             'price' => 89000,
             'title' => 'Корпоративный',
             'duration' => YEAR,
-            'free' => array('chooseWinnerFinishDate', 'hideproject', 'phonebrief', 'pinproject'),
-        )
-    );
+            'free' => ['chooseWinnerFinishDate', 'hideproject', 'phonebrief', 'pinproject'],
+        ],
+        4 => [
+            'id' => 4,
+            'price' => 39000,
+            'title' => 'Золотая рыбка',
+            'duration' => YEAR,
+            'free' => ['chooseWinnerFinishDate', 'hideproject'],
+        ]
+    ];
 
     /**
      * Метод возвращяет запрошенный тарифный план
@@ -74,22 +82,22 @@ class SubscriptionPlan extends Pitch
      */
     public static function getNextSubscriptionPlanId($userId)
     {
-        if (!$payment = self::first(array(
-            'conditions' => array(
+        if (!$payment = self::first([
+            'conditions' => [
                 'user_id' => $userId,
                 'billed' => 0,
                 'type' => 'plan-payment'
-            )
-        ))) {
+            ]
+        ])) {
             $gatracking = new \Racecore\GATracking\GATracking('UA-9235854-5');
             $gaId = $gatracking->getClientId();
-            $data = array(
+            $data = [
                 'user_id' => $userId,
                 'type' => 'plan-payment',
                 'category' => 100,
                 'title' => 'Оплата абонентского обслуживания',
                 'ga_id' => $gaId
-            );
+            ];
             $payment = self::create($data);
             $payment->save();
         }
@@ -105,20 +113,20 @@ class SubscriptionPlan extends Pitch
      */
     public static function getNextSubscriptionPlanIdByGAId($googleAnalyticsId, $promocode)
     {
-        if (!$payment = self::first(array(
-            'conditions' => array(
+        if (!$payment = self::first([
+            'conditions' => [
                 'ga_id' => $googleAnalyticsId,
                 'billed' => 0,
                 'type' => 'plan-payment'
-            )
-        ))) {
-            $data = array(
+            ]
+        ])) {
+            $data = [
                 'type' => 'plan-payment',
                 'category' => 100,
                 'title' => 'Оплата абонентского обслуживания',
                 'promocode' => $promocode,
                 'ga_id' => $googleAnalyticsId
-            );
+            ];
             $payment = self::create($data);
             $payment->save();
         }
@@ -127,13 +135,13 @@ class SubscriptionPlan extends Pitch
 
     public static function hasSubscriptionPlanDraft($userId)
     {
-        return (bool) self::first(array(
-            'conditions' => array(
+        return (bool) self::first([
+            'conditions' => [
                 'user_id' => $userId,
                 'billed' => 0,
                 'type' => 'plan-payment'
-            )
-        ));
+            ]
+        ]);
     }
 
     /**
@@ -144,22 +152,22 @@ class SubscriptionPlan extends Pitch
      */
     public static function getNextFundBalanceId($userId)
     {
-        if (!$payment = self::first(array(
-            'conditions' => array(
+        if (!$payment = self::first([
+            'conditions' => [
                 'user_id' => $userId,
                 'billed' => 0,
                 'type' => 'fund-balance'
-            )
-        ))) {
+            ]
+        ])) {
             $gatracking = new \Racecore\GATracking\GATracking('UA-9235854-5');
             $gaId = $gatracking->getClientId();
-            $data = array(
+            $data = [
                 'user_id' => $userId,
                 'type' => 'fund-balance',
                 'category' => 99,
                 'title' => 'Пополнение счёта',
                 'ga_id' => $gaId
-            );
+            ];
             $payment = self::create($data);
             $payment->save();
         }
@@ -257,7 +265,7 @@ class SubscriptionPlan extends Pitch
     {
         if ($plan = self::first($id)) {
             if (!$array = unserialize($plan->specifics)) {
-                $array = array();
+                $array = [];
             }
             $array['plan_id'] = $planId;
             $plan->specifics = serialize($array);
@@ -277,7 +285,7 @@ class SubscriptionPlan extends Pitch
     {
         if ($plan = self::first($id)) {
             if (!$array = unserialize($plan->specifics)) {
-                $array = array();
+                $array = [];
             }
             $array['fund_balance'] = $balance;
             $plan->specifics = serialize($array);

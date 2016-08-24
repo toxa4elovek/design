@@ -49,7 +49,9 @@ class PitchesController extends AppController
      */
     public $publicActions = [
         'crowdsourcing', 'promocode', 'index', 'printpitch', 'robots', 'fillbrief', 'add', 'create',
-        'brief', 'activate', 'view', 'details', 'paymaster', 'callback', 'payanyway', 'viewsolution', 'getlatestsolution', 'getpitchdata', 'designers', 'getcommentsnew', 'apipitchdata', 'addfastpitch', 'fastpitch',
+        'brief', 'activate', 'view', 'details', 'paymaster', 'callback', 'payanyway', 'viewsolution',
+        'getlatestsolution', 'getpitchdata', 'designers', 'getcommentsnew', 'apipitchdata', 'addfastpitch', 'fastpitch',
+        'getpdf'
     ];
 
     /**
@@ -312,18 +314,18 @@ class PitchesController extends AppController
             $pitchTitleHelper = new PitchTitleFormatter();
             foreach ($tempPitchList as &$pitch) {
                 $pitch['showAct'] = true;
-                if($pitch['category_id'] == 20) {
+                if ($pitch['category_id'] == 20) {
                     $receipt = Receipt::first(['conditions' => ['pitch_id' => $pitch['id']]]);
                     $initialActs = 0;
-                    foreach($receipt as $item):
-                        if($item->name === 'Награда Дизайнеру'):
+                    foreach ($receipt as $item):
+                        if ($item->name === 'Награда Дизайнеру'):
                             continue;
-                        endif;
-                        $initialActs += $item->value;
+                    endif;
+                    $initialActs += $item->value;
                     endforeach;
-                    if($initialActs > 0) {
+                    if ($initialActs > 0) {
                         $pitch['showAct'] = true;
-                    }else {
+                    } else {
                         $pitch['showAct'] = false;
                     }
                 }
@@ -368,10 +370,13 @@ class PitchesController extends AppController
         return 'false';
     }
 
+    /**
+     * @return mixed|objectМ
+     */
     public function delete()
     {
         if ($pitch = Pitch::first($this->request->id)) {
-            if ((($pitch->user_id == Session::read('user.id')) || ($this->userHelper->isUserManagerOfCurrentUser($pitch->user_id))) && ($pitch->published == 0) && ($pitch->billed == 0) && ($pitch->ideas_count == 0)) {
+            if ((((int) $pitch->user_id === (int) $this->userHelper->getId()) || ($this->userHelper->isUserManagerOfCurrentUser($pitch->user_id))) && ((int) $pitch->published === 0) && ((int) $pitch->billed === 0) && (((int) $pitch->ideas_count === 0) || ((int) $pitch->multiwinner > 0))) {
                 $pitch->delete();
             }
             if (!$this->request->is('json')) {
@@ -596,7 +601,11 @@ class PitchesController extends AppController
                 if ((isset($this->request->query['date'])) && (!empty($this->request->query['date']))) {
                     $defaultFinishDate = $this->request->query['date'];
                 }
-                $defaultChooseWinnerFinishDate = date('Y-m-d H:i:s', strtotime($defaultFinishDate) + (4 * DAY));
+                if ((int) $this->userRecord->subscription_status === 4) {
+                    $defaultChooseWinnerFinishDate = date('Y-m-d H:i:s', strtotime($defaultFinishDate) + (7 * DAY));
+                } else {
+                    $defaultChooseWinnerFinishDate = date('Y-m-d H:i:s', strtotime($defaultFinishDate) + (4 * DAY));
+                }
                 $plan = $this->userHelper->getCurrentPlanData();
                 $balance = $this->userHelper->getBalance();
                 $expirationDate = $this->userHelper->getSubscriptionExpireDate('d.m.Y');
@@ -1616,7 +1625,7 @@ Disallow: /pitches/upload/'.$pitch['id'];
                 ($this->userHelper->isPitchOwner($pitch->user_id)) &&
                 ($this->userHelper->isSubscriptionActive()) &&
                 ($pitch->category_id == 20) &&
-                (in_array($this->userHelper->read('user.subscription_status'), [2, 3]))
+                (in_array($this->userHelper->read('user.subscription_status'), [2, 3, 4]))
             ) {
                 $canViewFullImage = true;
             }
@@ -1797,10 +1806,11 @@ Disallow: /pitches/upload/'.$pitch['id'];
     public function getpdf()
     {
         if (($pitch = Pitch::first($this->request->id)) && ($bill = Bill::first($this->request->id))) {
-            if (Session::read('user.id') != $pitch->user_id) {
+            if ((int) $this->userHelper->getId() !== (int) $pitch->user_id) {
                 die();
             }
             require_once LITHIUM_APP_PATH.'/'.'libraries'.'/'.'MPDF54/MPDF54/mpdf.php';
+            error_reporting(0);
             $options = compact('pitch', 'bill');
             $mpdf = new \mPDF();
             if (($pitch->type == 'plan-payment') && ($extracted = SubscriptionPlan::extractFundBalanceAmount($pitch->id))) {
@@ -1810,7 +1820,7 @@ Disallow: /pitches/upload/'.$pitch['id'];
                 $mpdf->WriteHTML(PdfGetter::get('Bill', $options));
             }
             $mpdf->Output('godesigner-pitch-'.$pitch->id.'.pdf', 'd');
-            exit;
+            die();
         }
         die();
     }
@@ -1990,11 +2000,11 @@ Disallow: /pitches/upload/'.$pitch['id'];
                 'brief' => 1,
                 'specifics' => 'a:2:{s:9:"qualities";s:64:"Прагматичный, надежный, элегантный";s:15:"logo-properties";a:7:{i:0;s:1:"5";i:1;s:1:"5";i:2;s:1:"5";i:3;s:1:"5";i:4;s:1:"5";i:5;s:1:"5";i:6;s:1:"5";}}',
                 'price' => 14000,
-                'total' => 19600,
+                'total' => 19800,
                 'ga_id' => $gaId
                 ]);
-            if (Session::read('user.id')) {
-                $pitch->user_id = Session::read('user.id');
+            if ($this->userHelper->isLoggedIn()) {
+                $pitch->user_id = $this->userHelper->getId();
             }
             if ($pitch->save()) {
                 $start = new \DateTime();

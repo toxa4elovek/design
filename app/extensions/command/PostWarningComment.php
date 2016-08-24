@@ -38,7 +38,7 @@ class PostWarningComment extends CronJob
            if ((int) $project->category_id === 20) {
                $client = User::first($project->user_id);
                if ((User::isSubscriptionActive($client->id, $client))
-                   && (in_array((int) $client->subscription_status, [2, 3]))) {
+                   && (in_array((int) $client->subscription_status, [2, 3, 4]))) {
                    return false;
                }
            }
@@ -47,7 +47,7 @@ class PostWarningComment extends CronJob
         $count = count($projectArray);
         $this->out("Found $count projects for comment after filters");
         array_walk($projectArray, function ($project) {
-            $message = 'Нельзя также размещать ссылки на&nbsp;работы в&nbsp;100% разрешении. Те, кто нарушили правила сервиса, будут блокированы для участи в&nbsp;этом проекте. Подробнее тут:
+            $message = 'Нельзя размещать ссылки на&nbsp;работы в&nbsp;100% разрешении. Те, кто нарушили правила сервиса, будут блокированы для участи в&nbsp;этом проекте. Подробнее тут:
 https://www.godesigner.ru/answers/view/72';
             $data = [
                 'pitch_id' => $project->id,

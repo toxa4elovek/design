@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\extensions\helper\Brief;
 use app\extensions\helper\MoneyFormatter;
 use app\extensions\helper\NumInflector;
+use app\extensions\mailers\NotificationsMailer;
 use app\extensions\smsfeedback\SmsFeedback;
 use app\extensions\smsfeedback\SmsUslugi;
 use app\extensions\social\TwitterAPI;
@@ -58,7 +59,7 @@ class UsersController extends \app\controllers\AppController
      * @var array
      */
     public $publicActions = [
-        'vklogin', 'unsubscribe', 'registration', 'login', 'sale', /* 'info', 'sendmail', */ 'confirm', 'checkform', 'recover', 'setnewpassword', 'loginasadmin', 'view', 'updatetwitter', 'updatetwitterfeed', 'banned', 'activation', 'need_activation', 'requesthelp', 'testemail', 'feed', 'test'
+        'eventtest', 'vklogin', 'unsubscribe', 'registration', 'login', 'sale', /* 'info', 'sendmail', */ 'confirm', 'checkform', 'recover', 'setnewpassword', 'loginasadmin', 'view', 'updatetwitter', 'updatetwitterfeed', 'banned', 'activation', 'need_activation', 'requesthelp', 'testemail', 'feed', 'test'
     ];
 
     public $nominatedCount = false;
@@ -185,6 +186,7 @@ class UsersController extends \app\controllers\AppController
         $updates = Event::getEvents($pitchIds, 1, null, Session::read('user.id'), $tag);
         $nextUpdates = count(Event::getEvents($pitchIds, 2, null, Session::read('user.id'), $tag));
         $banner = News::getBanner();
+
         if (is_null($this->request->env('HTTP_X_REQUESTED_WITH'))) {
             $accessToken = Event::getBingAccessToken();
             return compact('date', 'updates', 'nextUpdates', 'news', 'pitches', 'solutions', 'middlePost', 'banner', 'shareEvent', 'accessToken', 'tag');
@@ -825,6 +827,8 @@ class UsersController extends \app\controllers\AppController
                 }
                 $solution->step = 4;
                 $solution->save();
+                NotificationsMailer::sendProjectFinishedNotifications($solution->pitch, 'm.elenevskaya@godesigner.ru');
+                NotificationsMailer::sendProjectFinishedNotifications($solution->pitch, 'va@godesigner.ru');
                 Pitch::finishPitch($solution->pitch_id);
                 return $this->redirect(['controller' => 'users', 'action' => 'step4', 'id' => $solution->id]);
             }
@@ -883,6 +887,10 @@ class UsersController extends \app\controllers\AppController
                     $solution->nominated = 0;
                     $solution->awarded = 1;
                     $solution->save();
+                }
+                if($type === 'client') {
+                    $client = User::first($solution->pitch->user_id);
+                    UserMailer::sendEmailAfterGrade($grade, $client);
                 }
             }
 

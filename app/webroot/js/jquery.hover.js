@@ -121,9 +121,6 @@
             }
 
             function on(e){
-                if($('#category_id').val() == 7) {
-                    return false;
-                }
                 $('body').append('<div id="'+s.tooltipID+'" style="background-repeat:no-repeat;background-image:url('+s.tooltipBGImage+');padding:'+s.tooltipPadding+'px;display:none;height:'+s.height+';width:'+s.width+';background-color:'+s.tooltipBGColor+';border:'+s.borderSize+'px solid '+s.borderColor+'; position:absolute;z-index:100000000000;"><div class="tooltip-wrap"><div id="tooltipContent" style="display:none;"></div></div></div>');
 
                 var $tt = $('#'+s.tooltipID);
@@ -158,7 +155,7 @@
                         $ttContent.html('<img src="' + imageTag.attr('src') + '">');
                         break;
                     case 'data':
-                        let regExp = /^\/(.*).png|jpeg|jpg|gif$/
+                        var regExp = /^\/(.*).png|jpeg|jpg|gif|PNG|JPEG|JPG|GIF$/
                         if (regExp.test($(e.currentTarget).data('thumbnail'))) {
                           $ttContent.html('<img src="' + $(e.currentTarget).data('thumbnail') + '">')
                         } else {
