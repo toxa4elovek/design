@@ -12,7 +12,7 @@ class ChangeSolutions extends CronJob
     public function run()
     {
         $this->_renderHeader();
-        $solutions = Solution::all(['page' => 5, 'limit' => 10000]);
+        $solutions = Solution::all(['page' => 6, 'limit' => 10000]);
         $rerecordSolution = function ($imageFile, $dryRun = false) {
             $existingFileName = $imageFile['filename'];
             if (!preg_match('@\/var\/godesigner\/webroot\/solutions\/[a-z0-9]\/[a-z0-9]{2}\/[a-z0-9]{3}\/[a-z0-9]{32}(_[a-zA-Z]+)?\.([a-zA-Z]){3,4}@', $existingFileName)) {
