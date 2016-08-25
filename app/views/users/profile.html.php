@@ -37,10 +37,10 @@
                                 <label><input type="radio" name="gender" value="1" <?php if($user->gender == 1):?>checked<?php endif ?>>Мужчина</label>
                                 <label><input type="radio" name="gender" value="2" <?php if($user->gender == 2):?>checked<?php endif ?>>Женщина</label>
                             </div>
-                            <div class="short-input-block">
+                            <!--div class="short-input-block">
                                 <input class="short" type="text" name="city" placeholder="Город, страна" value="<?=$userdata['city']?>" >
                                 <input class="short" type="text" name="birthdate" placeholder="ДД.ММ.ГГ рождения" value="<?=$userdata['birthdate']?>" >
-                            </div>
+                            </div-->
                             <div class="clr"></div>
                         </div>
                         <script>
@@ -187,7 +187,7 @@
                                     </li>
                                     <li>
                                         <label class="regular" style="font-weight: normal">
-                                            <input style="margin-top:0; margin-bottom: 2px;" type="checkbox" name="email_newsol" <?php if($user->email_newsol): echo 'checked'; endif;?>>о новых решениях к моим проектам сразу, как их <br> выкладывают на сайт
+                                            <input style="margin-top:0; margin-bottom: 2px;" type="checkbox" name="email_newsol" <?php if($user->email_newsol): echo 'checked'; endif;?>>о новых решениях к моим проектам сразу, как их выкладывают на сайт
                                         </label>
                                     </li>
                                     <li>
