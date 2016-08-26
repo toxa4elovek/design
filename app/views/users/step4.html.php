@@ -30,7 +30,7 @@
                 <p style="font: normal 28px/1 RodeoC,sans-serif; text-transform:uppercase;text-align:center;color: #666666;text-shadow:-1px 0 0 #FFFFFF;margin-bottom:10px">и мы будем рады видеть вас</p>
                 <p style="font: normal 28px/1 RodeoC,sans-serif; text-transform:uppercase;text-align:center;color: #666666;text-shadow:-1px 0 0 #FFFFFF;margin-bottom:10px">снова</p>
                     <?php if($type == 'designer'):?>
-                        <p style="margin-top: 40px; padding-top: 0; font: 16px/20px 'Arial', sans-serif;  display: block; margin-left: 0; text-align: center;" class="regular">Деньги поступят вам на счет<br> в течение 5 рабочих дней.</p>
+                        <p style="margin-top: 40px; padding-top: 0; font: 16px/20px 'Arial', sans-serif;  display: block; margin-left: 0; text-align: center;" class="regular">Деньги поступят вам на счет<br> в течение 10 рабочих дней.</p>
                     <?php endif?>
                 <?php else:?>
                 <?php if($type == 'designer'):?>
