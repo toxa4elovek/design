@@ -1558,7 +1558,7 @@ class UsersController extends \app\controllers\AppController
                 ]);
             }
             if (isset($this->request->data['accept_sms'])) {
-                $shortUpdate = true;
+                /*$shortUpdate = true;*/
                 $unserialized = unserialize($user->userdata);
                 $smsValue = (int) $this->request->data['accept_sms'];
                 $smsValue = (bool) $smsValue;
