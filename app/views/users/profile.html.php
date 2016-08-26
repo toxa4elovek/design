@@ -33,10 +33,12 @@
                         <div id="fieldblock1">
                             <div style="margin-bottom: 2px"><input type="text" name="first_name" placeholder="Имя" value="<?=$user->first_name?>" ></div>
                             <div style="margin-bottom: 7px"><input type="text" name="last_name" placeholder="Фамилия" value="<?=$user->last_name?>" ></div>
-                            <div style="margin-top: 20px;">
-                                <label><input type="radio" name="gender" value="1" <?php if($user->gender == 1):?>checked<?php endif ?>>Мужчина</label>
+                            <div style="margin-top: 50px;">
+                                <label style="padding-left: 3px;"><input type="radio" name="gender" value="1" <?php if($user->gender == 1):?>checked<?php endif ?>>Мужчина</label>
                                 <label><input type="radio" name="gender" value="2" <?php if($user->gender == 2):?>checked<?php endif ?>>Женщина</label>
+
                             </div>
+                            <div class="g_line" style="margin-top: 92px; width: 384px; margin-left: 220px;"></div>
                             <!--div class="short-input-block">
                                 <input class="short" type="text" name="city" placeholder="Город, страна" value="<?=$userdata['city']?>" >
                                 <input class="short" type="text" name="birthdate" placeholder="ДД.ММ.ГГ рождения" value="<?=$userdata['birthdate']?>" >
@@ -48,33 +50,38 @@
                                 {
                                     "id": 1,
                                     "name": "isDesigner",
-                                    "title": "Я — дизайнер",
+                                    "title": "Дизайнер",
                                     "isDesigner": <?= (int) $user->isDesigner ?>,
-                                    "margin-left": "0"
-                                },
-                                {
-                                    "id": 2,
-                                    "name": "isClient",
-                                    "title": "Я — заказчик",
-                                    "isDesigner": <?= (int) $user->isClient ?>,
-                                    "margin-left": "47px"
+                                    "margin-left": "0",
+                                    "width": '100px'
                                 },
                                 {
                                     "id": 3,
                                     "name": "isCopy",
-                                    "title": "Я — копирайтер",
+                                    "title": "Копирайтер",
                                     "isDesigner": <?= (int) $user->isCopy ?>,
-                                    "margin-left": "43px"
+                                    "margin-left": "30px",
+                                    "width": '112px'
+                                },
+                                {
+                                    "id": 2,
+                                    "name": "isClient",
+                                    "title": "Заказчик",
+                                    "isDesigner": <?= (int) $user->isClient ?>,
+                                    "margin-left": "30px",
+                                    "width": '95px'
                                 },
                                 {
                                     "id": 4,
                                     "name": "is_company",
-                                    "title": "Я — юр. лицо",
+                                    "title": "Юр. лицо",
                                     "isDesigner": <?= (int) $user->is_company?>,
-                                    "margin-left": "40px"
+                                    "margin-left": "30px",
+                                    "width": '115px'
                                 }
                             ];
                         </script>
+                        <h1 class="section-header" style="margin-top: -5px;letter-spacing: 0.5px;">Роль на сервисе</h1>
                         <div class="profselectbox" id="profselectbox"></div>
                     </section>
                 </form>

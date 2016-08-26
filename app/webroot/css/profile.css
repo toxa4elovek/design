@@ -26,7 +26,8 @@ a.show-preview {
     padding-top: 26px;
 }
 .basic-info-section input[type=radio] {
-    width: 28px !important;
+    margin-right: 10px;
+    width: 14px !important;
     height: 14px;
     box-shadow: none !important;
     vertical-align: middle;
@@ -134,8 +135,7 @@ a.show-preview {
 .user-mobile-section ul li {
     float: left;
     font-style: italic;
-    font-size: 15px;
-    font-family: Georgia, serif;
+    font-size: 12px;
     margin-right: 75px;
     margin-bottom: 10px;
 }
@@ -212,12 +212,11 @@ ul .number {
 }
 #deleteaccount {
     text-decoration: none;
-    padding-left: 15px;
-    background: url(/img/closerequest.png) 0 4px no-repeat;
+    padding-left: 13px;
+    background: url(/img/closerequest.png) 0 2px no-repeat;
     background-size: 8px 8px;
     font-style: italic;
-    font-size: 15px;
-    font-family: Georgia, serif;
+    font-size: 12px;
     margin-left: 15px;
 }
 #deleteaccount:hover {
