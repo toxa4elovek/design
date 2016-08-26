@@ -41,21 +41,21 @@ class SubscriptionPlan extends Pitch
             'price' => 69000,
             'title' => 'Фирменный',
             'duration' => YEAR,
-            'free' => ['chooseWinnerFinishDate', 'hideproject'],
+            'free' => ['chooseWinnerFinishDate', 'hideproject', 'fullresolution'],
         ],
         3 => [
             'id' => 3,
             'price' => 89000,
             'title' => 'Корпоративный',
             'duration' => YEAR,
-            'free' => ['chooseWinnerFinishDate', 'hideproject', 'phonebrief', 'pinproject'],
+            'free' => ['chooseWinnerFinishDate', 'hideproject', 'fullresolution', 'phonebrief', 'pinproject'],
         ],
         4 => [
             'id' => 4,
             'price' => 39000,
             'title' => 'Золотая рыбка',
             'duration' => YEAR,
-            'free' => ['chooseWinnerFinishDate', 'hideproject'],
+            'free' => ['chooseWinnerFinishDate', 'hideproject', 'fullresolution'],
         ]
     ];
 

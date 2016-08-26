@@ -1692,11 +1692,17 @@ Disallow: /pitches/upload/'.$pitch['id'];
                     return 'nofile';
                 }
             }
+            $fullResolution = false;
             $pitch->applicantsCount = Solution::find('count', ['conditions' => ['pitch_id' => $this->request->id], 'fields' => ['distinct(user_id)']]);
             if (!$pitch->isCopyrighting()) {
                 $uploadnonce = Uploadnonce::getNonce();
-
-                return compact('pitch', 'uploadnonce');
+                if(((int) $pitch->category_id === 20)) {
+                    $plan = SubscriptionPlan::getPlan($pitch->user->subscription_status);
+                    if(in_array('fullresolution', $plan['free'])) {
+                        $fullResolution = true;
+                    }
+                }
+                return compact('pitch', 'uploadnonce', 'fullResolution');
             } else {
                 return $this->render(['template' => '/upload-copy', 'data' => compact('pitch')]);
             }

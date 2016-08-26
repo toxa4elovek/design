@@ -28,7 +28,7 @@ $job_types = [
             <form action="/pitches/uploadfile/<?= $pitch->id ?>.json" method="post" id="solutionfiles" class="add-pitch upload-form" enctype="multipart/form-data">
                 <input type="hidden" name="uploadnonce" id="uploadnonce" value="<?php echo $uploadnonce; ?>">
                 <input type="hidden" name="fileposition" id="fileposition" value="">
-                <div class="upload-dropzone-wrapper">
+                <div class="upload-dropzone-wrapper" <?php if($fullResolution):?>style="background-image: url('/img/upload-dropzone-sub.png');"<?php endif;?>>
                     <div id="scrollerarea">
                         <div id="scroller" class="ui-draggable"></div>
                     </div>
@@ -88,7 +88,7 @@ $job_types = [
                 </div>
                 <div style="float:left; width: 230px; margin-bottom: 20px;<?php if ($pitch->category_id != 1):?>margin-top:188px;<?php else:?>margin-top:63px;<?php endif?>">
                     <p class="supplement">
-                        Для копирайтинга достаточно написать идею в поле, или прикрепить документ в формате TXT, PDF или JPEG/RGB, не больше 5 Мбт, 800*800px. Если ваше решение победит в проекте, вы загрузите запрашиваемые заказчиком рабочие документы.
+                        Для копирайтинга достаточно написать идею в поле, или прикрепить документ в формате TXT, PDF или JPEG/RGB, не больше 5 Мб, <?php if($fullResolution):?>100% разрешение<?php else:?>800*800px<?php endif?>. Если ваше решение победит в проекте, вы загрузите запрашиваемые заказчиком рабочие документы.
                     </p>
                 </div>
                 <div style="height:2px;clear:both;width:807px;background: url('/img/obnovleniya_line.jpg') repeat-x scroll 0 100% transparent; margin-bottom: 15px;"></div>
