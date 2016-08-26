@@ -26,7 +26,8 @@ a.show-preview {
     padding-top: 26px;
 }
 .basic-info-section input[type=radio] {
-    width: 28px !important;
+    margin-right: 10px;
+    width: 14px !important;
     height: 14px;
     box-shadow: none !important;
     vertical-align: middle;
