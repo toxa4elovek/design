@@ -52,8 +52,10 @@ class Og extends \lithium\template\Helper
         if (empty($description)) {
             $description = $defaultTitle;
         } else {
-            $pos = mb_strpos($description, ' ', 140);
-            $description = mb_substr($description, 0, $pos) . '...';
+            if (mb_strlen($description, 'UTF-8') > 140) {
+                $pos = mb_strpos($description, ' ', 140);
+                $description = mb_substr($description, 0, $pos) . '...';
+            }
             /*if (preg_match('/^.{1,100}\b/su', $description, $match)) {
                 $description = $match[0] . '...';
             }*/
