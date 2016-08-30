@@ -19,6 +19,26 @@ a.buy-solution {
   display: none;
 }
 
+a.buy-solution-for-long-image {
+  position: absolute;
+  top: 220px;
+  right: 0;
+  left: 0;
+  width: 211px;
+  height: 48px !important;
+  line-height: 48px !important;
+  background-color: #ff5360;
+  color: #fbfbfb;
+  font-family: Arial, serif;
+  font-size: 12px;
+  font-weight: 400;
+  padding-left: 10px;
+  padding-right: 10px;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+  margin: 0 auto;
+  display: none;
+}
+
 a.buy-solution:hover,
 a.buy-solution:active {
   background-color: #f83d4b;
@@ -35,6 +55,7 @@ a.buy-solution:active {
   opacity: 0.3;
 }
 
-.logosale-container:hover a.buy-solution {
+.logosale-container:hover a.buy-solution,
+.logosale-container:hover a.buy-solution-for-long-image {
   display: block;
 }

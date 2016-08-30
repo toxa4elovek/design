@@ -33,9 +33,15 @@ $(document).ready(function () {
       response.data.forEach(function (solution) {
         if (solution.ready === true) {
           let imageContainer = $(`a[data-solution-id=${solution.id}]`)
-          imageContainer[0].className += ' logosale-container'
-          let url = `https://www.godesigner.ru/pitches/viewsolution/${solution.id}`
-          imageContainer.append(`<a href="${url}" class="buy-solution clean-style-button">Купить лого за 9500 руб.</a>`)
+          $.each(imageContainer, function (index, object) {
+            let containerName = 'buy-solution'
+            let url = `https://godesigner.ru/pitches/viewsolution/${solution.id}`
+            if ($('img', object).height() > $('img', object).width()) {
+              containerName = 'buy-solution-for-long-image'
+            }
+            object.className += ' logosale-container'
+            $(object).append(`<a href="${url}" class="${containerName} clean-style-button">Купить лого за 9500 руб.</a>`)
+          })
         }
       })
     }
