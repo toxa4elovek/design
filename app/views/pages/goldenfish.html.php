@@ -5,10 +5,11 @@
     <main class="lp-golden-fish">
         <header>
             <div class="text">
-                <h3>бизнес-предложение</h3>
+                <h3>бизнес-план</h3>
                 <h1>Золотая рыбка</h1>
             </div>
-            <p>Решение бизнес-задач ваших клиентов силами профессиональных дизайнеров и копирайтеров сервиса. Мы гарантируем, что вы получите широкий выбор решений даже для проектов от 500 рублей, или мы вернем вам деньги.
+            <p>Решайте задачи клиентов силами дизайнеров и копирайтеров сервиса.
+                Зарабатывайте на разнице гонораров. Мы вернем деньги, если идеи не понравятся.
             </p>
             <div class="buttons">
                 <a href="/subscription_plans/subscriber/4" class="yellow-button clean-style-button ">Начать зарабатывать</a>
@@ -20,7 +21,7 @@
 
             <div class="calculator">
                 <div class="sliders">
-                    <h2>Ваша прибыль:</h2>
+                    <h2>Рассчитайте прибыль:</h2>
 
                     <ul>
                         <li>Клиентов в месяц</li>
@@ -62,22 +63,21 @@
                     <img src="/img/pages/golden-fish/Icon_I.gif" alt="Любое время и место работы">
                     <strong>Любое время и место работы</strong>
                     Количество прибыли зависит<br>
-                    только от вашей занятости</li>
+                    только от занятости</li>
                 <li class="ideas">
                     <img src="/img/pages/golden-fish/Icon_II.gif" alt="100 идей на проект">
                     <strong>100 идей на проект</strong>
-                    От 500 рублей и пары часов</li>
+                    Задачи любой сложности<br>
+                    от 500 р. и пары часов</li>
                 <li class="profit">
                     <img src="/img/pages/golden-fish/Icon_III.gif" alt="Неограниченная прибыль">
                     <strong>Неограниченная прибыль</strong>
-                    Проекты с прибылью<br>
-                    до десятков тысяч рублей</li>
+                    Зарабатывайте на разнице<br> стоимости заказа<br> и гонорара автору</li>
                 <li class="guarantee">
                     <img src="/img/pages/golden-fish/Icon_IV.gif" alt="Сохранность денег">
                     <strong>Сохранность денег</strong>
-                    Если вам не нравится<br>
-                    результат - деньги автоматически<br>
-                    вернутся к вам на счет</li>
+                    Мы вернем деньги,<br>
+                    если решения не понравятся</li>
             </ul>
             <div class="clear"></div>
         </section>
@@ -86,11 +86,11 @@
             <div class="header-profit"><img src="/img/pages/golden-fish/icons-with-lines.png" alt="Иконки"></div>
             <ul>
                 <li class="publish"><strong>Публикуйте задачи клиента</strong>
-                    Мы не берем сервисный сбор в течение года, вы оплачиваете только гонорар дизайнеру и копирайтеру.</li>
+                    Опишите задачу, ответив на вопросы,<br>и получайте готовые идеи через пару часов.</li>
                 <li class="choose"><strong>Выбирайте из ~100 креативных идей</strong>
-                    С нами вы получите ~100 идей на логотип и ~240 идей на нейминг в каждом проекте, что в десятки раз больше, чем от одного фрилансера.</li>
+                    Дизайнеры предложат ~100 идей на логотип и ~240 идей на нейминг, что в 10 раз больше, чем от 1 фрилансера.</li>
                 <li class="sell"><strong>Продавайте идеи со своей наценкой</strong>
-                    Зарабатывайте за ведение проекта на разнице: бюджет проекта (минус) гонорар исполнителю.</li>
+                    Устанавливайте свои цены, и зарабатывайте<br>на разнице гонораров вам и исполнителю.</li>
             </ul>
         </section>
         <section class="lp-agency">
@@ -98,7 +98,7 @@
                 <h2>Cтаньте директором<br/>
                     собственного рекламного<br/>
                     агентства</h2>
-                <p>с нашим бизнес-предложением “Золотая рыбка” вам останется только искать клиентов, а дизайнеры найдутся у нас.</p>
+                <p>С бизнес-планом «Золотая рыбка» вы ищите клиентов,<br>а дизайнеры и копирайтеры найдутся у нас.</p>
                 <div>
                     <ul class="call-to-action">
                         <li class="price">
@@ -119,17 +119,17 @@
                 <h1>вы получите</h1>
             </div>
             <ul>
-                <li class="rubles"><strong>Вернем деньги</strong>, если решения
-                    вам не понравятся</li>
-                <li class="glass"><strong>30 000</strong> дизайнеров
+                <li class="rubles">Вернем деньги, если решения
+                    не понравятся</li>
+                <li class="glass">30 000 дизайнеров<br>
                     и копирайтеров</li>
-                <li class="pig third"><strong>Отсутствие</strong> сервисного
-                    <strong>сбора</strong> в течение одного года</li>
-                <li class="files_projects">Проекты любой сложности
-                    и бюджета (<strong>от 500 руб.</strong>)</li>
-                <li class="presentation"><strong>Презентация в pdf</strong>
+                <li class="pig third">Отсутствие сервисного<br>
+                    сбора в течение одного года</li>
+                <li class="files_projects">Задачи любой сложности
+                    и бюджета от 500 руб.</li>
+                <li class="presentation">Презентация в pdf<br>
                     для клиента</li>
-                <li class="eye third">Можно <strong>скрыть информацию</strong>
+                <li class="eye third">Можно скрыть информацию
                     из общего доступа</li>
             </ul>
         </section>
@@ -143,7 +143,7 @@
                     ?>
                     <div class="img-container">
                         <img src="https://godesigner.ru/<?= $this->Solution->renderImageUrl($solution->images['solution_promo'], 0) ?>" alt="Решение" />
-                        <a class="overlay" href="/pitches/viewsolution/<?= $solution->id ?>">
+                        <a class="overlay" href="/pitches/view/<?= $solution->pitch_id ?>">
                             <?= $solution->pitch->title ?>
                             <span><?php echo $this->moneyFormatter->formatMoney($solution->pitch->price, ['suffix' => ' Р']) ?></span>
                         </a>
@@ -184,5 +184,6 @@
 <?=$this->html->script([
     'jquery-ui-1.11.4.min.js',
     '/js/slick/slick.min.js',
+    '/js/libgif.js',
     'pages/golden-fish.js'
 ], ['inline' => false])?>

@@ -15,7 +15,6 @@ $(function () {
     const award = parseInt($('#award').data('award'))
     const clients = parseInt($('#clients').data('clients'))
     const result = parseInt(((margin / 100) * award * clients) * 12)
-    console.log(result)
     $('#result').html(formatMoney(result.toString()) + ' Р')
   }
 

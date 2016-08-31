@@ -56,7 +56,7 @@ class PagesController extends AppController
 
     public function goldenfish()
     {
-        $solutions = Solution::all([
+        $solutionRecords = Solution::all([
             'conditions' => [
                 'Pitch.category_id' => 20,
                 'Solution.awarded' => 1,
@@ -65,7 +65,10 @@ class PagesController extends AppController
             'limit' => 96,
             'with' => ['Pitch']
         ]);
-        foreach ($solutions as $solution) {
+        foreach ($solutionRecords as $solution) {
+            if($solution->pitch->isSubscriberProjectForCopyrighting()) {
+                continue;
+            }
             if(isset($solution->images['solution_promo'])) {
                 continue;
             }
@@ -100,6 +103,28 @@ class PagesController extends AppController
                 Solutionfile::create($data)->save();
             }
             $solution = Solution::first($solution->id);
+        }
+        $separatorPrice = 5000;
+        $solutions = $lowList = $highList = [];
+        $totalCount = count($solutionRecords);
+        foreach ($solutionRecords as $solution) {
+            if($solution->pitch->isSubscriberProjectForCopyrighting()) {
+                continue;
+            }
+            if((int) $solution->pitch->price < $separatorPrice) {
+                $lowList[] = $solution;
+            }else {
+                $highList[] = $solution;
+            }
+            //$solutions[] = $solution;
+        }
+        for($i = 0; $i < $totalCount; $i++) {
+            if(count($lowList) >= ($i + 1)) {
+                $solutions[] = $lowList[$i];
+            }
+            if(count($highList) >= ($i + 1)) {
+                $solutions[] = $highList[$i];
+            }
         }
         return compact('solutions');
     }
@@ -247,24 +272,5 @@ class PagesController extends AppController
             }
         }
     }
-/*
-    public function twitter() {
-        $postsToPost = Wp_post::getPostsForStream(time() - (6 * DAY));
-        $twitter = new TwitterAPI([
-            'consumer_key' => '8KowPOOLHqbLQPKt8JpwnLpTn',
-            'consumer_secret' => 'Guna29r1BY8gEofz2amAIfPo1XcHJWNGI8Nzn6wiEwNlykAHhy',
-            'user_token' => '76610418-JxUuuxQdUOaxc3uwxRjBUG4rXUdIABjNYAuhKP7uh',
-            'user_secret' => '8qoejI0OTXHq56wp2QKPz16KoiB9w1sQQUncl6ilL20eh'
-        ]);
-        foreach($postsToPost as $post) {
-            $url = 'http://www.tutdesign.ru/cats/' . $post->category . '/' . $post->ID .'-' . $post->post_name . '.html';
-            $data = [
-                'message' => "$post->post_title $url",
-                'picture' => '/var/new/wp-content/uploads/' . $post->thumbnail
-            ];
-            $twitter->postMessageToPage($data);
-        }
-        die();
-    }
-*/
+
 }

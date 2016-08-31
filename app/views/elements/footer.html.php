@@ -13,42 +13,42 @@
         <nav class="nav">
             <p>
                 <?php if (preg_match('@pages/about@', $_SERVER["REQUEST_URI"])): ?>
-                    <?= $this->html->link('О проекте', 'Pages::about', array('style' => 'color: #4a4c55')) ?> /
+                    <?= $this->html->link('О проекте', 'Pages::about', ['style' => 'color: #4a4c55']) ?> /
                 <?php else: ?>
                     <?= $this->html->link('О проекте', '/pages/about') ?> /
                 <?php endif ?>
                 <?php if (preg_match('@pages/howitworks@', $_SERVER["REQUEST_URI"])): ?>
-                    <?= $this->html->link('Как это работает', 'Pages::howitworks', array('style' => 'color: #4a4c55')) ?> /
+                    <?= $this->html->link('Как это работает', 'Pages::howitworks', ['style' => 'color: #4a4c55']) ?> /
                 <?php else: ?>
                     <?= $this->html->link('Как это работает', '/pages/howitworks') ?> /
                 <?php endif ?>
                 <?php if (preg_match('@pages/to_designers@', $_SERVER["REQUEST_URI"])): ?>
-                    <?= $this->html->link('Дизайнерам', 'Pages::to_designers', array('style' => 'color: #4a4c55')) ?> /
+                    <?= $this->html->link('Дизайнерам', 'Pages::to_designers', ['style' => 'color: #4a4c55']) ?> /
                 <?php else: ?>
                     <?= $this->html->link('Дизайнерам', '/pages/to_designers') ?> /
                 <?php endif ?>
                 <?php if (preg_match('@pages/referal$@', $_SERVER["REQUEST_URI"])): ?>
-                    <?= $this->html->link('Пригласи друга', 'Pages::referal', array('style' => 'color: #4a4c55')) ?> /
+                    <?= $this->html->link('Пригласи друга', 'Pages::referal', ['style' => 'color: #4a4c55']) ?> /
                 <?php else: ?>
                     <?= $this->html->link('Пригласи друга', '/pages/referal') ?> /
                 <?php endif ?>
                 <?php if (preg_match('@questions@', $_SERVER["REQUEST_URI"])): ?>
-                    <?= $this->html->link('Тест', 'Questions::index', array('style' => 'color: #4a4c55')) ?> /
+                    <?= $this->html->link('Тест', 'Questions::index', ['style' => 'color: #4a4c55']) ?> /
                 <?php else: ?>
                     <?= $this->html->link('Тест', '/questions') ?> /
                 <?php endif ?>
                 <?php if (preg_match('@posts$@', $_SERVER["REQUEST_URI"])): ?>
-                    <?= $this->html->link('Блог', 'Posts::index', array('style' => 'color: #4a4c55')) ?> /
+                    <?= $this->html->link('Блог', 'Posts::index', ['style' => 'color: #4a4c55']) ?> /
                 <?php else: ?>
                     <?= $this->html->link('Блог', '/posts') ?> /
                 <?php endif ?>
                 <?php if (preg_match('@news@', $_SERVER["REQUEST_URI"])): ?>
-                    <?= $this->html->link('Лента', '/news', array('style' => 'color: #4a4c55')) ?> /
+                    <?= $this->html->link('Лента', '/news', ['style' => 'color: #4a4c55']) ?> /
                 <?php else: ?>
                     <?= $this->html->link('Лента', '/news') ?> /
                 <?php endif ?>
                 <?php if (preg_match('@answers@', $_SERVER["REQUEST_URI"])): ?>
-                    <?= $this->html->link('Помощь', 'Answers::index', array('style' => 'color: #4a4c55')) ?> /
+                    <?= $this->html->link('Помощь', 'Answers::index', ['style' => 'color: #4a4c55']) ?> /
                 <?php else: ?>
                     <?= $this->html->link('Помощь', '/answers') ?> /
                 <?php endif ?>
@@ -58,10 +58,11 @@
                     <a href="/pages/contacts">Контакты</a>
                 <?php endif ?>
                 <br>
-                <?= $this->html->link('Создать проект', '/pitches/create', array('class' => 'bottom-link-footer', 'style' => 'margin-left: 0;')) ?> /
-                    &nbsp;<?= $this->html->link('Логотип в один клик', '/pages/fastpitch', array('style' => 'margin-left: 0;')) ?> /
-                &nbsp;<?= $this->html->link('Распродажа логотипов', '/logosale', array('style' => 'margin-left: 0;')) ?> /
-                <strong>&nbsp;<?= $this->html->link('Абонентское обслуживание', '/pages/subscribe', array('style' => 'margin-left: 0;color: #5c9263')) ?></strong>
+                <?= $this->html->link('Создать проект', '/pitches/create', ['class' => 'bottom-link-footer', 'style' => 'margin-left: 0;']) ?> /
+                    &nbsp;<?= $this->html->link('Логотип в один клик', '/pages/fastpitch', ['style' => 'margin-left: 0;']) ?> /
+                &nbsp;<?= $this->html->link('Распродажа логотипов', '/logosale', ['style' => 'margin-left: 0;']) ?> /
+                &nbsp;<?= $this->html->link('Абонентское обслуживание', '/pages/subscribe', ['style' => 'margin-left: 0;']) ?> /
+                <strong>&nbsp;<?= $this->html->link('Золотая рыбка', '/golden-fish', ['style' => 'margin-left: 0;color: #5c9263']) ?></strong>
             </p>
         </nav><!-- .nav -->
         <ul class="pay-systems">
