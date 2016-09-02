@@ -148,11 +148,20 @@ class UserMailer extends \li3_mailer\extensions\Mailer
     {
         if (((int) $gradeRecord->site_rating <= 3) && ($gradeRecord->text === '')) {
             if ((int) $gradeRecord->work_rating > 3) {
+                $promocode = Promocode::create([
+                    'code' => Promocode::generateToken(),
+                    'type' => 'custom_discount',
+                    'starts' => date(MYSQL_DATETIME_FORMAT),
+                    'expires' => date(MYSQL_DATETIME_FORMAT, time() + (MONTH)),
+                    'user_id' => $user->id,
+                    'data' => 20
+                ]);
+                $promocode->save();
                 return self::_mail([
                     'use-smtp' => true,
                     'to' => $user->email,
                     'subject' => 'Спасибо за отзыв: как нам стать лучше?',
-                    'data' => compact('user', 'gradeRecord')
+                    'data' => compact('user', 'gradeRecord', 'promocode')
                 ]);
             } elseif ((int) $gradeRecord->work_rating === 3) {
                 $promocode = Promocode::create([

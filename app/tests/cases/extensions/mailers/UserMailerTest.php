@@ -37,8 +37,10 @@ class UserMailerTest extends  AppUnit
         $html = UserMailer::sendEmailAfterGrade($grade, $user);
         $this->assertPattern('/Здравствуйте, Алексей!/', $html);
         $this->assertPattern('/Вы завершили проект на сайте, но остались недовольны GoDesigner/', $html);
-        $this->assertPattern('/Напишите, что не понравилось, и как улучшить сервис?/', $html);
+        $this->assertPattern('/Напишите на <a href="mailto:team@godesigner.ru">team@godesigner.ru<\/a>, что не понравилось, и как улучшить сервис?/', $html);
         $this->assertPattern('/Мы работаем над ошибками и хотим стать лучше/', $html);
+        $this->assertPattern('/В благодарность примите разовый промокод «[\w]{4}», который сэкономит 20% сервисного сбора при новом заказе\./', $html);
+
 
         $grade = Grade::create([
             'text' => '',
