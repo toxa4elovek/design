@@ -51,7 +51,7 @@ class PitchesController extends AppController
         'crowdsourcing', 'promocode', 'index', 'printpitch', 'robots', 'fillbrief', 'add', 'create',
         'brief', 'activate', 'view', 'details', 'paymaster', 'callback', 'payanyway', 'viewsolution',
         'getlatestsolution', 'getpitchdata', 'designers', 'getcommentsnew', 'apipitchdata', 'addfastpitch', 'fastpitch',
-        'getpdf'
+        'getpdf', 'prepare_data'
     ];
 
     /**
@@ -2109,5 +2109,91 @@ Disallow: /pitches/upload/'.$pitch['id'];
         }
 
         return $this->redirect('/pitches/view/'.$id);
+    }
+
+    /**
+     * Метод для подготовки данных для R
+     */
+    public function prepare_data() {
+        /**
+         * Данные:
+         *
+         * category_id
+         * price
+         * Кол-во доп. опций
+         * ideas_count
+         * количество оценок
+         * количество комментариев
+         * флаг возврата
+         * длительность проекта
+         *
+         */
+        $projects = Pitch::all(['conditions' => [
+            'billed' => 1,
+            'published' => 1,
+            'guaranteed' => 0,
+            'type' => ['', 'company_project']
+        ]]);
+        foreach ($projects as $project) {
+            $project->refund = 0;
+            if($note = Note::first(['conditions' => ['Note.pitch_id' => $project->id]])) {
+                if($note->status == 2) {
+                    $project->refund = 1;
+                }
+            }
+            $project->days = round((strtotime($project->finishDate) - strtotime($project->started)) / DAY);
+            $receipt = Receipt::fetchReceipt($project->id);
+            $project->addonsCount = 0;
+            foreach($receipt as $row) {
+                if((preg_match('/Награда/i', $row->name)) || (preg_match('/Сбор/i', $row->name))) {
+                    continue;
+                }
+                if((int) $row->value === 0) {
+                    continue;
+                }
+                $project->addonsCount++;
+            }
+            $project->commentsNum = Comment::count(['conditions' => [
+                'Comment.user_id' => $project->user_id
+            ]]);
+            $project->ratingNum = Solution::count(['conditions' => [
+                'Solution.pitch_id' => $project->id,
+                'Solution.rating' => ['>' => 0]
+            ]]);
+        }
+        $array = [];
+        $array[] = [
+            'CATEGORY_ID',
+            'USER_ID',
+            'PRICE',
+            'ADDONSCOUNT',
+            'IDEAS_COUNT',
+            'RATINGNUM',
+            'COMMENTSNUM',
+            'REFUND',
+            'DAYSd'
+        ];
+        foreach($projects as $project) {
+            $array[] = [
+                $project->category_id,
+                $project->user_id,
+                $project->price,
+                $project->addonsCount,
+                $project->ideas_count,
+                $project->ratingNum,
+                $project->commentsNum,
+                $project->refund,
+                $project->days
+            ];
+        }
+        $filename = "data.csv";
+        header('Content-Type: application/csv');
+        header('Content-Disposition: attachment; filename="'.$filename.'";');
+        $f = fopen('php://output', 'w');
+
+        foreach ($array as $line) {
+            fputcsv($f, $line, ',');
+        }
+        die();
     }
 }
