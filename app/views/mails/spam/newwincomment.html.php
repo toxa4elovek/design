@@ -16,7 +16,7 @@ if($blue) {
 ?>
 <img src="<?= $imgSrc?>" width="200">
 
-<table width="800">
+<table>
     <tr><td width="5"></td><td width="30"></td><td>
         <span style="color: #AEAEAE; line-height: 17px; font-size: 11px; font-family: Arial, sans-serif;">ЗДРАВСТВУЙТЕ <?=mb_strtoupper($user->first_name, 'utf-8')?>!</span><br>
         <span style="color: #AEAEAE; line-height: 17px; font-size: 11px; font-family: Arial, sans-serif;">ОБНОВЛЕНИЕ ЗАВЕРШАЮЩЕГО ПРОЦЕССА.</span>
@@ -30,7 +30,7 @@ if($blue) {
         <td>
             <a style="color: <?= $color?>; line-height: 17px; font-size: 20px; font-weight: bold; font-family: Arial, sans-serif;text-decoration: none;" href="https://www.godesigner.ru/users/step4/<?=$solution->id?>"><?=$pitch->title?></a><br/>
             <span style="color: #AEAEAE; line-height: 17px; font-size: 11px; font-family: Arial, sans-serif;"><?=$this->view()->render(array('template' => 'pitch-info'), array('pitch' => $pitch));?></span><br/>
-            <span style="color: #444444; line-height: 17px; font-size: 12px; font-family: Arial, sans-serif;"><?=$comment->text?></span><br/>
+            <span style="color: #444444; line-height: 17px; font-size: 12px; font-family: Arial, sans-serif;"><?php echo $comment->text?></span><br/>
         </td></tr>
     <tr>
         <td colspan="3" height="100"></td>
