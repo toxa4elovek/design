@@ -103,7 +103,7 @@
                     <ul class="call-to-action">
                         <li class="price">
                             <h3>всего за</h3>
-                            <h1>39 000 Р <span style="font-size: 20px;">в год</span></h1>
+                            <h1>39 000<span style="font-size: 20px;">руб./год</span></h1>
                         </li>
                         <li class="press-button">
                             <a href="/subscription_plans/subscriber/4" class="yellow-button clean-style-button ">Начать зарабатывать</a>

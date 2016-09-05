@@ -1,10 +1,14 @@
 .lp-wrapper {
-  min-width: 1684px;
+  min-width: 1226px;
 }
 .lp-golden-fish {
   position: relative;
   top: -7px;
   background: #fff;
+}
+
+.lp-golden-fish section {
+  width: 100%;
 }
 
 .lp-golden-fish header {
