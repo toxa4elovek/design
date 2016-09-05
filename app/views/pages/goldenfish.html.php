@@ -31,14 +31,14 @@
                     <div class="gf-slider clients"></div>
 
                     <ul>
-                        <li>Средний гонорар</li>
+                        <li>Средний гонорар исполнителю</li>
                         <li id="award" data-award="50000">50 000 Р</li>
                     </ul>
                     <div class="clear"></div>
                     <div class="gf-slider award"></div>
 
                     <ul>
-                        <li>Наценка в % <span>(маржинальность)</span></li>
+                        <li>Ваша наценка в %</li>
                         <li id="margin" data-margin="25">25</li>
                     </ul>
                     <div class="clear"></div>
@@ -103,7 +103,7 @@
                     <ul class="call-to-action">
                         <li class="price">
                             <h3>всего за</h3>
-                            <h1>39 000 Р</h1>
+                            <h1>39 000 Р <span style="font-size: 20px;">в год</span></h1>
                         </li>
                         <li class="press-button">
                             <a href="/subscription_plans/subscriber/4" class="yellow-button clean-style-button ">Начать зарабатывать</a>
@@ -133,8 +133,12 @@
                     из общего доступа</li>
             </ul>
         </section>
-        <section class="lp-projects">
-            <h2>Реализованные проекты</h2>
+        <section class="lp-projects" >
+            <h2 style="position: relative;">Реализованные проекты
+                <div class="arrows-container">
+                    <div class="arrows"></div>
+                </div>
+            </h2>
             <div class="lp-projects-slider">
                 <?php foreach ($solutions as $solution):
                     if ((!isset($solution->images)) || (empty($solution->images)) || ($this->Solution->renderImageUrl($solution->images['solution_promo'], 0) === '')):
