@@ -1,4 +1,4 @@
-<div class="wrapper">
+<div class="wrapper lp-wrapper">
 
     <?=$this->view()->render(['element' => 'header'], ['logo' => 'logo', 'header' => 'header2'])?>
 
