@@ -7,7 +7,7 @@
 <body style="margin: 0; padding: 0;">
 <img src="https://www.godesigner.ru/img/logo_original-01.png" width="200">
 
-<table width="800">
+<table>
     <tr><td width="5"></td><td width="30"></td><td>
             <span style="color: #444444; line-height: 17px; font-size: 12px; font-family: Arial, sans-serif;">Здравствуйте, <?=$user->first_name?>!</span><br>
         </td></tr>

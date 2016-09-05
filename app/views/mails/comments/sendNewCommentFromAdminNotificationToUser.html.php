@@ -7,7 +7,7 @@
 <body style="margin: 0; padding: 0;">
     <img src="https://www.godesigner.ru/img/logo_original-01.png" width="200">
 
-    <table width="800">
+    <table>
         <tr><td colspan="3" height="15"></td></tr>
         <tr><td width="25"></td><td valign="top"></td>
             <td>

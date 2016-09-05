@@ -7,7 +7,7 @@
 <body style="margin: 0; padding: 0;">
     <img src="https://www.godesigner.ru/img/logo_original-01.png" width="200">
 
-    <table width="800">
+    <table>
         <tr><td width="5"></td><td width="30"></td><td>
             <span style="color: #AEAEAE; line-height: 17px; font-size: 11px; font-family: Arial, sans-serif;">ЗДРАВСТВУЙТЕ <?=mb_strtoupper($user->first_name, 'utf-8')?>!</span><br>
             <span style="color: #AEAEAE; line-height: 17px; font-size: 11px; font-family: Arial, sans-serif;">ДОБАВЛЕНО РЕШЕНИЕ</span>
