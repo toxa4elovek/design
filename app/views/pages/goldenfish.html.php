@@ -13,7 +13,7 @@
             </p>
             <div class="buttons">
                 <a href="/subscription_plans/subscriber/4" class="yellow-button clean-style-button ">Начать зарабатывать</a>
-                <a href="#" class="empty-button clean-style-button ">Как это работает</a>
+                <a href="/golden-fish/how-it-works" class="empty-button clean-style-button ">Как это работает</a>
             </div>
             <div class="wave"></div>
         </header>

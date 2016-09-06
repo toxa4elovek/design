@@ -41,9 +41,10 @@ Router::connect('/pitches.{:type}', 'Pitches::index');
 Router::connect('/pitches/add.{:type}', 'Pitches::add');
 Router::connect('/pitches/agreement/{:id}.txt', 'Pitches::agreement');
 Router::connect('/urls/{:short}', 'Urls::view');
-Router::connect('/pitches/{:category:\d+}', array('controller' => 'Pitches', 'action' => 'index', 'category' => 'all'));
-Router::connect('/pitches/getpdf/godesigner-pitch-{:id}.pdf', array('Pitches::getpdf'));
-Router::connect('/addons/getpdf/godesigner-pitch-{:id}.pdf', array('Addons::getpdf'));
+Router::connect('/golden-fish/how-it-works', ['controller' => 'Answers', 'action' => 'view', 'id' => 111]);
+Router::connect('/pitches/{:category:\d+}', ['controller' => 'Pitches', 'action' => 'index', 'category' => 'all']);
+Router::connect('/pitches/getpdf/godesigner-pitch-{:id}.pdf', ['Pitches::getpdf']);
+Router::connect('/addons/getpdf/godesigner-pitch-{:id}.pdf', ['Addons::getpdf']);
 Router::connect('/callback', 'Pitches::callback');
 Router::connect('/pitchfiles/add.{:type}', 'Pitchfiles::add');
 Router::connect('/register.{:type}', 'Users::registration');
@@ -56,15 +57,15 @@ Router::connect('/pitches/details/{:id}', 'Pitches::details');
 Router::connect('/pitches/designers/{:id}', 'Pitches::designers');
 Router::connect('/pitches/newwinner/{:id}', 'Pitches::newwinner');
 Router::connect('/posts/view/{:id}', 'Posts::view');
-Router::connect('/pitches/brief/{:category:\d+}', array('controller' => 'Pitches', 'action' => 'brief', 'category' => null));
-Router::connect('/users/step3/{:id:\d+}/{:confirm}', array('controller' => 'users', 'action' => 'step3'));
-Router::connect('/users/step3/{:id:\d+}', array('controller' => 'users', 'action' => 'step3', 'confirm' => null));
-Router::connect('/users/step4/{:id:\d+}/{:confirm}', array('controller' => 'users', 'action' => 'step4'));
-Router::connect('/users/step4/{:id:\d+}', array('controller' => 'users', 'action' => 'step4', 'confirm' => null));
-Router::connect('/files/{:filename}', array('Files::download'));
-Router::connect('/pitchfiles/delete', array('Pitchfiles::delete'));
-Router::connect('/pitchfiles/addDescription', array('Pitchfiles::addDescription'));
-Router::connect('/pitchfiles/{:filename}', array('Pitchfiles::download'));
+Router::connect('/pitches/brief/{:category:\d+}', ['controller' => 'Pitches', 'action' => 'brief', 'category' => null]);
+Router::connect('/users/step3/{:id:\d+}/{:confirm}', ['controller' => 'users', 'action' => 'step3']);
+Router::connect('/users/step3/{:id:\d+}', ['controller' => 'users', 'action' => 'step3', 'confirm' => null]);
+Router::connect('/users/step4/{:id:\d+}/{:confirm}', ['controller' => 'users', 'action' => 'step4']);
+Router::connect('/users/step4/{:id:\d+}', ['controller' => 'users', 'action' => 'step4', 'confirm' => null]);
+Router::connect('/files/{:filename}', ['Files::download']);
+Router::connect('/pitchfiles/delete', ['Pitchfiles::delete']);
+Router::connect('/pitchfiles/addDescription', ['Pitchfiles::addDescription']);
+Router::connect('/pitchfiles/{:filename}', ['Pitchfiles::download']);
 Router::connect('/news', 'Users::feed');
 Router::connect('/logosale', 'Solutions::logosale');
 Router::connect('/payture_callback', 'Payments::payture_callback');
@@ -84,8 +85,8 @@ Router::connect('/pages/{:args}', 'Pages::view');
  * [http://path/to/app/test](/test) to run tests.
  */
 if (!Environment::is('production')) {
-	Router::connect('/test/{:args}', array('controller' => 'lithium\test\Controller'));
-	Router::connect('/test', array('controller' => 'lithium\test\Controller'));
+    Router::connect('/test/{:args}', ['controller' => 'lithium\test\Controller']);
+    Router::connect('/test', ['controller' => 'lithium\test\Controller']);
 }
 
 /**
@@ -99,7 +100,7 @@ if (!Environment::is('production')) {
  * is an integer, uncomment the routes below to enable URLs like `/posts/edit/1138`,
  * `/posts/view/1138.json`, etc.
  */
- Router::connect('/{:controller}/{:action}/{:id:\d+}.{:type}', array('id' => null));
+ Router::connect('/{:controller}/{:action}/{:id:\d+}.{:type}', ['id' => null]);
  Router::connect('/{:controller}/{:action}/{:id:\d+}');
 
 /**
@@ -122,5 +123,3 @@ if (!Environment::is('production')) {
  * a top-down fashion.
  */
 Router::connect('/{:controller}/{:action}/{:args}');
-
-?>
