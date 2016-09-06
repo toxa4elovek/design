@@ -1288,6 +1288,12 @@ function FeatureCart () {
             $('#pdf-link').attr('href', '/pitches/getpdf/godesigner-pitch-' + self.id + '.pdf')
           })
         } else {
+          if (typeof (response.error) !== 'undefined') {
+            if (response.error === 'lowaward') {
+              alert('Награда слишком низкая!')
+              return false
+            }
+          }
           $('#popup-brief-saved').modal({
             containerId: 'spinner',
             opacity: 80,
