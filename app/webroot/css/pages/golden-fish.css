@@ -1,7 +1,14 @@
+.lp-wrapper {
+  min-width: 1226px;
+}
 .lp-golden-fish {
   position: relative;
   top: -7px;
   background: #fff;
+}
+
+.lp-golden-fish section {
+  width: 100%;
 }
 
 .lp-golden-fish header {
@@ -315,6 +322,10 @@
   line-height: 44px;
   font-size: 55px;
 }
+.call-to-action h1 span {
+  font-size: 20px;
+  font-family: 'OfficinaSansC Bold', serif;
+}
 
 .call-to-action h3 {
   color: #353946;
@@ -330,11 +341,51 @@
 }
 
 .price {
-  width: 230px;
+  width: 290px;
   height: 55px;
   float: left;
 }
+.arrows-container {
+  position: absolute;
+  top: 14px;
+  right: -264px;
+}
+.arrows {
+  position: relative;
+  width: 48px;
+  height: 26px;
+}
+.arrows .slick-prev, .arrows .slick-next {
+  position: static;
+  float: left;
+}
+.arrows .slick-prev {
+  width: 14px;
+  height: 26px;
+  background: transparent url(/img/pages/golden-fish/left-arrow.png) no-repeat;
+  margin-right: 20px;
+}
+.arrows .slick-next {
+  width: 14px;
+  height: 26px;
+  background: transparent url(/img/pages/golden-fish/right-arrow.png) no-repeat;
+}
+.arrows .slick-prev:before {
+  content: ""
+}
+.arrows .slick-next:before {
+  content: ""
+}
+.arrows .slick-prev:hover,
+.arrows .slick-prev:focus {
+  background: transparent url(/img/pages/golden-fish/left-arrow-active.png) no-repeat;
 
+}
+.arrows .slick-next:hover,
+.arrows .slick-next:focus
+{
+  background: transparent url(/img/pages/golden-fish/right-arrow-active.png) no-repeat;
+}
 .press-button {
   float: left;
 }

@@ -70,8 +70,9 @@ $(function () {
     infinite: true,
     slidesToShow: 6,
     slidesToScroll: 6,
-    arrows: false,
-    variableWidth: true
+    arrows: true,
+    variableWidth: true,
+    appendArrows: $('.arrows')
   })
 
   $('.img-container').hover(

@@ -58,7 +58,7 @@ class Solution extends \lithium\template\Helper
                 } else {
                     $description = trim($solution->description);
                 }
-                return $description;
+                return htmlspecialchars($description, ENT_QUOTES, 'UTF-8');
             } else {
                 return '/img/copy-inv.png';
             }

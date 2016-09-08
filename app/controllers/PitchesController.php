@@ -2113,6 +2113,7 @@ Disallow: /pitches/upload/'.$pitch['id'];
 
     /**
      * Метод для подготовки данных для R
+     * @url godesigner.ru/pitches/prepare_data
      */
     public function prepare_data() {
         /**
@@ -2156,10 +2157,32 @@ Disallow: /pitches/upload/'.$pitch['id'];
             $project->commentsNum = Comment::count(['conditions' => [
                 'Comment.user_id' => $project->user_id
             ]]);
-            $project->ratingNum = Solution::count(['conditions' => [
+            $project->ratingNumFive = Solution::count(['conditions' => [
                 'Solution.pitch_id' => $project->id,
-                'Solution.rating' => ['>' => 0]
+                'Solution.rating' => 5
             ]]);
+            $project->ratingNumFourth = Solution::count(['conditions' => [
+                'Solution.pitch_id' => $project->id,
+                'Solution.rating' => 4
+            ]]);
+            $project->ratingNumThree = Solution::count(['conditions' => [
+                'Solution.pitch_id' => $project->id,
+                'Solution.rating' => ['<' => 4]
+            ]]);
+            $user = User::first($project->user_id);
+            $project->fuid = 0;
+            if(!empty($user->facebook_uid)) {
+                $project->fuid = 1;
+            }
+            /*
+            $project->ratingNumTwo = Solution::count(['conditions' => [
+                'Solution.pitch_id' => $project->id,
+                'Solution.rating' => 2
+            ]]);
+            $project->ratingNumOne = Solution::count(['conditions' => [
+                'Solution.pitch_id' => $project->id,
+                'Solution.rating' => 1
+            ]]);*/
         }
         $array = [];
         $array[] = [
@@ -2168,10 +2191,15 @@ Disallow: /pitches/upload/'.$pitch['id'];
             'PRICE',
             'ADDONSCOUNT',
             'IDEAS_COUNT',
-            'RATINGNUM',
+            'RATINGNUMFIVE',
+            'RATINGNUMFOURTH',
+            'RATINGNUMTHREE',
+            //'RATINGNUMTWO',
+            //'RATINGNUMONE',
             'COMMENTSNUM',
             'REFUND',
-            'DAYSd'
+            'DAYS',
+            'USERFACEBOOK'
         ];
         foreach($projects as $project) {
             $array[] = [
@@ -2180,10 +2208,15 @@ Disallow: /pitches/upload/'.$pitch['id'];
                 $project->price,
                 $project->addonsCount,
                 $project->ideas_count,
-                $project->ratingNum,
+                $project->ratingNumFive,
+                $project->ratingNumFourth,
+                $project->ratingNumThree,
+                //$project->ratingNumTwo,
+                //$project->ratingNumOne,
                 $project->commentsNum,
                 $project->refund,
-                $project->days
+                $project->days,
+                $project->fuid
             ];
         }
         $filename = "data.csv";
