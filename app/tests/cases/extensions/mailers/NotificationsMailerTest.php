@@ -137,4 +137,13 @@ class NotificationsMailerTest extends  AppUnit
         $this->assertPattern("/$date завершен проект «<a style=\"color: #6590a3;
 text-decoration: underline;\" href=\"http:\/\/cp.godesigner.ru\/pitches\/edit\/1\">Проверка названия<\/a>»/", $html);
     }
+
+    public function testSendNewReferalAd() {
+        $user = User::first(1);
+        $html = NotificationsMailer::sendNewReferalAd($user);
+        $this->assertPattern('/Вы получите 10 000 рублей,<br>если ваш друг станет <a style="color:#6998a1; text-decoration:none; font-size: 16px; font-family: Arial, sans-serif;line-height:23px" href="https:\/\/godesigner.ru\/pages\/subscribe">абонентом GoDesigner<\/a>/', $html);
+        $this->assertPattern('/<img src="https:\/\/godesigner.ru\/img\/mail\/10000\/button.png" alt="Получить код">/', $html);
+        $this->assertPattern('/<img src="https:\/\/godesigner.ru\/img\/mail\/10000\/hero.png" alt="Как это работает">/', $html);
+        $this->assertPattern('/<img src="https:\/\/godesigner.ru\/img\/mail\/10000\/title.png" alt="Получи 10 000 за друга!">/', $html);
+    }
 }
