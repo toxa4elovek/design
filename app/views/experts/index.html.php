@@ -1,6 +1,6 @@
 <div class="wrapper">
 
-    <?=$this->view()->render(array('element' => 'header'), array('logo' => 'logo'))?>
+    <?=$this->view()->render(['element' => 'header'], ['logo' => 'logo'])?>
 
     <div class="middle">
         <div class="middle_inner">
@@ -30,7 +30,7 @@
                     <ul>
                         <?php
                         $counter = 1;
-                        $imageArray = array(
+                        $imageArray = [
                             1 => '/img/experts/fedchenko.jpg',
                             3 => '/img/experts/kojara.jpg',
                             2 => '/img/experts/pavlov.jpg',
@@ -39,11 +39,11 @@
                             6 => '/img/experts/efremov218.jpg',
                             7 => '/img/experts/percia_218.png',
                             8 => '/img/experts/makarov_dmitry.png',
-                        );
-                        foreach($experts as $expert):
-                            if($counter > 3): $counter = 1; endif
+                        ];
+                        foreach ($experts as $expert):
+                            if ($counter > 3): $counter = 1; endif
                         ?>
-                        <li class="<?php if($counter == 1):?>next first-in-line<?php elseif($counter ==3):?>last-in-line<?php else:?>next<?php endif?>">
+                        <li class="<?php if ($counter == 1):?>next first-in-line<?php elseif ($counter ==3):?>last-in-line<?php else:?>next<?php endif?>">
                             <div class="regular">
                                 <a href="/experts/view/<?=$expert->id?>"><img src="<?=$imageArray[$expert->id]?>" alt="<?=$expert->name?>"></a>
                                 <h2><a href="/experts/view/<?=$expert->id?>"><?php echo $expert->name?></a></h2>
@@ -56,7 +56,7 @@
                         $counter++;
                         endforeach?>
 
-                        <li class="last-in-line">
+                        <li>
 
                             <div class="regular">
                                 <div style="width:218px;" class="empty-expert"></div>
@@ -80,4 +80,4 @@
     </div><!-- /middle -->
 
 </div><!-- .wrapper -->
-<?=$this->html->style(array('/css/common/page-title-with-flag.css', '/text', '/howitworks', '/experts'), array('inline' => false))?>
+<?=$this->html->style(['/css/common/page-title-with-flag.css', '/text', '/howitworks', '/experts'], ['inline' => false])?>
