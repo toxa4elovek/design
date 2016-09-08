@@ -246,11 +246,12 @@ class NotificationsMailer extends \li3_mailer\extensions\Mailer
      * @param $user
      * @return bool|mixed
      */
-    public static function sendNewReferalAd($user) {
+    public static function sendNewReferalAd($user)
+    {
         return self::_mail([
             'use-smtp' => true,
             'to' => $user->email,
-            'subject' => 'Как получить 10 000 руб.?',
+            'subject' => 'Поздравляем, вы стали участников реферальной программы!',
             'data' => compact('user')
         ]);
     }

@@ -49,7 +49,9 @@ class SendNewReferalActiveNotification extends CronJob
         });
 
         array_walk($arrayOfProjects, function ($project) {
-            //NotificationsMailer::sendPenaltyEndsSoonReminder($project);
+            $solution = Solution::first($project->awarded);
+            $winner = User::first($solution->user_id);
+            NotificationsMailer::sendNewReferalAd($winner);
         });
 
         $this->_renderFooter(sprintf('%d email sent', count($arrayOfProjects)));
