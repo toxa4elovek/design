@@ -220,6 +220,13 @@ class NotificationsMailer extends \li3_mailer\extensions\Mailer
         ]);
     }
 
+    /**
+     * Метод для отправки уведомления о завершении проекта
+     *
+     * @param $project
+     * @param $targetEmail
+     * @return bool|mixed
+     */
     public static function sendProjectFinishedNotifications($project, $targetEmail)
     {
         if ($bill = Bill::first($project->id)) {
@@ -231,5 +238,20 @@ class NotificationsMailer extends \li3_mailer\extensions\Mailer
             ]);
         }
         return false;
+    }
+
+    /**
+     * Метод отправляет уведомление о доступности новой реферальной программы
+     *
+     * @param $user
+     * @return bool|mixed
+     */
+    public static function sendNewReferalAd($user) {
+        return self::_mail([
+            'use-smtp' => true,
+            'to' => $user->email,
+            'subject' => 'Как получить 10 000 руб.?',
+            'data' => compact('user')
+        ]);
     }
 }
