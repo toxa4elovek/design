@@ -44,10 +44,12 @@ $(document).ready(function () {
     }
   })
 
-  setTimeout(function () {
-    Chatra('show')
-    Chatra('openChat')
-  }, 30000)
+  if (window.isDesigner === 0) {
+    setTimeout(function () {
+      Chatra('show')
+      Chatra('openChat')
+    }, 30000)
+  }
 
   /* Download Form Select */
   if ((window.File != null) && (window.FileList != null)) {

@@ -82,10 +82,12 @@
     }
   }
 
-  setTimeout(function () {
-    Chatra('show')
-    Chatra('openChat')
-  }, 30000)
+  if (window.isDesigner === 0) {
+    setTimeout(function () {
+      Chatra('show')
+      Chatra('openChat')
+    }, 30000)
+  }
 
   $(document).on('click', '#brief-saved-ok', function () {
     $('.gotest-close').click()

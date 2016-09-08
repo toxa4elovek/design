@@ -84,6 +84,9 @@
             if(($this->user->isLoggedIn()) && ($this->user->read('user.isDesigner') || ($this->user->read('user.isCopy')))) {
                 $isDesigner = 1;
             }
+            if($this->user->isAdmin()) {
+                $isDesigner = 1;
+            }
         ?>
     <?php endif?>
     window.isDesigner = <?= $isDesigner?>;
