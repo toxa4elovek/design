@@ -28,6 +28,9 @@ class SendPenaltyActiveReminder extends CronJob
         }
         $helper = new \app\extensions\helper\Pitch();
         $arrayOfProjects = array_filter($arrayOfProjects, function ($project) use ($helper) {
+            if ($helper->isWaitingForExperts($project)) {
+                return false;
+            }
             return ($helper->getPenalty($project) > 0);
         });
 
