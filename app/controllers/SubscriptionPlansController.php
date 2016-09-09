@@ -32,12 +32,12 @@ class SubscriptionPlansController extends AppController
                 $predefined = true;
                 $value = (int) $this->request->query['amount'];
             }
-            $receipt = array(
-                array(
+            $receipt = [
+                [
                     'name' => 'Пополнение счёта',
                     'value' => $value
-                )
-            );
+                ]
+            ];
             Receipt::updateOrCreateReceiptForProject($planRecordId, $receipt);
             SubscriptionPlan::setTotalOfPayment($planRecordId, Receipt::getTotalForProject($planRecordId));
             SubscriptionPlan::setPlanForPayment($planRecordId, 0);
@@ -56,16 +56,21 @@ class SubscriptionPlansController extends AppController
                 if (($savedValue = SubscriptionPlan::getFundBalanceForPayment($planRecordId)) && ($savedValue !== null)) {
                     $value = $savedValue;
                 }
-                $receipt = array(
-                    array(
-                        'name' => 'Оплата тарифа «' . $plan['title'] . '»',
+                if($plan['id'] === 4) {
+                    $wording = 'бизнес-плана';
+                }else {
+                    $wording = 'тарифа';
+                }
+                $receipt = [
+                    [
+                        'name' => 'Оплата ' . $wording . ' «' . $plan['title'] . '»',
                         'value' => $plan['price']
-                    ),
-                    array(
+                    ],
+                    [
                         'name' => 'Пополнение счёта',
                         'value' => $value
-                    )
-                );
+                    ]
+                ];
                 $discount = 0;
                 if (User::hasActiveSubscriptionDiscount($this->userHelper->getId())) {
                     $discount = User::getSubscriptionDiscount($this->userHelper->getId());

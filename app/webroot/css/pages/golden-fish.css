@@ -101,9 +101,8 @@
   height: 38px;
   padding: 0 20px !important;
   border: 1px solid white !important;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
   color: white;
-  font-family: Arial;
+  font-family: Arial, serif;
   font-size: 12px;
   font-weight: 700;
   line-height: 38px;
@@ -652,10 +651,10 @@
 .profit-calc {
   position: relative;
   padding-left: 93px;
-  padding-top: 35px;
+  padding-top: 25px;
   background: url(/img/pages/golden-fish/profit-bg.png) no-repeat;
   width: 345px;
-  height: 189px;
+  height: 199px;
   float: left;
   margin-top: 50px;
 }
@@ -673,15 +672,22 @@
   margin-left: 5px;
 }
 
-.profit-calc span {
+.profit-calc span.from {
   position: absolute;
   left: 60px;
-  top: 87px;
+  top: 77px;
+}
+.profit-calc span.nb {
+  position: absolute;
+  left: 98px;
+  bottom: 14px;
+  font-size: 12px;
+  line-height: 16px;
 }
 
 .profit-calc a {
   position: absolute;
-  bottom: 42px;
+  bottom: 62px;
   left: 98px;
 }
 

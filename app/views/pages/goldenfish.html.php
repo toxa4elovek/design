@@ -47,8 +47,9 @@
 
                 <div class="profit-calc">
                     <h3>За 12 месяцев я получу:</h3>
-                    <span>от</span> <h1 id="result">1 500 000 Р</h1>
+                    <span class="from">от</span> <h1 id="result">1 500 000 Р</h1>
                     <a href="/subscription_plans/subscriber/4" class="yellow-button clean-style-button ">Начать зарабатывать</a>
+                    <span class="nb">39 000 руб./год<br>стоимость &laquo;Золотой рыбки&raquo;</span>
                 </div>
             </div>
 

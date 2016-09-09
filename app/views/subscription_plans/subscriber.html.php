@@ -9,6 +9,13 @@
             $startValue = $row['value'];
         }
     }
+    if($plan['id'] === 4) {
+        $heading = 'Бизнес-план';
+        $description = 'бизнес-плана';
+    }else {
+        $heading = 'Тариф';
+        $description = 'тарифного плана';
+    }
     ?>
     <script>
         var payload = {
@@ -74,13 +81,13 @@
                     $value = $this->MoneyFormatter->applyDiscount($plan['price'], $discount);
                 }
                 ?>
-                <h4 style="line-height: 30px;">Тариф «<?=$plan['title']?>» <?=$this->MoneyFormatter->formatMoney($value, array('suffix' => ' р.-'))?>
+                <h4 style="line-height: 30px;"><?=$heading?> «<?=$plan['title']?>» <?=$this->MoneyFormatter->formatMoney($value, array('suffix' => ' р.-'))?>
                     <?php if($discount):?><br/>(со скидкой <?=$discount?>%)<?php endif;?>
 
                 </h4>
                 <p>Действителен с <?= date('d.m.Y')?>–<?= date('d.m.Y', time() + YEAR)?><br/>
-                    Стоимость тарифного плана не включает гонорары дизайнеру.<br/>
-                    При оплате тарифного плана вам будет доступен кошелёк (личный счет), пополнить который можно по мере необходимости в любое время.
+                    Стоимость <?=$description?> не включает гонорары дизайнеру.<br/>
+                    При оплате <?=$description?> вам будет доступен кошелёк (личный счет), пополнить который можно по мере необходимости в любое время.
                 </p>
             <?php else: ?>
                 <h4>Пополнение счёта</h4>
