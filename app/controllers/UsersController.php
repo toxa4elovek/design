@@ -827,6 +827,7 @@ class UsersController extends \app\controllers\AppController
                 }
                 $solution->step = 4;
                 $solution->save();
+                $solution->pitch->totalFinishDate = date(MYSQL_DATETIME_FORMAT);
                 NotificationsMailer::sendProjectFinishedNotifications($solution->pitch, 'm.elenevskaya@godesigner.ru');
                 NotificationsMailer::sendProjectFinishedNotifications($solution->pitch, 'va@godesigner.ru');
                 Pitch::finishPitch($solution->pitch_id);
@@ -888,7 +889,7 @@ class UsersController extends \app\controllers\AppController
                     $solution->awarded = 1;
                     $solution->save();
                 }
-                if($type === 'client') {
+                if ($type === 'client') {
                     $client = User::first($solution->pitch->user_id);
                     UserMailer::sendEmailAfterGrade($grade, $client);
                 }
