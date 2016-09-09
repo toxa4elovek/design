@@ -60,7 +60,7 @@
 
                             <div class="regular">
                                 <div style="width:218px;" class="empty-expert"></div>
-                                <h2 style="color:#FF585D;margin-top: 240px;">Кто следующий?</h2>
+                                <h2 style="color:#FF585D;margin-top: 10px;">Кто следующий?</h2>
                                 <p>Следите за нашими новостями и вы заметите пополнения!</p>
                                 <!--a href="" class="more">подробнее</a-->
                             </div>
