@@ -17,6 +17,18 @@
             <div class="solution-right-panel page">
                 <div class="solution-info solution-summary">
                     <div class="solution-number">#<span class="number isField"><!--  --></span></div>
+                    <div style="height: 180px;margin-top: 20px;margin-bottom: 20px;">
+                        <aside style="position: relative; top: 0; left: 0; margin-left: 0;" class="summary-price expanded">
+                            <h3>Итого:</h3>
+                            <p class="summary"><strong id="total-tag">9500р.-</strong></p><!-- .summary -->
+                            <ul id="check-tag">
+                            </ul>
+                            <div class="hide">
+                                <span id="to-pay">Перейти к оплате</span>
+                            </div>
+                        </aside><!-- .summary-price -->
+                        <!-- end: Solution Left Panel -->
+                    </div>
                     <div class="solution-rating"><div class="rating-image star0"></div> рейтинг заказчика</div>
                 </div>
                 <div class="separator"></div>
@@ -98,18 +110,6 @@
                 </div>
                 <div class="separator"></div>
                 <div class="solution-info solution-abuse isField"><!--  --></div>
-                    <div>
-                        <aside style="position: relative; top: 0; left: 0; margin-left: 45px;" class="summary-price expanded">
-                            <h3>Итого:</h3>
-                            <p class="summary"><strong id="total-tag">9500р.-</strong></p><!-- .summary -->
-                            <ul id="check-tag">
-                            </ul>
-                            <div class="hide">
-                                <span id="to-pay">Перейти к оплате</span>
-                            </div>
-                        </aside><!-- .summary-price -->
-                        <!-- end: Solution Left Panel -->
-                    </div>
             <!-- end: Solution Right Panel -->
             </div>
             <!-- start: Solution Left Panel -->

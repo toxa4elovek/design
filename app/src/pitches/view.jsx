@@ -19,7 +19,7 @@
 
   var receiptOffsetTop = 0
   var popupReady = false
-
+/*
   if ($('.summary-price').length > 0) {
     $(window).on('scroll', function () {
       if (popupReady) {
@@ -36,7 +36,7 @@
       }
     })
   }
-
+*/
   $(document).on('click', '#to-pay, .scrolldown', function () {
     $('html, body').animate({
       scrollTop: $('.solution-overlay #step3').offset().top
@@ -738,13 +738,13 @@
       var paymentContainer = $('.solution-container #step3')
       // hide receipt and buy buttons
       if (result.isSolutionReady == false) {
-        $('.summary-price').hide()
+        $('.summary-price').parent().hide()
         paymentContainer.hide()
       } else {
         if (result.pitch.status == 2) {
           $('.allow-comments', '.solution-left-panel').hide()
         }
-        $('.summary-price').show()
+        $('.summary-price').parent().show()
         paymentContainer.show()
       }
 

@@ -10,11 +10,14 @@ $(document).ready(function () {
 
   var receiptOffsetTop = 0
   var popupReady = false
-
+/*
   if ($('.summary-price').length > 0) {
     $(window).on('scroll', function () {
       if (popupReady) {
         var receipt = $('.summary-price')
+        receipt.css('position', 'relative')
+        receipt.css('top', '0')
+        receipt.css('left', '0')
         if (($(window).scrollTop() + 20) > receiptOffsetTop) {
           var parent = receipt.parent()
           var parentOffset = parent.offset()
@@ -27,7 +30,7 @@ $(document).ready(function () {
       }
     })
   }
-
+*/
   $(document).on('click', '#to-pay, .scrolldown', function () {
     $('html, body').animate({
       scrollTop: $('.solution-container #step3').offset().top
@@ -451,7 +454,7 @@ $(document).ready(function () {
     $.getJSON(urlJSON, function (result) {
       // hide receipt and buy buttons
       if (result.isSolutionReady == false) {
-        $('.summary-price').hide()
+        $('.summary-price').parent().hide()
         $('#step3').hide()
       } else {
         if (result.pitch.status == 2) {
