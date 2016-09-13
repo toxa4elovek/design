@@ -29,7 +29,7 @@ class PostAutoWarningsForClosing extends CronJob {
                 }
                 $data = array(
                 'user_id' => 108,
-                'created' => date('Y-m-d H:i:s'),
+                'created' => Pitch::getPlannedDateToComplete($project->id),
                 'solution_id' => $project->awarded,
                 'step' => $step,
                 'text' => Pitch::getAutoClosingWarningComment($project->id)
