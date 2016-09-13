@@ -2249,7 +2249,7 @@ class Pitch extends AppModel
         if (in_array($project->category_id, [3, 4])) {
             $planDaysDefault = 17;
         }
-        $planDateToComplete = date('d.m.Y H:i', (strtotime($project->awardedDate) + $planDaysDefault * DAY));
+        $planDateToComplete = self::getPlannedDateToComplete($projectId);
         $newPlanDateToComplete = date('d.m.Y H:i', (strtotime($project->awardedDate) + ($planDaysDefault + 2) * DAY));
 
         $ownerFormatted = $nameInflector->renderName($projectOwner->first_name, $projectOwner->last_name);
@@ -2259,6 +2259,22 @@ class Pitch extends AppModel
         <br/><br/>@$designerFormatted, мы просим вас выложить исходники в том виде, каком их последний раз утвердил заказчик, к $newPlanDateToComplete.
         <br/><br/>Спасибо за понимание и содействие!";
         return $result;
+    }
+
+    /**
+     * Метод возвращяет плановую дату завершения завершающего этапа
+     *
+     * @param $projectId
+     * @return false|string
+     */
+    public static function getPlannedDateToComplete($projectId) {
+        $project = Pitch::first(['conditions' => ['Pitch.id' => $projectId], 'with' => ['Category']]);
+        $planDaysDefault = $project->category->default_timelimit;
+        if (in_array($project->category_id, [3, 4])) {
+            $planDaysDefault = 17;
+        }
+        $planDateToComplete = date(MYSQL_DATETIME_FORMAT, (strtotime($project->awardedDate) + $planDaysDefault * DAY));
+        return $planDateToComplete;
     }
 
     /**
