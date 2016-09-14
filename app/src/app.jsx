@@ -167,13 +167,13 @@ $(function () {
     if (needSocialWrite) {
       $.post('/users/addsocial/' + needSocialWrite + '.json')
     }
-
+/*
     if (showMobilePopup) {
       setTimeout(function () {
         appendMobile()
       }, 5000)
     }
-
+*/
     if (showMailPopup) {
       setTimeout(function () {
         appendEmailConfirm()
