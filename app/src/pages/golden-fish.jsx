@@ -85,4 +85,12 @@ $(function () {
       })
     }
   )
+
+  if (window.isDesigner === 0) {
+    setTimeout(function () {
+      Chatra('show')
+      Chatra('openChat')
+    }, 30000)
+  }
+
 })
