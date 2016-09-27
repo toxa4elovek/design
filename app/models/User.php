@@ -52,43 +52,43 @@ class User extends AppModel
      *
      * @var array
      */
-    public static $admins = array(32, 4, 5, 108, 81, 47);
+    public static $admins = [32, 4, 5, 108, 81, 47];
     public static $adminNotifications = [32, 4, 5, 47, 108];
-    public static $experts = array();
+    public static $experts = [];
 
     /**
      * Fill Editor role user's ids here
      *
      * @var array
      */
-    public static $editors = array(32, 4, 5, 108, 81, 3049, 120, 17865, 23759);
+    public static $editors = [32, 4, 5, 108, 81, 3049, 120, 17865, 23759];
 
     /**
      * Массив хранящий айдишники авторов блога
      *
      * @var array
      */
-    public static $authors = array(8472, 18856, 25252, 30454, 34461, 37407);
+    public static $authors = [8472, 18856, 25252, 30454, 34461, 37407, 37615];
 
     /**
      * Массив хранящий айдишнки авторов ленты новостей
      *
      * @var array
      */
-    public static $feedAuthors = array(17865, 108);
+    public static $feedAuthors = [17865, 108];
 
-    protected static $_behaviors = array(
+    protected static $_behaviors = [
         'UploadableAvatar'
-    );
+    ];
 
-    public static $attaches = array('avatar' => array(
-        'moveFile' => array('preserveFileName' => false, 'path' => '/webroot/avatars/'),
-        'setPermission' => array('mode' => 0600),
-        'processImage' => array(
-            'small' => array('image_resize' => true, 'image_x' => 41, 'image_y' => 41, 'image_ratio_crop' => 'T', 'file_overwrite' => true),
-            'normal' => array('image_resize' => true, 'image_x' => 180, 'image_y' => 180, 'image_ratio_crop' => 'T', 'file_overwrite' => true),
-        ),
-    ));
+    public static $attaches = ['avatar' => [
+        'moveFile' => ['preserveFileName' => false, 'path' => '/webroot/avatars/'],
+        'setPermission' => ['mode' => 0600],
+        'processImage' => [
+            'small' => ['image_resize' => true, 'image_x' => 41, 'image_y' => 41, 'image_ratio_crop' => 'T', 'file_overwrite' => true],
+            'normal' => ['image_resize' => true, 'image_x' => 180, 'image_y' => 180, 'image_ratio_crop' => 'T', 'file_overwrite' => true],
+        ],
+    ]];
 
     public static function __init()
     {
@@ -123,52 +123,52 @@ class User extends AppModel
         });
     }
 
-    public $validates = array(
-        'password' => array(
-            array('notEmpty', 'message' => 'Требуется пароль'),
-            array('passwordConfirmed', 'message' => 'Пароли не совпадают',),
-        ),
-        'first_name' => array(
-            array('notEmpty', 'message' => 'Имя обязательно'),
-        ),
-        'last_name' => array(
-            array('notEmpty', 'message' => 'Фамилия обязетальна'),
-        ),
-        'email' => array(
-            array('userUniqueEmail', 'message' => 'Email уже занят'),
-            array('notEmpty', 'message' => 'Email обязателен'),
-            array('email', 'message' => 'Email обязателен'),
-        )
-    );
+    public $validates = [
+        'password' => [
+            ['notEmpty', 'message' => 'Требуется пароль'],
+            ['passwordConfirmed', 'message' => 'Пароли не совпадают',],
+        ],
+        'first_name' => [
+            ['notEmpty', 'message' => 'Имя обязательно'],
+        ],
+        'last_name' => [
+            ['notEmpty', 'message' => 'Фамилия обязетальна'],
+        ],
+        'email' => [
+            ['userUniqueEmail', 'message' => 'Email уже занят'],
+            ['notEmpty', 'message' => 'Email обязателен'],
+            ['email', 'message' => 'Email обязателен'],
+        ]
+    ];
 
     public function checkFacebookUser($entity, $data)
     {
-        $conditions = array(
+        $conditions = [
             'facebook_uid' => $data['facebook_uid']
-        );
-        return (bool) (self::find('first', array('conditions' => $conditions)));
+        ];
+        return (bool) (self::find('first', ['conditions' => $conditions]));
     }
 
     public function checkVkontakteUser($entity, $data)
     {
-        $conditions = array(
+        $conditions = [
             'vkontakte_uid' => $data['uid']
-        );
-        return (bool) (self::first(array('conditions' => $conditions)));
+        ];
+        return (bool) (self::first(['conditions' => $conditions]));
     }
 
     public function isUserExistsByEmail($entity, $email)
     {
-        $conditions = array(
+        $conditions = [
             'email' => $email,
             'facebook_uid' => ''
-        );
-        $fbUser = self::find('first', array('conditions' => $conditions));
-        $conditions = array(
+        ];
+        $fbUser = self::find('first', ['conditions' => $conditions]);
+        $conditions = [
             'email' => $email,
             'vkontakte_uid' => ''
-        );
-        $vkUser = self::find('first', array('conditions' => $conditions));
+        ];
+        $vkUser = self::find('first', ['conditions' => $conditions]);
         if ((!$fbUser) && (!$vkUser)) {
             return false;
         } else {
@@ -185,7 +185,7 @@ class User extends AppModel
             $gender = 2;
         }
         $screen_name = explode(' ', $data['screen_name']);
-        $saveData = array(
+        $saveData = [
             'email' => $data['email'],
             'last_name' => $screen_name[1],
             'first_name' => $screen_name[0],
@@ -193,20 +193,20 @@ class User extends AppModel
             'confirmed_email' => 1,
             'created' => date('Y-m-d H:i:s'),
             'gender' => $gender
-        );
-        if ($entity->save($saveData, array(
-                    'first_name' => array(
-                        array('notEmpty', 'message' => 'Имя обязательно'),
-                    ),
-                    'last_name' => array(
-                        array('notEmpty', 'message' => 'Фамилия обязетальна'),
-                    ),
-                    'email' => array(
-                        array('userUniqueEmail', 'message' => 'Email уже занят'),
-                        array('notEmpty', 'message' => 'Email обязателен'),
-                        array('email', 'message' => 'Email обязателен'),
-                    )
-                ))) {
+        ];
+        if ($entity->save($saveData, [
+                    'first_name' => [
+                        ['notEmpty', 'message' => 'Имя обязательно'],
+                    ],
+                    'last_name' => [
+                        ['notEmpty', 'message' => 'Фамилия обязетальна'],
+                    ],
+                    'email' => [
+                        ['userUniqueEmail', 'message' => 'Email уже занят'],
+                        ['notEmpty', 'message' => 'Email обязателен'],
+                        ['email', 'message' => 'Email обязателен'],
+                    ]
+                ])) {
             return true;
         } else {
             return false;
@@ -221,7 +221,7 @@ class User extends AppModel
         } elseif (isset($this->request->data['gender']) && $this->request->data['gender'] == 'female') {
             $gender = 2;
         }
-        $saveData = array(
+        $saveData = [
             'email' => $data['email'],
             'last_name' => $data['last_name'],
             'first_name' => $data['first_name'],
@@ -229,20 +229,20 @@ class User extends AppModel
             'confirmed_email' => 1,
             'created' => date('Y-m-d H:i:s'),
             'gender' => $gender
-        );
-        if ($entity->save($saveData, array(
-                    'first_name' => array(
-                        array('notEmpty', 'message' => 'Имя обязательно'),
-                    ),
-                    'last_name' => array(
-                        array('notEmpty', 'message' => 'Фамилия обязетальна'),
-                    ),
-                    'email' => array(
-                        array('userUniqueEmail', 'message' => 'Email уже занят'),
-                        array('notEmpty', 'message' => 'Email обязателен'),
-                        array('email', 'message' => 'Email обязателен'),
-                    )
-                ))) {
+        ];
+        if ($entity->save($saveData, [
+                    'first_name' => [
+                        ['notEmpty', 'message' => 'Имя обязательно'],
+                    ],
+                    'last_name' => [
+                        ['notEmpty', 'message' => 'Фамилия обязетальна'],
+                    ],
+                    'email' => [
+                        ['userUniqueEmail', 'message' => 'Email уже занят'],
+                        ['notEmpty', 'message' => 'Email обязателен'],
+                        ['email', 'message' => 'Email обязателен'],
+                    ]
+                ])) {
             return true;
         } else {
             return false;
@@ -293,7 +293,7 @@ class User extends AppModel
         $exists = true;
         while ($exists == true) {
             $token = substr(md5(rand() . rand()), 0, $length);
-            if (!self::first(array('conditions' => array('referal_token' => $token)))) {
+            if (!self::first(['conditions' => ['referal_token' => $token]])) {
                 $exists = false;
             }
         }
@@ -305,7 +305,7 @@ class User extends AppModel
         $exists = true;
         while ($exists == true) {
             $token = substr(md5(rand() . rand()), 0, $length);
-            if (!self::first(array('conditions' => array('subscriber_referal_token' => $token)))) {
+            if (!self::first(['conditions' => ['subscriber_referal_token' => $token]])) {
                 $exists = false;
             }
         }
@@ -316,25 +316,25 @@ class User extends AppModel
     {
         $entity->token = '';
         $entity->confirmed_email = 1;
-        $res = $entity->save(null, array('validate' => false));
+        $res = $entity->save(null, ['validate' => false]);
     }
 
     public static function getSubscribedPitches($userId)
     {
-        $pitches = Pitch::find('all', array('conditions' =>
-                    array('user_id' => $userId, 'blank' => 0, 'status' => array('<' => 2)),
-        ));
+        $pitches = Pitch::find('all', ['conditions' =>
+                    ['user_id' => $userId, 'blank' => 0, 'status' => ['<' => 2]],
+        ]);
         $pitchesIds = [];
         foreach ($pitches as $pitch) {
-            if(!$pitch->isCopyrighting()) {
+            if (!$pitch->isCopyrighting()) {
                 $pitchesIds[$pitch->id . ''] = $pitch->started;
             }
         }
-        $fav = Favourite::find('all', array('conditions' => array('Favourite.user_id' => $userId), 'order' => array('id' => 'desc'), 'with' => array('Pitch')));
+        $fav = Favourite::find('all', ['conditions' => ['Favourite.user_id' => $userId], 'order' => ['id' => 'desc'], 'with' => ['Pitch']]);
         foreach ($fav as $f) {
             $pitchesIds[$f->pitch->id . ''] = $f->created;
         }
-        $solutions = Solution::find('all', array('conditions' => array('Solution.user_id' => $userId), 'order' => array('id' => 'desc'), 'with' => array('Pitch')));
+        $solutions = Solution::find('all', ['conditions' => ['Solution.user_id' => $userId], 'order' => ['id' => 'desc'], 'with' => ['Pitch']]);
         foreach ($solutions as $s) {
             $pitchesIds[$s->pitch->id . ''] = $s->created;
         }
@@ -372,33 +372,33 @@ class User extends AppModel
     public static function getUserRelatedPitches($userId, $awarded = false)
     {
         // сначала ищем созданные пользователем питчи
-        $pitches = Pitch::find('all', array('conditions' =>
-            array(
+        $pitches = Pitch::find('all', ['conditions' =>
+            [
                 'user_id' => $userId,
                 'blank' => 0,
-                'AND' => array(
-                    array("Pitch.type != 'fund-balance'"),
-                    array("Pitch.type != 'plan-payment'"),
-                ),
-            ),
-        ));
-        $pitchesIds = array();
+                'AND' => [
+                    ["Pitch.type != 'fund-balance'"],
+                    ["Pitch.type != 'plan-payment'"],
+                ],
+            ],
+        ]);
+        $pitchesIds = [];
         foreach ($pitches as $pitch) {
             $pitchesIds[$pitch->id . ''] = $pitch->started;
         }
         // затем ищем питчи, где пользователь выложил решения
         if ($awarded) {
-            $solutions = Solution::all(array('conditions' =>
-                array(
+            $solutions = Solution::all(['conditions' =>
+                [
                     'user_id' => $userId,
-                    'OR' => array(
-                        array('awarded' => 1),
-                        array('nominated' => 1)
-                    ),
-                )
-            ));
+                    'OR' => [
+                        ['awarded' => 1],
+                        ['nominated' => 1]
+                    ],
+                ]
+            ]);
         } else {
-            $solutions = Solution::find('all', array('conditions' => array('Solution.user_id' => $userId), 'order' => array('id' => 'desc'), 'with' => array('Pitch')));
+            $solutions = Solution::find('all', ['conditions' => ['Solution.user_id' => $userId], 'order' => ['id' => 'desc'], 'with' => ['Pitch']]);
         }
 
         foreach ($solutions as $s) {
@@ -411,8 +411,8 @@ class User extends AppModel
 
     public static function getFavouritePitches($userId)
     {
-        $fav = Favourite::find('all', array('conditions' => array('Favourite.user_id' => $userId), 'with' => array('Pitch')));
-        $pitchesIds = array();
+        $fav = Favourite::find('all', ['conditions' => ['Favourite.user_id' => $userId], 'with' => ['Pitch']]);
+        $pitchesIds = [];
         foreach ($fav as $f) {
             $pitchesIds[$f->pitch->id . ''] = $f->created;
         }
@@ -422,51 +422,51 @@ class User extends AppModel
 
     public static function getTotalSolutionNum($userId)
     {
-        $count = Solution::count(array('conditions' => array('user_id' => $userId)));
+        $count = Solution::count(['conditions' => ['user_id' => $userId]]);
         return $count;
     }
 
     public static function getAwardedSolutionNum($userId)
     {
-        $count = Solution::count(array('conditions' => array('user_id' => $userId, 'OR' => array(array('awarded' => 1), array('nominated' => 1)))));
+        $count = Solution::count(['conditions' => ['user_id' => $userId, 'OR' => [['awarded' => 1], ['nominated' => 1]]]]);
         return $count;
     }
 
     public static function getTotalLikes($userId)
     {
-        $all = Solution::all(array('conditions' => array('user_id' => $userId), 'fields' => array('SUM(likes) as totalLikes')));
+        $all = Solution::all(['conditions' => ['user_id' => $userId], 'fields' => ['SUM(likes) as totalLikes']]);
         return $all->first()->totalLikes;
     }
 
     public static function getTotalViews($userId)
     {
-        $all = Solution::all(array('conditions' => array('user_id' => $userId), 'fields' => array('SUM(views) as totalViews')));
+        $all = Solution::all(['conditions' => ['user_id' => $userId], 'fields' => ['SUM(views) as totalViews']]);
         return $all->first()->totalViews;
     }
 
     public static function getAverageGrade($userId)
     {
-        $all = Solution::all(array('fields' => ['pitch_id'], 'conditions' => array('user_id' => $userId, 'awarded' => 1)));
-        $pitches = array();
+        $all = Solution::all(['fields' => ['pitch_id'], 'conditions' => ['user_id' => $userId, 'awarded' => 1]]);
+        $pitches = [];
         foreach ($all as $solution) {
             $pitches[] = $solution->pitch_id;
         }
-        $userGrades = array();
+        $userGrades = [];
         if (!empty($pitches)) {
-            $grades = Grade::all(array('conditions' => array('type' => 'client', 'pitch_id' => $pitches)));
+            $grades = Grade::all(['conditions' => ['type' => 'client', 'pitch_id' => $pitches]]);
 
             foreach ($grades as $grade) {
                 $userGrades[] = $grade->partner_rating;
             }
         }
-        $pitches = array();
-        $userPitches = Pitch::all(array('conditions' => array('user_id' => $userId, 'status' => 2)));
+        $pitches = [];
+        $userPitches = Pitch::all(['conditions' => ['user_id' => $userId, 'status' => 2]]);
         foreach ($userPitches as $pitch) {
             $pitches[] = $pitch->id;
         }
         if (!empty($pitches)) {
-            $grades = Grade::all(array('conditions' => array('type' => 'designer', 'pitch_id' => $pitches)));
-            $userGrades = array();
+            $grades = Grade::all(['conditions' => ['type' => 'designer', 'pitch_id' => $pitches]]);
+            $userGrades = [];
             foreach ($grades as $grade) {
                 $userGrades[] = $grade->partner_rating;
             }
@@ -497,29 +497,29 @@ class User extends AppModel
     public static function getDesignersForSpam($category)
     {
         // Designers
-        $result1 = array();
+        $result1 = [];
         if ($category != 7) {
-            $users1 = self::all(array(
-                        'fields' => array('id'),
-                        'conditions' => array(
+            $users1 = self::all([
+                        'fields' => ['id'],
+                        'conditions' => [
                             'isDesigner' => 1,
                             'email_newpitch' => 1,
                             'email_onlycopy' => 0,
-                            'User.email' => array('!=' => ''),
+                            'User.email' => ['!=' => ''],
                             'confirmed_email' => 1
-                        )
-            ));
+                        ]
+            ]);
             $result1 = $users1->data();
         }
 
         // All but pitches owners
-        $users2 = self::all(array(
-                    'conditions' => array(
-                        'isDesigner' => 0, 'isClient' => 0, 'isCopy' => 0, 'email_newpitch' => 1, 'confirmed_email' => 1, 'User.email' => array('!=' => ''),
-                    ),
-        ));
+        $users2 = self::all([
+                    'conditions' => [
+                        'isDesigner' => 0, 'isClient' => 0, 'isCopy' => 0, 'email_newpitch' => 1, 'confirmed_email' => 1, 'User.email' => ['!=' => ''],
+                    ],
+        ]);
 
-        $ids = array();
+        $ids = [];
         foreach ($users2 as $user) {
             $user->pitches = Pitch::all(['conditions' => ['user_id' => $user->id]]);
             if (count($user->pitches) > 0) {
@@ -528,25 +528,25 @@ class User extends AppModel
                 }
             }
         }
-        $result2 = array();
+        $result2 = [];
         if (!empty($ids)) {
-            $users2 = self::all(array(
-                        'conditions' => array(
-                            'id' => $ids, 'isDesigner' => 0, 'isClient' => 0, 'isCopy' => 0, 'email_newpitch' => 1, 'User.email' => array('!=' => ''),
-                        ),
-            ));
+            $users2 = self::all([
+                        'conditions' => [
+                            'id' => $ids, 'isDesigner' => 0, 'isClient' => 0, 'isCopy' => 0, 'email_newpitch' => 1, 'User.email' => ['!=' => ''],
+                        ],
+            ]);
             $result2 = $users2->data();
         }
 
         // Copywriters
-        $result3 = array();
+        $result3 = [];
         if ($category == 7) {
-            $users3 = self::all(array(
-                        'fields' => array('id'),
-                        'conditions' => array(
-                            'isCopy' => 1, 'email_newpitch' => 1, 'confirmed_email' => 1, 'User.email' => array('!=' => ''),
-                        )
-            ));
+            $users3 = self::all([
+                        'fields' => ['id'],
+                        'conditions' => [
+                            'isCopy' => 1, 'email_newpitch' => 1, 'confirmed_email' => 1, 'User.email' => ['!=' => ''],
+                        ]
+            ]);
             $result3 = $users3->data();
         }
 
@@ -556,7 +556,7 @@ class User extends AppModel
             $temp3 = array_keys($result3);
             return array_merge($temp1, $temp2, $temp3);
         } else {
-            return array();
+            return [];
         }
     }
 
@@ -566,13 +566,13 @@ class User extends AppModel
         $recipientsIds = array_unique($recipientsIds);
         foreach ($recipientsIds as $person) {
             $user = self::first($person);
-            $data = array('user' => $user, 'pitch' => $params['pitch']);
+            $data = ['user' => $user, 'pitch' => $params['pitch']];
             SpamMailer::newpitch($data);
         }
         $user = new \stdClass();
         $user->email = 'team@godesigner.ru';
         $user->first_name = 'godesigner.ru';
-        $data = array('user' => $user, 'pitch' => $params['pitch']);
+        $data = ['user' => $user, 'pitch' => $params['pitch']];
         SpamMailer::newpitch($data);
         return true;
     }
@@ -585,7 +585,7 @@ class User extends AppModel
         } else {
             $text = 'Ваша оплата прошла успешно. Так как вы заказали опцию “Заполнить бриф”, то проект еще не опубликован на сайте. Мы свяжемся с вами в течение рабочего дня по телефону, указанному в брифе, сформулируем тех.задание для дизайнеров по результатам нашей беседы и выложим конкурс на сайт. ';
         }
-        $data = array('user' => $user, 'pitch' => $params['pitch'], 'text' => $text);
+        $data = ['user' => $user, 'pitch' => $params['pitch'], 'text' => $text];
         SpamMailer::newclientpitch($data);
     }
 
@@ -593,11 +593,11 @@ class User extends AppModel
     {
         $pitch = Pitch::first($params['pitch_id']);
         $solution = Solution::first($params['solution_id']);
-        $user = self::first(array(
-                    'conditions' => array('id' => $solution->user_id, 'confirmed_email' => 1),
-        ));
+        $user = self::first([
+                    'conditions' => ['id' => $solution->user_id, 'confirmed_email' => 1],
+        ]);
         if (($user->email_newcomments == 1) && ($params['user_id'] != $solution->user_id)) {
-            $data = array('user' => $user, 'pitch' => $pitch, 'comment' => $params);
+            $data = ['user' => $user, 'pitch' => $pitch, 'comment' => $params];
             SpamMailer::newcomment($data);
         }
         return true;
@@ -616,29 +616,29 @@ class User extends AppModel
 
     public static function sendAdminModeratedPitch($pitch)
     {
-        $users = self::all(array('conditions' => array('id' => array(4, 5, 32))));
+        $users = self::all(['conditions' => ['id' => [4, 5, 32]]]);
         foreach ($users as $user) {
-            $data = array('user' => $user, 'pitch' => $pitch);
+            $data = ['user' => $user, 'pitch' => $pitch];
             SpamMailer::newmoderatedpitch($data);
         }
     }
 
     public static function sendAdminNewAddon($addon)
     {
-        $users = self::all(array('conditions' => array('id' => User::$adminNotifications)));
+        $users = self::all(['conditions' => ['id' => User::$adminNotifications]]);
         $pitch = Pitch::first($addon->pitch_id);
         foreach ($users as $user) {
-            $data = array('user' => $user, 'addon' => $addon, 'pitchName' => $pitch->title);
+            $data = ['user' => $user, 'addon' => $addon, 'pitchName' => $pitch->title];
             SpamMailer::newaddon($data);
         }
     }
 
     public static function sendAdminNewAddonBrief($addon)
     {
-        $users = self::all(array('conditions' => array('id' => User::$adminNotifications)));
+        $users = self::all(['conditions' => ['id' => User::$adminNotifications]]);
         $pitch = Pitch::first($addon->pitch_id);
         foreach ($users as $user) {
-            $data = array('user' => $user, 'addon' => $addon, 'pitchName' => $pitch->title);
+            $data = ['user' => $user, 'addon' => $addon, 'pitchName' => $pitch->title];
             SpamMailer::newaddonbrief($data);
         }
     }
@@ -655,13 +655,13 @@ class User extends AppModel
     {
         $solution = Solution::first($comment->solution_id);
         $pitch = Pitch::first($solution->pitch_id);
-        $data = array(
+        $data = [
             'user' => $recipient,
             'pitch' => $pitch,
             'solution' => $solution,
             'comment' => $comment,
             'blue' => $blue
-        );
+        ];
         SpamMailer::newwincomment($data);
         return true;
     }
@@ -675,7 +675,7 @@ class User extends AppModel
         if ($step == 4) {
             $text = 'Ваши исходники одобрены заказчиком, вы переходите на стадию выставления оценок. Деньги поступят вам на счет течение 10 рабочих дней.';
         }
-        $data = array('user' => $user, 'pitch' => $pitch, 'text' => $text, 'solution' => $solution);
+        $data = ['user' => $user, 'pitch' => $pitch, 'text' => $text, 'solution' => $solution];
         SpamMailer::winstep($data);
         return true;
     }
@@ -684,7 +684,7 @@ class User extends AppModel
     {
         $pitch = Pitch::first($solution->pitch_id);
         $text = 'Ваши исходники одобрены администрацией GoDesigner, вы переходите на стадию выставления оценок.';
-        $data = array('user' => $user, 'pitch' => $pitch, 'text' => $text, 'solution' => $solution);
+        $data = ['user' => $user, 'pitch' => $pitch, 'text' => $text, 'solution' => $solution];
         SpamMailer::winstep($data);
         return true;
     }
@@ -694,7 +694,7 @@ class User extends AppModel
         $user = User::first($params['reply_to']);
         $pitch = Pitch::first($params['pitch_id']);
         if ($user->email_newcomments == 1) {
-            $data = array('user' => $user, 'pitch' => $pitch, 'comment' => $params);
+            $data = ['user' => $user, 'pitch' => $pitch, 'comment' => $params];
             SpamMailer::newpersonalcomment($data);
         }
         return true;
@@ -704,42 +704,42 @@ class User extends AppModel
     {
         $admin = 'm.elenevskaya@godesigner.ru';
         $pitch = Pitch::first($params['pitch_id']);
-        $data = array('admin' => $admin, 'pitch' => $pitch, 'comment' => $params);
+        $data = ['admin' => $admin, 'pitch' => $pitch, 'comment' => $params];
         SpamMailer::newadminnotification($data);
         return true;
     }
 
     public static function sendPromoCode($userId)
     {
-        $user = User::first(array('conditions' => array('id' => $userId)));
+        $user = User::first(['conditions' => ['id' => $userId]]);
         $code = Promocode::createPromocode($user->id);
-        $data = array('user' => $user, 'promocode' => $code);
+        $data = ['user' => $user, 'promocode' => $code];
         SpamMailer::promocode($data);
     }
 
     public static function sendDailyPitch($user, $pitches)
     {
-        $data = array('user' => $user, 'pitches' => $pitches);
+        $data = ['user' => $user, 'pitches' => $pitches];
         SpamMailer::dailypitch($data);
     }
 
     public static function sendOpenLetter($pitch)
     {
-        $data = array('user' => $pitch->user, 'pitch' => $pitch);
+        $data = ['user' => $pitch->user, 'pitch' => $pitch];
         return SpamMailer::openletter($data);
     }
 
     public static function sendExpertMail($addon)
     {
-        $data = array('pitch' => Pitch::first($addon->pitch_id));
+        $data = ['pitch' => Pitch::first($addon->pitch_id)];
         $experts = unserialize($addon->{'expert-ids'});
         foreach ($experts as $expert) {
-            $expert = Expert::first(array(
-                        'conditions' => array(
+            $expert = Expert::first([
+                        'conditions' => [
                             'Expert.id' => $expert,
-                        ),
-                        'with' => array('User'),
-            ));
+                        ],
+                        'with' => ['User'],
+            ]);
             $data['user'] = $expert->user;
             SpamMailer::expertselected($data);
         }
@@ -748,16 +748,16 @@ class User extends AppModel
 
     public static function sendExpertReminder($pitch)
     {
-        $data = array('pitch' => $pitch);
+        $data = ['pitch' => $pitch];
         $experts = unserialize($pitch->{'expert-ids'});
         foreach ($experts as $expert) {
-            $expert = Expert::first(array(
-                        'conditions' => array(
+            $expert = Expert::first([
+                        'conditions' => [
                             'Expert.id' => $expert,
-                        ),
-                        'with' => array('User'),
-            ));
-            if ($comments = Comment::all(array('conditions' => array('pitch_id' => $pitch->id, 'user_id' => $expert->user_id)))) {
+                        ],
+                        'with' => ['User'],
+            ]);
+            if ($comments = Comment::all(['conditions' => ['pitch_id' => $pitch->id, 'user_id' => $expert->user_id]])) {
                 continue;
             }
             $data['user'] = $expert->user;
@@ -769,7 +769,7 @@ class User extends AppModel
     public static function sendSpamExpertSpeaking($params)
     {
         $user = self::first($params['pitch']->user_id);
-        $data = array('user' => $user, 'pitch' => $params['pitch'], 'text' => $params['text']);
+        $data = ['user' => $user, 'pitch' => $params['pitch'], 'text' => $params['text']];
         SpamMailer::sendclientexpertspeaking($data);
         return true;
     }
@@ -778,20 +778,20 @@ class User extends AppModel
     {
         $pitch = Pitch::first($pitchId);
         $user = self::first($pitch->user_id);
-        $data = array('user' => $user, 'pitch' => $pitch);
+        $data = ['user' => $user, 'pitch' => $pitch];
         SpamMailer::firstsolution($data);
         return true;
     }
 
     public static function sendSpamReferal()
     {
-        $users = self::all(array('conditions' => array('User.email' => array('!=' => ''))));
+        $users = self::all(['conditions' => ['User.email' => ['!=' => '']]]);
         $sent = 0;
         foreach ($users as $user) {
-            $data = array(
+            $data = [
                 'email' => $user->email,
                 'subject' => 'Запуск партнёрской программы',
-            );
+            ];
             SpamMailer::referalspam($data);
             $sent++;
         }
@@ -800,7 +800,7 @@ class User extends AppModel
 
     public static function sendDvaSpam()
     {
-        $users = self::all(array('conditions' => array('User.email' => array('!=' => ''))));
+        $users = self::all(['conditions' => ['User.email' => ['!=' => '']]]);
         $sent = 0;
         // Test User
         //$user = new \stdClass();
@@ -808,10 +808,10 @@ class User extends AppModel
         //$users = array($user);
         // End Test User
         foreach ($users as $user) {
-            $data = array(
+            $data = [
                 'email' => $user->email,
                 'subject' => 'Подарочный промо-код на скидку',
-            );
+            ];
             SpamMailer::dvaspam($data);
             $sent++;
         }
@@ -820,7 +820,7 @@ class User extends AppModel
 
     public static function getAdmin()
     {
-        $admin = self::first(array('conditions' => array('isAdmin' => 1)));
+        $admin = self::first(['conditions' => ['isAdmin' => 1]]);
         return $admin->id;
     }
 
@@ -848,8 +848,8 @@ class User extends AppModel
 
     public static function sendDailyDigest()
     {
-        $activePitches = Pitch::all(array('conditions' => array('status' => 0, 'published' => 1)));
-        $ids = array();
+        $activePitches = Pitch::all(['conditions' => ['status' => 0, 'published' => 1]]);
+        $ids = [];
         foreach ($activePitches as $pitch) {
             $ids[] = $pitch->user_id;
         }
@@ -865,20 +865,20 @@ class User extends AppModel
         if (empty($user->email)) {
             return true;
         }
-        $pitches = Pitch::all(array('conditions' => array(
+        $pitches = Pitch::all(['conditions' => [
                         'status' => 0,
                         'published' => 1,
                         'user_id' => $user->id
-        )));
+        ]]);
         $start = date('Y-m-d H:i:s', (time() - DAY));
         //$start = date('Y-m-d H:i:s', (time() - YEAR));
-        $blocks = array();
+        $blocks = [];
         $nameInflector = new nameInflector();
         foreach ($pitches as $pitch) {
-            $solutions = Solution::all(array('conditions' => array('pitch_id' => $pitch->id, 'created' => array('>' => $start))));
-            $blocks[$pitch->id] = array('pitch' => $pitch, 'solutions' => null, 'comments' => null);
+            $solutions = Solution::all(['conditions' => ['pitch_id' => $pitch->id, 'created' => ['>' => $start]]]);
+            $blocks[$pitch->id] = ['pitch' => $pitch, 'solutions' => null, 'comments' => null];
             if (count($solutions) > 0) {
-                $solArray = array();
+                $solArray = [];
                 foreach ($solutions as $solution) {
                     $solArray[] = '<a style="color: #7ea0ac; line-height: 17px; font-size: 12px; font-family: Arial, sans-serif;"" href="https://www.godesigner.ru/pitches/viewsolution/' . $solution->id . '" target="_blank">#' . $solution->num . '</a>';
                 }
@@ -886,9 +886,9 @@ class User extends AppModel
             } else {
                 $blocks[$pitch->id]['solutions'] = '';
             }
-            $comments = Comment::all(array('conditions' => array('pitch_id' => $pitch->id, 'Comment.created' => array('>' => $start)), 'with' => array('User')));
+            $comments = Comment::all(['conditions' => ['pitch_id' => $pitch->id, 'Comment.created' => ['>' => $start]], 'with' => ['User']]);
             if (count($comments) > 0) {
-                $comArray = array();
+                $comArray = [];
                 foreach ($comments as $comment) {
                     if ($comment->user_id == $pitch->user_id) {
                         continue;
@@ -910,35 +910,35 @@ class User extends AppModel
         if (empty($blocks)) {
             return true;
         }
-        $data = array('user' => $user, 'blocks' => $blocks);
+        $data = ['user' => $user, 'blocks' => $blocks];
         SpamMailer::dailydigest($data);
         return true;
     }
 
     public static function sendLastDigest()
     {
-        if ($lastPosts = Option::first(array('conditions' => array('name' => 'last_posts')))) {
+        if ($lastPosts = Option::first(['conditions' => ['name' => 'last_posts']])) {
             $ids = unserialize($lastPosts->value);
 
-            $posts = Post::all(array('conditions' => array('id' => array_values($ids)), 'order' => array('created' => 'desc')));
-            $users = User::all(array(
-                        'conditions' => array(
+            $posts = Post::all(['conditions' => ['id' => array_values($ids)], 'order' => ['created' => 'desc']]);
+            $users = User::all([
+                        'conditions' => [
                             'email_digest' => 1,
                             'confirmed_email' => 1,
-                            'created' => array(
+                            'created' => [
                                 '>=' => date('Y-m-d H:i:s', time() - (DAY * 4)),
                                 '<' => date('Y-m-d H:i:s', time() - (DAY * 3)),
-                            ),
-                        ),
-            ));
+                            ],
+                        ],
+            ]);
             $count = count($users);
             if (count($posts) > 0) {
                 foreach ($users as $user) {
-                    $data = array(
+                    $data = [
                         'email' => $user->email,
                         'subject' => 'Дайджест новостей',
                         'posts' => $posts
-                    );
+                    ];
                     SpamMailer::blogdigest($data);
                 }
             }
@@ -949,16 +949,16 @@ class User extends AppModel
 
     public static function sendSpamToLostClients()
     {
-        $pitches = Pitch::all(array(
-                    'conditions' => array(
-                        'ideas_count' => array('>' => 0),
+        $pitches = Pitch::all([
+                    'conditions' => [
+                        'ideas_count' => ['>' => 0],
                         'status' => 0,
                         'published' => 1,
-                        'User.email' => array('!=' => ''),
-                        'User.lastActionTime' => array('<' => date('Y-m-d H:i:s', time() - (DAY * 3))),
-                    ),
-                    'with' => array('User', 'Category'),
-        ));
+                        'User.email' => ['!=' => ''],
+                        'User.lastActionTime' => ['<' => date('Y-m-d H:i:s', time() - (DAY * 3))],
+                    ],
+                    'with' => ['User', 'Category'],
+        ]);
         $count = 0;
         foreach ($pitches as $pitch) {
             $pitchData = $pitch->pitchData();
@@ -966,7 +966,7 @@ class User extends AppModel
             if ($avgNum > 3) {
                 continue;
             }
-            $data = array('user' => $pitch->user, 'pitch' => $pitch, 'text' => 'Мы просим вас принимать более активное участие в процессе проведения проекта. Комментируйте предлагаемые вам идеи, выставляйте рейтинг (звезды), отвечайте на вопросы и помогайте дизайнерам лучше понять вас, и тогда вы обязательно получите то, что хотели!');
+            $data = ['user' => $pitch->user, 'pitch' => $pitch, 'text' => 'Мы просим вас принимать более активное участие в процессе проведения проекта. Комментируйте предлагаемые вам идеи, выставляйте рейтинг (звезды), отвечайте на вопросы и помогайте дизайнерам лучше понять вас, и тогда вы обязательно получите то, что хотели!'];
             SpamMailer::comeback($data);
             $count++;
         }
@@ -981,8 +981,8 @@ class User extends AppModel
      */
     public static function sendChooseWinnerSpam()
     {
-        $pitches = Pitch::all(array('conditions' => array('status' => 1, 'awarded' => 0, 'multiwinner' => 0, 'blank' => 0, 'finishDate' => array('<' => date('Y-m-d H:i:s', time() - (4 * DAY))))));
-        $ids = array();
+        $pitches = Pitch::all(['conditions' => ['status' => 1, 'awarded' => 0, 'multiwinner' => 0, 'blank' => 0, 'finishDate' => ['<' => date('Y-m-d H:i:s', time() - (4 * DAY))]]]);
+        $ids = [];
         foreach ($pitches as $pitch) {
             if (($pitch->type == 'fund-balance') || ($pitch->type == 'plan-payment')) {
                 continue;
@@ -1015,7 +1015,7 @@ class User extends AppModel
 Внести дальнейшие правки вы сможете на <a href="https://www.godesigner.ru/answers/view/63">завершающем этапе</a>. У вас также есть возможность номинировать <a href="https://www.godesigner.ru/answers/view/97">двух и более дизайнеров</a>. ';
                 }
             }
-            $data = array('user' => $user, 'pitch' => $pitch, 'text' => $text);
+            $data = ['user' => $user, 'pitch' => $pitch, 'text' => $text];
             SpamMailer::choosewinner($data);
         }
         return $ids;
@@ -1023,12 +1023,12 @@ class User extends AppModel
 
     public static function sendStep2Spam()
     {
-        $pitches = Pitch::all(array('conditions' => array('status' => 1, 'awarded' => array('>' => 0), 'finishDate' => array('<' => date('Y-m-d H:i:s', time() - DAY)))));
-        $pitchesToSpam = array();
+        $pitches = Pitch::all(['conditions' => ['status' => 1, 'awarded' => ['>' => 0], 'finishDate' => ['<' => date('Y-m-d H:i:s', time() - DAY)]]]);
+        $pitchesToSpam = [];
         foreach ($pitches as $pitch) {
             $solution = Solution::first($pitch->awarded);
-            $files = array();
-            $comments = Wincomment::all(array('conditions' => array('step' => 2, 'solution_id' => $solution->id), 'order' => array('created' => 'asc'), 'with' => array('User')));
+            $files = [];
+            $comments = Wincomment::all(['conditions' => ['step' => 2, 'solution_id' => $solution->id], 'order' => ['created' => 'asc'], 'with' => ['User']]);
             $lastDate = null;
             foreach ($comments as $comment) {
                 if ($comment->user_id == $solution->user_id) {
@@ -1051,19 +1051,19 @@ class User extends AppModel
         foreach ($pitchesToSpam as $pitch) {
             $user = User::first($pitch->user_id);
             $solution = Solution::first($pitch->awarded);
-            $data = array('user' => $user, 'pitch' => $pitch, 'solution' => $solution, 'text' => 'На этапе «Доработка макетов» вам нужно внести правки и утвердить доработки. Для получения рабочих файлов, пожалуйста, нажмите кнопку «Одобрить макеты» и перейдите на этап «Предоставление исходников». Мы убедительно просим вас не затягивать процесс. Спасибо!');
+            $data = ['user' => $user, 'pitch' => $pitch, 'solution' => $solution, 'text' => 'На этапе «Доработка макетов» вам нужно внести правки и утвердить доработки. Для получения рабочих файлов, пожалуйста, нажмите кнопку «Одобрить макеты» и перейдите на этап «Предоставление исходников». Мы убедительно просим вас не затягивать процесс. Спасибо!'];
             SpamMailer::step2($data);
         }
     }
 
     public static function sendStep3Spam()
     {
-        $pitches = Pitch::all(array('conditions' => array('status' => 1, 'awarded' => array('>' => 0), 'finishDate' => array('<' => date('Y-m-d H:i:s', time() - DAY)))));
-        $pitchesToSpam = array();
+        $pitches = Pitch::all(['conditions' => ['status' => 1, 'awarded' => ['>' => 0], 'finishDate' => ['<' => date('Y-m-d H:i:s', time() - DAY)]]]);
+        $pitchesToSpam = [];
         foreach ($pitches as $pitch) {
             $solution = Solution::first($pitch->awarded);
-            $files = array();
-            $comments = Wincomment::all(array('conditions' => array('step' => 3, 'solution_id' => $solution->id), 'order' => array('created' => 'asc'), 'with' => array('User')));
+            $files = [];
+            $comments = Wincomment::all(['conditions' => ['step' => 3, 'solution_id' => $solution->id], 'order' => ['created' => 'asc'], 'with' => ['User']]);
             $lastDate = null;
             foreach ($comments as $comment) {
                 if ($comment->user_id == $solution->user_id) {
@@ -1084,15 +1084,15 @@ class User extends AppModel
         foreach ($pitchesToSpam as $pitch) {
             $user = User::first($pitch->user_id);
             $solution = Solution::first($pitch->awarded);
-            $data = array('user' => $user, 'pitch' => $pitch, 'solution' => $solution, 'text' => 'На этом этапе дизайнер должен предоставить вам рабочие файлы, указанные в брифе. Для того, чтобы дизайнер получил денежное вознаграждение, вы должны полностью пройти завершающий этап. Пожалуйста, не затягивайте рабочий процесс и перейдите на следующую стадию, нажав «Одобрить макеты».');
+            $data = ['user' => $user, 'pitch' => $pitch, 'solution' => $solution, 'text' => 'На этом этапе дизайнер должен предоставить вам рабочие файлы, указанные в брифе. Для того, чтобы дизайнер получил денежное вознаграждение, вы должны полностью пройти завершающий этап. Пожалуйста, не затягивайте рабочий процесс и перейдите на следующую стадию, нажав «Одобрить макеты».'];
             SpamMailer::step3($data);
         }
     }
 
     public static function sendStep4Spam()
     {
-        $pitches = Pitch::all(array('conditions' => array('status' => 1, 'awarded' => array('>' => 0), 'finishDate' => array('<' => date('Y-m-d H:i:s', time() - DAY)))));
-        $pitchesToSpam = array();
+        $pitches = Pitch::all(['conditions' => ['status' => 1, 'awarded' => ['>' => 0], 'finishDate' => ['<' => date('Y-m-d H:i:s', time() - DAY)]]]);
+        $pitchesToSpam = [];
         foreach ($pitches as $pitch) {
             $solution = Solution::first($pitch->awarded);
             if ($solution->step == 4) {
@@ -1102,7 +1102,7 @@ class User extends AppModel
         foreach ($pitchesToSpam as $pitch) {
             $solution = Solution::first($pitch->awarded);
             $user = User::first($pitch->user_id);
-            $data = array('user' => $user, 'pitch' => $pitch, 'solution' => $solution, 'text' => 'Для того, чтобы дизайнер получил денежное вознаграждение, вы должны полностью пройти завершающий этап. Проставив и рейтинг и нажав «Завершить», вы автоматически инициируете перевод вознаграждения дизайнеру. Деньги поступят ему на счёт в течении 4 рабочих дней. Пожалуйста, не затягивайте процесс вознаграждения!');
+            $data = ['user' => $user, 'pitch' => $pitch, 'solution' => $solution, 'text' => 'Для того, чтобы дизайнер получил денежное вознаграждение, вы должны полностью пройти завершающий этап. Проставив и рейтинг и нажав «Завершить», вы автоматически инициируете перевод вознаграждения дизайнеру. Деньги поступят ему на счёт в течении 4 рабочих дней. Пожалуйста, не затягивайте процесс вознаграждения!'];
             SpamMailer::step4($data);
         }
     }
@@ -1119,7 +1119,7 @@ class User extends AppModel
             $message = 'Друзья, выбран победитель. <a href="https://www.godesigner.ru/pitches/viewsolution/' . $solution->id . '">Им стал</a> #' . $solution->num . '.  Мы поздравляем автора решения и благодарим всех за участие. Если ваша идея не выиграла в этот раз, то, возможно, в следующий вам повезет больше — все права сохраняются за вами, и вы можете адаптировать идею для участия в другом проекте!<br/>
     Подробнее читайте тут: <a href="https://www.godesigner.ru/answers/view/51">http://godesigner.ru/answers/view/51</a>';
         }
-        $data = array('pitch_id' => $solution->pitch_id, 'user_id' => $admin, 'text' => $message, 'public' => 1);
+        $data = ['pitch_id' => $solution->pitch_id, 'user_id' => $admin, 'text' => $message, 'public' => 1];
         Comment::createComment($data);
     }
 
@@ -1141,14 +1141,14 @@ class User extends AppModel
     {
         $user = self::first($pitch->user_id);
         $path = LITHIUM_APP_PATH . '/' . 'resources' . '/' . 'tmp/';
-        $files = array();
+        $files = [];
         foreach (new DirectoryIterator($path) as $fileInfo) {
             if ($fileInfo->isDot() || !$fileInfo->isFile() || (false == strpos($fileInfo->getFilename(), $pitch->id))) {
                 continue;
             }
             $files[] = $path . $fileInfo->getFilename();
         }
-        $data = array('user' => $user, 'pitch' => $pitch, 'files' => $files);
+        $data = ['user' => $user, 'pitch' => $pitch, 'files' => $files];
         SpamMailer::finishreports($data);
         return true;
     }
@@ -1164,7 +1164,7 @@ class User extends AppModel
     {
         if ($user = self::first($userId)) {
             $user->balance += (int) $amount;
-            return $user->save(null, array('validate' => false));
+            return $user->save(null, ['validate' => false]);
         }
         return false;
     }
@@ -1180,7 +1180,7 @@ class User extends AppModel
     {
         if (($user = self::first($userId)) && ($user->balance >= $amount)) {
             $user->balance -= (int) $amount;
-            return $user->save(null, array('validate' => false));
+            return $user->save(null, ['validate' => false]);
         }
         return false;
     }
@@ -1200,17 +1200,17 @@ class User extends AppModel
             $user->phone_operator = $phoneOperator;
             $user->phone_code = self::generatePhoneCode();
             $user->phone_valid = 0;
-            $user->save(null, array('validate' => false));
+            $user->save(null, ['validate' => false]);
             $text = $user->phone_code . ' - код для проверки';
-            $params = array(
+            $params = [
                 "text" => $text
-            );
-            $phones = array($user->phone);
+            ];
+            $phones = [$user->phone];
             $smsService = new SmsUslugi();
             $respond = $smsService->send($params, $phones);
-            if(!isset($respond['smsid'])) {
+            if (!isset($respond['smsid'])) {
                 $smsId = 0;
-            }else {
+            } else {
                 $smsId = $respond['smsid'];
             }
             $data = [
@@ -1234,7 +1234,7 @@ class User extends AppModel
             if ($code == $user->phone_code) {
                 $user->phone_valid = 1;
                 $user->phone_code = 0;
-                $user->save(null, array('validate' => false));
+                $user->save(null, ['validate' => false]);
                 $phone = $user->phone;
                 $phone_valid = 1;
                 return compact('phone', 'phone_valid');
@@ -1250,34 +1250,34 @@ class User extends AppModel
 
     public static function sendAddonProlong($pitch)
     {
-        $data = array('user' => $pitch->user, 'pitch' => $pitch);
+        $data = ['user' => $pitch->user, 'pitch' => $pitch];
         return SpamMailer::duration($data);
     }
 
     public static function sendAddonExpert($pitch)
     {
-        $data = array('user' => $pitch->user, 'pitch' => $pitch);
+        $data = ['user' => $pitch->user, 'pitch' => $pitch];
         return SpamMailer::expertaddon($data);
     }
 
     public static function sendAddonBrief($pitch)
     {
-        $data = array('user' => $pitch->user, 'pitch' => $pitch);
+        $data = ['user' => $pitch->user, 'pitch' => $pitch];
         return SpamMailer::briefaddon($data);
     }
 
     public static function isReferalAllowed($userId)
     {
-        $query = array(
-            'conditions' => array(
+        $query = [
+            'conditions' => [
                 'id' => $userId,
-                'created' => array(
+                'created' => [
                     '>' => '2013-09-25 23:59:59',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
         if ($user = self::first($query)) {
-            $pitches = Pitch::count(array('conditions' => array('user_id' => $user->id)));
+            $pitches = Pitch::count(['conditions' => ['user_id' => $user->id]]);
             return $pitches;
         }
         return 0;
@@ -1293,13 +1293,13 @@ class User extends AppModel
             }
         } else { // User registered
             if (self::isReferalAllowed($userId) === 0) { // User good and no pitches. === is important!
-                if ((!isset($_COOKIE['ref']) || ($_COOKIE['ref'] == '')) && (self::first(array(
-                            'conditions' => array(
-                                'id' => array(
+                if ((!isset($_COOKIE['ref']) || ($_COOKIE['ref'] == '')) && (self::first([
+                            'conditions' => [
+                                'id' => [
                                     '!=' => $userId,
-                                ),
+                                ],
                                 'referal_token' => $ref,
-                    ))))) {
+                    ]]))) {
                     setcookie('ref', $ref, strtotime('+1 month'), '/');
                     $_COOKIE['ref'] = $ref;
                 }
@@ -1307,41 +1307,42 @@ class User extends AppModel
         }
     }
 
-    public function blockUntil($user) {
+    public function blockUntil($user)
+    {
         $user->banned_until = date('Y-m-d H:i:s', time() + 30 * DAY);
-        $user->save(null, array('validate' => false));
+        $user->save(null, ['validate' => false]);
     }
 
     public function block($user)
     {
         $user->banned = 1;
-        $user->save(null, array('validate' => false));
+        $user->save(null, ['validate' => false]);
 
         // Remove Solutions
-        $solutions = Solution::all(array(
-                    'conditions' => array(
+        $solutions = Solution::all([
+                    'conditions' => [
                         'Solution.user_id' => $user->id,
-                        'OR' => array(
+                        'OR' => [
                             '(`Pitch`.`status` = 0)',
                             '(`Pitch`.`status` = 1 AND `Pitch`.`awarded` = 0)',
-                        ),
-                    ), 'with' => ['Pitch']
-        ));
+                        ],
+                    ], 'with' => ['Pitch']
+        ]);
         foreach ($solutions as $solution) {
             $solution->delete();
         }
 
         // Remove Comments
-        $comments = Comment::all(array(
-                    'conditions' => array(
+        $comments = Comment::all([
+                    'conditions' => [
                         'Comment.user_id' => $user->id,
-                        'OR' => array(
+                        'OR' => [
                             '(`Pitch`.`status` = 0)',
                             '(`Pitch`.`status` = 1 AND `Pitch`.`awarded` = 0)',
-                        ),
-                    ),
-                    'with' => array('Pitch'),
-        ));
+                        ],
+                    ],
+                    'with' => ['Pitch'],
+        ]);
         foreach ($comments as $comment) {
             $cacheKey = 'commentsraw_' . $comment->pitch_id;
             Rcache::delete($cacheKey);
@@ -1398,7 +1399,7 @@ class User extends AppModel
     {
         if (!Rcache::write('user_' . $record->id . '_LastActionTime', date('Y-m-d H:i:s'))) {
             $record->lastActionTime = date('Y-m-d H:i:s');
-            $record->save(null, array('validate' => false));
+            $record->save(null, ['validate' => false]);
         }
     }
 
@@ -1423,16 +1424,16 @@ class User extends AppModel
      */
     public static function getReferalPaymentsCount()
     {
-        return self::count(array(
-            'conditions' => array(
-                'balance' => array(
+        return self::count([
+            'conditions' => [
+                'balance' => [
                     '>' => 0,
-                ),
+                ],
                 'phone_valid' => 1,
-                'phone' => array('!=' => ''),
+                'phone' => ['!=' => ''],
                 'subscription_status' => 0
-            ),
-        ));
+            ],
+        ]);
     }
 
     /**
@@ -1470,15 +1471,15 @@ class User extends AppModel
 
     public static function designerTimeWait($user_id)
     {
-        $query = array(
-            'conditions' => array(
+        $query = [
+            'conditions' => [
                 'first_time' => 1,
                 'user_id' => $user_id,
-                'percent' => array(
+                'percent' => [
                     '>=' => 80,
-                ),
+                ],
                 'active' => 1
-        ));
+        ]];
 
         if ($test = Test::first($query)) {
             return 5;
@@ -1496,7 +1497,7 @@ class User extends AppModel
         }
 
         //весовые коэффициенты
-        $v = array(7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1);
+        $v = [7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1];
 
         for ($i = 0; $i <= 22; $i++) {
             //вычисляем контрольную сумму
@@ -1530,14 +1531,14 @@ class User extends AppModel
     {
         $res = null;
         $currentUserId = Session::read('user.id');
-        if ((false != $currentUserId) && ($user = self::first(array('conditions' => array('User.id' => $currentUserId))))) {
+        if ((false != $currentUserId) && ($user = self::first(['conditions' => ['User.id' => $currentUserId]]))) {
             $user->pitches = Pitch::all(['conditions' => ['user_id' => $user->id, 'blank' => 0]]);
-            $res = array(
+            $res = [
                 'id' => $user->id,
                 'firstName' => $user->first_name,
                 'lastName' => $user->last_name,
                 'pitches' => $user->pitches->data(),
-            );
+            ];
         }
         return $res;
     }
@@ -1553,23 +1554,23 @@ class User extends AppModel
         $user = self::first($userid);
         if (!$user->token) {
             $user->token = $user->generateToken();
-            $user->save(null, array('validate' => false));
+            $user->save(null, ['validate' => false]);
         }
         return $user;
     }
 
     public static function postOnFacebook($text)
     {
-        $facebook = new Facebook(array(
+        $facebook = new Facebook([
             'appId'  => '202765613136579',
             'secret' => '404ec2eea7487d85eb69ecceea341821',
-        ));
+        ]);
         $user = $facebook->getUser();
         $accessToken = $facebook->getAccessToken();
         $facebook->setAccessToken($accessToken);
         if ($user) {
             try {
-                $facebook->api('/me/feed', 'post', array('message' => $text));
+                $facebook->api('/me/feed', 'post', ['message' => $text]);
             } catch (FacebookApiException $e) {
                 error_log($e);
             }
@@ -1613,15 +1614,15 @@ class User extends AppModel
      */
     private static function __findIdsOfWonProjectsOfUser($userId, $field)
     {
-        $fields = array();
+        $fields = [];
         $fields[] = $field;
-        $solutions = Solution::all(array('fields' => $fields, 'conditions' => array(
+        $solutions = Solution::all(['fields' => $fields, 'conditions' => [
             'user_id' => $userId,
-            'OR' => array(
-                array('awarded' => 1),
-                array('nominated' => 1)
-            ))));
-        $result = array();
+            'OR' => [
+                ['awarded' => 1],
+                ['nominated' => 1]
+            ]]]);
+        $result = [];
         foreach ($solutions as $solution) {
             $result[] = $solution->{$field};
         }
@@ -1636,7 +1637,7 @@ class User extends AppModel
      */
     public static function removeExtraFields($user)
     {
-        $blacklist = array(
+        $blacklist = [
             'email',
             'oldemail',
             //'last_name',
@@ -1658,7 +1659,7 @@ class User extends AppModel
             'phone_valid',
             'referal_token',
             'autologin_token',
-        );
+        ];
         foreach ($blacklist as $field) {
             $user->{$field} = null;
         }
@@ -1683,7 +1684,7 @@ class User extends AppModel
             $user->subscription_status = $plan['id'];
             $user->subscription_expiration_date = date('Y-m-d H:i:s', time() + $plan['duration']);
         }
-        return $user->save(null, array('validate' => false));
+        return $user->save(null, ['validate' => false]);
     }
 
     /**
@@ -1776,7 +1777,7 @@ class User extends AppModel
             $plan = SubscriptionPlan::getPlan($planId);
             return $plan;
         }
-        return array();
+        return [];
     }
 
     /**
@@ -1790,8 +1791,8 @@ class User extends AppModel
     public static function setSubscriptionDiscount($userId, $discount, $endDate)
     {
         if ($user = self::first($userId)) {
-            $data = array('subscription_discount' => (int) $discount, 'subscription_discount_end_date' => $endDate);
-            return $user->save($data, array('validate' => false));
+            $data = ['subscription_discount' => (int) $discount, 'subscription_discount_end_date' => $endDate];
+            return $user->save($data, ['validate' => false]);
         }
         return false;
     }
@@ -1804,7 +1805,7 @@ class User extends AppModel
      */
     public function hasActiveSubscriptionDiscountForRecord(Record $userRecord)
     {
-        if(strtotime($userRecord->subscription_discount_end_date)) {
+        if (strtotime($userRecord->subscription_discount_end_date)) {
             $discountEndDate = new \DateTime($userRecord->subscription_discount_end_date);
             $currentDateTime = new \DateTime;
             return $discountEndDate > $currentDateTime;
@@ -1905,15 +1906,15 @@ class User extends AppModel
     public function isUserRecordMemberOfVKGroup($record)
     {
         if ($record->vkontakte_uid != '') {
-            $config = array(
+            $config = [
                 'scheme'     => 'https',
                 'host'       => 'api.vk.com'
-            );
+            ];
             $service = new Service($config);
-            $params = array(
+            $params = [
                 'group_id' => 36153921,
                 'user_id' => $record->vkontakte_uid
-            );
+            ];
             $result = $service->get("/method/groups.isMember", $params);
             $decoded = json_decode($result);
             return (bool) $decoded->response;
@@ -1971,8 +1972,9 @@ class User extends AppModel
      * @param $code
      * @return bool
      */
-    public static function isValidReferalCodeForSubscribers($code) {
-        if(((is_string($code)) || (is_numeric($code))) && (!empty($code))) {
+    public static function isValidReferalCodeForSubscribers($code)
+    {
+        if (((is_string($code)) || (is_numeric($code))) && (!empty($code))) {
             return (bool) self::count(['conditions' => ['subscriber_referal_token' => (string) $code]]);
         }
         return false;
@@ -1984,8 +1986,9 @@ class User extends AppModel
      * @param $code
      * @return bool
      */
-    public static function setReferalForSubscriberCookie($code) {
-        if(((is_string($code)) || (is_numeric($code))) && (!empty($code))) {
+    public static function setReferalForSubscriberCookie($code)
+    {
+        if (((is_string($code)) || (is_numeric($code))) && (!empty($code))) {
             setcookie('sreftime', time(), strtotime('+1 year'), '/');
             return setcookie('sref', $code, strtotime('+1 year'), '/');
         }
