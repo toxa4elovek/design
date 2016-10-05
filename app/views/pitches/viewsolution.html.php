@@ -70,6 +70,7 @@
                     </table>
                 </div>
                 <div class="separator"></div>
+                <?php if(!$this->pitch->isReadyForLogosale($solution->pitch)):?>
                 <div class="solution-info solution-tags chapter">
                     <h2>ТЕГИ</h2>
                     <ul class="tags">
@@ -80,6 +81,7 @@
                     <div class="clear"></div>
                 </div>
                 <div class="separator"></div>
+                <?php endif ?>
                 <div class="solution-info solution-share chapter">
                     <h2>ПОДЕЛИТЬСЯ</h2>
                     <?php if((($solution->pitch->private != 1) && ($solution->pitch->category_id != 7))):
