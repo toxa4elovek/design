@@ -57,6 +57,8 @@ class ExpertsController extends AppController {
             $comments = Comment::all([
                 'conditions' => [
                     'Comment.user_id' => $expert->user_id,
+                    'Pitch.private' => 0,
+                    'Pitch.category_id' => ['!=' => '7']
                 ],
                 'order' => ['Comment.id' => 'desc'],
                 'limit' => 3,
