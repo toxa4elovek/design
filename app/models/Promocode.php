@@ -83,12 +83,11 @@ class Promocode extends \app\models\AppModel
         $result = 'false';
         if ($code = Promocode::first(['conditions' => [
             'code' => $codeString
-
         ]])) {
-            if (($code->pitch_id != null) && (!$code->isMultiUse()) && (is_null($existingId))) {
+            if (($code->pitch_id != 0) && ($code->pitch_id != null) && (!$code->isMultiUse()) && (is_null($existingId))) {
                 return $result;
             }
-            if (($code->pitch_id != null) && (!$code->isMultiUse()) && (!is_null($existingId)) && ((int) $existingId !== (int) $code->pitch_id)) {
+            if (($code->pitch_id != 0) && ($code->pitch_id != null) && (!$code->isMultiUse()) && (!is_null($existingId)) && ((int) $existingId !== (int) $code->pitch_id)) {
                 return $result;
             }
             if ((time() < strtotime($code->starts)) || (time() > strtotime($code->expires))) {

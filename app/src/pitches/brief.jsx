@@ -534,28 +534,31 @@ $(document).ready(function () {
   const indicator = $('#indicator')
 
   // award size
-  awardInput.blur(function () {
+  awardInput.blur(function (event, source) {
+    //console.log(source)
     var input = $(this)
     var minimalAward = input.data('minimalAward')
-    // console.log('blur - current award input value - ' + input.val())
-    // console.log('blur - current minimal award - ' + minimalAward)
-    if (input.val() == '') {
-      // console.log('Award input is empty, setting value as minimumAward - ' + minimalAward)
+     //console.log('blur - current award input value - ' + input.val())
+     //console.log('blur - current minimal award - ' + minimalAward)
+    if (input.val() === '') {
+      console.log('Award input is empty, setting value as minimumAward - ' + minimalAward)
       input.val(minimalAward)
       award = minimalAward
     }
     var award = 0
     indicator.removeClass('low normal good')
     // console.log(input.data('discount'))
-    if ((awardInput.hasClass('placeholder')) && (input.data('discount') === false)) {
-      // console.log('getting middle price')
+    //console.log(awardInput)
+    //console.log(`Has class placeholder - ${awardInput.hasClass('placeholder')}`)
+    if ((awardInput.hasClass('placeholder')) && (source === 'sub-site') && (awardInput.not(':focus')) && (input.data('discount') === false)) {
+      //console.log('getting middle price')
       awardInput.val(Calculator.getMiddlePrice())
     }
-    // console.log(minimalAward)
-    // console.log(input.val())
+     //console.log(minimalAward)
+     //console.log(input.val())
     if (minimalAward > input.val()) {
-      // console.log(minimalAward)
-      // console.log('minimalAward is more than award value' - minimalAward)
+      //console.log(minimalAward)
+      //console.log('minimalAward is more than award value' - minimalAward)
       input.val(minimalAward)
       input.addClass('initial-price')
       indicator.addClass('normal')
@@ -563,7 +566,7 @@ $(document).ready(function () {
     } else {
       input.removeClass('initial-price')
       award = input.val()
-    // console.log('Value is exists - ' + award)
+     //console.log('Value is exists - ' + award)
     }
     if (award <= 14980) {
       $('#fastpitch-tooltip').fadeIn()
@@ -573,8 +576,8 @@ $(document).ready(function () {
     // console.log('redrawing indicator and updating cart - ' + award)
     drawIndicator(input, award)
     Cart.updateOption($(this).data('optionTitle'), award)
-  // console.log('Value after blur - ' + awardInput.val())
-  // console.log('blur end- current minimal award - ' + minimalAward)
+    //console.log('Value after blur - ' + awardInput.val())
+    //console.log('blur end- current minimal award - ' + minimalAward)
   })
 
   function formatMoney (value) {
@@ -643,7 +646,7 @@ $(document).ready(function () {
     }
     // console.log('Current value of award input - ' + awardInput.val())
     drawIndicator(awardInput, awardInput.val())
-    awardInput.blur()
+    awardInput.trigger('blur', ['sub-site'])
   })
 
   $('#sub-site').focus(function () {
