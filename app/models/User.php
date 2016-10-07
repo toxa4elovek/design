@@ -428,7 +428,7 @@ class User extends AppModel
 
     public static function getAwardedSolutionNum($userId)
     {
-        $count = Solution::count(['conditions' => ['user_id' => $userId, 'OR' => [['awarded' => 1], ['nominated' => 1]]]]);
+        $count = Solution::count(['conditions' => ['user_id' => $userId, 'multiwinner' => 0, 'OR' => [['awarded' => 1], ['nominated' => 1]]]]);
         return $count;
     }
 
