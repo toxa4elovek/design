@@ -40,11 +40,11 @@ class ParsingSites extends \app\extensions\command\CronJob
         $this->out("Starting parsing artchronika.ru");
         self::ParsingWordpress('http://artchronika.ru/feed', '/< *img[^>]*src *= *["\']?([^"\']*)/i', true, 'ru');
         $this->out('Finished parsing artchronika.ru [' . (time() - $startTimeStamp) . ' sec]');
-
+/*
         $this->out("Starting parsing http://www.kokokokids.ru/");
         self::ParsingKoko('http://www.kokokokids.ru/feeds/posts/default?alt=rss');
         $this->out('Finished parsing http://www.kokokokids.ru/ [' . (time() - $startTimeStamp) . ' sec]');
-
+*/
         $this->out("Starting parsing http://www.theartnewspaper.ru/");
         self::ParsingSimpleRss('http://www.theartnewspaper.ru/rss/');
         $this->out('Finished parsing http://www.theartnewspaper.ru/ [' . (time() - $startTimeStamp) . ' sec]');
