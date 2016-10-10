@@ -71,6 +71,9 @@
                 if(in_array($expert->id, unserialize($pitch->{'expert-ids'}))) {
                     continue;
                 }
+                if(((int) $pitch->category_id === 7) && ((int) $expert->id === 1)) {
+                    continue;
+                }
                 $firstExpertPrice = ($expert->price + 500);
                 break;
             endforeach;

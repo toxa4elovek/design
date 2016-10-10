@@ -295,6 +295,9 @@ endif;
                 foreach ($experts as $expert): if ($expert->enabled == 0) {
      continue;
  }
+                    if(((int) $category->id === 7) && ((int) $expert->id === 1)) {
+                        continue;
+                    }
                     ?>
                     <li>
                         <a href="/experts/view/<?= $expert->id ?>" target="_blank" class="photo"><img src="<?= $imageArray[$expert->id] ?>" alt="<?= $expert->name ?>"></a><!-- .photo -->
