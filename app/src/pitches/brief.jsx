@@ -1293,6 +1293,9 @@ function FeatureCart () {
             $('#pdf-link').attr('href', '/pitches/getpdf/godesigner-pitch-' + self.id + '.pdf')
           })
         } else {
+          if (response === 'redirect') {
+            window.location = '/users/registration'
+          }
           if (typeof (response.error) !== 'undefined') {
             if (response.error === 'lowaward') {
               alert('Награда слишком низкая!')
