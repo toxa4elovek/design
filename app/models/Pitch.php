@@ -2249,7 +2249,7 @@ class Pitch extends AppModel
         if (in_array($project->category_id, [3, 4])) {
             $planDaysDefault = 17;
         }
-        $planDateToComplete = self::getPlannedDateToComplete($projectId);
+        $planDateToComplete = date('d.m.Y H:i', (strtotime(self::getPlannedDateToComplete($projectId))));
         $newPlanDateToComplete = date('d.m.Y H:i', (strtotime($project->awardedDate) + ($planDaysDefault + 2) * DAY));
 
         $ownerFormatted = $nameInflector->renderName($projectOwner->first_name, $projectOwner->last_name);
