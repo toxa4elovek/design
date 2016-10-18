@@ -14,29 +14,28 @@ class BillsController extends AppController
     public function save()
     {
         $requestId = $this->request->data['id'];
-        $res = [
+        $response = [
             'error' => false,
         ];
         if (!$this->request->is('json')
          || !isset($requestId)
          || empty($requestId)
-         || !($pitch = Pitch::first($requestId))) {
+         || !($project = Pitch::first($requestId))) {
             return $this->redirect('/pitches');
         }
         $currentUser = (int) $this->userHelper->getId();
-        if ((int) $pitch->user_id !== $currentUser) {
-            $res['error'] = 'wrongUser';
-            return $res;
+        if ((int) $project->user_id !== $currentUser) {
+            $response['error'] = 'wrongUser';
+            return $response;
         }
-
-        if (!($bill = Bill::first($pitch->id))) {
+        if (!($bill = Bill::first($project->id))) {
             $bill = Bill::create();
         }
-        $bill->id = $pitch->id;
+        $bill->id = $project->id;
         $bill->user_id = $currentUser;
         $bill->set($this->request->data);
         $bill->save();
-        $res['result'] = $bill->data();
-        return $res;
+        $response['result'] = $bill->data();
+        return $response;
     }
 }

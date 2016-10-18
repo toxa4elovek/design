@@ -1812,6 +1812,9 @@ Disallow: /pitches/upload/'.$pitch['id'];
     public function getpdf()
     {
         if (($pitch = Pitch::first($this->request->id)) && ($bill = Bill::first($this->request->id))) {
+            if ($pitch->started === '0000-00-00 00:00:00') {
+                $pitch->started = date(MYSQL_DATETIME_FORMAT);
+            }
             if ((int) $this->userHelper->getId() !== (int) $pitch->user_id) {
                 die();
             }
@@ -1837,6 +1840,9 @@ Disallow: /pitches/upload/'.$pitch['id'];
     public function getPdfAct()
     {
         if (($pitch = Pitch::first($this->request->id))) {
+            if ($pitch->started === '0000-00-00 00:00:00') {
+                $pitch->started = date(MYSQL_DATETIME_FORMAT);
+            }
             if (!$this->userHelper->isPitchOwner($pitch->user_id) && !User::checkRole('admin')) {
                 return $this->redirect('/users/mypitches');
             }

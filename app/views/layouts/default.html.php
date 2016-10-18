@@ -55,9 +55,30 @@
         echo '<meta property="fb:app_id" content="202765613136579"/>';
     ?>
     <?php
+    elseif (preg_match('@/golden-fish/1@', $_SERVER['REQUEST_URI'])):
+        echo '<meta content="godesigner:pitch" property="og:type"/>';
+        echo $this->Og->getOgDescription('Станьте директором собственного рекламного агентства.');
+        echo $this->Og->getOgTitle('«Золотая рыбка»');
+        echo $this->Og->getOgImage('');
+        echo '<meta property="fb:admins" content="nyudmitriy"/>';
+        echo '<meta property="fb:app_id" content="202765613136579"/>';
+    elseif (preg_match('@/golden-fish/2@', $_SERVER['REQUEST_URI'])):
+        echo '<meta content="godesigner:pitch" property="og:type"/>';
+        echo $this->Og->getOgDescription('Решайте задачи клиентов силами 35 000 дизайнеров и копирайтеров.');
+        echo $this->Og->getOgTitle('«Золотая рыбка»');
+        echo $this->Og->getOgImage('');
+        echo '<meta property="fb:admins" content="nyudmitriy"/>';
+        echo '<meta property="fb:app_id" content="202765613136579"/>';
+    elseif (preg_match('@/golden-fish/3@', $_SERVER['REQUEST_URI'])):
+        echo '<meta content="godesigner:pitch" property="og:type"/>';
+        echo $this->Og->getOgDescription('35 000 дизайнеров и копирайтеров, которые сделают работу за вас.');
+        echo $this->Og->getOgTitle('«Золотая рыбка»');
+        echo $this->Og->getOgImage('');
+        echo '<meta property="fb:admins" content="nyudmitriy"/>';
+        echo '<meta property="fb:app_id" content="202765613136579"/>';
     elseif (preg_match('@/golden-fish@', $_SERVER['REQUEST_URI'])):
         echo '<meta content="godesigner:pitch" property="og:type"/>';
-        echo $this->Og->getOgDescription('«Золотая рыбка» — 30 000 дизайнеров и копирайтеров сервиса, которые сделают работу за вас. Ваши заказы и цены — наши дизайнеры и идеи.');
+        echo $this->Og->getOgDescription('35 000 дизайнеров и копирайтеров сервиса, которые сделают работу за вас. Ваши заказы и цены — наши дизайнеры и идеи.');
         echo $this->Og->getOgTitle('«Золотая рыбка»');
         echo $this->Og->getOgImage('');
         echo '<meta property="fb:admins" content="nyudmitriy"/>';
