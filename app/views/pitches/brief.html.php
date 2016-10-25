@@ -216,7 +216,7 @@ endif;
                 <div>
                     <input style="vertical-align: top;margin-top:3px" id="guaranteedFalse" type="radio" name="isGuaranteed" value="0" data-option-title="Гарантированный проект">
                     <label for="guaranteedFalse" style="text-shadow: 0 1px 1px #eee;font-size: 29px; color:#6f6f6f; font-family: 'RodeoC', 'Helvetica Neue';margin-left:10px;">Проект без гарантий&nbsp;&nbsp;&nbsp;0р.</label>
-                    <p class="guaranteeExplanation" id="nonguaranteedTooltip" style=" display:none;">При активном взаимодействии с <?php if ($category->id == 7): echo 'копирайтерами'; else: 'дизайнерами'; endif;?> вы сможете <a href="/answers/view/71" target="_blank">вернуть деньги, если решения не понравятся</a>. Отсутствие гарантий, однако, спровоцирует меньший интерес к проекту.</p>
+                    <p class="guaranteeExplanation" id="nonguaranteedTooltip" style=" display:none;">При активном взаимодействии с <?php if ($category->id == 7): echo 'копирайтерами'; else: echo 'дизайнерами'; endif;?> вы сможете <a href="/answers/view/71" target="_blank">вернуть деньги, если решения не понравятся</a>. Отсутствие гарантий, однако, спровоцирует меньший интерес к проекту.</p>
                 </div>
 
             </div>
