@@ -5,7 +5,7 @@
         <div class="pitches-ajax-wrapper">
             <div class="pitches-ajax-loader">&nbsp;</div>
         </div>
-        <?php if(($this->user->isLoggedIn()) && ($this->user->getAwardedSolutionNum() > 0)): ?>
+        <?php if($this->user->isLoggedIn()): ?>
             <a href="/users/subscribers_referal" style="
             position: absolute;
             top: 27px;
