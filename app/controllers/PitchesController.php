@@ -1456,7 +1456,7 @@ Disallow: /pitches/upload/'.$pitch['id'];
                 $solution->views = Solution::increaseView($this->request->id);
             }
             $data = null;
-            if (Pitch::isReadyForLogosale($pitch) || (isset($this->request->query['exp'])) && ($this->request->query['exp'] == 1)) {
+            if (Pitch::isReadyForLogosale($pitch) || ((isset($this->request->query['exp'])) && ($this->request->query['exp'] == 1))) {
                 $userHelper = new UserHelper([]);
                 if ($userHelper->isLoggedIn()) {
                     $data = Solution::addBlankPitchForLogosale($userHelper->getId(), $solution->id);
@@ -1468,7 +1468,7 @@ Disallow: /pitches/upload/'.$pitch['id'];
             $sort = $pitch->getSolutionsSortName($this->request->query);
             $order = $pitch->getSolutionsSortingOrder($this->request->query);
             $briefHelper = new Brief();
-            $solution->description = nl2br(trim($briefHelper->stripUrl($solution->description)));
+            $solution->description = nl2br(strip_tags(trim($briefHelper->stripUrl($solution->description)), '<br>'));
 
             function getArrayNeighborsByKey($array, $findKey)
             {
