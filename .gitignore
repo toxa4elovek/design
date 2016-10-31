@@ -113,7 +113,7 @@ app/webroot/js/subscription_plans/subscriber.js
 app/webroot/js/pages/fastpitch.js
 app/webroot/js/pages/howitworks.js
 app/webroot/js/pages/home.js
-
+app/webroot/js/pitches/upload.js
 .vs/*
 .vs/GoDesigner/v14/.suo
 GoDesigner.phpproj

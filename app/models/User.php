@@ -388,18 +388,22 @@ class User extends AppModel
         }
         // затем ищем питчи, где пользователь выложил решения
         if ($awarded) {
-            $solutions = Solution::all(['conditions' =>
-                [
-                    'user_id' => $userId,
-                    'OR' => [
-                        ['awarded' => 1],
-                        ['nominated' => 1]
-                    ],
-                ]
-            ]);
+            $conditions = [
+                'Solution.user_id' => $userId,
+                'OR' => [
+                    ['Solution.awarded' => 1],
+                    ['Solution.nominated' => 1]
+                ],
+            ];
         } else {
-            $solutions = Solution::find('all', ['conditions' => ['Solution.user_id' => $userId], 'order' => ['id' => 'desc'], 'with' => ['Pitch']]);
+            $conditions = ['Solution.user_id' => $userId];
         }
+
+        $solutions = Solution::find('all', [
+            'conditions' => $conditions,
+            'order' => ['id' => 'desc'],
+            'fields' => ['Solution.pitch_id']
+        ]);
 
         foreach ($solutions as $s) {
             $pitchesIds[$s->pitch_id . ''] = date('Y-m-d H:i:s');

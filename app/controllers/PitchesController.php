@@ -265,8 +265,8 @@ class PitchesController extends AppController
                 $page = abs(intval($this->request->query['page']));
             }
 
-            /*******/
             $total = ceil(Pitch::count([
+                        'fields' => 'Pitch.id',
                         'conditions' => $conditions,
                     ]) / $limit);
             $pitches = Pitch::all([
