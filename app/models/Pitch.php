@@ -139,7 +139,7 @@ class Pitch extends AppModel
             $client = User::first($params['pitch']->user_id);
             $nameInflector = new nameInflector();
             if ($params['pitch']->expert == 0):
-                $message = Comment::getWinnerSelectionCommentForClient($nameInflector->renderName($client->first_name, $client->last_name), Pitch::getDaysForWinnerSelection($params['pitch']->id));
+                $message = Comment::getWinnerSelectionCommentForClient($nameInflector->renderName($client->first_name, $client->last_name), Pitch::getDaysForWinnerSelection($params['pitch']->id), $params['pitch']);
             else:
                 $message = '@' . $nameInflector->renderName($client->first_name, $client->last_name) . ', проект завершен и ожидает мнения эксперта, который в течение 2 рабочих дней выберет 3 идеи, которые лучше всего отвечают поставленной задаче. Дизайнеры больше не могут предлагать решения и оставлять комментарии!';
             endif;
@@ -2173,7 +2173,7 @@ class Pitch extends AppModel
         if ((int) $record->category_id === 20) {
             return $record->isSubscriberProjectForCopyrighting();
         }
-        return intval($record->category_id) === 7;
+        return (int) $record->category_id === 7;
     }
 
     /**

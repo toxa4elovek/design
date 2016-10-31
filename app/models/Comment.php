@@ -10,6 +10,7 @@ use \app\extensions\helper\Avatar as AvatarHelper;
 use \app\extensions\helper\Brief;
 use \app\extensions\helper\Solution as SolutionHelper;
 use \app\extensions\helper\NameInflector;
+use lithium\data\entity\Record;
 use \lithium\storage\Session;
 use app\extensions\mailers\CommentsMailer;
 use app\extensions\storage\Rcache;
@@ -466,9 +467,10 @@ class Comment extends AppModel
      *
      * @param $name
      * @param $days
+     * @param $project Record
      * @return string
      */
-    public static function getWinnerSelectionCommentForClient($name, $days)
+    public static function getWinnerSelectionCommentForClient($name, $days, $project)
     {
         $numInflector = new NumInflector();
         $dayWord = $numInflector->formatString((int) $days, [
@@ -478,6 +480,10 @@ class Comment extends AppModel
                 'third' => 'дней'
             ]
         ]);
-        return sprintf('@%s, срок проекта подошел к концу! Дизайнеры больше не могут предлагать решения и оставлять комментарии! Настал момент анонсировать победителя. У вас есть %d %s на выбор лучшего решения. Выбрав лучшее, вы получите возможность внесения поправок и время на получение исходников.', (string) $name, $days, $dayWord);
+        $template = '@%s, срок проекта подошел к концу! Дизайнеры больше не могут предлагать решения и оставлять комментарии! Настал момент анонсировать победителя. У вас есть %d %s на выбор лучшего решения. Выбрав лучшее, вы получите возможность внесения поправок и время на получение исходников.';
+        if(Pitch::isCopyrighting($project)) {
+            $template = '@%s, срок проекта подошел к концу! Дизайнеры больше не могут предлагать решения и оставлять комментарии! Настал момент анонсировать победителя. У вас есть %d %s на выбор лучшего решения. Выбрав лучшее, вы получите возможность внесения поправок и время на получение исходников. Перед выбором победителя убедитесь, что домен свободен с помощью сервиса проверки занятости доменных имен, например http://www.whois-service.ru/';
+        }
+        return sprintf($template, (string) $name, $days, $dayWord);
     }
 }
