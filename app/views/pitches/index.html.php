@@ -2,9 +2,6 @@
 
 <?=$this->view()->render(array('element' => 'header'), array('header' => 'header2'))?>
 	<div class="conteiner">
-        <div class="pitches-ajax-wrapper">
-            <div class="pitches-ajax-loader">&nbsp;</div>
-        </div>
         <?php if($this->user->isLoggedIn()): ?>
             <a href="/users/subscribers_referal" style="
             position: absolute;
@@ -21,6 +18,10 @@
             font-size: 13px;
             font-weight: 400;
             line-height: 32px;">Приведи клиента и заработай 10 000 руб.</a>
+        <?php else:?>
+            <div class="pitches-ajax-wrapper">
+                <div class="pitches-ajax-loader">&nbsp;</div>
+            </div>
         <?php endif ?>
         <section>
             <div style="margin-top:75px;height: 75px; padding-top: 15px; background-color: rgb(243, 243, 243); width: 786px; margin-left: 79px;">
