@@ -964,10 +964,9 @@ class UsersController extends \app\controllers\AppController
         $user = User::create();
         if ($this->request->data) {
             // фейсбук регисстрация
-            if ((isset($this->request->data['id']) && isset($this->request->data['name']) || (isset($this->request->data['service']) && isset($this->request->data['email'])))) {
+            if ((isset($this->request->data['id']) && isset($this->request->data['name'])) || (isset($this->request->data['service']) && isset($this->request->data['email']))) {
                 // регился ли пользователей через обычную регистрацию?
-                $isUserExists = $user->isUserExistsByEmail($this->request->data['email']);
-                if ($isUserExists) {
+                if ($user->isUserExistsByEmail($this->request->data['email'])) {
                     // если он уже регился обычным способом, сохраняем его фейсбук айди
                     $userToLog = User::first(['conditions' => ['email' => $this->request->data['email']]]);
                     if (isset($this->request->data['service'])) {
@@ -991,7 +990,16 @@ class UsersController extends \app\controllers\AppController
                         $isFBUserExists = $user->checkFacebookUser($this->request->data);
                         $fb = true;
                     }
-
+/*
+                    if($this->request->data['email'] === 'nyudmitriy@gmail.com') {
+                        echo '<pre>';
+                        var_dump($isFBUserExists);
+                        var_dump($fb);
+                        var_dump($vk);
+                        var_dump($this->request->data);
+                        die();
+                    }
+*/
                     if (!$isFBUserExists) {
                         // если пользователей фейсбука у нас отсутствует, то сохраняем его в базу
                         if (($fb && $user->saveFacebookUser($this->request->data)) || (!$fb && $user->saveVkontakteUser($this->request->data))) {

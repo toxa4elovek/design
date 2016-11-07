@@ -159,7 +159,10 @@ class User extends AppModel
 
     public function isUserExistsByEmail($entity, $email)
     {
-        $conditions = [
+        $conditions = ['email' => $email];
+        return (bool) self::count(['conditions' => $conditions]);
+        /*
+         * $conditions = [
             'email' => $email,
             'facebook_uid' => ''
         ];
@@ -174,6 +177,7 @@ class User extends AppModel
         } else {
             return true;
         }
+        */
     }
 
     public function saveVkontakteUser($entity, $data)
