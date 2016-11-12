@@ -40,7 +40,7 @@ use lithium\data\entity\Record;
 /**
  * Class User
  * @package app\models
- * @method Record|null first(array $conditions) static
+ * @method Record|null first(array|int $conditions) static
  * @method int count(array $conditions) static
  * @method RecordSet|null all(array $conditions = []) static
  */

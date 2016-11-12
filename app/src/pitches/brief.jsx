@@ -363,7 +363,6 @@ $(document).ready(function () {
       appendTosCheck()
     } else {
       if (Cart.prepareData()) {
-        console.info('Количество файлов - ' + uploader.duCount())
         if (uploader.duCount() > 0) {
           $('#loading-overlay').modal({
             containerId: 'spinner',
@@ -1038,6 +1037,7 @@ function FeatureCart () {
   this.referalId = 0
   this.mode = 'add'
   this.promocodes = []
+  this.saveInProgress = false
   this.init = function () {
     if (($('#pitch_id').length > 0) && (typeof ($('#pitch_id').val()) != 'undefined')) {
       self.id = $('#pitch_id').val()
@@ -1241,10 +1241,16 @@ function FeatureCart () {
     return result
   }
   this.saveData = function (simplesave) {
+    if (self.saveInProgress === true) {
+      return false
+    }
+    self.saveInProgress = true
     if (self.data.features.award == 0) {
       alert('Укажите награду для дизайнера!')
+      self.saveInProgress = false
     } else {
       $.post('/pitches/add.json', self.data, function (response) {
+        self.saveInProgress = false
         if (typeof (simplesave) === 'undefined') {
           if (response === 'redirect') {
             window.location = '/users/registration'
@@ -1313,6 +1319,7 @@ function FeatureCart () {
           var title = Cart.data.commonPitchData.title
           var award = Cart._priceDecorator(Cart.data.features.award)
           var id = response
+          self.id = id
           var scroll = false
           if (($('#pitch-panel').length == 1) && ($('tr[data-id="' + id + '"]', '#pitch-panel').length == 0)) {
             if ($('tr', '#pitch-panel').length % 2 == 0) {

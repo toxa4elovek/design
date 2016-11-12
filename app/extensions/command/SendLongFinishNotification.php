@@ -30,6 +30,7 @@ class SendLongFinishNotification extends CronJob
         )));
         foreach ($projects as $project) {
             $user = User::first(5);
+            $user->email = 'devochkina@godesigner.ru';
             NotificationsMailer::sendLongFinishNotification($user, $project);
         }
     }
