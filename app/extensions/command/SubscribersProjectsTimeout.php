@@ -16,6 +16,7 @@ class SubscribersProjectsTimeout extends CronJob
         $userHelper = new User();
         $subscribersProjects = Pitch::all(['conditions' => [
             'status' => 1,
+            'guaranteed' => 1,
             'category_id' => 20,
             'awarded' => 0,
             'chooseWinnerFinishDate' => ['<' => $currentDate->format('Y-m-d H:i:s')],
