@@ -481,7 +481,7 @@ class UsersController extends \app\controllers\AppController
                     User::sendSpamWincomment($newComment, $recipient);
                 }
                 if (preg_match('/@GoDesigner/', $newComment->text)) {
-                    $admin = User::first(5);
+                    $admin = User::first(108);
                     User::sendSpamWincomment($newComment, $admin, true);
                 }
                 $user = User::first($this->userHelper->getId());
@@ -751,7 +751,7 @@ class UsersController extends \app\controllers\AppController
                     User::sendSpamWincomment($newComment, $recipient);
                 }
                 if (preg_match('/@GoDesigner/', $newComment->text)) {
-                    $admin = User::first(5);
+                    $admin = User::first(108);
                     User::sendSpamWincomment($newComment, $admin, true);
                 }
                 $user = User::first(Session::read('user.id'));

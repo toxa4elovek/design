@@ -29,8 +29,7 @@ class SendLongFinishNotification extends CronJob
             "awardedDate <= '$firstDate' AND awardedDate > '$secondDate'"
         )));
         foreach ($projects as $project) {
-            $user = User::first(5);
-            $user->email = 'devochkina@godesigner.ru';
+            $user = User::first(108);
             NotificationsMailer::sendLongFinishNotification($user, $project);
         }
     }

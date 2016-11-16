@@ -37,7 +37,7 @@
                     ?>
                     <li class="requestli" style="border-bottom: 1px solid #ebeff2; padding-bottom: 11px;"><a href="#" class="reqlink" data-id="5">абонентский сервис (Мария Еленевская)</a></li>
                     <?php endif?>
-                    <li class="requestli" style="border-bottom: 1px solid #ebeff2; padding-bottom: 11px; <?php if($hasPriorityTarget):?>padding-top:5px;<?php endif?>"><a href="#" class="reqlink" data-id="1">дизайн консультация (Оксана Девочкина)</a></li>
+                    <!--li class="requestli" style="border-bottom: 1px solid #ebeff2; padding-bottom: 11px; <?php if($hasPriorityTarget):?>padding-top:5px;<?php endif?>"><a href="#" class="reqlink" data-id="1">дизайн консультация (Оксана Девочкина)</a></li-->
                     <li class="requestli" style="border-bottom: 1px solid #ebeff2; padding-bottom: 11px; padding-top:5px"><a href="#" class="reqlink" data-id="2">бухгалтерия (Слава Афанасьев)</a></li>
                     <li class="requestli" style="border-bottom: 1px solid #ebeff2; padding-bottom: 11px; padding-top:5px"><a href="#" class="reqlink" data-id="3">тех. поддержка (Дима Ню)</a></li>
                     <li class="requestli" style="border-bottom: 1px solid #ebeff2; padding-bottom: 11px; padding-top:5px"><a href="#" class="reqlink" data-id="4">другое (Максим Федченко)</a></li>
