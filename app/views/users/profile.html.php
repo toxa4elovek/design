@@ -199,7 +199,7 @@
                                     </li>
                                     <li>
                                         <label class="regular" style="font-weight: normal">
-                                            <input style="margin-top:0; margin-bottom: 2px;" type="checkbox" name="email_digest" <?php if($user->email_digest): echo 'checked'; endif;?>>дайджест новостей (1 раз в 3 недели)
+                                            <input style="margin-top:0; margin-bottom: 2px;" type="checkbox" name="email_digest" <?php if($user->email_digest): echo 'checked'; endif;?>>новости GoDesigner.ru
                                         </label>
                                     </li>
                                     <li id="push-notifications-status"></li>

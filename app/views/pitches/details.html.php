@@ -26,7 +26,16 @@ function mb_basename($file)
             <div class="gallery_container">
                 <nav class="other_nav_gallery clear">
                     <?php
-                    if((!$this->user->isPitchOwner($pitch->user_id)) && ($pitch->status < 1) && ($pitch->published == 1)):?>
+                    if(
+                        (((int) $pitch->premium === 0) && (!$this->user->isPitchOwner($pitch->user_id)) && ($pitch->status < 1) && ($pitch->published == 1) && $disableUpload === false)
+                        ||
+                        (((int) $pitch->premium === 1) &&
+                                ($pitch->status < 1) &&
+                                ($pitch->published == 1) &&
+                                ($this->user->isPitchOwner($pitch->id) === true) &&
+                                (($this->user->isAdmin() === true) ||
+                                ($this->user->getAwardedSolutionNum() > 0)))
+                    ):?>
                         <a href="/pitches/upload/<?=$pitch->id?>" class="button add_solution <?php if($this->session->read('user.confirmed_email') == '0') {echo 'needConfirm';}?> <?php echo ($this->user->designerTimeRemain($pitch)) ? ' needWait' : '';?>">предложить решение</a>
                         <?php elseif(($pitch->status == 1) && ($pitch->awarded == 0)):?>
                         <!-- <img src="/img/status1.jpg" class="other-nav-right active" style="position:relative;top:-40px;margin-right: 40px;" alt="Идет выбор победителя"/> -->
@@ -39,6 +48,23 @@ function mb_basename($file)
 
                 <div class="Center clr">
                     <div class="details">
+                        <?php
+                        if(
+                                ((int) $pitch->premium === 1) &&
+                                ($this->user->isPitchOwner($pitch->id) === false) &&
+                                ($this->user->isAdmin() === false) &&
+                                ($this->user->getAwardedSolutionNum() === 0)
+                        ):
+                        ?>
+                        <div class="bigfont">
+                            <h2 class="title">
+                                ЭТО <a href="/answers/view/112">ПРЕМИУМ ПРОЕКТ</a>,<br>
+                                ПРИНЯТЬ УЧАСТИЕ В НЁМ МОГУТ ТОЛЬКО<br>
+                                ПОБЕДИТЕЛИ ПРОЕКТОВ.
+                            </h2>
+                        </div>
+                        <p>В премиум-проекте могут предлагать решения только опытные участники, которые уже ранее одерживали победы в проектах. Подробнее об этой опции вы можете прочитать по&nbsp;<a href="/answers/view/112">ссылке</a>.</p>
+                        <?php else:?>
                         <h2 class="blueheading">Название</h2>
                         <p class="regular"><?=$pitch->title?></p>
 
@@ -130,6 +156,7 @@ function mb_basename($file)
                             <?php endforeach?>
                         </ul>
                         <?php endif?>
+                        <?php endif?>
                       <?php if($this->user->isLoggedIn()):?>
                       <div class="separator" style="width: 620px; margin:30px 0 15px;"></div>
                       <div style="height:20px;margin-top:22px;"><span id="rating_brief">Оцените бриф:</span>
@@ -175,7 +202,17 @@ function mb_basename($file)
                 <?php elseif($this->user->isLoggedIn()):?>
                     <a href="#" class="fav-plus" data-pitchid="<?=$pitch->id?>" id="fav" data-type="add"></a>
                 <?php endif?>
+                <?php
+                if(
+                    ((int) $pitch->premium === 0) ||
+                    (((int) $pitch->premium === 1) &&
+                        (($this->user->isPitchOwner($pitch->id) === true) ||
+                    ($this->user->isAdmin() === true) ||
+                    ($this->user->getAwardedSolutionNum() > 0)))
+                ):
+                ?>
                     <a href="/pitches/printpitch/<?=$pitch->id?>" class="print-link"></a>
+                <?php endif ?>
                 <a href="/pitches/details/<?= $prevpitch->id?>" class="next-pitch-link"></a>
 
                 <div style="margin-top:15px;">

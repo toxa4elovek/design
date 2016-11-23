@@ -681,7 +681,7 @@ class PitchesController extends AppController
                 $commonPitchData['fileFormats'] = [];
             }
             $specificPitchData = $this->request->data['specificPitchData'];
-            $pinned = $private = $social = $email = $brief = $timelimit = 0;
+            $pinned = $private = $social = $email = $brief = $timelimit = $premium = 0;
             $freePinned = false;
             $promocode = '';
             $codes = [];
@@ -714,6 +714,9 @@ class PitchesController extends AppController
             }
             if ($featuresData['brief'] > 0) {
                 $brief = 1;
+            }
+            if ($featuresData['premium'] > 0) {
+                $premium = 1;
             }
             if (!empty($commonPitchData['phone-brief'])) {
                 //$brief = 1;
@@ -797,6 +800,7 @@ class PitchesController extends AppController
                         'filesId' => serialize($commonPitchData['filesId']),
                         'specifics' => serialize($specificPitchData),
                         'promocode' => $promocode,
+                        'premium' => $premium,
                     ];
                 }
             } else {
@@ -871,7 +875,8 @@ class PitchesController extends AppController
                     'promocode' => $promocode,
                     'referal' => $referalId,
                     'referal_sum' => $referalSum,
-                    'ga_id' => $gaId
+                    'ga_id' => $gaId,
+                    'premium' => $premium,
                 ];
             }
             if (!$pitch = Pitch::first(['conditions' => ['id' => $commonPitchData['id']]])) {

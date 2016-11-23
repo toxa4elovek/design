@@ -200,6 +200,16 @@
     }
   })
 
+  $('#premium').change(function () {
+    if ($(this).attr('checked') === 'checked') {
+      let offset = $(this).closest('.ribbon').offset()
+      $('#explanation_premium').show()
+      $.scrollTo(offset.top - 20, {duration: 600})
+    } else {
+      $('#explanation_premium').hide()
+    }
+  })
+
   /**
    * Обработка изменения нажатия по "прокачать бриф"
    */

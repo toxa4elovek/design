@@ -21,6 +21,7 @@ class Receipt extends AppModel
         'timelimit' => 'Установлен срок',
         'brief' => 'Заполнение брифа',
         'guaranteed' => 'Гарантированный проект',
+        'premium' => 'Премиум-проект',
         'fee' => 'Сбор GoDesigner',
         'discount' => 'Скидка'
     ];
@@ -51,6 +52,7 @@ class Receipt extends AppModel
             'brief',
             'discount',
             'guaranteed',
+            'premium'
         ];
         foreach ($keys as $key) {
             if (isset($data['features'][$key])) {

@@ -181,6 +181,15 @@
                 <img src="/img/brief/brief.png" alt="Заполнить бриф"/>
             </div>
 
+            <div class="ribbon premium" style="padding-top: 35px; height: 56px; padding-bottom: 0;">
+                <p class="option"><label><input type="checkbox"  name="" class="single-check" data-option-title="Премиум-проект" data-option-value="1750" id="premium">Премиум-проект</label></p>
+                <p class="label" style="text-transform: none;">1750р.</p>
+            </div>
+
+            <div class="explanation premium" style="display:none;" id="explanation_premium">
+                <p style="margin-bottom: 20px;">В премиум-проекте принимают участие только сильнейшие дизайнеры и копирайтеры, которые уже побеждали на сервисе. Мы пригласим их по e-mail и СМС.</p>
+            </div>
+
             <div class="ribbon" style="padding-top: 35px; height: 56px; padding-bottom: 0;">
                 <p class="option">
                     <label>

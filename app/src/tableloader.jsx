@@ -108,9 +108,9 @@ function TableLoader() {
                 }
             }
             let icons = '';
-            if(object.guaranteed == 1) {
+            /*if(object.guaranteed == 1) {
                 icons = '<img style="width:30px; margin-top:4px;float:left;" src="/img/guarantee.png" alt="Награда гарантирована">';
-            }
+            }*/
             let timeLeft = '';
             if(object.status == 0) {
                 if((object.private == 1) && (object.expert == 0)){
@@ -165,7 +165,8 @@ function TableLoader() {
                     userString = '<a href="/pitches/edit/' + object.id + '" class="mypitch_edit_link" title="Редактировать"><img src="/img/1.gif" class="pitches-name-td-img"></a><a href="/pitches/delete/' + object.id + '" rel="' + object.id  +'" class="mypitch_delete_link" title="Удалить"><img src="/img/1.gif" class="pitches-name-td-img"></a><a href="/pitches/edit/' + object.id + '#step3" class="mypitch_pay_link" title="Оплатить"><img src="/img/1.gif" class="pitches-name-td2-img"></a>';
                 }
             }else {
-                userString = '<a href="#"><img class="pitches-name-td-img expand-link" src="/img/arrow.png" /></a>';
+                //userString = '<a href="#"><img class="pitches-name-td-img expand-link" src="/img/arrow.png" /></a>';
+              userString = ''
             }
 
             if(object.private == 1) {
@@ -187,6 +188,29 @@ function TableLoader() {
             if(object.category_id == 20) {
                 categoryLinkHref = '/pages/subscribe';
             }
+            let iconsItems = []
+            if ((object.status == 2) || ((object.status == 1) && (object.awarded != 0))) {
+              iconsItems.push('icons-closed-light')
+            } else {
+              if ((object.awarded != 0) && (object.status == 1)) {
+                iconsItems.push('icons-choosing-winner-light')
+              }
+              if (object.premium == 1) {
+                iconsItems.push('icons-premium-light')
+              }
+              if (object.expert == 1) {
+                iconsItems.push('icons-expert-light')
+              }
+              if (object.private == 1) {
+                iconsItems.push('icons-private-light')
+              }
+            }
+
+          const iconsString = iconsItems.reduce((prev, currentIndex) => {
+                let carry = prev + `<li class="${currentIndex}"></li>`
+                return carry
+            }, '')
+          icons = `<ul class="project-list-icons-container">${iconsString}</ul>`
             html += `<tr data-id="${object.id}" class="${rowClass}">
                 <td class="icons">${icons}</td>
                 <td class="pitches-name">

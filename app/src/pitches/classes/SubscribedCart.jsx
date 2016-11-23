@@ -32,6 +32,9 @@ class AdvancedCart {
     if (this.isOptionExists('Заполнение брифа')) {
       features['brief'] = 1
     }
+    if (this.isOptionExists('Премиум-проект')) {
+      features['premium'] = 1
+    }
     const finishDateMoment = finishDatePicker.data('DateTimePicker').date()
     const chooseWinnerFinishDateMoment = chooseWinnerDatePicker.data('DateTimePicker').date()
     const commonPitchData = {

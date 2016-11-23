@@ -2128,7 +2128,8 @@ class Pitch extends AppModel
             'fileFormatDesc' => $commonPitchData['fileFormatDesc'],
             'filesId' => serialize($commonPitchData['fileIds']),
             'specifics' => serialize($specificPitchData),
-            'ga_id' => $commonPitchData['ga_id']
+            'ga_id' => $commonPitchData['ga_id'],
+            'premium' => (bool) $featuresData['premium'],
         ];
         if ((isset($commonPitchData['id'])) && (!empty($commonPitchData['id']))) {
             $pitch = Pitch::first((int) $commonPitchData['id']);

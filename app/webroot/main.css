@@ -2333,16 +2333,16 @@ textarea.placeholder {
 
 
 table.all-pitches{
-    width:850px;
-    margin: 10px 0 0 15px;
+    width:900px;
+    margin: 10px 0 0 30px;
     background:#45464f;
     font-size:12px;
-    box-shadow: 2px 0px #b5b5b5;
-    -webkit-box-shadow: 2px 0px #b5b5b5;
-    -moz-box-shadow: 2px 0px #b5b5b5;
 }
-.all-pitches tr:active{
-
+.all-pitches tr:hover{
+    background-color: white !important;
+}
+.all-pitches tr:hover td, .all-pitches tr:hover td a{
+    color: #666 !important;
 }
 .all-pitches tr:active td{
     height:80px;
@@ -2355,8 +2355,10 @@ table.all-pitches{
 .all-pitches tr:active span, tr:active .pitches-cat a{
     color:#666;
 }
-
-.highlighted td.pitches-name, .highlighted td.pitches-cat, .highlighted td.idea, .highlighted td.pitches-time, .highlighted td.price{
+.all-pitches td {
+    border-top: 1px solid #575864;
+}
+.highlighted td.icons, .highlighted td.pitches-name, .highlighted td.pitches-cat, .highlighted td.idea, .highlighted td.pitches-time, .highlighted td.price{
     border-top: 1px solid #575864;
 }
 .newpitch td.pitches-name, .newpitch td.td-title, .newpitch td.pitches-cat, .newpitch td.idea, .newpitch td.pitches-time, .newpitch td.price{
@@ -2451,10 +2453,13 @@ tr.newpitch{
     background:#4f8b5c !important;
     color:#fff !important;
 }
+.all-pitches tr td.icons {
+    border-right: none;
+}
 td.icons{
-    background:#e0e0e0;
+    /*background:#e0e0e0;*/
     width:70px;
-    border:none;
+    /*border:none;*/
     text-align:right;
 }
 td.pitches-name{
@@ -2541,6 +2546,10 @@ td.price{
     text-transform: none;
     color: #e2e2e2;
     line-height: 19px;
+}
+.all-pitches tr td.price {
+    text-align: left;
+    padding-left: 26px;
 }
 td.price.mypitches {
     width: 117px;
@@ -2647,13 +2656,25 @@ a.go-pitch{
     position:relative;
 }
 .icons-infomation{
-    width:410px;
-    padding: 30px 0 30px 55px;
+    width: 130px;
+    padding: 0 0 30px 28px;
     float:left;
 }
-.icons-infomation li{
-    padding:12px 0 12px 37px;
-    height: 36px;
+.icons-infomation a {
+    color: #666;
+}
+.icons-infomation a:active, .icons-infomation a:hover {
+    text-decoration: underline;
+}
+.icons-infomation li {
+    text-transform: none;
+    color: #666;
+    font-family: Arial;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 14px;
+    padding:10px 0 10px 27px;
+    /*height: 36px;*/
     float:left;
 }
 li.icons-infomation-one{
@@ -2703,10 +2724,10 @@ a.this-page{
     background:#50525a;
 }
 .you-profile{
-    float:right;
-    margin: 30px 80px 0 0;
-    padding-left:35px;
-    background:url(/img/icons-6.png) no-repeat;
+    float:left;
+    margin: 0 80px 0 56px;
+    padding-left:0;
+    width: 160px;
 }
 .you-profile a{
     color:#658FA5;
@@ -3735,7 +3756,7 @@ a#filterClear {
     float: right;
     width: 21px;
     height: 23px;
-    margin-top: 4px;
+    margin-top: 2px;
     background: url('/img/filter-clear.png') no-repeat;
 }
 div.no-result {
@@ -4155,4 +4176,91 @@ td.pitches-name{
 }
 tr.even{
     background:#2f313a;
+}
+.project-list-icons-container {
+    display: block;
+    width: 50px;
+    height: 50px;
+    margin-left: 24px;
+}
+.project-list-icons-container li {
+    float: left;
+    margin-right: 10px;
+    margin-bottom: 7px;
+}
+.icons-choosing-winner-light {
+    width: 13px;
+    height: 22px;
+    display: block;
+    background: url(/img/common/project_status/choosing-winner-light.png) no-repeat;
+}
+.icons-expert-light {
+    width: 15px;
+    height: 14px;
+    display: block;
+    background: url(/img/common/project_status/expert-light.png) no-repeat;
+}
+.icons-private-light {
+    width: 11px;
+    height: 14px;
+    display: block;
+    background: url(/img/common/project_status/private-light.png) no-repeat;
+}
+.icons-closed-light {
+    width: 15px;
+    height: 25px;
+    display: block;
+    background: url(/img/common/project_status/closed-light.png) no-repeat;
+}
+.icons-premium-light {
+    width: 17px;
+    height: 11px;
+    display: block;
+    background: url(/img/common/project_status/premium-light.png) no-repeat;
+}
+.all-pitches tr:hover .icons-choosing-winner-light {
+    width: 13px;
+    height: 22px;
+    display: block;
+    background: url(/img/common/project_status/choosing-winner-dark.png) no-repeat;
+}
+.all-pitches tr:hover .icons-expert-light {
+    width: 15px;
+    height: 14px;
+    display: block;
+    background: url(/img/common/project_status/expert-dark.png) no-repeat;
+}
+.all-pitches tr:hover .icons-private-light {
+    width: 11px;
+    height: 14px;
+    display: block;
+    background: url(/img/common/project_status/private-dark.png) no-repeat;
+}
+.all-pitches tr:hover .icons-closed-light {
+    width: 15px;
+    height: 25px;
+    display: block;
+    background: url(/img/common/project_status/closed-dark.png) no-repeat;
+}
+.all-pitches tr:hover .icons-premium-light {
+    width: 17px;
+    height: 11px;
+    display: block;
+    background: url(/img/common/project_status/premium-dark.png) no-repeat;
+}
+
+.icons-choosing-winner-dark-back {
+    background: url(/img/common/project_status/choosing-winner-dark.png) no-repeat left 15%;
+}
+.icons-expert-dark-back  {
+    background: url(/img/common/project_status/expert-dark.png) no-repeat 3px 60%;
+}
+.icons-private-dark-back  {
+    background: url(/img/common/project_status/private-dark.png) no-repeat 4px 50%;
+}
+.icons-closed-dark-back  {
+    background: url(/img/common/project_status/closed-dark.png) no-repeat left -5%;
+}
+.icons-premium-dark-back  {
+    background: url(/img/common/project_status/premium-dark.png) no-repeat left 40%;
 }

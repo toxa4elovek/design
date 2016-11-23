@@ -255,6 +255,15 @@ endif;
                 <img src="/img/brief/brief.png" alt="Заполнить бриф"/>
             </div>
 
+            <div class="ribbon premium" style="padding-top: 35px; height: 56px; padding-bottom: 0;">
+                <p class="option"><label><input type="checkbox"  name="" class="single-check" data-option-title="Премиум-проект" data-option-value="3500" id="premium">Премиум-проект</label></p>
+                <p class="label" style="text-transform: none;">3500р.</p>
+            </div>
+
+            <div class="explanation premium" style="display:none;" id="explanation_premium">
+                <p style="margin-bottom: 20px;">В премиум-проекте принимают участие только сильнейшие дизайнеры и копирайтеры, которые уже побеждали на сервисе. Мы пригласим их по e-mail и СМС.</p>
+            </div>
+
             <div class="ribbon" style="padding-top: 35px; height: 56px; padding-bottom: 0;">
                 <p class="option"><label><input type="checkbox" name="" class="single-check" data-option-title="Скрыть проект" data-option-value="3500" id="hideproject">Скрыть проект</label></p>
                 <!--p class="description">Питч станет не виден для поисковых систем, а идеи будут доступны для просмотра только вам и их авторам. Подробнее <a target="_blank" href="http://www.godesigner.ru/answers/view/64">тут</a> <a href="#" class="second tooltip" title="Это идеальная возможность, если вы являетесь посредником, рекламным агентством или не хотите разглашать секретов в маркетинговых целях.">(?)</a></p-->

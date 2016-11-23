@@ -59,15 +59,15 @@ $(function () {
     if ($(this).val() == placeholder) {
       $(this).val('').removeClass('placeholder')
     }
-    filterContainter.css('border', '4px solid rgb(231, 231, 231)')
-    filterContainter.css('box-shadow', '')
+    //filterContainter.css('border', '4px solid rgb(231, 231, 231)')
+    //filterContainter.css('box-shadow', '')
     toggleFilterTab()
   })
 
   $(document).on('blur', searchTermSelector, function () {
     checkPlaceholder(searchTermSelector)
-    filterContainter.css('box-shadow', '0 1px 2px rgba(0, 0, 0, 0.2) inset')
-    filterContainter.css('border', '4px solid #F3F3F3')
+    //filterContainter.css('box-shadow', '0 1px 2px rgba(0, 0, 0, 0.2) inset')
+    //filterContainter.css('border', '4px solid #F3F3F3')
   })
 
   $(document).on('click', function (e) {
