@@ -581,7 +581,12 @@ class User extends AppModel
         $user->email = 'team@godesigner.ru';
         $user->first_name = 'godesigner.ru';
         $data = ['user' => $user, 'pitch' => $params['pitch']];
-        SpamMailer::newpitch($data);
+        $isUserPremium = User::getAwardedSolutionNum($user->id);
+        if (($isUserPremium > 0) && ((int) $params['pitch']->premium === 1)) {
+            SpamMailer::newPremiumProject($data);
+        } else {
+            SpamMailer::newpitch($data);
+        }
         return true;
     }
 

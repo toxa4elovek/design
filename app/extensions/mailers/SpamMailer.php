@@ -15,6 +15,14 @@ class SpamMailer extends \li3_mailer\extensions\Mailer {
         ));
     }
 
+    public static function newPremiumProject($data) {
+        return self::_mail(array(
+            'to' => $data['user']->email,
+            'subject' => 'Новый премиум проект!',
+            'data' => $data
+        ));
+    }
+
     public static function promocode($data) {
         return self::_mail(array(
                     'use-smtp' => true,
