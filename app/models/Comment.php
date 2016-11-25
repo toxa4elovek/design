@@ -228,8 +228,8 @@ class Comment extends AppModel
                 if (get_class($result) == 'lithium\data\entity\Record') {
                     //$result = $addSolutionNumLinkIfNotExists($result);
                     $result = $addOriginalText($result);
-                    $result = $addMentionLink($result);
                     $result = $addHyperlink($result);
+                    $result = $addMentionLink($result);
                     $result = $stripEmail($result);
                 } else {
                     foreach ($result as $foundItem) {
