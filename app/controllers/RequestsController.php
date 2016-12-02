@@ -44,7 +44,7 @@ class RequestsController extends AppController {
             return $this->redirect('/requests/sign/' . $this->request->data['pitch_id']);
         }
         $trimmedFirstName = trim($this->request->data['first_name']);
-        $trimmedLastName = trim($this->request->data['first_name']);
+        $trimmedLastName = trim($this->request->data['last_name']);
         if(empty($trimmedFirstName) || empty($trimmedLastName)) {
             return $this->redirect('/requests/sign/' . $this->request->data['pitch_id']);
         }
