@@ -83,7 +83,7 @@
         </form>
     </div>
     <div style="float:left; width: 180px;margin-right:20px; margin-bottom: 20px; margin-left:30px;padding-top:280px;">
-        <p class="regular" style="margin-bottom: 20px;">Если вы пропишите ложные имя и фамилию, ваш аккаунт может быть блокирован, а денежные средства за победу не перечислены.</p>
+        <p class="regular" style="color: rgb(255, 88, 93); margin-bottom: 20px;">Если вы пропишите ложные имя и фамилию, ваш аккаунт может быть блокирован, а денежные средства за победу не перечислены.</p>
         <p class="regular">Поставив галочку в поле, вы подтверждаете, что никому не расскажете об этом проекте и о том, что прописано в брифе.</p>
     </div>
     <div style="clear:both"></div>
