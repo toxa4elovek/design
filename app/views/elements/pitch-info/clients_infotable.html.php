@@ -131,8 +131,12 @@ endif;
                     <?php else :?>
                         <?php if($pitch->guaranteed == 1):?>
                         <span class="regular">Проект гарантирован</span>
-                        <?php else: ?>
-                        <span class="regular">Проект не гарантирован</span>
+                        <?php else:
+                            if((int) $this->user->read('user.subscription_status') === 4):?>
+                                <a class="order-button" style="width: 254px; left:4px; top: -2px; float: left;" href="/solutions/getPdfPresentation/<?= $pitch->id ?>">Презентация PDF</a>
+                            <?php else:?>
+                                <span class="regular">Проект не гарантирован</span>
+                            <?php endif?>
                         <?php endif;?>
                     <?php endif;?>
                 </td>

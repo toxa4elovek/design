@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\extensions\helper\PdfGetter;
 use app\extensions\storage\Rcache;
 use \lithium\storage\Session;
 use \app\models\Solution;
@@ -16,7 +17,7 @@ use \lithium\analysis\Logger;
 class SolutionsController extends AppController
 {
 
-    public $publicActions = ['like', 'unlike', 'logosale', 'search_logo', 'get_logosale_status'];
+    public $publicActions = ['like', 'unlike', 'logosale', 'search_logo', 'get_logosale_status', 'getPdfPresentation'];
 
     public function hide()
     {
@@ -383,5 +384,29 @@ class SolutionsController extends AppController
             return ['status' => 200, 'data' => $response];
         }
         return ['status' => 500, 'error' => 'No solution ids provided'];
+    }
+
+    /**
+     * Метод выбирает лучшие решения из проекта, генерирует PDF презентацию и скачивает их
+     */
+    public function getPdfPresentation() {
+        if($this->request->id && ($pitch = Pitch::first((int) $this->request->id))) {
+            $solutions = Solution::all(['conditions' => [
+                'Solution.pitch_id' => $pitch->id,
+                'Solution.rating' => ['>' => 3],
+                'Solution.hidden' => 0
+            ], 'order' => ['Solution.rating' => 'desc']]);
+            error_reporting(0);
+            require_once LITHIUM_APP_PATH.'/'.'libraries'.'/'.'MPDF54/MPDF54/mpdf.php';
+            $pdfWriter = new \mPDF();
+            $pdfWriter->SetFont('FuturaDemi');
+            $pdfWriter->SetFont('Garamond');
+            $options = compact('solutions', 'pitch');
+            $pdfWriter->WriteHTML(PdfGetter::get('Presentation', $options));
+            $pdfWriter->Output('Presentation.pdf', 'd');
+            die();
+        }else {
+            throw new \UnexpectedValueException ('Public:Такого проекта не существует.', 404);
+        }
     }
 }

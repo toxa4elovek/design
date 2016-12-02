@@ -42,6 +42,13 @@ class Solutionfile extends AppModel
             'image_ratio_crop' => 'T',
             'file_overwrite' => true
         ),
+        'pdfSummary' => array(
+            'image_resize' => true,
+            'image_x' => 333,
+            'image_y' => 224,
+            'image_ratio_crop' => 'T',
+            'file_overwrite' => true
+        ),
         'middleFeed' => array(
             'image_resize' => true,
             'image_x' => 600,
@@ -109,6 +116,13 @@ class Solutionfile extends AppModel
             'image_resize' => true,
             'image_x' => 310,
             'image_y' => 240,
+            'image_ratio_crop' => 'T',
+            'file_overwrite' => true
+        ),
+        'pdfSummary' => array(
+            'image_resize' => true,
+            'image_x' => 333,
+            'image_y' => 224,
             'image_ratio_crop' => 'T',
             'file_overwrite' => true
         ),

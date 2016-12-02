@@ -7057,7 +7057,6 @@ function SetTextOutline($params=array()) {	// mPDF 5.6.07
 function Image($file,$x,$y,$w=0,$h=0,$type='',$link='',$paint=true, $constrain=true, $watermark=false, $shownoimg=true, $allowvector=true) {
 	$orig_srcpath = $file;
 	$this->GetFullPath($file);
-
 	$info=$this->_getImage($file, true, $allowvector, $orig_srcpath );
 	if(!$info && $paint) {
 		$info = $this->_getImage($this->noImageFile);
@@ -8905,7 +8904,11 @@ function _putfonts() {
 				unset($ttf);
 			}
 		} 
-		else { $this->Error('Unsupported font type: '.$type.' ('.$name.')'); }
+		else { 
+		    var_dump($type);
+		    var_dump($name);
+		    $this->Error('Unsupported font type: '.$type.' ('.$name.')'); 
+		}
 	}
 }
 
@@ -9931,7 +9934,7 @@ function _imageError($file, $firsttime, $msg) {
 }
 
 
-function _getImage(&$file, $firsttime=true, $allowvector=true, $orig_srcpath=false) { 
+function _getImage(&$file, $firsttime=true, $allowvector=true, $orig_srcpath=false) {
 	// firsttime i.e. whether to add to this->images - use false when calling iteratively
 	// Image Data passed directly as var:varname
 	if (preg_match('/var:\s*(.*)/',$file, $v)) { 

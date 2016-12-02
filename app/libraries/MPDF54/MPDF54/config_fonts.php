@@ -125,6 +125,14 @@ $this->fontdata = array(
 	"arial" => array(
 		'R' => "Arial.ttf",
 		),
+    "FuturaDemi" => array(
+        'R' => "FuturaDemiC.ttf",
+        'I' => "FuturaDemiC-Italic.otf",
+    ),
+    "Garamond" => array(
+        'R' => "GaramondC.ttf",
+        'I' => "GaramondC.ttf",
+    ),
 
 
 /* OCR-B font for Barcodes */
