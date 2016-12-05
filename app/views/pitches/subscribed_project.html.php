@@ -250,12 +250,12 @@
             </ul><!-- .experts -->
 
             <div class="ribbon" style="padding-top: 35px; height: 56px; padding-bottom: 0;" id="pinned-block">
-                <p class="option"><label><input type="checkbox" name="" <?php if ($pitch->pinned): echo "checked"; endif;?> class="single-check" data-option-title="«Прокачать» проект" data-option-value=<?php if (in_array('pinproject', $plan['free'])):?>"0"<?php else:?>"1000"<?php endif?> id="pinproject">«Прокачать» проект</label></p>
+                <p class="option"><label><input type="checkbox" name="" <?php if ($pitch->pinned): echo "checked"; endif;?> class="single-check" data-option-title="«Прокачать» проект" data-option-value=<?php if (in_array('pinproject', $plan['free'])):?>"0"<?php else:?>"500"<?php endif?> id="pinproject">«Прокачать» проект</label></p>
                 <?php if (in_array('pinproject', $plan['free'])):?>
                     <img class="brief-free-label" src="/img/brief/free_option.png" alt="" />
                 <?php endif;?>
                 <?php if (!in_array('pinproject', $plan['free'])):?>
-                <p class="label <?php if ($pitch->pinned): echo "unfold"; endif;?>" style="text-transform: none;">1000р.</p>
+                <p class="label <?php if ($pitch->pinned): echo "unfold"; endif;?>" style="text-transform: none;">500р.</p>
                 <?php endif?>
             </div>
 
