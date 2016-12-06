@@ -9,7 +9,7 @@ if(isset($details['logo-properties'])) {
 <script type="text/javascript">var logoProperties = <?php echo json_encode($sliders)?>;</script>
 
 <?php if(isset($details['site-sub'])):?>
-<h2 class="blueheading">Сколько иллюстранций необходимо создать?</h2>
+<h2 class="blueheading">Сколько иллюстраций необходимо создать?</h2>
 <p class="regular"><?=$details['site-sub']?> <?=$this->numInflector->formatString($details['site-sub'], array('first' => 'иллюстрация', 'second' => 'иллюстрации', 'third' => 'иллюстраций'))?></p>
 <?php endif?>
 

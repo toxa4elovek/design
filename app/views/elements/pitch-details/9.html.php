@@ -9,7 +9,7 @@ if(isset($details['logo-properties'])) {
 <input type="hidden" id="logo_properties" data-props="<?php echo urlencode(json_encode($sliders)); ?>">
 
 <?php if(isset($details['site-sub'])):?>
-<h2 class="blueheading">Сколько иллюстранций необходимо создать?</h2>
+<h2 class="blueheading">Сколько иллюстраций необходимо создать?</h2>
 <p class="regular"><?php echo nl2br($details['site-sub'])?> <?=$this->numInflector->formatString($details['site-sub'], array('first' => 'иллюстрация', 'second' => 'иллюстрации', 'third' => 'иллюстраций'))?></p>
 <?php endif?>
 
