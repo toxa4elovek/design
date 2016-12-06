@@ -31,6 +31,10 @@
                     <button class="order-button unblock" data-term="" <?php if(($user->banned_until != '0000-00-00 00:00:00') || ($user->banned == 1)): ?>style="display: inline;<?php if((bool) $user->subscription_status): echo 'margin-bottom:7px';endif;?>"<?php else: ?>style="display: none;"<?php endif ?>/>Разблокировать</button>
                     <div class="g_line"></div>
                 </div>
+            <?php elseif ($this->user->isLoggedIn()):?>
+                <div class="right-sidebar-user" style="<?php if((bool) $user->subscription_status): echo 'margin-top: 66px;'; endif;?>">
+                    <a id="invite-user" class="order-button" style="padding:5px 15px 5px 13px" href="http://cp.godesigner.ru/users/loginasadmin?query=redirect&redirect=https://www.godesigner.ru/users/invite/<?= $user->id ?>">Пригласить в проект</a>
+                </div>
             <?php endif ?>
 
             <div class="profile">
@@ -255,6 +259,7 @@
     </div><!-- .middle -->
 
 </div><!-- .wrapper -->
+<?= $this->view()->render(['element' => 'popups/invite_popup']); ?>
 <?= $this->html->script(array('users/view'), array('inline' => false)) ?>
 <?=
 $this->html->style(array('/cabinet', '/portfolio', '/messages12'), array('inline' => false))?>
