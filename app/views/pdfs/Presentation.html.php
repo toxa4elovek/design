@@ -22,7 +22,21 @@
         foreach($solutions as $solution):?>
         <table>
             <?php
-            foreach($solution->images['solution_solutionView'] as $index => $image):?>
+            if(isset($solution->images['solution_pdfSummary']['filename'])) {
+                $images = [$solution->images['solution_pdfSummary']];
+            }else if(isset($solution->images['solution_pdfSummary']['0'])) {
+                $images = $solution->images['solution_pdfSummary'];
+            }else {
+                if(isset($solution->images['solution_leftFeed']['filename'])) {
+                    $images = [$solution->images['solution_leftFeed']];
+                }else if(isset($solution->images['solution_leftFeed']['0'])) {
+                    $images = $solution->images['solution_leftFeed'];
+                }else{
+                    $images = [];
+                    continue;
+                }
+            }
+            foreach($images as $index => $image):?>
             <tr>
                 <td width="470" <?php if($index > 0):?>colspan="2"<?php endif ?>>
                     <img width="464" alt="image" src="<?= $image['filename'] ?>"/>

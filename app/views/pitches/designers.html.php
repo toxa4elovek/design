@@ -35,9 +35,9 @@
                         (((int) $pitch->premium === 1) &&
                             ($pitch->status < 1) &&
                             ($pitch->published == 1) &&
-                            ($this->user->isPitchOwner($pitch->id) === true) &&
-                            (($this->user->isAdmin() === true) ||
-                                ($this->user->getAwardedSolutionNum() > 0)))
+                            (($this->user->isPitchOwner($pitch->id) === true) ||
+                            ($this->user->isAdmin() === true) ||
+                            ($this->user->getAwardedSolutionNum() > 0)))
                     ):?>
                         <a href="/pitches/upload/<?=$pitch->id?>" class="button add_solution <?php if($this->session->read('user.confirmed_email') == '0') {echo 'needConfirm';}?> <?php echo ($this->user->designerTimeRemain($pitch)) ? ' needWait' : '';?>">предложить решение</a>
                         <?php elseif(($pitch->status == 1) && ($pitch->awarded == 0)):?>
