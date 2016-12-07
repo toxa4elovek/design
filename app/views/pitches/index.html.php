@@ -215,24 +215,24 @@ height: 41px;margin-left:15px;margin-top:2px;display: block" href="#" id="goSear
                     if (((int)$pitch['status'] === 2) || (((int) $pitch['awarded'] !== 0) && ((int) $pitch['status'] === 1))) {
                         $iconsItems = ['icons-closed-light'];
                     } else {
-                        if (((int) $pitch->awarded === 0) && ((int) $pitch['status'] === 1)) {
-                            $iconsItems += ['icons-choosing-winner-light'];
+                        if (((int) $pitch['awarded'] === 0) && ((int) $pitch['status'] === 1)) {
+                            $iconsItems[] = 'icons-choosing-winner-light';
                         }
                         if ((int)$pitch['premium'] === 1) {
-                            $iconsItems += ['icons-premium-light'];
+                            $iconsItems[] = 'icons-premium-light';
                         }
                         if ((int)$pitch['expert'] === 1) {
-                            $iconsItems += ['icons-expert-light'];
+                            $iconsItems[] = 'icons-expert-light';
                         }
                         if ((int)$pitch['private'] === 1) {
-                            $iconsItems += ['icons-private-light'];
+                            $iconsItems[] = 'icons-private-light';
                         }
                     }
                     $iconsString = array_reduce($iconsItems, function ($carry, $item) {
                         $carry .= '<li class="' . $item .'"></li>';
                         return $carry;
                     }, '');
-                    $icons = '<ul class="project-list-icons-container">' . $iconsString . '</ul>';
+                    $icons = '<ul data-length="' . count($iconsItems) . '" class="project-list-icons-container">' . $iconsString . '</ul>';
                     $html = '<tr data-id="' . $pitch['id'] . '" class="' . $rowClass . '">' .
                         '<td class="icons">' . $icons . '</td>' .
                         '<td class="pitches-name">' .
