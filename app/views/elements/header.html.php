@@ -275,7 +275,7 @@
             </div>
             <div class="topnav-menu" style="float:left;height:41px;padding-top:10px;">
                 <a href="/users/preview/<?= $this->user->getId()?>" class="name-top" style="color:#fff;display:inline-block;">&nbsp;&nbsp;&nbsp;<?=$this->user->getFormattedName()?></a>
-                <?php if ($this->user->isSubscriptionActive()): ?>
+                <?php if (($this->user->getBalance() > 0) ||($this->user->isSubscriptionActive())): ?>
                     <a href="/subscription_plans/subscriber" style="color: white;position: absolute;left: 81px;top: 34px;"><?= $this->MoneyFormatter->formatMoney($this->user->getBalance(), ['suffix' => ' р.']) ?></a>
                 <?php endif?>
                 <img class="name-top" id="menu_arrow" src="/img/arrow_header_up.png" alt="" style="padding-top:3px;"> /
