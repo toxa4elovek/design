@@ -139,7 +139,7 @@
                         <tr>
                             <td colspan="4"><div class="g_line"></div></td>
                         </tr>
-                        <tr>
+                        <!--tr>
                             <td>
                                 <input type="radio" disabled data-pay="yandex" class="rb1" name="cashintype" <?php if($paydata['cashintype'] == 'yandex') echo 'checked' ?> value="yandex" style="width:14px;height:14px;margin-top:15px;">
                             </td>
@@ -147,8 +147,7 @@
                                 <img alt=""  style="width:120px; margin-left: 10px;" src="/img/yd.png">
                             </td>
                             <td class="s3_text" style="margin-top: 14px;">
-                                Выплата на YANDEX-ДЕНЬГИ временно недоступна
-                                <!-- Получить вознаграждение в Yandex Деньгах  (<a href="https://money.yandex.ru/doc.xml?id=526543" target="_blank">только на идентифицированные кошельки</a>) -->
+                                Получить вознаграждение в Yandex Деньгах  (<a href="https://money.yandex.ru/doc.xml?id=526543" target="_blank">только на идентифицированные кошельки</a>)
                             </td>
                             <td></td>
                         </tr>
@@ -173,7 +172,7 @@
                                     <tr style="height: 80px;"><td class="" colspan="3"><input type="text" value="<?php if(isset($paydata['extradatayandex'])) echo $paydata['extradatayandex']?>" name="extradatayandex" /></td></tr>
                                 </table>
                             </td>
-                        </tr>
+                        </tr-->
 
                         </tbody></table>
                 </div>
