@@ -7,64 +7,68 @@ use \app\models\Pitch;
 use \app\extensions\helper\MoneyFormatter;
 use app\models\User;
 
-class AddonsController extends AppController {
+class AddonsController extends AppController
+{
 
 
-    public function add() {
-        if(isset($this->request->data) && ($pitch = Pitch::first($this->request->data['commonPitchData']['id']))) {
+    public function add()
+    {
+        if (isset($this->request->data) && ($pitch = Pitch::first($this->request->data['commonPitchData']['id']))) {
             $featuresData = $this->request->data['features'];
             $total = 0;
-            if($pitch->category_id == 20) {
+            if ($pitch->category_id == 20) {
                 $subscriber = true;
                 $prolongCoeff = 1000;
-            }else {
+                $pinnedPrice = 500;
+            } else {
                 $subscriber = false;
                 $prolongCoeff = 1950;
+                $pinnedPrice = 1450;
             }
-            if(!isset($featuresData['experts'])) {
+            if (!isset($featuresData['experts'])) {
                 $expert = 0;
-                $expertId = serialize(array());
-            }else {
+                $expertId = serialize([]);
+            } else {
                 $expert = 1;
                 $expertId = serialize($featuresData['experts']);
                 $expertsAll = \app\models\Expert::all();
                 foreach ($expertsAll as $v) {
                     if (in_array($v->id, $featuresData['experts'])) {
-                        $total += $v->price + 500; 
+                        $total += $v->price + 500;
                     }
-                }  
+                }
             }
-            if(!isset($featuresData['prolong'])) {
+            if (!isset($featuresData['prolong'])) {
                 $prolong = 0;
-            }else {
+            } else {
                 $prolong = $featuresData['prolong'];
                 $total += $featuresData['prolong'] * $prolongCoeff;
             }
             $brief = 0;
             $phonebrief = '';
-            if(($featuresData['brief'] > 0) && $pitch->brief == 0) {
+            if (($featuresData['brief'] > 0) && $pitch->brief == 0) {
                 $brief = 1;
                 $phonebrief = $this->request->data['commonPitchData']['phone-brief'];
                 $total += 3200;
             }
             $guaranteed = 0;
-            if(($featuresData['guaranteed'] > 0) && $pitch->guaranteed == 0) {
+            if (($featuresData['guaranteed'] > 0) && $pitch->guaranteed == 0) {
                 $guaranteed = 1;
                 $total += 1400;
             }
             $pinned = 0;
-            if(($featuresData['pinned'] > 0) && $pitch->pinned == 0) {
+            if (($featuresData['pinned'] > 0) && $pitch->pinned == 0) {
                 $pinned = 1;
-                $total += 1450;
+                $total += $pinnedPrice;
             }
             $private = 0;
-            if(($featuresData['private'] > 0) && $pitch->private == 0) {
+            if (($featuresData['private'] > 0) && $pitch->private == 0) {
                 $private = 1;
                 $total += 3500;
             }
             $gatracking = new \Racecore\GATracking\GATracking('UA-9235854-5');
             $gaId = $gatracking->getClientId();
-            $data = array(
+            $data = [
                 'pitch_id' => $this->request->data['commonPitchData']['id'],
                 'billed' => 0,
                 'experts' => $expert,
@@ -79,29 +83,29 @@ class AddonsController extends AppController {
                 'created' => date('Y-m-d H:i:s'),
                 'total' => $total,
                 'ga_id' => $gaId
-            );
-            if(isset($this->request->data['commonPitchData']['addonid']) && $this->request->data['commonPitchData']['addonid'] > 0) {
+            ];
+            if (isset($this->request->data['commonPitchData']['addonid']) && $this->request->data['commonPitchData']['addonid'] > 0) {
                 $addon = Addon::first($this->request->data['commonPitchData']['addonid']);
-            }else {
+            } else {
                 $addon = Addon::create();
             }
             $addon->set($data);
             $addon->save();
-            if($subscriber) {
+            if ($subscriber) {
                 $paymentResult = User::reduceBalance($this->userHelper->getId(), (int) $total);
                 //$paymentResult = true;
                 if (!$paymentResult) {
                     $status = 'no_money';
                     $needToFillAmount = ($total - User::getBalance($addon->user_id));
                     $url = '/subscription_plans/subscriber?amount=' . $needToFillAmount;
-                }else {
+                } else {
                     $status = 'success';
                     $url = '/pitches/view/' . $addon->pitch_id;
                     $newAddon = Addon::first($addon->id);
                     Addon::activate($newAddon);
                 }
                 return ['status' => $status, 'redirect' => $url];
-            }else {
+            } else {
                 return $addon->id;
             }
         }
@@ -109,9 +113,10 @@ class AddonsController extends AppController {
     }
 
 
-    public function getpdf() {
+    public function getpdf()
+    {
         error_reporting(E_ALL);
-        if($addon = Addon::first($this->request->id)) {
+        if ($addon = Addon::first($this->request->id)) {
             require_once(LITHIUM_APP_PATH . '/' . 'libraries' . '/' . 'MPDF54/MPDF54/mpdf.php');
             $money = new MoneyFormatter();
             $mpdf = new \mPDF();
@@ -166,12 +171,12 @@ class AddonsController extends AppController {
 godesigner.ru, за проект № ' . $addon->id . '. НДС не предусмотрен.</td>
 		<td style="border-left:1px solid;border-top:1px solid;border-bottom:1px solid; text-align:center;">шт.</td>
 		<td style="border-left:1px solid;border-top:1px solid;border-bottom:1px solid; text-align:center;">1</td>
-		<td style="border-left:1px solid;border-top:1px solid;border-bottom:1px solid; text-align:center;">' . $money->formatMoney($addon->total, array('suffix' => '.00р', 'dropspaces' => true)) . '</td>
-		<td style="border-left:1px solid;border-top:1px solid;border-bottom:1px solid;border-right:1px solid; text-align:center;">' . $money->formatMoney($addon->total, array('suffix' => '.00р', 'dropspaces' => true)) . '</td>
+		<td style="border-left:1px solid;border-top:1px solid;border-bottom:1px solid; text-align:center;">' . $money->formatMoney($addon->total, ['suffix' => '.00р', 'dropspaces' => true]) . '</td>
+		<td style="border-left:1px solid;border-top:1px solid;border-bottom:1px solid;border-right:1px solid; text-align:center;">' . $money->formatMoney($addon->total, ['suffix' => '.00р', 'dropspaces' => true]) . '</td>
 	</tr>
 	<tr height="25">
 		<td height="25" colspan="5" style="text-align:right;"><b>Итого:&nbsp;&nbsp;</b></td>
-		<td height="25" style="border-left:1px solid;border-bottom:1px solid;border-right:1px solid; text-align:center;">' . $money->formatMoney($addon->total, array('suffix' => '.00р', 'dropspaces' => true)) . '</td>
+		<td height="25" style="border-left:1px solid;border-bottom:1px solid;border-right:1px solid; text-align:center;">' . $money->formatMoney($addon->total, ['suffix' => '.00р', 'dropspaces' => true]) . '</td>
 	</tr>
 	<tr height="25">
 		<td height="25" colspan="5" style="text-align:right;"><b>Без НДС:&nbsp;&nbsp;</b></td>
@@ -179,18 +184,15 @@ godesigner.ru, за проект № ' . $addon->id . '. НДС не преду�
 	</tr>
 	<tr height="25">
 		<td height="25" colspan="5" style="text-align:right;"><b>Всего к оплате:&nbsp;&nbsp;</b></td>
-		<td height="25" style="border-left:1px solid;border-bottom:1px solid;border-right:1px solid; text-align:center;"><b>' . $money->formatMoney($addon->total, array('suffix' => '.00р', 'dropspaces' => true)) . '</b></td>
+		<td height="25" style="border-left:1px solid;border-bottom:1px solid;border-right:1px solid; text-align:center;"><b>' . $money->formatMoney($addon->total, ['suffix' => '.00р', 'dropspaces' => true]) . '</b></td>
 	</tr>
 </table>
 <p style="font-weight:bold; margin-top:20px; font-size: 20px; color:red">Внимание!<br/><span style="font-weight:bold;font-size:13px; color: black;">В назначении платежа указывайте точную фразу из столбца название услуги.</span> <p>
-<p style="">Всего наименований 1, на сумму ' . $money->formatMoney($addon->total, array('suffix' => '.00р', 'dropspaces' => true)) . '.<p>
+<p style="">Всего наименований 1, на сумму ' . $money->formatMoney($addon->total, ['suffix' => '.00р', 'dropspaces' => true]) . '.<p>
 <p style="">' . $money->num2str($addon->total) . '<p>');
 
             $mpdf->Output('godesigner-pitch-' . $addon->id . '.pdf', 'd');
             exit;
         }
     }
-
 }
-
-?>

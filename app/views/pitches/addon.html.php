@@ -124,6 +124,7 @@
         <?php
         $pinnedValue = 1450;
         if($this->user->isSubscriptionActive()):
+            $pinnedValue = 500;
             foreach($this->user->getCurrentPlanData($pitch->user_id)['free'] as $index => $value):
                 if('pinproject' === $value):
                     $pinnedValue = 0;
