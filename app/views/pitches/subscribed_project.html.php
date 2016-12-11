@@ -187,7 +187,8 @@
             </div>
 
             <div class="explanation premium" style="display:none;" id="explanation_premium">
-                <p style="margin-bottom: 20px;">В премиум-проекте принимают участие только сильнейшие дизайнеры и копирайтеры, которые уже побеждали на сервисе. Мы пригласим их по e-mail и СМС.</p>
+                <p>В премиум-проекте принимают участие только сильнейшие дизайнеры и копирайтеры, которые уже побеждали на сервисе. Мы пригласим их по e-mail и СМС.</p>
+                <p style="margin-bottom: 20px;"><a href="https://www.godesigner.ru/answers/view/112" target="_blank">Подробнее тут</a></p>
             </div>
 
             <div class="ribbon" style="padding-top: 35px; height: 56px; padding-bottom: 0;">
