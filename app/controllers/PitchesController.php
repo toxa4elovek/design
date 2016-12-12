@@ -583,6 +583,9 @@ class PitchesController extends AppController
             if ($category->id != 20) {
                 return compact('category', 'experts', 'referal', 'referalId', 'promocode');
             } else {
+                if ($this->userHelper->isLoggedIn() && !$this->userHelper->isSubscriptionActive()) {
+                   return $this->redirect('/pages/subscribe');
+                }
                 $value = 9000;
                 if (isset($this->request->query['reward'])) {
                     $value = (int) $this->request->query['reward'];

@@ -14,7 +14,7 @@ class SubscriberPage extends React.Component {
                             <BalanceBox data={userInfo} />
                         </section>
                         <section id="fund-balance-button">
-                            <FundBalanceButton/>
+                            <FundBalanceButton data={userInfo}/>
                         </section>
                         <aside id="faq-corporate" style={bottomShadow}>
                             <FaqCorporateBox data={questions} />
