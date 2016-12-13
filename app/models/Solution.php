@@ -586,11 +586,16 @@ http://godesigner.ru/answers/view/73'];
     public static function addBlankPitchForLogosale($user_id, $solution_id)
     {
         $result = [];
-        $fee = 3500;
-        $award = 6000;
+        if(User::isSubscriptionActive($user_id)) {
+            $fee = 1500;
+            $award = 6000;
+        }else {
+            $fee = 3500;
+            $award = 6000;
+        }
         $total = $fee + $award;
         $pitch = Pitch::first(['conditions' => ['blank' => 1, 'user_id' => $user_id, 'billed' => 0]]);
-        if ($pitch) {
+        if ($pitch && ((int) $pitch->total === $total)) {
             $pitch->awarded = $solution_id;
             $pitch->save();
             $result['receipt'] = Receipt::all(['conditions' => ['pitch_id' => $pitch->id]])->data();

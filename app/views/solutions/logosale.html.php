@@ -81,7 +81,11 @@
             <?= $this->view()->render(array('element' => 'solution/logo_1')) ?>
             <ul class="marsh">
                 <li>
-                    <h2 class="greyboldheader"><?=$total_count?> логотипов по цене 9500 рублей</h2>
+                    <h2 class="greyboldheader"><?=$total_count?> логотипов по цене <?php if($this->user->isSubscriptionActive()):?>
+                            7500
+                        <?php else: ?>
+                            9500
+                        <?php endif ?> рублей</h2>
                 </li>
                 <li>
                     <h2 class="greyboldheader">Уникальность: каждый лого продается только один раз</h2>
@@ -178,7 +182,11 @@
                                         </ul>
                                     </div>
                                 </div>
-                                <div class="selecting_numb"><span class="price"><?= round($solution['pitch']['total']) ?> р.</span><span class="new-price">9500р.-</span></div>
+                                <div class="selecting_numb"><span class="price"><?= round($solution['pitch']['total']) ?> р.</span><span class="new-price"><?php if($this->user->isSubscriptionActive()):?>
+                                            7500р.-
+                                        <?php else: ?>
+                                            9500р.-
+                                        <?php endif ?></span></div>
                                 <div class="solution_menu" style="display: none;">
                                     <ul class="solution_menu_list">
                                         <li class="sol_hov"><a data-solutionid="<?= $solution['id'] ?>" class="imagecontainer" href="/pitches/viewsolution/<?= $solution['id'] ?>" class="imagecontainer">Купить</a></li>

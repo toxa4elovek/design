@@ -214,7 +214,11 @@ foreach($solutions as $solution):
     </div>
     <?php if (!isset($fromDesignersTab)):?>
         <?php if($this->pitch->isReadyForLogosale($pitch) && ($pitch->awarded != $solution->id) && !in_array($solution->user_id, $winnersUserIds)):?>
-            <div class="selecting_numb"><span class="price"><?= round($pitch->total) ?> р.</span><span class="new-price">9500р.-</span></div>
+            <div class="selecting_numb"><span class="price"><?= round($pitch->total) ?> р.</span><span class="new-price"><?php if($this->user->isSubscriptionActive()):?>
+                        7500р.-
+                    <?php else: ?>
+                        9500р.-
+                    <?php endif ?></span></div>
         <?php else:?>
             <div class="selecting_numb"><a href="/users/view/<?=$solution->user->id?>" class="portfolio_gallery_username"><?=$this->user->getFormattedName($solution->user->first_name, $solution->user->last_name, false)?></a><a href="#" class="number_img_gallery" data-comment-to="#<?=$solution->num?>" >#<?=$solution->num?></a></div>
         <?php endif; ?>
