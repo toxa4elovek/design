@@ -5,6 +5,7 @@ namespace app\extensions\command;
 use app\extensions\helper\NameInflector;
 use app\models\Comment;
 use app\models\Pitch;
+use app\models\SubscriptionPlan;
 use app\models\User;
 
 class Step1MarketingSalesFunnel extends CronJob
@@ -46,7 +47,7 @@ class Step1MarketingSalesFunnel extends CronJob
         array_walk($arrayOfProjects, function ($project) {
             $bonus = (int) $project->price * 0.1;
             $nameInflector = new NameInflector();
-            $message = sprintf('%s, мы зачислили на лицевой счет %d рублей, которые вы сможете потратить на гонорары дизайнерам, если станете абонентом (https://www.godesigner.ru/pages/subscribe) до %s.',
+            $message = sprintf('%s, мы зачислили на лицевой счет %d рублей, которые вы сможете потратить на гонорары дизайнерам, если до %s станете абонентом https://www.godesigner.ru/pages/subscribe',
                 '@' . $nameInflector->renderName($project->user->first_name, $project->user->last_name),
                 $bonus,
                 date('d.m.Y', strtotime($project->finishDate))
@@ -58,7 +59,11 @@ class Step1MarketingSalesFunnel extends CronJob
                 'text' => $message,
                 'public' => 0
             ];
-            User::fillBalance($project->user->id, $bonus);
+            $payment = SubscriptionPlan::first(SubscriptionPlan::getNextFundBalanceId($project->user->id));
+            $payment->title = sprintf('Пополнение счёта, сгорает %s', date('d.m.Y', strtotime($project->finishDate)));
+            $payment->save();
+            SubscriptionPlan::setFundBalanceForPayment($payment->id, $bonus);
+            SubscriptionPlan::activatePlanPayment($payment->id);
             Comment::createComment($data);
         });
 
