@@ -586,11 +586,16 @@ http://godesigner.ru/answers/view/73'];
     public static function addBlankPitchForLogosale($user_id, $solution_id)
     {
         $result = [];
-        $fee = 3500;
-        $award = 6000;
+        if(User::isSubscriptionActive($user_id)) {
+            $fee = 1500;
+            $award = 6000;
+        }else {
+            $fee = 3500;
+            $award = 6000;
+        }
         $total = $fee + $award;
         $pitch = Pitch::first(['conditions' => ['blank' => 1, 'user_id' => $user_id, 'billed' => 0]]);
-        if ($pitch) {
+        if ($pitch && ((int) $pitch->total === $total)) {
             $pitch->awarded = $solution_id;
             $pitch->save();
             $result['receipt'] = Receipt::all(['conditions' => ['pitch_id' => $pitch->id]])->data();
@@ -782,14 +787,15 @@ http://godesigner.ru/answers/view/73'];
             'Solution.multiwinner' => 0,
             'Solution.awarded' => 0,
             'Solution.selected' => 1,
-            'Pitch.awardedDate' => ['<' => date('Y-m-d H:i:s', time() - MONTH)],
+            'Pitch.awardedDate' => ['<' => date(MYSQL_DATETIME_FORMAT, time() - MONTH)],
             'Pitch.status' => ['>' => 1],
             'Pitch.private' => 0,
             'Pitch.category_id' => 1,
-            'Solution.rating' => ['>=' => 3]
+            /*'Solution.rating' => ['>=' => 3],*/
+            'User.lastTimeOnline' => ['>=' => date(MYSQL_DATETIME_FORMAT, time() - 3 * MONTH)]
         ],
             'order' => $order,
-            'with' => ['Pitch', 'Solutiontag']];
+            'with' => ['Pitch', 'Solutiontag', 'User']];
         if (!$narrow) {
             $params['conditions'][0]['OR'][] = ["Pitch.title REGEXP '" . $regexp . "'"];
             $params['conditions'][0]['OR'][] = ["Pitch.description LIKE '%$descriptionWord%'"];
@@ -860,7 +866,15 @@ http://godesigner.ru/answers/view/73'];
     public static function solutionsForSaleCount()
     {
         if (!$totalCount = Rcache::read('logosale_totalcount')) {
-            $countParams = ['conditions' => ['Solution.multiwinner' => 0, 'Solution.awarded' => 0, 'Solution.selected' => 1, 'private' => 0, 'category_id' => 1, 'rating' => ['>=' => 3]], 'order' => ['created' => 'desc'], 'with' => ['Pitch']];
+            $countParams = ['conditions' => [
+                'Solution.multiwinner' => 0,
+                'Solution.awarded' => 0,
+                'Solution.selected' => 1,
+                'Pitch.private' => 0,
+                'Pitch.category_id' => 1,
+                'User.lastTimeOnline' => ['>=' => date(MYSQL_DATETIME_FORMAT, time() - 3 * MONTH)]
+                /*'Pitch.rating' => ['>=' => 3]*/
+            ], 'order' => ['created' => 'desc'], 'with' => ['Pitch', 'User']];
             $totalCount =  Solution::count($countParams);
             Rcache::write('logosale_totalcount', $totalCount, '+1 day');
         }
@@ -904,10 +918,10 @@ http://godesigner.ru/answers/view/73'];
         if (!Pitch::isReadyForLogosale($pitch)) {
             return false;
         }
-        if ((($solution->rating >= 3) && ($pitch->awarded != $solution->id)) && ($solution->awarded == 0)) {
-            return true;
+        if (strtotime($solution->user->lastTimeOnline) < time() - 3 * MONTH) {
+            return false;
         }
-        if ((int) $solution->id === 15007) {
+        if (((int) $pitch->awarded !== (int) $solution->id) && ((int) $solution->awarded === 0)) {
             return true;
         }
         return false;

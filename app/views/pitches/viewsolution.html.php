@@ -20,7 +20,13 @@
                     <div style="height: 180px;margin-top: 20px;margin-bottom: 20px;">
                         <aside style="position: relative; top: 0; left: 0; margin-left: 0;" class="summary-price expanded">
                             <h3>Итого:</h3>
-                            <p class="summary"><strong id="total-tag">9500р.-</strong></p><!-- .summary -->
+                            <p class="summary"><strong id="total-tag">
+                                    <?php if($this->user->isSubscriptionActive()):?>
+                                        7500р.-
+                                    <?php else: ?>
+                                        9500р.-
+                                    <?php endif ?>
+                                </strong></p><!-- .summary -->
                             <ul id="check-tag">
                             </ul>
                             <div class="hide">

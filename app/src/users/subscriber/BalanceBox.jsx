@@ -17,7 +17,7 @@ class BalanceBox extends React.Component{
     }
     render() {
         const data = this.props.data;
-        let subscriptionStatus = <span><br/>не действителен</span>;
+        let subscriptionStatus = <span><br/>Абонентский план не оплачен</span>;
         if(data.isSubscriptionActive) {
             subscriptionStatus =
                 (<span>тариф <a href="/pages/subscribe#plans"

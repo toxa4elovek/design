@@ -2293,46 +2293,48 @@ class UsersController extends \app\controllers\AppController
                 $payments[] = $refundedObject;
             }
         }
-        $addons = Addon::all(['conditions' => [
-            'Addon.pitch_id' => $idsForAddons,
-            'Addon.billed' => 1
-        ], 'with' => ['Pitch']]);
-        $numInflector = new NumInflector();
-        foreach ($addons as $addon) {
-            if ($cardData = Paymaster::first(['conditions' => ['LMI_PAYMENT_NO' => $addon->id]])) {
-                continue;
+        if(!empty($idsForAddons)) {
+            $addons = Addon::all(['conditions' => [
+                'Addon.pitch_id' => $idsForAddons,
+                'Addon.billed' => 1
+            ], 'with' => ['Pitch']]);
+            $numInflector = new NumInflector();
+            foreach ($addons as $addon) {
+                if ($cardData = Paymaster::first(['conditions' => ['LMI_PAYMENT_NO' => $addon->id]])) {
+                    continue;
+                }
+                if ($cardData = Payment::first(['conditions' => ['OrderId' => $addon->payture_id, 'Success' => 'True']])) {
+                    continue;
+                }
+                $data = $addon->data();
+                $data['type'] = 'addon';
+                $data['timestamp'] = strtotime($addon->created);
+                $data['formattedDate'] = date('d.m.Y', strtotime($addon->created));
+                $data['formattedMoney'] = '- ' . $moneyFormatter->formatMoney($data['total'], ['suffix' => '']);
+                $data['title'] = 'Оплата доп. опции';
+                $title = [];
+                if ($data['experts']) {
+                    $title[] = 'экспертное мнение';
+                }
+                if ($data['prolong']) {
+                    $days = $numInflector->formatString($data['prolong-days'], ['string' => ['first' => 'день', 'second' => 'дня', 'third' => 'дней']]);
+                    $title[] = 'продление ' . $data['prolong-days'] . ' ' . $days  ;
+                }
+                if ($data['brief']) {
+                    $title[] = 'заполнение брифа';
+                }
+                if ($data['guaranteed']) {
+                    $title[] = 'гарантированный проект';
+                }
+                if ($data['pinned']) {
+                    $title[] = 'прокачать бриф';
+                }
+                if ($data['private']) {
+                    $title[] = 'скрыть проект';
+                }
+                $data['title'] .= " \n\r(" . implode(', ', $title) . ') в проекте «' . $data['pitch']['title'] . '»';
+                $payments[] = $data;
             }
-            if ($cardData = Payment::first(['conditions' => ['OrderId' => $addon->payture_id, 'Success' => 'True']])) {
-                continue;
-            }
-            $data = $addon->data();
-            $data['type'] = 'addon';
-            $data['timestamp'] = strtotime($addon->created);
-            $data['formattedDate'] = date('d.m.Y', strtotime($addon->created));
-            $data['formattedMoney'] = '- ' . $moneyFormatter->formatMoney($data['total'], ['suffix' => '']);
-            $data['title'] = 'Оплата доп. опции';
-            $title = [];
-            if ($data['experts']) {
-                $title[] = 'экспертное мнение';
-            }
-            if ($data['prolong']) {
-                $days = $numInflector->formatString($data['prolong-days'], ['string' => ['first' => 'день', 'second' => 'дня', 'third' => 'дней']]);
-                $title[] = 'продление ' . $data['prolong-days'] . ' ' . $days  ;
-            }
-            if ($data['brief']) {
-                $title[] = 'заполнение брифа';
-            }
-            if ($data['guaranteed']) {
-                $title[] = 'гарантированный проект';
-            }
-            if ($data['pinned']) {
-                $title[] = 'прокачать бриф';
-            }
-            if ($data['private']) {
-                $title[] = 'скрыть проект';
-            }
-            $data['title'] .= " \n\r(" . implode(', ', $title) . ') в проекте «' . $data['pitch']['title'] . '»';
-            $payments[] = $data;
         }
         usort($payments, function ($a, $b) {
             $firstDate = $a['timestamp'];
