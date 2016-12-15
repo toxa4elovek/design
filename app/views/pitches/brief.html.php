@@ -210,7 +210,7 @@ endif;
                 <div style="margin-bottom:40px">
                     <input style="vertical-align: top;margin-top:3px" id="guaranteedTrue" type="radio" name="isGuaranteed" value="1" data-option-title="Гарантированный проект" data-option-value="950">
                     <label for="guaranteedTrue" style="text-shadow: 0 1px 1px #eee;font-size: 29px; color:#658fa5; font-family: 'RodeoC', 'Helvetica Neue';margin-left:10px;">Гарантированный проект&nbsp;&nbsp;&nbsp;+950р.</label>
-                    <p class="guaranteeExplanation" id="guaranteedTooltip">Вы гарантируете, что выберете победителя в любом случае, тем самым инициировав до 40% больше решений. Мы выделяем такой проект в списке. <?php if ($category->id == 7): echo 'Копирайтеры'; else: 'Дизайнеры'; endif;?> увидят, что проект не останется без победителя, и вы получите больший выбор идей.</p>
+                    <p class="guaranteeExplanation" id="guaranteedTooltip">Вы гарантируете, что выберете победителя в любом случае, тем самым инициировав до 40% больше решений. Мы выделяем такой проект в списке. <?php if ($category->id == 7): echo 'Копирайтеры'; else: echo 'Дизайнеры'; endif;?> увидят, что проект не останется без победителя, и вы получите больший выбор идей.</p>
                 </div>
 
                 <div>
