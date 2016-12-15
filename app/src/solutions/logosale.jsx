@@ -1,5 +1,29 @@
 ;(function() {
     $(function() {
+
+      let tags = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        remote: '/pitches/getags/?name=%QUERY'
+      });
+
+      tags.initialize();
+      console.log(tags)
+
+      $('#searchTerm').typeahead(null, {
+        name: 'tags',
+        displayKey: 'name',
+        source: tags.ttAdapter()
+      }).on('typeahead:selected', function (obj, val) {
+        var box = '<li style="margin-left:6px;">' + val.name + '<a class="removeTag" href="#"><img src="/img/delete-tag.png" alt="" style="padding-top: 4px;"></a></li>';
+        $(box).appendTo('#filterbox');
+        $('#searchTerm').val('');
+        if ($('#filterbox').children().length == 5) {
+          $('#filterContainer').removeClass('error-searhTerm');
+        }
+        recalculateBox();
+      })
+
         let paramsSearch = {};
 
         $('#searchTerm').keyup(function (event) {
@@ -331,7 +355,7 @@
             }
             isBusy = false;
             const newAddress = '?search=' + encodeURIComponent(search.val().trim());
-            //fetchSearch(search);
+            fetchSearch(search);
             $('#filterToggle').data('dir', 'up');
             $('img', '#filterToggle').attr('src', image);
             $('#filtertab').hide();
@@ -516,7 +540,7 @@
                     $el.data('dir', 'up');
                 }
                 $('img', $el).attr('src', image);
-                $('#filtertab').toggle();
+                //$('#filtertab').toggle();
                 return false;
             }
             var image = '/img/filter-arrow-down.png';

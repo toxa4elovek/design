@@ -213,6 +213,8 @@
     'http://userapi.com/js/api/openapi.js',
     '//assets.pinterest.com/js/pinit.js',
     'jquery.simplemodal-1.4.2.js',
+    'typeahead.jquery.min.js',
+    'bloodhound.min.js',
     'jquery.keyboard.js',
     'jquery-plugins/jquery.scrollto.min.js',
     '/js/jquery-plugins/jquery.history.js',
