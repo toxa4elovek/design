@@ -6,7 +6,13 @@
         <td width="15"></td>
         <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1">
             <span class="regular">Гонорар:</span>&nbsp;&nbsp;&nbsp;&nbsp;<?php if($this->pitch->isReadyForLogosale($pitch)):?>
-                <span class="pitch-info-text" style="color: #999; text-decoration: line-through; "><?=$this->moneyFormatter->formatMoney($pitch->price, array('suffix' => 'р.-'))?></span>&nbsp;&nbsp;<span class="pitch-info-text" style="color: #ff585d">9 500р.-</span>
+                <span class="pitch-info-text" style="color: #999; text-decoration: line-through; "><?=$this->moneyFormatter->formatMoney($pitch->price, array('suffix' => 'р.-'))?></span>&nbsp;&nbsp;<span class="pitch-info-text" style="color: #ff585d">
+                    <?php if($this->user->isSubscriptionActive()):?>
+                        7 500р.-
+                    <?php else: ?>
+                        9 500р.-
+                    <?php endif ?>
+                </span>
             <?php else: ?>
                 <span class="pitch-info-text"><?=$this->moneyFormatter->formatMoney($pitch->price, array('suffix' => 'р.-'))?><?php echo ($pitch->guaranteed == 1) ? ' гарантированы' : ''; ?></span>
                 <?php endif?>
