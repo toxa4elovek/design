@@ -29,7 +29,7 @@
             line-height: 41px;
             text-align: center;
             text-transform: uppercase;margin-bottom:20px;">Дополнительные опции</h1>
-
+        <?php if((int) $pitch->status === 0):?>
         <div class="ribbon">
             <p class="option"><label><input type="checkbox" name="" class="single-check" <?php if(isset($this->_request->query['click']) && $this->_request->query['click'] == 'prolong'): echo 'checked'; endif?> data-option-title="продлить срок" data-option-value="<?= $prolongCoeff?>" id="prolong-checkbox">Продлить срок</label></p>
             <?php if($pitch->category_id == 20):?>
@@ -40,6 +40,7 @@
                 <a href="#" class="second tooltip" title="">(?)</a></p>
             <p class="label <?php if(isset($this->_request->query['click']) && $this->_request->query['click'] == 'prolong'): echo 'unfold'; endif?>" id="prolong-label" style="font:16px/68px "RodeoC",sans-serif">+<?= $prolongCoeff?>.-</p>
         </div>
+        <?php endif ?>
 
         <div>
             <input type="prolong-num" data-option-title="продлить срок" id="sub-prolong" <?php if(isset($this->_request->query['click']) && $this->_request->query['click'] == 'prolong'):?>placeholder="1"<?php endif;?> class="placeholder initial-price" style="display:none;<?php if(isset($this->_request->query['click']) && $this->_request->query['click'] == 'prolong'): echo 'display:block;'; endif?>height: 78px; width: 268px; font-size: 48px; margin-bottom: 15px; margin-top: 2px; margin-left: 24px; border: medium none; box-shadow: 0px 3px 2px rgba(0, 0, 0, 0.2) inset; padding-left: 15px;"/>
