@@ -6,15 +6,50 @@ use app\extensions\storage\Rcache;
 use app\models\Solution;
 use app\models\Solutionfile;
 
-class ChangeSolutions extends CronJob
+class ReverseFileCheck extends CronJob
 {
 
     public function run()
     {
         $this->_renderHeader();
+        $directory = '/var/godesigner/webroot/solutions';
+        $directories = glob($directory . '/*' , GLOB_ONLYDIR);
+        $dir = new \DirectoryIterator($directory);
+        $i = 0;
+        foreach ($dir as $fileinfo) {
+            if ((!$fileinfo->isDot()) && (!$fileinfo->isDir())) {
+                $filename = $directory . '/' . $fileinfo->getFilename();
+                //$this->out(sprintf('Path - %s', $filename));
+                if($file = Solutionfile::first(['conditions' => [
+                    'Solutionfile.filename' => $filename
+                ]])) {
+                    if($solution = Solution::first($file->model_id)) {
+                        $this->out(sprintf('Model found - %s', $solution->id));
+                        break;
+                    }else {
+                        $file->delete();
+                        //$this->out(sprintf('Model not found, deleting'));
+                        unlink($filename);
+                    }
+                }else {
+                    //$this->out(sprintf('Model not found, deleting'));
+                    unlink($filename);
+                }
+                if($i > 10000) {
+                    break;
+                }
+                $this->out($i . '/10000');
+                $i++;
+            }
+        }
+        $fi = new \FilesystemIterator($directory, \FilesystemIterator::SKIP_DOTS);
+        printf("%s - there were %d Files", $directory, iterator_count($fi));
+        die();
+
+        $solutions = Solution::all(['page' => 7, 'limit' => 10000]);
         $rerecordSolution = function ($imageFile, $dryRun = false) {
             $existingFileName = $imageFile['filename'];
-            if (!preg_match('@\/var\/godesigner\/webroot\/solutions\/[a-z0-9]\/[a-z0-9]{2}\/[a-z0-9]{3}\/[a-z0-9]{32}(_[a-zA-Z]+)?\.([a-zA-Z0-9]){3,4}@', $existingFileName)) {
+            if (!preg_match('@\/var\/godesigner\/webroot\/solutions\/[a-z0-9]\/[a-z0-9]{2}\/[a-z0-9]{3}\/[a-z0-9]{32}(_[a-zA-Z]+)?\.([a-zA-Z]){3,4}@', $existingFileName)) {
                 $newFilePath = (generateHashName($imageFile['id'], $existingFileName));
                 if ((file_exists($existingFileName)) && (!file_exists($newFilePath))) {
                     $this->out("File $existingFileName exists, need to copy");
@@ -37,23 +72,16 @@ class ChangeSolutions extends CronJob
             }
             return 0;
         };
-        $count = 0;
-        for($i = 1; $i < 21; $i++) {
-            $solutions = Solution::all([
-                'page' => $i,
-                'limit' => 10000,
-                'order' => ['Solution.id' => 'asc']
-            ]);
-            foreach ($solutions as $solution) {
-                $this->out("Solution - id $solution->id");
-                foreach ($solution->images as $imageFile) {
-                    if (isset($imageFile[0])) {
-                        foreach ($imageFile as $imageFileRecord) {
-                            $count += $rerecordSolution($imageFileRecord, false);
-                        }
-                    } else {
-                        $count += $rerecordSolution($imageFile, false);
+        foreach ($solutions as $solution) {
+            $count = 0;
+            $this->out("Solution - id $solution->id");
+            foreach ($solution->images as $imageFile) {
+                if (isset($imageFile[0])) {
+                    foreach ($imageFile as $imageFileRecord) {
+                        $count += $rerecordSolution($imageFileRecord, false);
                     }
+                } else {
+                    $count += $rerecordSolution($imageFile, false);
                 }
             }
         }

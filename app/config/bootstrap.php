@@ -24,7 +24,7 @@
  */
 
 if (extension_loaded('newrelic')) {
-    newrelic_set_appname('GoDesigner');
+    newrelic_set_appname('GoDesigner2.0');
 }
 
 /**
