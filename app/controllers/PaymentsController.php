@@ -11,33 +11,34 @@ use app\models\SubscriptionPlan;
 use \lithium\analysis\Logger;
 use \Exception;
 
+class PaymentsController extends AppController
+{
 
-class PaymentsController extends AppController {
-
-    public $publicActions = array('payture_callback', 'startpayment');
+    public $publicActions = ['payture_callback', 'startpayment'];
 
     /**
      * Обработка платежных уведомлений от Payture
      */
-    public function payture_callback() {
+    public function payture_callback()
+    {
         error_reporting(0);
         @ini_set('display_errors', 0);
         if (!empty($this->request->data)) {
-            if(($this->request->data['SessionType'] == 'Pay') && ($this->request->data['Success'] == 'True')) {
+            if (($this->request->data['SessionType'] == 'Pay') && ($this->request->data['Success'] == 'True')) {
                 $transaction = Payment::create();
                 $transaction->set($this->request->data);
                 $transaction->save();
                 $paytureId = $this->request->data['OrderId'];
-                Logger::write('info', $paytureId, array('name' => 'payture'));
-                if ($pitch = Pitch::first(array('conditions' => array('payture_id' => $paytureId)))) {
-                    if(($pitch->type == 'plan-payment') || ($pitch->type == 'fund-balance')) {
+                Logger::write('info', $paytureId, ['name' => 'payture']);
+                if ($pitch = Pitch::first(['conditions' => ['payture_id' => $paytureId]])) {
+                    if (($pitch->type == 'plan-payment') || ($pitch->type == 'fund-balance')) {
                         SubscriptionPlan::activatePlanPayment($pitch->id);
-                    }elseif($pitch->type == 'penalty') {
+                    } elseif ($pitch->type == 'penalty') {
                         Pitch::activatePenalty($pitch->id);
-                    }else {
+                    } else {
                         if ($pitch->blank == 1) {
                             Pitch::activateLogoSalePitch($pitch->id);
-                        }else {
+                        } else {
                             if ($pitch->multiwinner != 0) {
                                 Pitch::activateNewWinner($pitch->id);
                             } else {
@@ -45,12 +46,12 @@ class PaymentsController extends AppController {
                             }
                         }
                     }
-                } elseif ($addon = Addon::first(array('conditions' => array('payture_id' => $paytureId)))) {
+                } elseif ($addon = Addon::first(['conditions' => ['payture_id' => $paytureId]])) {
                     Addon::activate($addon);
                 }
             }
         }
-        Logger::write('info', serialize($this->request->data), array('name' => 'payture'));
+        Logger::write('info', serialize($this->request->data), ['name' => 'payture']);
         //header("HTTP/1.0 200 OK");
         die();
     }
@@ -62,26 +63,26 @@ class PaymentsController extends AppController {
      * @return object
      * @throws Exception
      */
-    public function startpayment() {
-        if((isset($this->request->id)) && ($this->request->id === '0')) {
+    public function startpayment()
+    {
+        if ((isset($this->request->id)) && ($this->request->id === '0')) {
             return $this->redirect('/users/login');
         }
-        if($pitch = Pitch::first( (int) $this->request->id)) {
+        if ($pitch = Pitch::first((int) $this->request->id)) {
             $totalInCents = (int) $pitch->total * 100;
             $formatter = new MoneyFormatter();
             $pitch = Pitch::generateNewPaytureId($this->request->id);
-            $result = Payture::init(array(
+            $result = Payture::init([
                 'SessionType' => 'Pay',
                 'OrderId' => $pitch->payture_id,
                 'Amount' => $totalInCents,
                 'Url' => 'http://godesigner.ru/users/mypitches',
-                'Total' => $formatter->formatMoney($pitch->total, array('suffix' => '.00')),
+                'Total' => $formatter->formatMoney($pitch->total, ['suffix' => '.00']),
                 'Product' => 'Оплата проекта'
-            ));
+            ]);
             $url = Payture::pay($result['SessionId']);
             return $this->redirect($url);
         }
         throw new \Exception('Public:Такого проекта не существует.', 404);
     }
-
 }
