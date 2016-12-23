@@ -4,6 +4,7 @@ namespace app\extensions\command;
 
 use app\extensions\storage\Rcache;
 use ByteUnits\Binary;
+use lithium\core\Environment;
 use Symfony\Component\Stopwatch\Stopwatch;
 
 class CronJob extends \lithium\console\Command
@@ -13,6 +14,11 @@ class CronJob extends \lithium\console\Command
 
     public function _init()
     {
+        ini_set("memory_limit","1536M");
+        set_time_limit(0);
+        if(php_sapi_name() === 'cli') {
+            Environment::set('production');
+        }
         parent::_init();
         if (extension_loaded('newrelic')) {
             newrelic_background_job(true);

@@ -2,40 +2,41 @@
 
 namespace app\extensions\command;
 
-use app\extensions\mailers\CommentsMailer;
 use app\models\Category;
 use \app\models\Task;
 use \app\models\Pitch;
 use \app\models\User;
-use app\extensions\mailers\SolutionsMailer;
 use OneSignal\Config;
 use OneSignal\OneSignal;
 
-class Tasks extends CronJob {
+class Tasks extends CronJob
+{
 
-    public function run() {
+    public function run()
+    {
         $this->header('Welcome to the Task Command');
         set_time_limit(0);
-        $tasks = Task::all(array('conditions' => array(
+        $tasks = Task::all(['conditions' => [
             'completed' => 0,
             'type' => 'newpitch',
-        )));
+        ]]);
         $count = count($tasks);
-        foreach($tasks as $task) {
+        foreach ($tasks as $task) {
             $methodName = '__' . $task->type;
-            if(method_exists('app\extensions\command\Tasks', $methodName)) {
+            if (method_exists('app\extensions\command\Tasks', $methodName)) {
                 $task->markAsCompleted();
                 Tasks::$methodName($task);
             }
         }
-        if($count) {
+        if ($count) {
             $this->out($count . ' tasks completed');
-        }else {
+        } else {
             $this->out('No tasks are in due.');
         }
     }
 
-    private function __newpitch($task) {
+    private function __newpitch($task)
+    {
         $pitch = Pitch::first(['conditions' =>['id' => $task->model_id]]);
         $category = Category::first($pitch->category_id);
         $config = new Config();
@@ -65,9 +66,8 @@ class Tasks extends CronJob {
             'url' => "https://www.godesigner.ru/pitches/details/$pitch->id",
             'isSafari' => true,
         ]);
-        $params = array('pitch' => $pitch);
+        $params = ['pitch' => $pitch];
         User::sendSpamNewPitch($params);
         $this->out('New pitch email has been sent');
     }
-
 }

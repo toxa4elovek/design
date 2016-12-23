@@ -573,13 +573,14 @@ class User extends AppModel
         $recipientsIds = self::getDesignersForSpam($params['pitch']->category_id);
         $recipientsIds = array_unique($recipientsIds);
         foreach ($recipientsIds as $person) {
-            $user = self::first($person);
-            $data = ['user' => $user, 'pitch' => $params['pitch']];
-            $isUserPremium = User::getAwardedSolutionNum($user->id);
-            if (($isUserPremium > 0) && ((int) $params['pitch']->premium === 1)) {
-                SpamMailer::newPremiumProject($data);
-            } else {
-                SpamMailer::newpitch($data);
+            if($user = self::first($person)) {
+                $data = ['user' => $user, 'pitch' => $params['pitch']];
+                $isUserPremium = User::getAwardedSolutionNum($user->id);
+                if (($isUserPremium > 0) && ((int) $params['pitch']->premium === 1)) {
+                    SpamMailer::newPremiumProject($data);
+                } else {
+                    SpamMailer::newpitch($data);
+                }
             }
         }
         $user = new \stdClass();
