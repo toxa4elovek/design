@@ -32,7 +32,8 @@ function mb_basename($file)
                         (((int) $pitch->premium === 1) &&
                             ($pitch->status < 1) &&
                             ($pitch->published == 1) &&
-                            (($this->user->isPitchOwner($pitch->id) === true) ||
+                            (($this->user->isPitchOwner($pitch->user_id) === true) ||
+                            ($this->user->isExpert() === true) ||
                             ($this->user->isAdmin() === true) ||
                             ($this->user->getAwardedSolutionNum() > 0)))
                     ):?>
@@ -50,11 +51,14 @@ function mb_basename($file)
                     <div class="details">
                         <?php
                         if(
-                                ((int) $pitch->premium === 1) &&
-                                ($this->user->isPitchOwner($pitch->id) === false) &&
-                                ($this->user->isAdmin() === false) &&
-                                ($this->user->getAwardedSolutionNum() === 0)
-                        ):
+                            ((int) $pitch->premium === 1) &&
+                            ((int) $pitch->status < 1) &&
+                            ((int) $pitch->published === 1) &&
+                            (($this->user->isPitchOwner($pitch->user_id) === true) ||
+                            ($this->user->isExpert() === true) ||
+                            ($this->user->isAdmin() === true) ||
+                            ($this->user->getAwardedSolutionNum() > 0))
+                        === false):
                         ?>
                         <div class="bigfont">
                             <h2 class="title">
