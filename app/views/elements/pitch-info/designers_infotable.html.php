@@ -23,7 +23,7 @@
                     <?php if($this->user->isSubscriptionActive()):?>
                         7 500р.-
                     <?php else: ?>
-                        9 500р.-
+                        8 500р.-
                     <?php endif ?>
                 </span>
             <?php else: ?>

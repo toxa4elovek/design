@@ -84,7 +84,7 @@
                     <h2 class="greyboldheader"><?=$total_count?> логотипов по цене <?php if($this->user->isSubscriptionActive()):?>
                             7500
                         <?php else: ?>
-                            9500
+                            8500
                         <?php endif ?> рублей</h2>
                 </li>
                 <li>
@@ -155,7 +155,7 @@
                                                 <a href="#" style="float:left" class="like-small-icon" data-id="<?=$solution['id']?>"><img src="/img/like.png" alt="количество лайков" /></a>
                                                 <span class="underlying-likes" style="color: rgb(205, 204, 204); font-size: 10px; vertical-align: middle; display: block; float: left; height: 16px; padding-top: 5px; margin-left: 2px;" data-id="<?=$solution['id']?>" rel="https://www.godesigner.ru/pitches/viewsolution/<?=$solution['id']?>"><?=$solution['likes']?></span>
                                                 <?php if((($solution['pitch']['private'] != 1) && ($solution['pitch']['category_id'] != 7))):
-                                                    $tweetLike = 'Этот логотип можно приобрести у автора за 9500 рублей на распродаже; адаптация названия и 2 правки включены»';
+                                                    $tweetLike = 'Этот логотип можно приобрести у автора за 8500 рублей на распродаже; адаптация названия и 2 правки включены»';
                                                     if(!isset($solution['images']['solution_galleryLargeSize'][0])):
                                                         $url = 'https://www.godesigner.ru' . $solution['images']['solution_gallerySiteSize']['weburl'];
                                                     else:
@@ -185,7 +185,7 @@
                                 <div class="selecting_numb"><span class="price"><?= round($solution['pitch']['total']) ?> р.</span><span class="new-price"><?php if($this->user->isSubscriptionActive()):?>
                                             7500р.-
                                         <?php else: ?>
-                                            9500р.-
+                                            8500р.-
                                         <?php endif ?></span></div>
                                 <div class="solution_menu" style="display: none;">
                                     <ul class="solution_menu_list">

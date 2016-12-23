@@ -40,7 +40,7 @@ $(document).ready(function () {
               containerName = 'buy-solution-for-long-image'
             }
             object.className += ' logosale-container'
-            $(object).append(`<a href="${url}" class="${containerName} clean-style-button">Купить лого за 9500 руб.</a>`)
+            $(object).append(`<a href="${url}" class="${containerName} clean-style-button">Купить лого за 8500 руб.</a>`)
           })
         }
       })

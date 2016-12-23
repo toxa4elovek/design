@@ -213,7 +213,7 @@
                         picCounter++;
                     });
                 }
-                var tweetLike = 'Этот логотип можно приобрести у автора за 9500 рублей на распродаже; адаптация названия и 2 правки включены»'
+                var tweetLike = 'Этот логотип можно приобрести у автора за 8500 рублей на распродаже; адаптация названия и 2 правки включены»'
                 var media = 'https://www.godesigner.ru';
                 if ($.isArray(solution.images.solution_solutionView)) {
                     media += solution.images.solution_solutionView[0].weburl
@@ -253,7 +253,7 @@
                         </ul>\
                     </div>\
                 </div>\
-                <div class="selecting_numb"><span class="price">' + solution.pitch.total.replace(/(\.00)/, '') + ' р.</span><span class="new-price">9500р.-</span></div>\
+                <div class="selecting_numb"><span class="price">' + solution.pitch.total.replace(/(\.00)/, '') + ' р.</span><span class="new-price">8500р.-</span></div>\
                     <div class="solution_menu" style="display: none;">\
                         <ul class="solution_menu_list">\
                             <li class="sol_hov"><a data-solutionid="' + solution.id + '" class="imagecontainer" href="/pitches/viewsolution/' + solution.id + '">Купить</a></li>\
@@ -650,7 +650,7 @@
                 // Left Panel
                 $('.solution-images').html('');
                 //$('.solution-left-panel .solution-title').addClass('nodecoration').data('href', '/pitches/view/' + result.pitch.id);
-                $('.solution-left-panel .solution-title').children('h1').html('<a href="/pitches/view/' + result.solution.pitch_id + '">' + result.pitch.title + '</a>' + '<br> Новая цена: <span class="price"> ' + result.pitch.total.replace(/\.00/, '') + ' р. с учетом сборов</span> <span class="new-price scrolldown">9500 р.-</span>');
+                $('.solution-left-panel .solution-title').children('h1').html('<a href="/pitches/view/' + result.solution.pitch_id + '">' + result.pitch.title + '</a>' + '<br> Новая цена: <span class="price"> ' + result.pitch.total.replace(/\.00/, '') + ' р. с учетом сборов</span> <span class="new-price scrolldown">8500 р.-</span>');
                 if ((result.solution.images.solution) && (result.pitch.category_id != 7)) {
                     // Main Images
                     if (typeof (result.solution.images.solution_gallerySiteSize) != 'undefined') {
@@ -827,9 +827,9 @@
                         media += result.solution.images.solution_solutionView.weburl
                     }
                     // Twitter like solution message
-                    var tweetLike = 'Мне нравится этот дизайн! А вам? Этот логотип можно приобрести у автора за 9500 рублей на распродаже!';
+                    var tweetLike = 'Мне нравится этот дизайн! А вам? Этот логотип можно приобрести у автора за 8500 рублей на распродаже!';
                     if (Math.floor((Math.random() * 100) + 1) <= 50) {
-                        tweetLike = 'Из всех ' + result.pitch.ideas_count + ' мне нравится этот дизайн! Этот логотип можно приобрести у автора за 9500 рублей на распродаже!';
+                        tweetLike = 'Из всех ' + result.pitch.ideas_count + ' мне нравится этот дизайн! Этот логотип можно приобрести у автора за 8500 рублей на распродаже!';
                     }
 
                     var shareTitle = tweetLike;

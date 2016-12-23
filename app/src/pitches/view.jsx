@@ -760,7 +760,7 @@
       }
       if (($('input[name="isReadyForLogoale"]').val() == 1) && (result.isSolutionReady == true)) {
         $('.solution-left-panel .solution-title').css('background', 'linear-gradient(#F0EFED, #DFDFDC) repeat scroll 0 0 rgba(0, 0, 0, 0)')
-        $('.solution-left-panel .solution-title').children('h1').html('<a style="color: #606060;" href="/pitches/view/' + result.solution.pitch_id + '">' + result.pitch.title + '</a>' + '<br> Новая цена: <span class="price"> ' + result.pitch.total.replace(/\.00/, '') + ' р. с учетом сборов</span> <span class="new-price scrolldown">9500 р.-</span>')
+        $('.solution-left-panel .solution-title').children('h1').html('<a style="color: #606060;" href="/pitches/view/' + result.solution.pitch_id + '">' + result.pitch.title + '</a>' + '<br> Новая цена: <span class="price"> ' + result.pitch.total.replace(/\.00/, '') + ' р. с учетом сборов</span> <span class="new-price scrolldown">8500 р.-</span>')
       }
       if (result.pitch.isCopywriting === false) {
         // Main Images
@@ -1056,12 +1056,12 @@
         // Twitter like solution message
         var tweetLike = 'Мне нравится этот дизайн! А вам?'
         if (readyForLogosale) {
-          tweetLike += ' Этот логотип можно приобрести у автора за 9500 рублей на распродаже!'
+          tweetLike += ' Этот логотип можно приобрести у автора за 8500 рублей на распродаже!'
         }
         if (Math.floor((Math.random() * 100) + 1) <= 50) {
           tweetLike = 'Из всех ' + result.pitch.ideas_count + ' мне нравится этот дизайн'
           if (readyForLogosale) {
-            tweetLike = 'Этот логотип можно приобрести у автора за 9500 рублей на распродаже; адаптация названия и 2 правки включены»'
+            tweetLike = 'Этот логотип можно приобрести у автора за 8500 рублей на распродаже; адаптация названия и 2 правки включены»'
           }
         }
 

@@ -24,7 +24,7 @@
                                     <?php if($this->user->isSubscriptionActive()):?>
                                         7500р.-
                                     <?php else: ?>
-                                        9500р.-
+                                        8500р.-
                                     <?php endif ?>
                                 </strong></p><!-- .summary -->
                             <ul id="check-tag">
@@ -97,7 +97,7 @@
                             $tweetLike = 'Из всех ' . $solution->pitch->ideas_count . ' мне нравится этот дизайн';
                         }
                         if($this->pitch->isReadyForLogosale($solution->pitch)) {
-                            $tweetLike = "Этот логотип можно приобрести у автора за 9500 рублей на распродаже; адаптация названия и 2 правки включены»";
+                            $tweetLike = "Этот логотип можно приобрести у автора за 8500 рублей на распродаже; адаптация названия и 2 правки включены»";
                         }
                         if(!isset($solution->solution->images['solution_galleryLargeSize'][0])):
                             $url = 'https://www.godesigner.ru' . $solution->images['solution_gallerySiteSize']['weburl'];

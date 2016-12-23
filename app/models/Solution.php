@@ -590,7 +590,7 @@ http://godesigner.ru/answers/view/73'];
             $fee = 1500;
             $award = 6000;
         }else {
-            $fee = 3500;
+            $fee = 2500;
             $award = 6000;
         }
         $total = $fee + $award;

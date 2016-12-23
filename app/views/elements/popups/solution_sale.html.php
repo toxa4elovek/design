@@ -20,7 +20,7 @@
                                 <?php if($this->user->isSubscriptionActive()):?>
                                 7500р.-
                                 <?php else: ?>
-                                9500р.-
+                                8500р.-
                                 <?php endif ?>
                             </strong></p><!-- .summary -->
                         <ul id="check-tag">

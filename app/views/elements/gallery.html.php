@@ -172,7 +172,7 @@ foreach($solutions as $solution):
                                 $tweetLike = 'Из всех ' . $pitch->ideas_count . ' мне нравится этот дизайн';
                         }
                         if($this->pitch->isReadyForLogosale($pitch) && ($pitch->awarded != $solution->id) && !in_array($solution->user_id, $winnersUserIds)) {
-                            $tweetLike = "Этот логотип можно приобрести у автора за 9500 рублей на распродаже; адаптация названия и 2 правки включены»";
+                            $tweetLike = "Этот логотип можно приобрести у автора за 8500 рублей на распродаже; адаптация названия и 2 правки включены»";
                         }
 
                         if(!isset($solution->images['solution_galleryLargeSize'][0])):
@@ -217,7 +217,7 @@ foreach($solutions as $solution):
             <div class="selecting_numb"><span class="price"><?= round($pitch->total) ?> р.</span><span class="new-price"><?php if($this->user->isSubscriptionActive()):?>
                         7500р.-
                     <?php else: ?>
-                        9500р.-
+                        8500р.-
                     <?php endif ?></span></div>
         <?php else:?>
             <div class="selecting_numb"><a href="/users/view/<?=$solution->user->id?>" class="portfolio_gallery_username"><?=$this->user->getFormattedName($solution->user->first_name, $solution->user->last_name, false)?></a><a href="#" class="number_img_gallery" data-comment-to="#<?=$solution->num?>" >#<?=$solution->num?></a></div>
