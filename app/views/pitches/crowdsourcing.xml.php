@@ -6,12 +6,12 @@
         <photo><?php if((count($pitch->solution) > 0) && ($pitch->category_id != 7) && ($pitch->private == 0)):?>
         <?php $solution = $pitch->solution;
             if(isset($solution->images['solution_solutionView'])):
-                echo 'https://www.godesigner.ru' . $this->solution->renderImageUrl($solution->images['solution_solutionView']);
+                echo 'https://godesigner.ru' . $this->solution->renderImageUrl($solution->images['solution_solutionView']);
             else:
 
-                echo 'https://www.godesigner.ru' . $this->solution->renderImageUrl($solution->images, 0);
+                echo 'https://godesigner.ru' . $this->solution->renderImageUrl($solution->images, 0);
             endif;
-        else: ?>https://www.godesigner.ru/img/fb_icon.jpg<?php endif?></photo>
+        else: ?>https://godesigner.ru/img/fb_icon.jpg<?php endif?></photo>
         <city></city>
         <user-name><?= $pitch->user->first_name . ' ' . $pitch->user->last_name ?></user-name>
         <short-description><?php if($pitch->private == 0):?><?php echo $this->Brief->trimAllInvisibleCharacter(htmlspecialchars(nl2br($pitch->description)), "\x0B", '');?><?php else:?>Это закрытый проект и вам нужно подписать соглашение о неразглашении!<?php endif?></short-description>
@@ -28,7 +28,7 @@
         <parent-category>Дизайн</parent-category>
         <?php endif?>
         <url>
-            https://www.godesigner.ru/pitches/details/<?= $pitch->id ?>
+            https://godesigner.ru/pitches/details/<?= $pitch->id ?>
         </url>
     </project>
     <?php endforeach?>

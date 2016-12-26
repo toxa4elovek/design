@@ -107,7 +107,7 @@ class SocialMediaManager {
      * @return string
      */
     public function getBestSolutionMessageForSocialNetwork(Record $solutionObject, $time, $social = 'twitter') {
-        return 'Самое популярное решение за ' . date('d.m.Y', $time) . ' «' . $this->getProjectTitleForSocialNetwork($solutionObject->pitch, $social) . '» ' . 'https://www.godesigner.ru/pitches/viewsolution/' . $solutionObject->id . $this->getBestSolutionAnalyticsStringForSocialNetwork($social) . ' #Go_Deer';
+        return 'Самое популярное решение за ' . date('d.m.Y', $time) . ' «' . $this->getProjectTitleForSocialNetwork($solutionObject->pitch, $social) . '» ' . 'https://godesigner.ru/pitches/viewsolution/' . $solutionObject->id . $this->getBestSolutionAnalyticsStringForSocialNetwork($social) . ' #Go_Deer';
     }
 
     /**
@@ -132,8 +132,8 @@ class SocialMediaManager {
         $winnerPrice = $moneyFormatter->formatMoney($solutionObject->pitch->price, array('suffix' => ' РУБ.-'));
         $winnerName = $nameInflector->renderName($solutionObject->winner->first_name, $solutionObject->winner->last_name);
         switch($index):
-            case 0: return sprintf($templates[$index], $winnerName, $winnerPrice, $this->getProjectTitleForSocialNetwork($solutionObject->pitch, $social), 'https://www.godesigner.ru/pitches/viewsolution/' . $solutionObject->id . $this->getWinnerSolutionAnalyticsStringForSocialNetwork($social));
-            case 1: return sprintf($templates[$index], $winnerName, $this->getProjectTitleForSocialNetwork($solutionObject->pitch, $social), $winnerPrice, 'https://www.godesigner.ru/pitches/viewsolution/' . $solutionObject->id . $this->getWinnerSolutionAnalyticsStringForSocialNetwork($social));
+            case 0: return sprintf($templates[$index], $winnerName, $winnerPrice, $this->getProjectTitleForSocialNetwork($solutionObject->pitch, $social), 'https://godesigner.ru/pitches/viewsolution/' . $solutionObject->id . $this->getWinnerSolutionAnalyticsStringForSocialNetwork($social));
+            case 1: return sprintf($templates[$index], $winnerName, $this->getProjectTitleForSocialNetwork($solutionObject->pitch, $social), $winnerPrice, 'https://godesigner.ru/pitches/viewsolution/' . $solutionObject->id . $this->getWinnerSolutionAnalyticsStringForSocialNetwork($social));
         endswitch;
     }
 
@@ -153,8 +153,8 @@ class SocialMediaManager {
         $moneyFormatter = new MoneyFormatter();
         $winnerPrice = $moneyFormatter->formatMoney($projectObject->price, array('suffix' => ' р.-'));
         switch($index):
-            case 0: return sprintf($templates[$index], $this->getProjectTitleForSocialNetwork($projectObject, $social), $winnerPrice, 'https://www.godesigner.ru/pitches/details/' . $projectObject->id . $this->getNewProjectAnalyticsStringForSocialNetwork($social));
-            case 1: return sprintf($templates[$index], $winnerPrice, $this->getProjectTitleForSocialNetwork($projectObject, $social), 'https://www.godesigner.ru/pitches/details/' . $projectObject->id . $this->getNewProjectAnalyticsStringForSocialNetwork($social));
+            case 0: return sprintf($templates[$index], $this->getProjectTitleForSocialNetwork($projectObject, $social), $winnerPrice, 'https://godesigner.ru/pitches/details/' . $projectObject->id . $this->getNewProjectAnalyticsStringForSocialNetwork($social));
+            case 1: return sprintf($templates[$index], $winnerPrice, $this->getProjectTitleForSocialNetwork($projectObject, $social), 'https://godesigner.ru/pitches/details/' . $projectObject->id . $this->getNewProjectAnalyticsStringForSocialNetwork($social));
         endswitch;
     }
 
@@ -188,9 +188,9 @@ class SocialMediaManager {
         if($social == 'twitter') {
             return $solutionView['filename'];
         }elseif($social == 'facebook') {
-            return 'https://www.godesigner.ru' . $solutionView['weburl'];
+            return 'https://godesigner.ru' . $solutionView['weburl'];
         }elseif($social == 'vk') {
-            return 'https://www.godesigner.ru/pitches/viewsolution/' . $solutionObject->id;
+            return 'https://godesigner.ru/pitches/viewsolution/' . $solutionObject->id;
         }
     }
 
@@ -230,7 +230,7 @@ class SocialMediaManager {
         $dataFacebook = array(
             'message' => $this->getBestSolutionMessageForSocialNetwork($solution, $lastday, 'facebook'),
             #'picture' => $this->getImageReadyForSocialNetwork($solution, 'facebook')
-            'link' => 'https://www.godesigner.ru/pitches/viewsolution/' . $solution->id . $this->getBestSolutionAnalyticsStringForSocialNetwork('facebook')
+            'link' => 'https://godesigner.ru/pitches/viewsolution/' . $solution->id . $this->getBestSolutionAnalyticsStringForSocialNetwork('facebook')
         );
         $dataTwitter = array(
             'message' => $this->getBestSolutionMessageForSocialNetwork($solution, $lastday, 'twitter'),
@@ -238,7 +238,7 @@ class SocialMediaManager {
         );
         $dataVk = array(
             'message' => $this->getBestSolutionMessageForSocialNetwork($solution, $lastday, 'vk'),
-            'picture' => 'https://www.godesigner.ru/pitches/viewsolution/' . $solution->id . $this->getBestSolutionAnalyticsStringForSocialNetwork('vk')
+            'picture' => 'https://godesigner.ru/pitches/viewsolution/' . $solution->id . $this->getBestSolutionAnalyticsStringForSocialNetwork('vk')
         );
         $facebookAPI->postMessageToPage($dataFacebook);
         $vkAPI->postMessageToPage($dataVk);
@@ -258,7 +258,7 @@ class SocialMediaManager {
         $vkAPI = new VKAPI();
         $dataFacebook = array(
             'message' => $this->getWinnerSolutionMessageForSocialNetwork($solution, rand(0, 1), 'facebook'),
-            'link' => 'https://www.godesigner.ru/pitches/viewsolution/' . $solution->id . $this->getWinnerSolutionAnalyticsStringForSocialNetwork('facebook')
+            'link' => 'https://godesigner.ru/pitches/viewsolution/' . $solution->id . $this->getWinnerSolutionAnalyticsStringForSocialNetwork('facebook')
         );
         $dataTwitter = array(
             'message' => $this->getWinnerSolutionMessageForSocialNetwork($solution, rand(0, 1), 'twitter'),
@@ -266,7 +266,7 @@ class SocialMediaManager {
         );
         $dataVk = array(
             'message' => $this->getWinnerSolutionMessageForSocialNetwork($solution, rand(0, 1), 'vk'),
-            'picture' => 'https://www.godesigner.ru/pitches/viewsolution/' . $solution->id . $this->getWinnerSolutionAnalyticsStringForSocialNetwork('vk')
+            'picture' => 'https://godesigner.ru/pitches/viewsolution/' . $solution->id . $this->getWinnerSolutionAnalyticsStringForSocialNetwork('vk')
         );
         $facebookAPI->postMessageToPage($dataFacebook);
         $twitterAPI->postMessageToPage($dataTwitter);

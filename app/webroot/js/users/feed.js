@@ -473,7 +473,7 @@ $(document).ready(function () {
             display: 'iframe',
             caption: " ",
             name: "Мой новый заказ на лучший дизайн",
-            link: 'http://www.godesigner.ru/pitches/details/' + shareid,
+            link: 'http://godesigner.ru/pitches/details/' + shareid,
             description: $('.post-to-facebook').data('share-text')
         };
         FB.ui(dataFbWallPost, function () {
@@ -482,7 +482,7 @@ $(document).ready(function () {
     shareid = 0;
     var initShares = function () {
         setTimeout(function () {
-            $('a.twitter-share-button').attr('data-url', 'http://www.godesigner.ru/pitches/details/' + shareid);
+            $('a.twitter-share-button').attr('data-url', 'http://godesigner.ru/pitches/details/' + shareid);
             !function (d, s, id) {
                 var js, fjs = d.getElementsByTagName(s)[0];
                 if (!d.getElementById(id)) {
@@ -495,7 +495,7 @@ $(document).ready(function () {
             // Vk
             $('.vk_share_button').replaceWith(VK.Share.button(
                     {
-                        url: 'http://www.godesigner.ru/pitches/details/' + shareid,
+                        url: 'http://godesigner.ru/pitches/details/' + shareid,
                         title: 'Мой новый заказ на лучший дизайн',
                         description: $('.vk_share_button').data('share-text'),
                         noparse: true
@@ -1597,7 +1597,7 @@ function OfficeStatusUpdater() {
                     }else {
                         var left = '50px';
                     }
-                    var fullUrl = 'https://www.godesigner.ru' + url;
+                    var fullUrl = 'https://godesigner.ru' + url;
                     html += '<div class="sharebar" style="position: absolute; display: none; top: 30px; left: ' + left + ';"> \
                         <div class="tooltip-block"> \
                         <div class="social-likes" data-counters="no" data-url="' + fullUrl + '" data-title="' + shareTitle + '"> \

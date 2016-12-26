@@ -31,7 +31,7 @@
                             </tr>
                             <tr><td height="30"></td></tr>
                             <tr><td align="center">
-                                <a href="https://www.godesigner.ru/pitches/create?promocode=ДВА">
+                                <a href="https://godesigner.ru/pitches/create?promocode=ДВА">
                                 <img src="http://godesigner.ru/img/mail/daydva-button.png" alt="Создать проект с промо-кодом">
                                 </a>
                             </td></tr>

@@ -166,7 +166,7 @@ class ParsingSites extends \app\extensions\command\CronJob
     {
         $posts = Post::all(array('conditions' => array('published' => 1, 'created' => array('<=' => date('Y-m-d H:i:s'))), 'limit' => 300, 'order' => array('created' => 'desc')));
         foreach ($posts as $post) {
-            $trigger = News::doesNewsExists((string) $post->title, 'http://www.godesigner.ru/posts/view/' . $post->id);
+            $trigger = News::doesNewsExists((string) $post->title, 'http://godesigner.ru/posts/view/' . $post->id);
 
             if (!$trigger) {
                 $this->out('Saving - ' . $post->title . ' (' . $post->id . ')');
@@ -180,7 +180,7 @@ class ParsingSites extends \app\extensions\command\CronJob
                             'short' => strip_tags($post->short),
                             'tags' => substr($post->tags, 0, strpos($post->tags, '|')),
                             'created' => date('Y-m-d H:i:s', (time() - (HOUR))),
-                            'link' => 'http://www.godesigner.ru/posts/view/' . $post->id,
+                            'link' => 'http://godesigner.ru/posts/view/' . $post->id,
                             'imageurl' => $image,
                             'lang' => 'ru'
                 ));

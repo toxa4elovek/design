@@ -1212,7 +1212,7 @@ class UsersController extends \app\controllers\AppController
 
         $client_id = '2950889'; // ID приложения
         $client_secret = 'j1bFzKfXP4lIa0wA7vaV'; // Защищённый ключ
-        $redirect_uri = 'https://www.godesigner.ru/users/vklogin'; // Адрес сайта
+        $redirect_uri = 'https://godesigner.ru/users/vklogin'; // Адрес сайта
 
 
         $params = [

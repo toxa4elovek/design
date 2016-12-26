@@ -95,10 +95,10 @@
                                         $count++;
                                         ?>
                                         <div class="solutions-block">
-                                            <a href="https://www.godesigner.ru/pitches/viewsolution/<?= $solution->solution_id ?>"><div class="left-sol" style="background: url(https://www.godesigner.ru<?= $image ?>)"></div></a>
+                                            <a href="https://godesigner.ru/pitches/viewsolution/<?= $solution->solution_id ?>"><div class="left-sol" style="background: url(https://godesigner.ru<?= $image ?>)"></div></a>
                                             <div class="solution-info">
-                                                <p class="creator-name"><a target="_blank" href="https://www.godesigner.ru/users/view/<?= $solution->user_id ?>"><?= $solution->creator ?></a></p>
-                                                <p class="ratingcont" data-default="<?= $solution->solution->rating ?>" data-solutionid="<?= $solution->solution->id ?>" style="height: 9px; background: url(https://www.godesigner.ru/img/<?= $solution->solution->rating ?>-rating.png) no-repeat scroll 0% 0% transparent;display:inline-block;width: 56px;"></p>
+                                                <p class="creator-name"><a target="_blank" href="https://godesigner.ru/users/view/<?= $solution->user_id ?>"><?= $solution->creator ?></a></p>
+                                                <p class="ratingcont" data-default="<?= $solution->solution->rating ?>" data-solutionid="<?= $solution->solution->id ?>" style="height: 9px; background: url(https://godesigner.ru/img/<?= $solution->solution->rating ?>-rating.png) no-repeat scroll 0% 0% transparent;display:inline-block;width: 56px;"></p>
                                                 <a data-id="<?= $solution->solution->id ?>" class="like-small-icon" href="#"><span><?= $solution->solution->likes ?></span></a>
                                                 <?php if ((($solution->pitch->private != 1) && ($solution->pitch->category_id != 7))):
                                                     if (rand(1, 100) <= 50) {
@@ -107,42 +107,42 @@
                                                         $tweetLike = 'Из всех ' . $solution->pitch->ideas_count . ' мне нравится этот дизайн';
                                                     }
                                                     if (!isset($solution->solution->images['solution_galleryLargeSize'][0])):
-                                                        $url = 'https://www.godesigner.ru' . $solution->solution->images['solution_gallerySiteSize']['weburl'];
+                                                        $url = 'https://godesigner.ru' . $solution->solution->images['solution_gallerySiteSize']['weburl'];
                                                     else:
-                                                        $url = 'https://www.godesigner.ru' . $solution->solution->images['solution_gallerySiteSize'][0]['weburl'];
+                                                        $url = 'https://godesigner.ru' . $solution->solution->images['solution_gallerySiteSize'][0]['weburl'];
                                                     endif;
                                                     ?>
                                                     <div class="sharebar" style="position: absolute; display: none; top: 40px; left: 165px;">
                                                         <div class="tooltip-block">
-                                                            <div class="social-likes" data-counters="no" data-url="https://www.godesigner.ru/pitches/viewsolution/<?=$solution->solution->id?>" data-title="<?= $tweetLike ?>">
+                                                            <div class="social-likes" data-counters="no" data-url="https://godesigner.ru/pitches/viewsolution/<?=$solution->solution->id?>" data-title="<?= $tweetLike ?>">
                                                                 <div class="facebook" title="Поделиться ссылкой на Фейсбуке">SHARE</div>
                                                                 <div class="twitter" data-via="Go_Deer">TWITT</div>
-                                                                <div class="vkontakte" title="Поделиться ссылкой во Вконтакте" data-image="<?= 'https://www.godesigner.ru'. $this->solution->renderImageUrl($solution->solution->images['solution_solutionView'])?>">SHARE</div>
-                                                                <div class="pinterest" title="Поделиться картинкой на Пинтересте" data-media="<?= 'https://www.godesigner.ru'. $this->solution->renderImageUrl($solution->solution->images['solution_solutionView'])?>">PIN</div>
+                                                                <div class="vkontakte" title="Поделиться ссылкой во Вконтакте" data-image="<?= 'https://godesigner.ru'. $this->solution->renderImageUrl($solution->solution->images['solution_solutionView'])?>">SHARE</div>
+                                                                <div class="pinterest" title="Поделиться картинкой на Пинтересте" data-media="<?= 'https://godesigner.ru'. $this->solution->renderImageUrl($solution->solution->images['solution_solutionView'])?>">PIN</div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 <?php endif;?>
                                                 <span class="bottom_arrow">
-                                                    <a href="#" class="solution-menu-toggle"><img src="https://www.godesigner.ru/img/marker5_2.png" alt=""></a>
+                                                    <a href="#" class="solution-menu-toggle"><img src="https://godesigner.ru/img/marker5_2.png" alt=""></a>
                                                 </span>
                                                 <div class="solution_menu" style="display: none;">
                                                     <ul class="solution_menu_list" style="position:absolute;z-index:6;">
                                                         <?php if ($solution->pitch->user_id == $this->user->getId() && ($solution->pitchesCount < 1) && (!$record->selectedSolutions)): ?>
                                                             <li class="sol_hov select-winner-li" style="margin:0;width:152px;height:20px;padding:0;">
-                                                                <a class="select-winner" href="https://www.godesigner.ru/solutions/select/<?= $solution->solution->id ?>.json" data-solutionid="<?= $solution->solution->id ?>" data-user="<?= $this->user->getFormattedName($solution->solution->user->first_name, $solution->solution->user->last_name) ?>" data-num="<?= $solution->solution->num ?>" data-userid="<?= $solution->solution->user_id ?>">Назначить победителем</a>
+                                                                <a class="select-winner" href="https://godesigner.ru/solutions/select/<?= $solution->solution->id ?>.json" data-solutionid="<?= $solution->solution->id ?>" data-user="<?= $this->user->getFormattedName($solution->solution->user->first_name, $solution->solution->user->last_name) ?>" data-num="<?= $solution->solution->num ?>" data-userid="<?= $solution->solution->user_id ?>">Назначить победителем</a>
                                                             </li>
                                                         <?php elseif ($solution->pitch->user_id == $this->user->getId() && ($solution->pitch->awarded != $solution->solution->id) && (($solution->pitch->status == 1) || ($solution->pitch->status == 2)) && ($solution->pitch->awarded != 0)): ?>
                                                             <li class="sol_hov select-winner-li" style="margin:0;width:152px;height:20px;padding:0;">
-                                                                <a class="select-multiwinner" href="https://www.godesigner.ru/pitches/setnewwinner/<?= $solution->solution->id ?>" data-solutionid="<?= $solution->solution->id ?>" data-user="<?= $this->user->getFormattedName($solution->solution->user->first_name, $solution->solution->user->last_name) ?>" data-num="<?= $solution->solution->num ?>" data-userid="<?= $solution->solution->user_id ?>">Назначить <?= $solution->pitchesCount + 2 ?> победителя</a>
+                                                                <a class="select-multiwinner" href="https://godesigner.ru/pitches/setnewwinner/<?= $solution->solution->id ?>" data-solutionid="<?= $solution->solution->id ?>" data-user="<?= $this->user->getFormattedName($solution->solution->user->first_name, $solution->solution->user->last_name) ?>" data-num="<?= $solution->solution->num ?>" data-userid="<?= $solution->solution->user_id ?>">Назначить <?= $solution->pitchesCount + 2 ?> победителя</a>
                                                             </li>
                                                         <?php endif; ?>
                                                         <?php if ($solution->pitch->user_id == $this->user->getId() && $this->user->isAllowedToComment()): ?>
                                                             <li class="sol_hov" style="margin:0;width:152px;height:20px;padding:0;"><a href="#" class="solution-link-menu" data-id="<?= $solution->solution->id ?>" data-comment-to="#<?= $solution->solution->num ?>">Комментировать</a></li>
                                                         <?php endif; ?>
-                                                        <li class="sol_hov" style="margin:0;width:152px;height:20px;padding:0;"><a href="https://www.godesigner.ru/solutions/warn/<?= $solution->solution->id ?>.json" class="warning" data-solution-id="<?= $solution->solution->id ?>">Пожаловаться</a></li>
+                                                        <li class="sol_hov" style="margin:0;width:152px;height:20px;padding:0;"><a href="https://godesigner.ru/solutions/warn/<?= $solution->solution->id ?>.json" class="warning" data-solution-id="<?= $solution->solution->id ?>">Пожаловаться</a></li>
                                                         <?php if ($this->user->isAdmin()): ?>
-                                                            <li class="sol_hov" style="margin:0;width:152px;height:20px;padding:0;"><a class="delete-solution" data-solution="<?= $solution->solution->id ?>" data-solution_num="<?= $solution->solution->num ?>" href="https://www.godesigner.ru/solutions/delete/<?= $solution->solution->id ?>.json">Удалить</a></li>
+                                                            <li class="sol_hov" style="margin:0;width:152px;height:20px;padding:0;"><a class="delete-solution" data-solution="<?= $solution->solution->id ?>" data-solution_num="<?= $solution->solution->num ?>" href="https://godesigner.ru/solutions/delete/<?= $solution->solution->id ?>.json">Удалить</a></li>
                                                         <?php endif; ?>
                                                     </ul>
                                                 </div>
@@ -158,7 +158,7 @@
                                 <script type="text/javascript">
                                     var solutionDate = '<?= date('Y-m-d H:i:s', strtotime($solutionDate)) ?>';
                                 </script>
-                                <div id="SolutionAjaxLoader" style="text-align: center; display: none; margin-top: 10px;"><img src="https://www.godesigner.ru/img/blog-ajax-loader.gif"></div>
+                                <div id="SolutionAjaxLoader" style="text-align: center; display: none; margin-top: 10px;"><img src="https://godesigner.ru/img/blog-ajax-loader.gif"></div>
                             </div>
                             <div id="r-sidebar-office">
                                 <div id="floatingLayer">
@@ -208,7 +208,7 @@
                                                 $n->host = $host;
                                                 $designNewsInitialData[] = $n->data();
                                                 ?>
-                                                <div class="design-news"><a target="_blank" href="https://www.godesigner.ru/users/click?link=<?= $n->link ?>&id=<?= $n->id ?>"><?= $n->title ?></a> <br><a class="clicks" href="https://www.godesigner.ru/users/click?link=<?= $n->link ?>&id=<?= $n->id ?>"><?= $host['host'] ?></a></div>
+                                                <div class="design-news"><a target="_blank" href="https://godesigner.ru/users/click?link=<?= $n->link ?>&id=<?= $n->id ?>"><?= $n->title ?></a> <br><a class="clicks" href="https://godesigner.ru/users/click?link=<?= $n->link ?>&id=<?= $n->id ?>"><?= $host['host'] ?></a></div>
                                             <?php endforeach;
                                                 $jsonDesignNewsInitialData = json_encode($designNewsInitialData);
                                             endif; ?>
@@ -242,7 +242,7 @@
                                     <div class="box" data-newsid="<?= $object['news']['id'] ?>" <?php if (!$isValidImage($newsImage)): echo 'style="margin-top: 34px;"'; endif;?> data-eventid="<?= $object['id'] ?>">
                                         <?php if ($isValidImage($object['news']['imageurl'])):?>
                                             <p class="img-box">
-                                                <a class="post-link" href="<?= $object['news']['link'] ?>"><img onerror="imageLoadError(this);" class="img-post" src="<?= ((strpos($object['news']['imageurl'], '/events/') !== false) && (strpos($object['news']['imageurl'], '/events/') === 0)) ? 'https://www.godesigner.ru'.$object['news']['imageurl'] : $object['news']['imageurl']?>"></a>
+                                                <a class="post-link" href="<?= $object['news']['link'] ?>"><img onerror="imageLoadError(this);" class="img-post" src="<?= ((strpos($object['news']['imageurl'], '/events/') !== false) && (strpos($object['news']['imageurl'], '/events/') === 0)) ? 'https://godesigner.ru'.$object['news']['imageurl'] : $object['news']['imageurl']?>"></a>
                                             </p>
                                         <?php elseif ($this->feed->isEmbeddedLink($object['news']['link'])):?>
                                             <p class="img-box">
@@ -277,13 +277,13 @@
                                                 }
                                                 $image = $newsImage;
                                                 if ($isValidImage($newsImage)):
-                                                    $url = 'https://www.godesigner.ru/news?event=' . $object['id'];
+                                                    $url = 'https://godesigner.ru/news?event=' . $object['id'];
 
                                                 elseif ((!$isValidImage($newsImage)) and ($object['news']['link'] != '')):
                                                     $url = $object['news']['link'];
                                                     $image = '';
                                                 else:
-                                                    $url = 'https://www.godesigner.ru/news?event=' . $object['id'];
+                                                    $url = 'https://godesigner.ru/news?event=' . $object['id'];
                                                 endif;
                                                 ?>
                                                 <div class="sharebar" style="position: absolute; display: none; top: 30px; left: 120px;">
@@ -317,25 +317,25 @@
                                                         }
                                                         if ($likes_count == 4) {
                                                             $other = $likes - $likes_count;
-                                                            $html_likes .= '<a target="_blank" data-id="' . $like['user_id'] . '" href="https://www.godesigner.ru/users/view/' . $like['user_id'] . '">' . $like['creator'] . '</a>
+                                                            $html_likes .= '<a target="_blank" data-id="' . $like['user_id'] . '" href="https://godesigner.ru/users/view/' . $like['user_id'] . '">' . $like['creator'] . '</a>
                                                                       и <a class="show-other-likes" data-solid="' . $object['news']['id'] . '" href="#">' . $other . ' других</a> <span>лайкнули новость</span></span>';
                                                             break;
                                                         } else {
-                                                            $html_likes .= '<a target="_blank" data-id="' . $like['user_id'] . '" href="https://www.godesigner.ru/users/view/' . $like['user_id'] . '">' . $like['creator'] . ', </a>';
+                                                            $html_likes .= '<a target="_blank" data-id="' . $like['user_id'] . '" href="https://godesigner.ru/users/view/' . $like['user_id'] . '">' . $like['creator'] . ', </a>';
                                                         }
                                                     } elseif (($likes >= 2) && ($likes <= 4)) {
                                                         if ($likes_count == 1) {
                                                             $html_likes .= '<span class="who-likes">';
                                                         }
                                                         if ($likes_count != $likes) {
-                                                            $html_likes .= '<a target="_blank" data-id="' . $like['user_id'] . '" href="https://www.godesigner.ru/users/view/' . $like['user_id'] . '">' . $like['creator'] . ', </a>';
+                                                            $html_likes .= '<a target="_blank" data-id="' . $like['user_id'] . '" href="https://godesigner.ru/users/view/' . $like['user_id'] . '">' . $like['creator'] . ', </a>';
                                                         }
                                                         if ($likes_count == $likes) {
-                                                            $html_likes .= '<a target="_blank" data-id="' . $like['user_id'] . '" href="https://www.godesigner.ru/users/view/' . $like['user_id'] . '">' . $like['creator'] . '</a>';
+                                                            $html_likes .= '<a target="_blank" data-id="' . $like['user_id'] . '" href="https://godesigner.ru/users/view/' . $like['user_id'] . '">' . $like['creator'] . '</a>';
                                                             $html_likes .= ' <span>лайкнули новость</span></span>';
                                                         }
                                                     } elseif ($likes < 2) {
-                                                        $html_likes .= '<span class="who-likes"><a data-id="' . $like['user_id'] . '" target="_blank" href="https://www.godesigner.ru/users/view/' . $like['user_id'] . '">' . $like['creator'] . '</a> <span>' . $this->user->getGenderTxt('лайкнул', $like['user']['gender']) . ' новость</span></span>';
+                                                        $html_likes .= '<span class="who-likes"><a data-id="' . $like['user_id'] . '" target="_blank" href="https://godesigner.ru/users/view/' . $like['user_id'] . '">' . $like['creator'] . '</a> <span>' . $this->user->getGenderTxt('лайкнул', $like['user']['gender']) . ' новость</span></span>';
                                                     }
                                                 }
                                             }
@@ -358,9 +358,9 @@
                                         $imageurl = null;
                                         $count++;
                                         if (isset($object['user']) && isset($object['user']['isAdmin']) && ($object['user']['isAdmin'])) {
-                                            $avatar = 'https://www.godesigner.ru/img/icon_57.png';
+                                            $avatar = 'https://godesigner.ru/img/icon_57.png';
                                         } else {
-                                            $avatar = isset($object['user']['images']['avatar_small']) ? $object['user']['images']['avatar_small']['weburl'] : 'https://www.godesigner.ru/img/default_small_avatar.png';
+                                            $avatar = isset($object['user']['images']['avatar_small']) ? $object['user']['images']['avatar_small']['weburl'] : 'https://godesigner.ru/img/default_small_avatar.png';
                                         }
                                         if ($object['type'] != 'LikeAdded') {
                                             if (isset($object['solution']['images']['solution_solutionView'])) {
@@ -402,19 +402,19 @@
                                             <div class="box" data-eventid="<?= $object['id'] ?>" data-type="<?php echo $object['type'] ?>" data-long="<?php echo $long ?>">
                                                 <?php if ($long): ?>
                                                     <div class="l-img l-img-box" style="padding-top: 0">
-                                                        <a target="_blank" href="https://www.godesigner.ru/users/view/<?= $object['user_id'] ?>"><img class="avatar" src="<?= $avatar ?>"></a>
+                                                        <a target="_blank" href="https://godesigner.ru/users/view/<?= $object['user_id'] ?>"><img class="avatar" src="<?= $avatar ?>"></a>
                                                     </div>
                                                     <div class="r-content box-comment">
                                                         <?php if ($this->user->getId() == $object['pitch']['user_id'] || ($object['comment']['public'] && $object['comment']['reply_to'] != 0)): ?>
-                                                            <a href="https://www.godesigner.ru/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> <?= $this->user->getGenderTxt('оставил', $object['user']['gender']) ?> комментарий в проекте <a href="https://www.godesigner.ru/pitches/view/<?= $object['pitch_id'] ?>"><?= $object['pitch']['title'] ?></a>:
+                                                            <a href="https://godesigner.ru/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> <?= $this->user->getGenderTxt('оставил', $object['user']['gender']) ?> комментарий в проекте <a href="https://godesigner.ru/pitches/view/<?= $object['pitch_id'] ?>"><?= $object['pitch']['title'] ?></a>:
                                                         <?php else: ?>
-                                                            <a href="https://www.godesigner.ru/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> <?= $this->user->getGenderTxt('прокомментировал', $object['user']['gender']) ?> <a href="https://www.godesigner.ru/pitches/viewsolution/<?= $object['solution']['id'] ?>">решение #<?= $object['solution']['num'] ?></a> для проекта <a href="https://www.godesigner.ru/pitches/view/<?= $object['pitch_id'] ?>"><?= $object['pitch']['title'] ?></a>:
+                                                            <a href="https://godesigner.ru/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> <?= $this->user->getGenderTxt('прокомментировал', $object['user']['gender']) ?> <a href="https://godesigner.ru/pitches/viewsolution/<?= $object['solution']['id'] ?>">решение #<?= $object['solution']['num'] ?></a> для проекта <a href="https://godesigner.ru/pitches/view/<?= $object['pitch_id'] ?>"><?= $object['pitch']['title'] ?></a>:
                                                         <?php endif; ?>
                                                     </div>
-                                                    <a href="https://www.godesigner.ru/pitches/viewsolution/<?= $object['solution']['id'] ?>"><div class="sol"><img src="https://www.godesigner.ru<?= $imageurl ?>"></div></a>
+                                                    <a href="https://godesigner.ru/pitches/viewsolution/<?= $object['solution']['id'] ?>"><div class="sol"><img src="https://godesigner.ru<?= $imageurl ?>"></div></a>
                                                     <?php if ($this->user->getId()):?>
                                                     <div class="box-info">
-                                                        <a href="https://www.godesigner.ru/solutions/warn/<?= $object['solution']['id'] ?>.json" class="warning-box" data-solution-id="<?= $object['solution']['id'] ?>">Пожаловаться</a>
+                                                        <a href="https://godesigner.ru/solutions/warn/<?= $object['solution']['id'] ?>.json" class="warning-box" data-solution-id="<?= $object['solution']['id'] ?>">Пожаловаться</a>
                                                         <a data-id="<?= $object['solution']['id'] ?>" class="like-small-icon-box" data-userid="<?= $object['solution']['user_id'] ?>" data-vote="<?= $object['allowLike'] ?>" data-likes="<?= $object['solution']['likes'] ?>" href="#"><?= $object['allowLike'] ? 'Нравится' : 'Не нравится' ?></a>
                                                     </div>
                                                     <?php endif; ?>
@@ -423,18 +423,18 @@
                                                     </div>
                                                 <?php else: ?>
                                                     <div class="l-img l-img-box" style="padding-top: 0">
-                                                        <a target="_blank" href="https://www.godesigner.ru/users/view/<?= $object['user_id'] ?>"><img class="avatar" src="<?= $avatar ?>"></a>
+                                                        <a target="_blank" href="https://godesigner.ru/users/view/<?= $object['user_id'] ?>"><img class="avatar" src="<?= $avatar ?>"></a>
                                                     </div>
                                                     <?php if ($this->user->getId() == $object['pitch']['user_id'] || ($object['comment']['public'] && $object['comment']['reply_to'] != 0) || !$object['solution']): ?>
                                                         <div class="r-content box-comment">
-                                                            <a href="https://www.godesigner.ru/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> <?= $this->user->getGenderTxt('оставил', $object['user']['gender']) ?> комментарий в проекте <a href="https://www.godesigner.ru/pitches/view/<?= $object['pitch_id'] ?>"><?= $object['pitch']['title'] ?></a>:<br /> &laquo;<?php echo $object['updateText'] ?>&raquo;
+                                                            <a href="https://godesigner.ru/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> <?= $this->user->getGenderTxt('оставил', $object['user']['gender']) ?> комментарий в проекте <a href="https://godesigner.ru/pitches/view/<?= $object['pitch_id'] ?>"><?= $object['pitch']['title'] ?></a>:<br /> &laquo;<?php echo $object['updateText'] ?>&raquo;
                                                             <p class="timeago">
                                                                 <time class="timeago" datetime="<?= $object['created'] ?>"><?= $object['created'] ?></time>
                                                             </p>
                                                         </div>
                                                     <?php else: ?>
                                                         <div class="r-content box-comment" style="padding-bottom: 0">
-                                                            <a href="https://www.godesigner.ru/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> <?= $this->user->getGenderTxt('прокомментировал', $object['user']['gender']) ?> <a href="https://www.godesigner.ru/pitches/viewsolution/<?= $object['solution']['id'] ?>">решение #<?= $object['solution']['num'] ?></a> для проекта <a href="https://www.godesigner.ru/pitches/view/<?= $object['pitch_id'] ?>"><?= $object['pitch']['title'] ?></a>: &laquo;<?php echo $object['updateText'] ?>&raquo;
+                                                            <a href="https://godesigner.ru/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> <?= $this->user->getGenderTxt('прокомментировал', $object['user']['gender']) ?> <a href="https://godesigner.ru/pitches/viewsolution/<?= $object['solution']['id'] ?>">решение #<?= $object['solution']['num'] ?></a> для проекта <a href="https://godesigner.ru/pitches/view/<?= $object['pitch_id'] ?>"><?= $object['pitch']['title'] ?></a>: &laquo;<?php echo $object['updateText'] ?>&raquo;
                                                             <p class="timeago">
                                                                 <time class="timeago" datetime="<?= $object['created'] ?>"><?= $object['created'] ?></time>
                                                             </p>
@@ -449,15 +449,15 @@
                                             ?>
                                             <div class="box" data-eventid="<?= $object['id'] ?>">
                                                 <div class="l-img">
-                                                    <a target="_blank" href="https://www.godesigner.ru/users/view/<?= $object['user_id'] ?>"><img class="avatar" src="<?= $avatar ?>"></a>
+                                                    <a target="_blank" href="https://godesigner.ru/users/view/<?= $object['user_id'] ?>"><img class="avatar" src="<?= $avatar ?>"></a>
                                                 </div>
                                                 <div class="r-content">
-                                                    <a href="https://www.godesigner.ru/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> <?= $this->user->getGenderTxt('предложил', $object['user']['gender']) ?> решение для проекта <a href="https://www.godesigner.ru/pitches/view/<?= $object['pitch_id'] ?>"><?= $object['pitch']['title'] ?></a>:
+                                                    <a href="https://godesigner.ru/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> <?= $this->user->getGenderTxt('предложил', $object['user']['gender']) ?> решение для проекта <a href="https://godesigner.ru/pitches/view/<?= $object['pitch_id'] ?>"><?= $object['pitch']['title'] ?></a>:
                                                 </div>
-                                                <a href="https://www.godesigner.ru/pitches/viewsolution/<?= $object['solution']['id'] ?>"><div class="sol"><img src="https://www.godesigner.ru<?= $imageurl ?>"></div></a>
+                                                <a href="https://godesigner.ru/pitches/viewsolution/<?= $object['solution']['id'] ?>"><div class="sol"><img src="https://godesigner.ru<?= $imageurl ?>"></div></a>
                                                 <?php if ($this->user->getId()): ?>
                                                 <div class="box-info">
-                                                    <a href="https://www.godesigner.ru/solutions/warn/<?= $object['solution']['id'] ?>.json" class="warning-box" data-solution-id="<?= $object['solution']['id'] ?>">Пожаловаться</a><span>&middot;</span>
+                                                    <a href="https://godesigner.ru/solutions/warn/<?= $object['solution']['id'] ?>.json" class="warning-box" data-solution-id="<?= $object['solution']['id'] ?>">Пожаловаться</a><span>&middot;</span>
                                                     <a data-id="<?= $object['solution']['id'] ?>" class="like-small-icon-box" data-userid="<?= $object['solution']['user_id'] ?>" data-vote="<?= $object['allowLike'] ?>" data-likes="<?= $object['solution']['likes'] ?>" href="#"><?= $object['allowLike'] ? 'Нравится' : 'Не нравится' ?></a>
                                                 </div>
                                                 <?php endif;?>
@@ -476,25 +476,25 @@
                                                                 }
                                                                 if ($likes_count == 4) {
                                                                     $other = $likes - $likes_count;
-                                                                    $html_likes .= '<a target="_blank" data-id="' . $like['user_id'] . '" href="https://www.godesigner.ru/users/view/' . $like['user_id'] . '">' . $like['creator'] . '</a>
+                                                                    $html_likes .= '<a target="_blank" data-id="' . $like['user_id'] . '" href="https://godesigner.ru/users/view/' . $like['user_id'] . '">' . $like['creator'] . '</a>
                                                                       и <a class="show-other-likes" data-solid="' . $object['solution']['id'] . '" href="#">' . $other . ' других</a> <span>лайкнули решение</span></span>';
                                                                     break;
                                                                 } else {
-                                                                    $html_likes .= '<a target="_blank" data-id="' . $like['user_id'] . '" href="https://www.godesigner.ru/users/view/' . $like['user_id'] . '">' . $like['creator'] . ', </a>';
+                                                                    $html_likes .= '<a target="_blank" data-id="' . $like['user_id'] . '" href="https://godesigner.ru/users/view/' . $like['user_id'] . '">' . $like['creator'] . ', </a>';
                                                                 }
                                                             } elseif (($likes >= 2) && ($likes <= 4)) {
                                                                 if ($likes_count == 1) {
                                                                     $html_likes .= '<span class="who-likes">';
                                                                 }
                                                                 if ($likes_count != $likes) {
-                                                                    $html_likes .= '<a target="_blank" data-id="' . $like['user_id'] . '" href="https://www.godesigner.ru/users/view/' . $like['user_id'] . '">' . $like['creator'] . ', </a>';
+                                                                    $html_likes .= '<a target="_blank" data-id="' . $like['user_id'] . '" href="https://godesigner.ru/users/view/' . $like['user_id'] . '">' . $like['creator'] . ', </a>';
                                                                 }
                                                                 if ($likes_count == $likes) {
-                                                                    $html_likes .= '<a target="_blank" data-id="' . $like['user_id'] . '" href="https://www.godesigner.ru/users/view/' . $like['user_id'] . '">' . $like['creator'] . '</a>';
+                                                                    $html_likes .= '<a target="_blank" data-id="' . $like['user_id'] . '" href="https://godesigner.ru/users/view/' . $like['user_id'] . '">' . $like['creator'] . '</a>';
                                                                     $html_likes .= ' <span>лайкнули решение</span></span>';
                                                                 }
                                                             } elseif ($likes < 2) {
-                                                                $html_likes .= '<span class="who-likes"><a data-id="' . $like['user_id'] . '" target="_blank" href="https://www.godesigner.ru/users/view/' . $like['user_id'] . '">' . $like['creator'] . '</a> <span>' . $this->user->getGenderTxt('лайкнул', $like['user']['gender']) . ' решение</span></span>';
+                                                                $html_likes .= '<span class="who-likes"><a data-id="' . $like['user_id'] . '" target="_blank" href="https://godesigner.ru/users/view/' . $like['user_id'] . '">' . $like['creator'] . '</a> <span>' . $this->user->getGenderTxt('лайкнул', $like['user']['gender']) . ' решение</span></span>';
                                                             }
                                                         }
                                                     }
@@ -541,7 +541,7 @@
                                             <div class="box" data-created="<?= $object['news']['created'] ?>" data-newsid="<?= $object['news']['id'] ?>" <?php if ((!$isValidImage($newsImage)) && (!$coub)): echo 'style="margin-top: 34px;"'; endif;?> data-eventid="<?= $object['id'] ?>">
                                                 <?php if ($isValidImage($object['news']['imageurl'])):?>
                                                 <p class="img-box">
-                                                    <a class="post-link" href="<?= $object['news']['link'] ?>" target="_blank"><img onerror="imageLoadError(this);" class="img-post" src="<?= ((strpos($object['news']['imageurl'], '/events/') !== false) && (strpos($object['news']['imageurl'], '/events/') === 0)) ? 'https://www.godesigner.ru'.$object['news']['imageurl'] : $object['news']['imageurl']?>"></a>
+                                                    <a class="post-link" href="<?= $object['news']['link'] ?>" target="_blank"><img onerror="imageLoadError(this);" class="img-post" src="<?= ((strpos($object['news']['imageurl'], '/events/') !== false) && (strpos($object['news']['imageurl'], '/events/') === 0)) ? 'https://godesigner.ru'.$object['news']['imageurl'] : $object['news']['imageurl']?>"></a>
                                                 </p>
                                                 <?php elseif ($this->feed->isEmbeddedLink($object['news']['link'])):?>
                                                 <p class="img-box">
@@ -589,12 +589,12 @@
                                                     }
                                                     $image = $newsImage;
                                                     if ($isValidImage($newsImage)):
-                                                        $url = 'https://www.godesigner.ru/news?event=' . $object['id'];
+                                                        $url = 'https://godesigner.ru/news?event=' . $object['id'];
                                                     elseif ((!$isValidImage($newsImage)) and ($object['news']['link'] != '')):
                                                         $url = $object['news']['link'];
                                                         $image = '';
                                                     else:
-                                                        $url = 'https://www.godesigner.ru/news?event=' . $object['id'];
+                                                        $url = 'https://godesigner.ru/news?event=' . $object['id'];
                                                     endif;
                                                     ?>
                                                     <div class="sharebar" style="position: absolute; display: none; top: 30px;<?php if ($this->user->getId()):?> left: 120px; <?php else:?> left : 50px;<?php endif?>">
@@ -634,25 +634,25 @@
                                                                     }
                                                                     if ($likes_count == 4) {
                                                                         $other = $likes - $likes_count;
-                                                                        $html_likes .= '<a target="_blank" data-id="' . $like['user_id'] . '" href="https://www.godesigner.ru/users/view/' . $like['user_id'] . '">' . $like['creator'] . '</a>
+                                                                        $html_likes .= '<a target="_blank" data-id="' . $like['user_id'] . '" href="https://godesigner.ru/users/view/' . $like['user_id'] . '">' . $like['creator'] . '</a>
                                                                           и <a class="show-other-likes" data-solid="' . $object['news']['id'] . '" href="#">' . $other . ' других</a> <span>лайкнули новость</span></span>';
                                                                         break;
                                                                     } else {
-                                                                        $html_likes .= '<a target="_blank" data-id="' . $like['user_id'] . '" href="https://www.godesigner.ru/users/view/' . $like['user_id'] . '">' . $like['creator'] . ', </a>';
+                                                                        $html_likes .= '<a target="_blank" data-id="' . $like['user_id'] . '" href="https://godesigner.ru/users/view/' . $like['user_id'] . '">' . $like['creator'] . ', </a>';
                                                                     }
                                                                 } elseif (($likes >= 2) && ($likes <= 4)) {
                                                                     if ($likes_count == 1) {
                                                                         $html_likes .= '<span class="who-likes">';
                                                                     }
                                                                     if ($likes_count != $likes) {
-                                                                        $html_likes .= '<a target="_blank" data-id="' . $like['user_id'] . '" href="https://www.godesigner.ru/users/view/' . $like['user_id'] . '">' . $like['creator'] . ', </a>';
+                                                                        $html_likes .= '<a target="_blank" data-id="' . $like['user_id'] . '" href="https://godesigner.ru/users/view/' . $like['user_id'] . '">' . $like['creator'] . ', </a>';
                                                                     }
                                                                     if ($likes_count == $likes) {
-                                                                        $html_likes .= '<a target="_blank" data-id="' . $like['user_id'] . '" href="https://www.godesigner.ru/users/view/' . $like['user_id'] . '">' . $like['creator'] . '</a>';
+                                                                        $html_likes .= '<a target="_blank" data-id="' . $like['user_id'] . '" href="https://godesigner.ru/users/view/' . $like['user_id'] . '">' . $like['creator'] . '</a>';
                                                                         $html_likes .= ' <span>лайкнули новость</span></span>';
                                                                     }
                                                                 } elseif ($likes < 2) {
-                                                                    $html_likes .= '<span class="who-likes"><a data-id="' . $like['user_id'] . '" target="_blank" href="https://www.godesigner.ru/users/view/' . $like['user_id'] . '">' . $like['creator'] . '</a> <span>' . $this->user->getGenderTxt('лайкнул', $like['user']['gender']) . ' новость</span></span>';
+                                                                    $html_likes .= '<span class="who-likes"><a data-id="' . $like['user_id'] . '" target="_blank" href="https://godesigner.ru/users/view/' . $like['user_id'] . '">' . $like['creator'] . '</a> <span>' . $this->user->getGenderTxt('лайкнул', $like['user']['gender']) . ' новость</span></span>';
                                                                 }
                                                             }
                                                         }
@@ -669,10 +669,10 @@
                                                     <img class="avatar" src="<?= $avatar ?>">
                                                 </div>
                                                 <div class="r-content rating-content">
-                                                    <a target="_blank" href="https://www.godesigner.ru/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> <?= $this->user->getGenderTxt('оценил', $object['user']['gender']) ?> <?= ($object['solution']['user_id'] == $this->user->getId()) ? 'ваше' : '' ?> решение
+                                                    <a target="_blank" href="https://godesigner.ru/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> <?= $this->user->getGenderTxt('оценил', $object['user']['gender']) ?> <?= ($object['solution']['user_id'] == $this->user->getId()) ? 'ваше' : '' ?> решение
                                                     <div class="rating-image star<?= $object['solution']['rating'] ?>"></div>
                                                     <div class="rating-block">
-                                                        <img class="img-rate" src="https://www.godesigner.ru<?= $imageurl ?>">
+                                                        <img class="img-rate" src="https://godesigner.ru<?= $imageurl ?>">
                                                     </div>
                                                     <p class="timeago rating-time">
                                                         <time class="timeago" datetime="<?= $object['created'] ?>"><?= $object['created'] ?></time>
@@ -681,20 +681,20 @@
                                             </div>
                                             <?php
                                         elseif ($object['type'] == 'FavUserAdded'):
-                                            $avatarFav = isset($object['user_fav']['images']['avatar_small']) ? 'https://www.godesigner.ru'.$object['user_fav']['images']['avatar_small']['weburl'] : 'https://www.godesigner.ru/img/default_small_avatar.png';
+                                            $avatarFav = isset($object['user_fav']['images']['avatar_small']) ? 'https://godesigner.ru'.$object['user_fav']['images']['avatar_small']['weburl'] : 'https://godesigner.ru/img/default_small_avatar.png';
                                             ?>
                                             <div class="box" data-eventid="<?= $object['id'] ?>">
                                                 <div class="l-img">
-                                                    <a href="https://www.godesigner.ru/users/view/<?= $object['user_id'] ?>"><img class="avatar" src="<?= $avatar ?>"></a>
-                                                    <a href="https://www.godesigner.ru/users/view/<?= $object['fav_user_id'] ?>"><img class="avatar" src="<?= $avatarFav ?>"></a>
+                                                    <a href="https://godesigner.ru/users/view/<?= $object['user_id'] ?>"><img class="avatar" src="<?= $avatar ?>"></a>
+                                                    <a href="https://godesigner.ru/users/view/<?= $object['fav_user_id'] ?>"><img class="avatar" src="<?= $avatarFav ?>"></a>
                                                 </div>
                                                 <div class="r-content box-comment">
                                                     <?php if ($this->user->getId() == $object['user_id']):?>
-                                                        Вы подписались на <a href="https://www.godesigner.ru/users/view/<?= $object['fav_user_id'] ?>"><?= $object['creator_fav'] ?></a>
+                                                        Вы подписались на <a href="https://godesigner.ru/users/view/<?= $object['fav_user_id'] ?>"><?= $object['creator_fav'] ?></a>
                                                     <?php elseif ($this->user->getId() == $object['fav_user_id']): ?>
-                                                        <a href="https://www.godesigner.ru/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> подписан<?php if ($object['user']['gender'] == 2): echo 'а'; endif?> на вас
+                                                        <a href="https://godesigner.ru/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> подписан<?php if ($object['user']['gender'] == 2): echo 'а'; endif?> на вас
                                                     <?php else:?>
-                                                        <a href="https://www.godesigner.ru/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> подписан<?php if ($object['user']['gender'] == 2): echo 'а'; endif?> на <a href="https://www.godesigner.ru/users/view/<?= $object['fav_user_id'] ?>"><?= $object['creator_fav'] ?></a>
+                                                        <a href="https://godesigner.ru/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> подписан<?php if ($object['user']['gender'] == 2): echo 'а'; endif?> на <a href="https://godesigner.ru/users/view/<?= $object['fav_user_id'] ?>"><?= $object['creator_fav'] ?></a>
                                                     <?php endif; ?>
                                                     <p class="timeago">
                                                         <time class="timeago" datetime="<?= date('Y-m-d H:i:s', strtotime($object['created']) - 3 * HOUR) ?>"><?= $object['created'] ?></time>
@@ -708,10 +708,10 @@
                                                     <img class="avatar" src="<?= $avatar ?>">
                                                 </div>
                                                 <div class="r-content rating-content">
-                                                    <a target="_blank" href="https://www.godesigner.ru/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> <?= $this->user->getGenderTxt('лайкнул', $object['user']['gender']) ?> <?= ($object['solution']['user_id'] == $this->user->getId()) ? 'ваше' : '' ?> решение
+                                                    <a target="_blank" href="https://godesigner.ru/users/view/<?= $object['user_id'] ?>"><?= $object['creator'] ?></a> <?= $this->user->getGenderTxt('лайкнул', $object['user']['gender']) ?> <?= ($object['solution']['user_id'] == $this->user->getId()) ? 'ваше' : '' ?> решение
                                                     <div style="background: none;" class="rating-image star<?= $object['solution']['rating'] ?>"></div>
                                                     <div class="rating-block">
-                                                        <img class="img-rate" src="https://www.godesigner.ru<?= $imageurl ?>">
+                                                        <img class="img-rate" src="https://godesigner.ru<?= $imageurl ?>">
                                                     </div>
                                                     <p class="timeago rating-time">
                                                         <time class="timeago" datetime="<?= $object['created'] ?>"><?= $object['created'] ?></time>
@@ -728,7 +728,7 @@
                                         var likesDate = '<?= date('Y-m-d H:i:s', time() - (2 * HOUR)) ?>';
                                     </script>
                                 </div>
-                                <div id="officeAjaxLoader" style="text-align: center; display: none; margin-top: 10px;"><img src="https://www.godesigner.ru/img/blog-ajax-loader.gif"></div>
+                                <div id="officeAjaxLoader" style="text-align: center; display: none; margin-top: 10px;"><img src="https://godesigner.ru/img/blog-ajax-loader.gif"></div>
                             </div>
 
                         </div>
@@ -746,7 +746,7 @@
             <div id="popup-other-likes" style="display: none;">
                 <div class="other-header">Люди, которым это нравится</div>
                 <ul id="who-its-liked"></ul>
-                <div id="likedAjaxLoader"><img src="https://www.godesigner.ru/img/blog-ajax-loader.gif"></div>
+                <div id="likedAjaxLoader"><img src="https://godesigner.ru/img/blog-ajax-loader.gif"></div>
                 <div class="popup-close"></div>
             </div>
 <?= $this->html->script([

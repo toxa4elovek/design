@@ -34,7 +34,7 @@
 </script>
 <noscript><div><img src="//mc.yandex.ru/watch/27256547" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 <!-- /Yandex.Metrika counter -->
-<!-- Hotjar Tracking Code for https://www.godesigner.ru/ -->
+<!-- Hotjar Tracking Code for https://godesigner.ru/ -->
 <script>
     (function(h,o,t,j,a,r){
         h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};

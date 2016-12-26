@@ -8,10 +8,10 @@
 Добрый день!<br><br>
 
 Семь дней назад был создан проект:
-«<a href="https://www.godesigner.ru/pitches/details/<?=$project->id?>"><?= $project->title?></a>»<br><br>
+«<a href="https://godesigner.ru/pitches/details/<?=$project->id?>"><?= $project->title?></a>»<br><br>
 
 Пользователь:
-<a href="https://www.godesigner.ru/users/view/<?=$user->id?>"><?=$user->first_name . ' ' . $user->last_name ?></a>
+<a href="https://godesigner.ru/users/view/<?=$user->id?>"><?=$user->first_name . ' ' . $user->last_name ?></a>
 <a href="mailto:<?=$user->email?>"><?=$user->email?></a>
 
 </body></html>

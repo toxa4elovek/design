@@ -14,7 +14,7 @@ class VKAPITest extends AppUnit {
     }
 
     public function testPostMessageToPage() {
-        $data = array('message' => 'Заполним бриф', 'picture' => 'http://www.godesigner.ru/img/brief.png');
+        $data = array('message' => 'Заполним бриф', 'picture' => 'http://godesigner.ru/img/brief.png');
         $result = $this->api->postMessageToPage($data);
         $this->assertTrue(is_numeric($result));
     }

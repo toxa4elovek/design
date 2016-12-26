@@ -47,7 +47,7 @@ class Step1MarketingSalesFunnel extends CronJob
         array_walk($arrayOfProjects, function ($project) {
             $bonus = (int) $project->price * 0.1;
             $nameInflector = new NameInflector();
-            $message = sprintf('%s, мы зачислили на лицевой счет %d рублей, которые вы сможете потратить на гонорары дизайнерам, если до %s станете абонентом https://www.godesigner.ru/pages/subscribe',
+            $message = sprintf('%s, мы зачислили на лицевой счет %d рублей, которые вы сможете потратить на гонорары дизайнерам, если до %s станете абонентом https://godesigner.ru/pages/subscribe',
                 '@' . $nameInflector->renderName($project->user->first_name, $project->user->last_name),
                 $bonus,
                 date('d.m.Y', strtotime($project->finishDate))

@@ -5,7 +5,7 @@
     <title></title>
 </head>
 <body style="margin: 0; padding: 0;">
-<img src="https://www.godesigner.ru/img/logo_original-01.png" width="200">
+<img src="https://godesigner.ru/img/logo_original-01.png" width="200">
 
 <table>
     <tr><td width="5"></td><td width="30"></td><td>
@@ -35,7 +35,7 @@
                     <?=$explanation;?>
                     <br><br>
                 <?php endif;?>
-                Если вы заметили плагиат, вовремя подайте жалобу, и мы рассмотрим её в порядке очереди: позвольте нам утрясти все конфликтные вопросы и удалить плагиат: <a href="https://www.godesigner.ru/answers/view/75">https://www.godesigner.ru/answers/view/75</a>
+                Если вы заметили плагиат, вовремя подайте жалобу, и мы рассмотрим её в порядке очереди: позвольте нам утрясти все конфликтные вопросы и удалить плагиат: <a href="https://godesigner.ru/answers/view/75">https://godesigner.ru/answers/view/75</a>
                 <br><br>
                 <?php if (!is_null($text)):?>
                     «<?php echo $text;?>»

@@ -12,12 +12,12 @@ class Og extends \lithium\template\Helper
      */
     public function getOgImage($imageUrl)
     {
-        $defaultImageUrl = 'https://www.godesigner.ru/img/fb_icon.jpg';
+        $defaultImageUrl = 'https://godesigner.ru/img/fb_icon.jpg';
         if (empty($imageUrl)) {
             $imageUrl = $defaultImageUrl;
         } else {
             if (!preg_match('/^http/', $imageUrl)) {
-                $imageUrl = 'https://www.godesigner.ru' . $imageUrl;
+                $imageUrl = 'https://godesigner.ru' . $imageUrl;
             }
         }
         $template = '<meta property="og:image" content="{image}"/>';
@@ -76,6 +76,6 @@ class Og extends \lithium\template\Helper
      */
     public function getOgUrl()
     {
-        return '<meta property="og:url" content="' . 'https://www.godesigner.ru' . $_SERVER['REQUEST_URI'] . '"/>';
+        return '<meta property="og:url" content="' . 'https://godesigner.ru' . $_SERVER['REQUEST_URI'] . '"/>';
     }
 }

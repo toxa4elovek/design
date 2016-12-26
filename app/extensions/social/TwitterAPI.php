@@ -135,7 +135,7 @@ class TwitterAPI extends AbstractAPI {
             'method' => 'POST',
             'url' => 'https://api.twitter.com/oauth/request_token',
             'params' => array(
-                'oauth_callback' => 'https://www.godesigner.ru/twitter',
+                'oauth_callback' => 'https://godesigner.ru/twitter',
             )
         ));
         echo '<pre>';

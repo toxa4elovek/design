@@ -71,7 +71,7 @@ class BestSolutionInTwitter extends CronJob
                         'ru' => $mediaManager->getProjectTitleForSocialNetwork($project),
                     ],
                     'included_segments' => ['All'],
-                    'url' => 'https://www.godesigner.ru/pitches/viewsolution/' . $solution->id,
+                    'url' => 'https://godesigner.ru/pitches/viewsolution/' . $solution->id,
                     'isChromeWeb' => true,
                 ]);
                 $api->notifications->add([
@@ -80,7 +80,7 @@ class BestSolutionInTwitter extends CronJob
                         'ru' => 'Самое популярное решение за ' . date('d.m.Y', $lastDay)
                     ],
                     'included_segments' => ['All'],
-                    'url' => 'https://www.godesigner.ru/pitches/viewsolution/' . $solution->id,
+                    'url' => 'https://godesigner.ru/pitches/viewsolution/' . $solution->id,
                     'isSafari' => true,
                 ]);
                 $this->out('Event saved');

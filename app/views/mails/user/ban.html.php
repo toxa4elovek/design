@@ -5,7 +5,7 @@
     <title></title>
 </head>
 <body style="margin: 0; padding: 0;">
-<img src="https://www.godesigner.ru/img/logo_original-01.png" width="200">
+<img src="https://godesigner.ru/img/logo_original-01.png" width="200">
 
 <table>
     <tr><td width="5"></td><td width="30"></td><td>
@@ -19,7 +19,7 @@
     </td>
         <td>
             <span style="color: #444444; line-height: 17px; font-size: 12px; font-family: Arial, sans-serif;">
-                Вы не можете оставлять комментарии в течение <?=$term?> <?=$this->numInflector->formatString($term, array('string' => array('first' => 'день', 'second' => 'дня', 'third' => 'дней')))?>. Мы были вынуждены принять меры, поскольку были нарушены <a href="https://www.godesigner.ru/answers/view/37" target="_blank">правила участия</a>. Тем не менее вы можете загружать решения и участвовать в проектах. В случае несоблюдения правил в следующий раз ваш аккаунт может быть заблокирован или ликвидирован.
+                Вы не можете оставлять комментарии в течение <?=$term?> <?=$this->numInflector->formatString($term, array('string' => array('first' => 'день', 'second' => 'дня', 'third' => 'дней')))?>. Мы были вынуждены принять меры, поскольку были нарушены <a href="https://godesigner.ru/answers/view/37" target="_blank">правила участия</a>. Тем не менее вы можете загружать решения и участвовать в проектах. В случае несоблюдения правил в следующий раз ваш аккаунт может быть заблокирован или ликвидирован.
             </span><br/>
         </td></tr>
     <tr>

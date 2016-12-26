@@ -28,7 +28,7 @@ class PromoMailerTest extends  AppUnit {
         $this->assertPattern("/Мы считаем/", $html);
         $this->assertPattern("/Дмитрий/", $html);
         $this->assertPattern("/Введите промокод «afaf» на первом этапе создания проекта/", $html);
-        $this->assertPattern("@<a href=\"http://www.godesigner.ru/pitches/details/1@", $html);
+        $this->assertPattern("@<a href=\"http://godesigner.ru/pitches/details/1@", $html);
         $this->assertPattern("@Проверка названия</a>@", $html);
     }
 

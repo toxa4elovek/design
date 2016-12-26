@@ -33,7 +33,7 @@
                                     <tr><td height="30"></td></tr>
                                     <tr>
                                         <td align="center">
-                                            <a href="https://www.godesigner.ru/users/profile" target="_blank" style="display: block; width: 285px; height: 65px;background-image: url('http://godesigner.ru/img/mail/enter-data.png'); background-position: 0 0; background-repeat: no-repeat; color: #ffffff; text-align: center; text-decoration: none; text-shadow: 0 1px 1px rgba(0, 0, 0, .2); line-height: 49px; font-weight: bold; font-size: 11px; font-family: Arial, sans-serif;"><img src="http://godesigner.ru/img/mail/enter-data.png" alt="Войти и заполнить реквизиты" valign="top" border="0" width="285" height="65" /></a>
+                                            <a href="https://godesigner.ru/users/profile" target="_blank" style="display: block; width: 285px; height: 65px;background-image: url('http://godesigner.ru/img/mail/enter-data.png'); background-position: 0 0; background-repeat: no-repeat; color: #ffffff; text-align: center; text-decoration: none; text-shadow: 0 1px 1px rgba(0, 0, 0, .2); line-height: 49px; font-weight: bold; font-size: 11px; font-family: Arial, sans-serif;"><img src="http://godesigner.ru/img/mail/enter-data.png" alt="Войти и заполнить реквизиты" valign="top" border="0" width="285" height="65" /></a>
                                         </td>
                                     </tr>
                                     <tr><td height="30"></td></tr>
@@ -129,7 +129,7 @@
 
                                                 <tr><td height="19"></td></tr>
 
-                                                <tr><td align="center"><a href="https://www.godesigner.ru/answers/view/7" style="color:#f97a7d">Как победитель получит своё вознаграждение?</a></td></tr>
+                                                <tr><td align="center"><a href="https://godesigner.ru/answers/view/7" style="color:#f97a7d">Как победитель получит своё вознаграждение?</a></td></tr>
                                                 <tr><td height="20"></td></tr>
 
                                                 <tr><td height="1" bgcolor="#dddddd"></td></tr>
@@ -138,7 +138,7 @@
 
                                                 <tr><td height="19"></td></tr>
 
-                                                <tr><td align="center"><a href="https://www.godesigner.ru/answers/view/44" style="color:#f97a7d">Как принять участие в проекте?</a></td></tr>
+                                                <tr><td align="center"><a href="https://godesigner.ru/answers/view/44" style="color:#f97a7d">Как принять участие в проекте?</a></td></tr>
                                                 <tr><td height="20"></td></tr>
 
                                                 <tr><td height="1" bgcolor="#dddddd"></td></tr>
@@ -146,7 +146,7 @@
                                                 <tr><td height="1" bgcolor="#f7f7f7"></td></tr>
 
                                                 <tr><td height="19"></td></tr>
-                                                <tr><td align="center"><a href="https://www.godesigner.ru/answers/view/50" style="color:#f97a7d">Как я узнаю, что выиграл проект?</a></td></tr>
+                                                <tr><td align="center"><a href="https://godesigner.ru/answers/view/50" style="color:#f97a7d">Как я узнаю, что выиграл проект?</a></td></tr>
 
                                                 <tr><td height="20"></td></tr>
 

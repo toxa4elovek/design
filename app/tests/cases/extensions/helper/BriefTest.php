@@ -53,8 +53,8 @@ class BriefTest extends AppUnit {
 		$this->assertEqual('', $this->brief->stripEmail(null));
 		$this->assertEqual('', $this->brief->stripEmail(false));
 		$this->assertEqual('asdfg12345', $this->brief->stripEmail('asdfg12345'));
-		$this->assertEqual('<a target="_blank" href="http://www.godesigner.ru/answers/view/47">[Адрес скрыт]</a>', $this->brief->stripEmail('test@test.ru'));
-		$this->assertEqual('Проверка <a target="_blank" href="http://www.godesigner.ru/answers/view/47">[Адрес скрыт]</a> вторая часть <a target="_blank" href="http://www.godesigner.ru/answers/view/47">[Адрес скрыт]</a>', $this->brief->stripEmail('Проверка test@mail.com вторая часть test@mail.com'));
+		$this->assertEqual('<a target="_blank" href="http://godesigner.ru/answers/view/47">[Адрес скрыт]</a>', $this->brief->stripEmail('test@test.ru'));
+		$this->assertEqual('Проверка <a target="_blank" href="http://godesigner.ru/answers/view/47">[Адрес скрыт]</a> вторая часть <a target="_blank" href="http://godesigner.ru/answers/view/47">[Адрес скрыт]</a>', $this->brief->stripEmail('Проверка test@mail.com вторая часть test@mail.com'));
 		$this->assertEqual('test.ru/login/user', $this->brief->stripEmail('test.ru/login/user'));
 	}
 
@@ -95,18 +95,18 @@ class BriefTest extends AppUnit {
 
 	public function testBriefDetails() {
 		$project = Pitch::first(1);
-		$project->description = '<p>Описание проекта на сайте</p> htt://www.godesigner.ru/ и продолжение <a href="http://www.google.com">http://www.google.com</a> текста';
+		$project->description = '<p>Описание проекта на сайте</p> htt://godesigner.ru/ и продолжение <a href="http://www.google.com">http://www.google.com</a> текста';
 
 		$project->started = '2012-01-01 00:00:00';
 		$project->save();
 		$result = $this->brief->briefDetails($project);
-		$expected = 'Описание проекта на сайте <a href="http://htt://www.godesigner.ru/" target="_blank">htt://www.godesigner.ru/</a> и продолжение <a href="http://www.google.com" target="_blank">http://www.google.com</a> текста';
+		$expected = 'Описание проекта на сайте <a href="http://htt://godesigner.ru/" target="_blank">htt://godesigner.ru/</a> и продолжение <a href="http://www.google.com" target="_blank">http://www.google.com</a> текста';
 		$this->assertEqual($expected, $result);
 
 		$project->started = '2015-01-01 00:00:00';
 		$project->save();
 		$result = $this->brief->briefDetails($project);
-		$expected = '<p>Описание проекта на сайте</p> <a href="http://htt://www.godesigner.ru/" target="_blank">htt://www.godesigner.ru/</a> и продолжение <a href="http://www.google.com">http://www.google.com</a> текста';
+		$expected = '<p>Описание проекта на сайте</p> <a href="http://htt://godesigner.ru/" target="_blank">htt://godesigner.ru/</a> и продолжение <a href="http://www.google.com">http://www.google.com</a> текста';
 		$this->assertEqual($expected, $result);
 	}
 

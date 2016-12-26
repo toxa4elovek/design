@@ -38,7 +38,7 @@ class PushNotificationsBlogPost extends CronJob
         $count = 0;
         foreach($posts as $post) {
             $count++;
-            $url = "https://www.godesigner.ru/posts/view/$post->id";
+            $url = "https://godesigner.ru/posts/view/$post->id";
             $api->notifications->add([
                 'contents' => [
                     'en' => $post->title,

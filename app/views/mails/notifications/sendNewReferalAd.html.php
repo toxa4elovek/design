@@ -39,14 +39,14 @@
                             </tr>
                             <tr>
                                 <td align="center">
-                                    <a href="https://www.godesigner.ru/users/subscribers_referal" target="_blank">
+                                    <a href="https://godesigner.ru/users/subscribers_referal" target="_blank">
                                         <img src="https://godesigner.ru/img/mail/10000/hero.png" alt="Как это работает">
                                     </a>
                                 </td>
                             </tr>
                             <tr>
                                 <td align="center">
-                                    <a href="https://www.godesigner.ru/users/subscribers_referal" target="_blank">
+                                    <a href="https://godesigner.ru/users/subscribers_referal" target="_blank">
                                         <img src="https://godesigner.ru/img/mail/10000/button.png" alt="Получить код">
                                     </a>
                                 </td>
@@ -88,7 +88,7 @@
                                                 <a style="color: #999999; text-decoration: underline; text-transform: uppercase; line-height: 13px; font-size: 9px; font-family: Arial, sans-serif;" target="_blank" href="http://godesigner.ru/viewmail/<?= $hash ?>">
                                                     <span style="color: #6990a0; text-decoration: underline; text-transform: uppercase; line-height: 13px; font-size: 9px; font-family: Arial, sans-serif;">ЗДЕСЬ</span>
                                                 </a>.<br />
-                                                <a style="color: #6990a0; text-decoration: underline; text-transform: uppercase; line-height: 13px; font-size: 9px; font-family: Arial, sans-serif;" target="_blank" href="https://www.godesigner.ru/users/unsubscribe<?= $user->unsubscribeToken() ?>">
+                                                <a style="color: #6990a0; text-decoration: underline; text-transform: uppercase; line-height: 13px; font-size: 9px; font-family: Arial, sans-serif;" target="_blank" href="https://godesigner.ru/users/unsubscribe<?= $user->unsubscribeToken() ?>">
                                                     <span style="color: #6990a0; text-decoration: underline; text-transform: uppercase; line-height: 13px; font-size: 9px; font-family: Arial, sans-serif;">ОТПИСАТЬСЯ</span>
                                                 </a>
                                                 ОТ РАССЫЛКИ.ОТПРАВЛЕНО ИЗ ГОЛОВНОГО ОФИСА GO DESIGNER.

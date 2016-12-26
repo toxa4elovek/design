@@ -54,7 +54,7 @@ class Tasks extends CronJob
                 'ru' => "Новый проект! ($category->title)"
             ],
             'included_segments' => ['All'],
-            'url' => "https://www.godesigner.ru/pitches/details/$pitch->id",
+            'url' => "https://godesigner.ru/pitches/details/$pitch->id",
             'isChromeWeb' => true,
         ]);
         $api->notifications->add([
@@ -63,7 +63,7 @@ class Tasks extends CronJob
                 'ru' => "Новый проект! ($category->title) " . $pitch->title
             ],
             'included_segments' => ['All'],
-            'url' => "https://www.godesigner.ru/pitches/details/$pitch->id",
+            'url' => "https://godesigner.ru/pitches/details/$pitch->id",
             'isSafari' => true,
         ]);
         $params = ['pitch' => $pitch];

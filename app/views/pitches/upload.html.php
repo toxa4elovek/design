@@ -124,7 +124,7 @@ $job_types = [
                 </div>
 
                 <div class="tos-container supplement">
-                    <label><input type="checkbox" name="rights_tos" style="margin-right: 5px; margin-bottom: 2px;"/>Я прочитал и согласен с <a href="http://www.godesigner.ru/docs/Договор отчуждения исключительных прав.pdf" style="text-decoration: none;">договором передачи исключительных прав на произведение</a></label>
+                    <label><input type="checkbox" name="rights_tos" style="margin-right: 5px; margin-bottom: 2px;"/>Я прочитал и согласен с <a href="http://godesigner.ru/docs/Договор отчуждения исключительных прав.pdf" style="text-decoration: none;">договором передачи исключительных прав на произведение</a></label>
                     <?= $this->view()->render(['element' => 'newbrief/required_star'], ['tooltipClass' => "tooltip3"]) ?>
                 </div>
 

@@ -66,10 +66,10 @@
                             <a class="fastpitch button third" style="margin-top: 30px;color:#fff;cursor:pointer;">Оплатить 19 800 р.  и запустить проект</a>
                             <table>
                                 <tr height="22"><td width="160">гонорар дизайнеру</td><td>14000</td></tr>
-                                <tr height="22"><td><a class="tablelink" href="https://www.godesigner.ru/answers/view/79" target="_blank">гарантировать проект</a></td><td>950</td></tr>
-                                <tr height="22"><td><a class="tablelink" href="https://www.godesigner.ru/answers/view/68" target="_blank">заполнить бриф</a></td><td>2750</td></tr>
-                                <tr height="22"><td><a class="tablelink" href="https://www.godesigner.ru/answers/view/67" target="_blank">прокачать проект</a></td><td>1000</td></tr>
-                                <tr height="22"><td><a class="tablelink" href="https://www.godesigner.ru/answers/view/66" target="_blank">экспертное мнение</a></td><td>1500</td></tr>
+                                <tr height="22"><td><a class="tablelink" href="https://godesigner.ru/answers/view/79" target="_blank">гарантировать проект</a></td><td>950</td></tr>
+                                <tr height="22"><td><a class="tablelink" href="https://godesigner.ru/answers/view/68" target="_blank">заполнить бриф</a></td><td>2750</td></tr>
+                                <tr height="22"><td><a class="tablelink" href="https://godesigner.ru/answers/view/67" target="_blank">прокачать проект</a></td><td>1000</td></tr>
+                                <tr height="22"><td><a class="tablelink" href="https://godesigner.ru/answers/view/66" target="_blank">экспертное мнение</a></td><td>1500</td></tr>
                                 <tr height="22"><td>сбор сервиса</td><td>29,5%</td></tr>
                                 <tr height="22"><td>скидка</td><td><span class="table-left-price">-4530</span></td></tr>
                                 <tr height="31"><td colspan="2"></td></tr>
@@ -85,10 +85,10 @@
                             <a class="fastpitch button third" style="margin-left: -2px;margin-top: 30px;color:#fff;cursor:pointer;">запустить проект на логотип в один клик</a>
                             <ul>
                                 <li>гонорар дизайнеру 14 000 р.</li>
-                                <li><a class="" href="https://www.godesigner.ru/answers/view/68" target="_blank">«Заполнить бриф»</a> 2750 р.</li>
-                                <li><a class="" href="https://www.godesigner.ru/answers/view/79" target="_blank">«Гарантировать проект»</a> 950 р.</li>
-                                <li><a class="" href="https://www.godesigner.ru/answers/view/67" target="_blank">«Прокачать проект»</a> 1000 р.</li>
-                                <li><a class="" href="https://www.godesigner.ru/answers/view/66" target="_blank">«Экспертное мнение»</a> 1500 р.</li>
+                                <li><a class="" href="https://godesigner.ru/answers/view/68" target="_blank">«Заполнить бриф»</a> 2750 р.</li>
+                                <li><a class="" href="https://godesigner.ru/answers/view/79" target="_blank">«Гарантировать проект»</a> 950 р.</li>
+                                <li><a class="" href="https://godesigner.ru/answers/view/67" target="_blank">«Прокачать проект»</a> 1000 р.</li>
+                                <li><a class="" href="https://godesigner.ru/answers/view/66" target="_blank">«Экспертное мнение»</a> 1500 р.</li>
                                 <li>сбор GoDesigner 29,5%</li>
                                 <li>скидка 4530 р. !</li>
                             </ul>

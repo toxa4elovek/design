@@ -48,7 +48,7 @@ var Toppanel = (function (_BaseComponent) {
                                         { className: "pitches-name mypitches" },
                                         React.createElement(
                                             "a",
-                                            { href: "http://www.godesigner.ru/pitches/view/104569" },
+                                            { href: "http://godesigner.ru/pitches/view/104569" },
                                             "Логотип для швейного производства «Российская Фабрика Текстиля»"
                                         )
                                     ),
@@ -57,7 +57,7 @@ var Toppanel = (function (_BaseComponent) {
                                         { colSpan: "2", className: "pitches-status mypitches" },
                                         React.createElement(
                                             "a",
-                                            { className: "pitches-finish", href: "http://www.godesigner.ru/users/step4/154023" },
+                                            { className: "pitches-finish", href: "http://godesigner.ru/users/step4/154023" },
                                             "Перейти",
                                             React.createElement("br", null),
                                             "на завершающий этап"
@@ -78,7 +78,7 @@ var Toppanel = (function (_BaseComponent) {
                                         { className: "pitches-name mypitches" },
                                         React.createElement(
                                             "a",
-                                            { href: "http://www.godesigner.ru/pitches/view/104885" },
+                                            { href: "http://godesigner.ru/pitches/view/104885" },
                                             "Еуые"
                                         )
                                     ),
@@ -87,7 +87,7 @@ var Toppanel = (function (_BaseComponent) {
                                         { className: "pitches-status mypitches" },
                                         React.createElement(
                                             "a",
-                                            { href: "http://www.godesigner.ru/pitches/details/104885" },
+                                            { href: "http://godesigner.ru/pitches/details/104885" },
                                             "Текущий проект"
                                         )
                                     ),
@@ -101,7 +101,7 @@ var Toppanel = (function (_BaseComponent) {
                                         { className: "pitches-edit mypitches" },
                                         React.createElement(
                                             "a",
-                                            { href: "http://www.godesigner.ru/pitches/edit/104885", className: "edit mypitch_edit_link", title: "редактировать" },
+                                            { href: "http://godesigner.ru/pitches/edit/104885", className: "edit mypitch_edit_link", title: "редактировать" },
                                             "редактировать"
                                         )
                                     )
@@ -115,7 +115,7 @@ var Toppanel = (function (_BaseComponent) {
                                         { className: "pitches-name mypitches" },
                                         React.createElement(
                                             "a",
-                                            { href: "http://www.godesigner.ru/pitches/view/104897" },
+                                            { href: "http://godesigner.ru/pitches/view/104897" },
                                             "131"
                                         )
                                     ),
@@ -124,7 +124,7 @@ var Toppanel = (function (_BaseComponent) {
                                         { className: "pitches-status mypitches" },
                                         React.createElement(
                                             "a",
-                                            { href: "http://www.godesigner.ru/pitches/edit/104897" },
+                                            { href: "http://godesigner.ru/pitches/edit/104897" },
                                             "Ожидание оплаты"
                                         )
                                     ),
@@ -138,17 +138,17 @@ var Toppanel = (function (_BaseComponent) {
                                         { className: "pitches-edit mypitches" },
                                         React.createElement(
                                             "a",
-                                            { href: "http://www.godesigner.ru/pitches/edit/104897#step3", className: "mypitch_pay_link buy", title: "оплатить" },
+                                            { href: "http://godesigner.ru/pitches/edit/104897#step3", className: "mypitch_pay_link buy", title: "оплатить" },
                                             "оплатить"
                                         ),
                                         React.createElement(
                                             "a",
-                                            { href: "http://www.godesigner.ru/pitches/edit/104897", className: "edit mypitch_edit_link", title: "редактировать" },
+                                            { href: "http://godesigner.ru/pitches/edit/104897", className: "edit mypitch_edit_link", title: "редактировать" },
                                             "редактировать"
                                         ),
                                         React.createElement(
                                             "a",
-                                            { "data-id": "104897", href: "http://www.godesigner.ru/pitches/delete/104897", className: "delete deleteheader mypitch_delete_link", title: "удалить" },
+                                            { "data-id": "104897", href: "http://godesigner.ru/pitches/delete/104897", className: "delete deleteheader mypitch_delete_link", title: "удалить" },
                                             "удалить"
                                         )
                                     )
@@ -162,7 +162,7 @@ var Toppanel = (function (_BaseComponent) {
                                         { className: "pitches-name mypitches" },
                                         React.createElement(
                                             "a",
-                                            { href: "http://www.godesigner.ru/pitches/view/104898" },
+                                            { href: "http://godesigner.ru/pitches/view/104898" },
                                             "Test"
                                         )
                                     ),
@@ -171,7 +171,7 @@ var Toppanel = (function (_BaseComponent) {
                                         { className: "pitches-status mypitches" },
                                         React.createElement(
                                             "a",
-                                            { href: "http://www.godesigner.ru/pitches/edit/104898" },
+                                            { href: "http://godesigner.ru/pitches/edit/104898" },
                                             "Ожидание оплаты"
                                         )
                                     ),
@@ -185,17 +185,17 @@ var Toppanel = (function (_BaseComponent) {
                                         { className: "pitches-edit mypitches" },
                                         React.createElement(
                                             "a",
-                                            { href: "http://www.godesigner.ru/pitches/edit/104898#step3", className: "mypitch_pay_link buy", title: "оплатить" },
+                                            { href: "http://godesigner.ru/pitches/edit/104898#step3", className: "mypitch_pay_link buy", title: "оплатить" },
                                             "оплатить"
                                         ),
                                         React.createElement(
                                             "a",
-                                            { href: "http://www.godesigner.ru/pitches/edit/104898", className: "edit mypitch_edit_link", title: "редактировать" },
+                                            { href: "http://godesigner.ru/pitches/edit/104898", className: "edit mypitch_edit_link", title: "редактировать" },
                                             "редактировать"
                                         ),
                                         React.createElement(
                                             "a",
-                                            { "data-id": "104898", href: "http://www.godesigner.ru/pitches/delete/104898", className: "delete deleteheader mypitch_delete_link", title: "удалить" },
+                                            { "data-id": "104898", href: "http://godesigner.ru/pitches/delete/104898", className: "delete deleteheader mypitch_delete_link", title: "удалить" },
                                             "удалить"
                                         )
                                     )
@@ -209,7 +209,7 @@ var Toppanel = (function (_BaseComponent) {
                                         { className: "pitches-name mypitches" },
                                         React.createElement(
                                             "a",
-                                            { href: "http://www.godesigner.ru/pitches/view/104899" },
+                                            { href: "http://godesigner.ru/pitches/view/104899" },
                                             "Test"
                                         )
                                     ),
@@ -218,7 +218,7 @@ var Toppanel = (function (_BaseComponent) {
                                         { className: "pitches-status mypitches" },
                                         React.createElement(
                                             "a",
-                                            { href: "http://www.godesigner.ru/pitches/edit/104899" },
+                                            { href: "http://godesigner.ru/pitches/edit/104899" },
                                             "Ожидание оплаты"
                                         )
                                     ),
@@ -232,17 +232,17 @@ var Toppanel = (function (_BaseComponent) {
                                         { className: "pitches-edit mypitches" },
                                         React.createElement(
                                             "a",
-                                            { href: "http://www.godesigner.ru/pitches/edit/104899#step3", className: "mypitch_pay_link buy", title: "оплатить" },
+                                            { href: "http://godesigner.ru/pitches/edit/104899#step3", className: "mypitch_pay_link buy", title: "оплатить" },
                                             "оплатить"
                                         ),
                                         React.createElement(
                                             "a",
-                                            { href: "http://www.godesigner.ru/pitches/edit/104899", className: "edit mypitch_edit_link", title: "редактировать" },
+                                            { href: "http://godesigner.ru/pitches/edit/104899", className: "edit mypitch_edit_link", title: "редактировать" },
                                             "редактировать"
                                         ),
                                         React.createElement(
                                             "a",
-                                            { "data-id": "104899", href: "http://www.godesigner.ru/pitches/delete/104899", className: "delete deleteheader mypitch_delete_link", title: "удалить" },
+                                            { "data-id": "104899", href: "http://godesigner.ru/pitches/delete/104899", className: "delete deleteheader mypitch_delete_link", title: "удалить" },
                                             "удалить"
                                         )
                                     )
@@ -254,7 +254,7 @@ var Toppanel = (function (_BaseComponent) {
                             { className: "pitch-buttons-legend" },
                             React.createElement(
                                 "a",
-                                { href: "http://www.godesigner.ru/answers/view/6" },
+                                { href: "http://godesigner.ru/answers/view/6" },
                                 React.createElement("i", { id: "help" }),
                                 "Какие способы оплаты вы принимаете?"
                             ),

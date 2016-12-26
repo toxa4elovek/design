@@ -150,7 +150,7 @@ class AdvancedCart {
                                         </tbody>
                                     </table>
                                     <p class="pitch-buttons-legend">
-                                        <a href="https://www.godesigner.ru/answers/view/73">
+                                        <a href="https://godesigner.ru/answers/view/73">
                                             <i id="help"></i>Как мотивировать дизайнеров
                                         </a>
                                     </p>

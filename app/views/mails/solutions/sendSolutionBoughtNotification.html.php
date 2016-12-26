@@ -24,15 +24,15 @@
                             </tr>
                             <tr><td height="30"></td></tr>
                             <tr><td><span style="color: #666666; line-height: 24px; font-size: 16px; font-family: Arial, sans-serif;">
-                                        Ваше решение <a style="text-decoration: none;color: #6990a0;" href="https://www.godesigner.ru/pitches/viewsolution/<?= $solution->id?>">#<?= $solution->num?></a> для проекта <a style="text-decoration: none;color: #6990a0;" href="https://www.godesigner.ru/pitches/view/<?=$pitch->id?>">«<?= $pitch->title?>»</a> хочет выкупить посетитель GoDesigner за 6000 р. в рамках <a style="text-decoration: none;color: #6990a0;" href="https://www.godesigner.ru/logosale">распродажи логотипов</a>.</span></td></tr>
+                                        Ваше решение <a style="text-decoration: none;color: #6990a0;" href="https://godesigner.ru/pitches/viewsolution/<?= $solution->id?>">#<?= $solution->num?></a> для проекта <a style="text-decoration: none;color: #6990a0;" href="https://godesigner.ru/pitches/view/<?=$pitch->id?>">«<?= $pitch->title?>»</a> хочет выкупить посетитель GoDesigner за 6000 р. в рамках <a style="text-decoration: none;color: #6990a0;" href="https://godesigner.ru/logosale">распродажи логотипов</a>.</span></td></tr>
                             <tr><td height="30"></td></tr>
                             <tr><td align="center">
                                     <table style="background-color: #ffffff;">
                                         <tr height="8"><td colspan="3"></td></tr>
                                         <tr height="180"><td width="12"></td>
                                             <td width="220">
-                                                <a href="https://www.godesigner.ru/pitches/viewsolution/<?= $solution->id?>">
-                                                <img width="220" height="180" src="https://www.godesigner.ru/<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'])?>" alt="">
+                                                <a href="https://godesigner.ru/pitches/viewsolution/<?= $solution->id?>">
+                                                <img width="220" height="180" src="https://godesigner.ru/<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'])?>" alt="">
                                                 </a>
                                             </td>
                                             <td width="12"></td>

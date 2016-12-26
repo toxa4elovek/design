@@ -69,7 +69,7 @@
                                     <tr><td height="11"></td></tr>
                                     <tr>
                                         <td align="center">
-                                            <a href="https://www.godesigner.ru/users/solutions" target="_blank"><img src="http://godesigner.ru/img/mail/go_to_solutions.jpg" alt="Мои решения" border="0" /></a>
+                                            <a href="https://godesigner.ru/users/solutions" target="_blank"><img src="http://godesigner.ru/img/mail/go_to_solutions.jpg" alt="Мои решения" border="0" /></a>
                                         </td>
                                     </tr>
                                     <tr><td height="15"></td></tr>
@@ -102,7 +102,7 @@
                                                 <a style="color: #999999; text-decoration: underline; text-transform: uppercase; line-height: 13px; font-size: 9px; font-family: Arial, sans-serif;" target="_blank" href="http://godesigner.ru/viewmail/<?= $hash ?>">
                                                     <span style="color: #6990a0; text-decoration: underline; text-transform: uppercase; line-height: 13px; font-size: 9px; font-family: Arial, sans-serif;">ЗДЕСЬ</span>
                                                 </a>.<br />
-                                                <a style="color: #6990a0; text-decoration: underline; text-transform: uppercase; line-height: 13px; font-size: 9px; font-family: Arial, sans-serif;" target="_blank" href="https://www.godesigner.ru/users/unsubscribe<?= $user->unsubscribeToken() ?>">
+                                                <a style="color: #6990a0; text-decoration: underline; text-transform: uppercase; line-height: 13px; font-size: 9px; font-family: Arial, sans-serif;" target="_blank" href="https://godesigner.ru/users/unsubscribe<?= $user->unsubscribeToken() ?>">
                                                     <span style="color: #6990a0; text-decoration: underline; text-transform: uppercase; line-height: 13px; font-size: 9px; font-family: Arial, sans-serif;">ОТПИСАТЬСЯ</span>
                                                 </a>
                                                 ОТ РАССЫЛКИ.ОТПРАВЛЕНО ИЗ ГОЛОВНОГО ОФИСА GO DESIGNER, САНКТ- ПЕТЕРБУРГ, РОССИЯ.

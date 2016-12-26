@@ -67,7 +67,7 @@ $(document).ready(function() {
             caption: " ",
             name: "Узнай, какой ты дизайнер на самом деле",
             picture: $('.post-to-facebook').data('share-image'),
-            link: "http://www.godesigner.ru/questions/index",
+            link: "http://godesigner.ru/questions/index",
             description: $('.post-to-facebook').data('share-text'),
         };
         FB.ui(dataFbWallPost, function() {  });

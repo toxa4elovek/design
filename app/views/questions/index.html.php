@@ -12,7 +12,7 @@
                     <h1><?php echo 'Пройти тест на профпригодность'; ?></h1>
                     <p style="margin-bottom: 10px;">Этот тест не претендует на замену госэкзаменов в художественных ВУЗах и не гарантирует диплом по специальности «Дизайнер». Нашей целью стал праздный интерес к уровню воды в реке под названием Графический дизайн. Мы создали 15 вопросов, в каждом из которых всего один верный ответ. На прохождение теста даётся 3 минуты!</p>
 
-                    <p>Если вы <a href="https://www.godesigner.ru/register" target="_blank">зарегистрируетесь на сайте</a>, пройдёте тест на хорошо или отлично с <span style="font-style: italic;">первого раза и поделитесь своими результатами</span> в социальных сетях, вы сможете принимать участие в проектах уже через 5 дней (вместо 10 дней).</p>
+                    <p>Если вы <a href="https://godesigner.ru/register" target="_blank">зарегистрируетесь на сайте</a>, пройдёте тест на хорошо или отлично с <span style="font-style: italic;">первого раза и поделитесь своими результатами</span> в социальных сетях, вы сможете принимать участие в проектах уже через 5 дней (вместо 10 дней).</p>
 
                     <h2 class="largest-header-blog">Как прошли этот тест другие?</h2>
                     <ul class="quiz-bars">
@@ -34,9 +34,9 @@
                     <a href="#" class="button" onclick="window.history.back();return false;">Отказаться от теста</a>
 
                     <div class="share-this" style="margin-top: -20px;">
-                        <?php $shareImage = 'https://www.godesigner.ru/img/questions/general.jpg'; ?>
+                        <?php $shareImage = 'https://godesigner.ru/img/questions/general.jpg'; ?>
                         <div style="margin-top: -5px; margin-bottom: 20px;">
-                            <div class="social-likes" data-zeroes="yes" data-counters="yes" data-title="Узнай, какой ты дизайнер на самом деле" data-url="https://www.godesigner.ru/questions">
+                            <div class="social-likes" data-zeroes="yes" data-counters="yes" data-title="Узнай, какой ты дизайнер на самом деле" data-url="https://godesigner.ru/questions">
                                 <div style="margin: 7px 0 0 9px;" class="facebook" data-image="<?=$shareImage ?>" title="Поделиться ссылкой на Фейсбуке">SHARE</div>
                                 <div style="margin: 7px 0 0 7px;" class="twitter" data-via="Go_Deer">TWITT</div>
                                 <div style="margin: 7px 0 0 7px;" class="vkontakte" data-image="<?=$shareImage ?>" data-title="Тест на знание основ графического дизайна" title="Поделиться ссылкой во Вконтакте">SHARE</div>

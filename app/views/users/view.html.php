@@ -10,7 +10,7 @@
 
             <?php if ($this->user->isAdmin()): ?>
                 <div class="right-sidebar-user" style="<?php if((bool) $user->subscription_status): echo 'margin-top: 66px;'; endif;?>">
-                    <a id="enter-name" class="order-button" href="http://cp.godesigner.ru/users/loginasadmin?query=redirect&redirect=https://www.godesigner.ru/users/loginasuser/<?= $user->id ?>">Войти под именем</a>
+                    <a id="enter-name" class="order-button" href="http://cp.godesigner.ru/users/loginasadmin?query=redirect&redirect=https://godesigner.ru/users/loginasuser/<?= $user->id ?>">Войти под именем</a>
                     <p style="<?php if((bool) $user->subscription_status): echo 'margin-top:32px'; else: echo 'margin-top:41px';endif;?>"><a class="email-profile" href="mailto:<?= $user->email ?>"><?= $user->email ?></a></p>
                     <div class="g_line" style="margin-top: 8px;"></div>
                     <p class="regular-small-grey">Online: <span class="date-profile"><?= date('d.m.Y H:i', strtotime($user->lastTimeOnline)) ?></span></p>
@@ -33,7 +33,7 @@
                 </div>
             <?php elseif ($this->user->isLoggedIn()):?>
                 <div class="right-sidebar-user" style="<?php if((bool) $user->subscription_status): echo 'margin-top: 66px;'; endif;?>">
-                    <a id="invite-user" class="order-button" style="padding:5px 15px 5px 13px" href="http://cp.godesigner.ru/users/loginasadmin?query=redirect&redirect=https://www.godesigner.ru/users/invite/<?= $user->id ?>">Пригласить в проект</a>
+                    <a id="invite-user" class="order-button" style="padding:5px 15px 5px 13px" href="http://cp.godesigner.ru/users/loginasadmin?query=redirect&redirect=https://godesigner.ru/users/invite/<?= $user->id ?>">Пригласить в проект</a>
                 </div>
             <?php endif ?>
 

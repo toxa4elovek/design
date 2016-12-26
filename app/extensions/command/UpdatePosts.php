@@ -20,8 +20,8 @@ class UpdatePosts extends CronJob
                 $project->imageurl = preg_replace('@http://(.*)$@', 'https://$1', $project->imageurl);
                 $fix = true;
             }
-            if (preg_match('@http://(www.godesigner.ru)@', $project->full)) {
-                $project->full = preg_replace('@http://(www.godesigner.ru)@', 'https://$1', $project->full);
+            if (preg_match('@http://(godesigner.ru)@', $project->full)) {
+                $project->full = preg_replace('@http://(godesigner.ru)@', 'https://$1', $project->full);
                 $fix = true;
             }
             if($fix) {

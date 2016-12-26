@@ -26,7 +26,7 @@
         {title: 'Дополнение 3', inline: 'span', classes: 'supplement3'}
       ],
       spellchecker_language: 'ru_RU',
-      spellchecker_rpc_url: 'https://www.godesigner.ru/js/tinymce/plugins/spellchecker/spellcheck.php',
+      spellchecker_rpc_url: 'https://godesigner.ru/js/tinymce/plugins/spellchecker/spellcheck.php',
       file_browser_callback: RoxyFileBrowser,
       setup: function (editor) {
         editor.on('keydown', function (e) {
