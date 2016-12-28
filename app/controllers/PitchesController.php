@@ -1834,6 +1834,18 @@ Disallow: /pitches/upload/'.$pitch['id'];
                 $options = compact('pitch', 'bill', 'extracted');
                 $mpdf->WriteHTML(PdfGetter::get('BillSubscription', $options));
             } else {
+                if($pitch->type === 'fund-balance') {
+                    $lastPlanPayment = Pitch::first([
+                        'conditions' => [
+                            'Pitch.billed' => 1,
+                            'Pitch.type' => 'plan-payment',
+                            'Pitch.user_id' => $pitch->user_id
+                        ],
+                        'fields' => ['Pitch.id'],
+                        'order' => ['Pitch.billed_date' => 'DESC']
+                    ]);
+                    $options = compact('pitch', 'bill', 'lastPlanPayment');
+                }
                 $mpdf->WriteHTML(PdfGetter::get('Bill', $options));
             }
             $mpdf->Output('godesigner-pitch-'.$pitch->id.'.pdf', 'd');

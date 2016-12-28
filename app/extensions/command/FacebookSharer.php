@@ -18,7 +18,7 @@ class FacebookSharer extends \app\extensions\command\CronJob {
         );
         foreach ($events as $event) {
             $this->out($event->created);
-            $id = 'https://www.godesigner.ru/news?event=' . $event->id;
+            $id = 'https://godesigner.ru/news?event=' . $event->id;
             $this->out($id);
             $url = 'https://graph.facebook.com';
             $data = array('id' => $id, 'scrape' => 'true');

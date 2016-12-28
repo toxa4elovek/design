@@ -33,7 +33,7 @@ class Promocode extends \app\models\AppModel
                     endswitch;
                     if (!is_null($code->user_id)) {
                         $user = User::first($code->user_id);
-                        $code->humanUser = '<a target="blank" href="https://www.godesigner.ru/users/view/' . $user->id . '">' . $user->first_name . ' ' . $user->last_name . '</a>';
+                        $code->humanUser = '<a target="blank" href="https://godesigner.ru/users/view/' . $user->id . '">' . $user->first_name . ' ' . $user->last_name . '</a>';
                     } else {
                         $code->humanUser = 'не привязан';
                     }

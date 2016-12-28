@@ -22,7 +22,7 @@
 
                             <?php if ($post->published == 1):?>
                                 <div style="margin-top: 25px;">
-                                    <div style="margin-top: -20px;" class="social-likes" data-zeroes="yes" data-counters="yes" data-url="https://www.godesigner.ru/posts/view/<?=$post->id?>">
+                                    <div style="margin-top: -20px;" class="social-likes" data-zeroes="yes" data-counters="yes" data-url="https://godesigner.ru/posts/view/<?=$post->id?>">
                                         <div style="margin: 7px 0 0 9px;" class="facebook" title="Поделиться ссылкой на Фейсбуке">SHARE</div>
                                         <div style="margin: 7px 0 0 7px;" class="twitter" data-via="Go_Deer">TWITT</div>
                                         <div style="margin: 7px 0 0 7px;" class="vkontakte" data-image="<?=$post->imageurl?>" title="Поделиться ссылкой во Вконтакте">SHARE</div>
@@ -40,7 +40,7 @@
                             <div style="margin-top:50px; clear:both;height:3px; background: url(/img/sep.png) repeat-x scroll 0 0 transparent;width:640px;margin-bottom:15px;"></div>
                             <?php if ($post->published == 1):?>
                                 <div style="">
-                                    <div style="margin-top: -20px;" class="social-likes" data-zeroes="yes" data-counters="yes" data-url="https://www.godesigner.ru/posts/view/<?=$post->id?>">
+                                    <div style="margin-top: -20px;" class="social-likes" data-zeroes="yes" data-counters="yes" data-url="https://godesigner.ru/posts/view/<?=$post->id?>">
                                         <div style="margin: 7px 0 0 9px;" class="facebook" title="Поделиться ссылкой на Фейсбуке">SHARE</div>
                                         <div style="margin: 7px 0 0 7px;" class="twitter" data-via="Go_Deer">TWITT</div>
                                         <div style="margin: 7px 0 0 7px;" class="vkontakte" data-image="<?=$post->imageurl?>" title="Поделиться ссылкой во Вконтакте">SHARE</div>

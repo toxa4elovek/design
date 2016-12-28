@@ -115,7 +115,7 @@ class Brief extends \lithium\template\Helper {
      */
     public function stripEmail($string){
         return preg_replace('#' . $this->emailPattern . '#',
-            '<a target="_blank" href="https://www.godesigner.ru/answers/view/47">[Адрес скрыт]</a>', $string);
+            '<a target="_blank" href="https://godesigner.ru/answers/view/47">[Адрес скрыт]</a>', $string);
     }
 
 	/**

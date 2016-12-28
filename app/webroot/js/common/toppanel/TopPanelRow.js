@@ -43,7 +43,7 @@ var TopPanelRow = (function (_React$Component) {
                     { className: "pitches-name mypitches" },
                     React.createElement(
                         "a",
-                        { href: "http://www.godesigner.ru/pitches/view/104899" },
+                        { href: "http://godesigner.ru/pitches/view/104899" },
                         data.title
                     )
                 ),
@@ -52,7 +52,7 @@ var TopPanelRow = (function (_React$Component) {
                     { className: "pitches-status mypitches" },
                     React.createElement(
                         "a",
-                        { href: "http://www.godesigner.ru/pitches/edit/104899" },
+                        { href: "http://godesigner.ru/pitches/edit/104899" },
                         status
                     )
                 ),
@@ -67,17 +67,17 @@ var TopPanelRow = (function (_React$Component) {
                     { className: "pitches-edit mypitches" },
                     React.createElement(
                         "a",
-                        { href: "http://www.godesigner.ru/pitches/edit/104899#step3", className: "mypitch_pay_link buy", title: "оплатить" },
+                        { href: "http://godesigner.ru/pitches/edit/104899#step3", className: "mypitch_pay_link buy", title: "оплатить" },
                         "оплатить"
                     ),
                     React.createElement(
                         "a",
-                        { href: "http://www.godesigner.ru/pitches/edit/104899", className: "edit mypitch_edit_link", title: "редактировать" },
+                        { href: "http://godesigner.ru/pitches/edit/104899", className: "edit mypitch_edit_link", title: "редактировать" },
                         "редактировать"
                     ),
                     React.createElement(
                         "a",
-                        { "data-id": "104899", href: "http://www.godesigner.ru/pitches/delete/104899", className: "delete deleteheader mypitch_delete_link", title: "удалить" },
+                        { "data-id": "104899", href: "http://godesigner.ru/pitches/delete/104899", className: "delete deleteheader mypitch_delete_link", title: "удалить" },
                         "удалить"
                     )
                 )

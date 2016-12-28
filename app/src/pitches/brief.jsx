@@ -1340,13 +1340,13 @@ function FeatureCart () {
             }
             var row =
             '<tr data-id="' + id + '" class="selection ' + evenClass + ' coda"><td></td> \
-                        <td class="pitches-name mypitches"><a href="https://www.godesigner.ru/pitches/view/' + id + '">' + title + '</a></td> \
-                        <td class="pitches-status mypitches"><a href="https://www.godesigner.ru/pitches/edit/' + id + '">Ожидание оплаты</a></td> \
+                        <td class="pitches-name mypitches"><a href="https://godesigner.ru/pitches/view/' + id + '">' + title + '</a></td> \
+                        <td class="pitches-status mypitches"><a href="https://godesigner.ru/pitches/edit/' + id + '">Ожидание оплаты</a></td> \
                         <td class="price mypitches">' + award + '.-</td>\
                         <td class="pitches-edit mypitches"> \
-                        <a href="https://www.godesigner.ru/pitches/edit/' + id + '#step3" class="mypitch_pay_link buy" title="оплатить">оплатить</a> \
-                        <a href="https://www.godesigner.ru/pitches/edit/' + id + '" class="edit mypitch_edit_link" title="редактировать">редактировать</a> \
-                        <a data-id="' + id + '" href="https://www.godesigner.ru/pitches/delete/' + id + '" class="delete deleteheader mypitch_delete_link" title="удалить">удалить</a> \
+                        <a href="https://godesigner.ru/pitches/edit/' + id + '#step3" class="mypitch_pay_link buy" title="оплатить">оплатить</a> \
+                        <a href="https://godesigner.ru/pitches/edit/' + id + '" class="edit mypitch_edit_link" title="редактировать">редактировать</a> \
+                        <a data-id="' + id + '" href="https://godesigner.ru/pitches/delete/' + id + '" class="delete deleteheader mypitch_delete_link" title="удалить">удалить</a> \
                         </td></tr>'
             $('#header-table').append(row)
             scroll = true
@@ -1355,15 +1355,15 @@ function FeatureCart () {
             '<div id="pitch-panel"><div class="conteiner"><div class="content"> \
                             <table class="all-pitches" id="header-table"><tbody> \
                             <tr data-id="' + id + '" class="selection even coda"><td></td> \
-                        <td class="pitches-name mypitches"><a href="https://www.godesigner.ru/pitches/view/' + id + '">' + title + '</a></td> \
-                        <td class="pitches-status mypitches"><a href="https://www.godesigner.ru/pitches/edit/' + id + '">Ожидание оплаты</a></td> \
+                        <td class="pitches-name mypitches"><a href="https://godesigner.ru/pitches/view/' + id + '">' + title + '</a></td> \
+                        <td class="pitches-status mypitches"><a href="https://godesigner.ru/pitches/edit/' + id + '">Ожидание оплаты</a></td> \
                         <td class="price mypitches">' + award + '.-</td>\
                         <td class="pitches-edit mypitches"> \
-                        <a href="https://www.godesigner.ru/pitches/edit/' + id + '#step3" class="mypitch_pay_link buy" title="оплатить">оплатить</a> \
-                        <a href="https://www.godesigner.ru/pitches/edit/' + id + '" class="edit mypitch_edit_link" title="редактировать">редактировать</a> \
-                        <a data-id="' + id + '" href="https://www.godesigner.ru/pitches/delete/' + id + '" class="delete deleteheader mypitch_delete_link" title="удалить">удалить</a> \
+                        <a href="https://godesigner.ru/pitches/edit/' + id + '#step3" class="mypitch_pay_link buy" title="оплатить">оплатить</a> \
+                        <a href="https://godesigner.ru/pitches/edit/' + id + '" class="edit mypitch_edit_link" title="редактировать">редактировать</a> \
+                        <a data-id="' + id + '" href="https://godesigner.ru/pitches/delete/' + id + '" class="delete deleteheader mypitch_delete_link" title="удалить">удалить</a> \
                         </td></tr></tbody></table> \
-                        <p class="pitch-buttons-legend"><a href="https://www.godesigner.ru/answers/view/73"><i id="help"></i>Как мотивировать дизайнеров</a></p> \
+                        <p class="pitch-buttons-legend"><a href="https://godesigner.ru/answers/view/73"><i id="help"></i>Как мотивировать дизайнеров</a></p> \
                         </div></div></div>'
             $('.wrapper').first().prepend(panel)
             scroll = true

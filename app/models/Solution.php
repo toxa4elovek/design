@@ -120,7 +120,7 @@ http://godesigner.ru/answers/view/73'];
                 try {
                     $pitch = Pitch::first($result->pitch_id);
                     if (($pitch->category_id != 7) && ($pitch->private != 1)) {
-                        $id = 'https://www.godesigner.ru/pitches/viewsolution/' . $result->id;
+                        $id = 'https://godesigner.ru/pitches/viewsolution/' . $result->id;
                         $url = 'https://graph.facebook.com';
                         $data = ['id' => $id, 'scrape' => 'true'];
                         $options = [
@@ -163,7 +163,7 @@ http://godesigner.ru/answers/view/73'];
                             'ru' => 'Выбран победитель!'
                         ],
                         'included_segments' => ['All'],
-                        'url' => "https://www.godesigner.ru/pitches/viewsolution/$solution->id",
+                        'url' => "https://godesigner.ru/pitches/viewsolution/$solution->id",
                         'isChromeWeb' => true,
                     ]);
                     $api->notifications->add([
@@ -172,7 +172,7 @@ http://godesigner.ru/answers/view/73'];
                             'ru' => 'Выбран победитель! ' . $solution->pitch->title
                         ],
                         'included_segments' => ['All'],
-                        'url' => "https://www.godesigner.ru/pitches/viewsolution/$solution->id",
+                        'url' => "https://godesigner.ru/pitches/viewsolution/$solution->id",
                         'isSafari' => true,
                     ]);
                 }

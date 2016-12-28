@@ -18,7 +18,7 @@ class TopPanelContainer extends BaseComponent {
                             </tbody>
                         </table>
                         <p className="pitch-buttons-legend">
-                            <a href="https://www.godesigner.ru/answers/view/6">
+                            <a href="https://godesigner.ru/answers/view/6">
                                 <i id="help"></i>
                                 Какие способы оплаты вы принимаете?
                             </a>

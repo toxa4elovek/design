@@ -262,12 +262,12 @@ endif;
 
             <div class="explanation premium" style="display:none;" id="explanation_premium">
                 <p>В премиум-проекте принимают участие только сильнейшие дизайнеры и копирайтеры, которые уже побеждали на сервисе. Мы пригласим их по e-mail и СМС.</p>
-                <p style="margin-bottom: 20px;"><a href="https://www.godesigner.ru/answers/view/112" target="_blank">Подробнее тут</a></p>
+                <p style="margin-bottom: 20px;"><a href="https://godesigner.ru/answers/view/112" target="_blank">Подробнее тут</a></p>
             </div>
 
             <div class="ribbon" style="padding-top: 35px; height: 56px; padding-bottom: 0;">
                 <p class="option"><label><input type="checkbox" name="" class="single-check" data-option-title="Скрыть проект" data-option-value="3500" id="hideproject">Скрыть проект</label></p>
-                <!--p class="description">Питч станет не виден для поисковых систем, а идеи будут доступны для просмотра только вам и их авторам. Подробнее <a target="_blank" href="http://www.godesigner.ru/answers/view/64">тут</a> <a href="#" class="second tooltip" title="Это идеальная возможность, если вы являетесь посредником, рекламным агентством или не хотите разглашать секретов в маркетинговых целях.">(?)</a></p-->
+                <!--p class="description">Питч станет не виден для поисковых систем, а идеи будут доступны для просмотра только вам и их авторам. Подробнее <a target="_blank" href="http://godesigner.ru/answers/view/64">тут</a> <a href="#" class="second tooltip" title="Это идеальная возможность, если вы являетесь посредником, рекламным агентством или не хотите разглашать секретов в маркетинговых целях.">(?)</a></p-->
                 <p class="label" style="text-transform: none;">3500р.</p>
             </div>
 
@@ -278,7 +278,7 @@ endif;
                     <li>Проект станет недоступен поисковым системам</li>
                     <li>Участники подпишут «Cоглашение о неразглашении»</li>
                     <li>Идеи будут не доступны для просмотра посторонними</li>
-                    <li style="list-style: outside none none; margin-top: 12px; margin-left: 0px;"><a href="https://www.godesigner.ru/answers/view/64" target="_blank">Подробнее тут</a></li>
+                    <li style="list-style: outside none none; margin-top: 12px; margin-left: 0px;"><a href="https://godesigner.ru/answers/view/64" target="_blank">Подробнее тут</a></li>
                 </ul>
                 <div style="clear:both; font-size: 18px; font-family: OfficinaSansC Book, serif;"></div>
             </div>
@@ -334,7 +334,7 @@ endif;
                     <li style="width: 480px;">социальные сети GoDesigner: <a href="https://www.facebook.com/godesigner.ru" target="_blank">fb,</a> <a href="http://vk.com/godesigner" target="_blank">vk,</a> <a href="https://twitter.com/go_deer" target="_blank">twitter</a> (> 10 000 подписчиков)</li>
                     <li style="width: 480px;">выделение цветом в списке проектов</li>
                     <li style="width: 480px;">отображение на главной странице сайта</li>
-                    <li style="list-style: outside none none; margin-left:0;"><a href="https://www.godesigner.ru/answers/view/67" target="_blank">Подробнее тут</a></li>
+                    <li style="list-style: outside none none; margin-left:0;"><a href="https://godesigner.ru/answers/view/67" target="_blank">Подробнее тут</a></li>
                 </ul>
             </div>
 

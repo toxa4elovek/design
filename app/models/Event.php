@@ -225,7 +225,7 @@ class Event extends AppModel
         $newEvent->news_id = $news_id;
         $result =  $newEvent->save();
         if ($result) {
-            $id = 'https://www.godesigner.ru/news?event=' . $newEvent->id;
+            $id = 'https://godesigner.ru/news?event=' . $newEvent->id;
             try {
                 $url = 'https://graph.facebook.com';
                 $data = ['id' => $id, 'scrape' => 'true'];
@@ -415,7 +415,7 @@ class Event extends AppModel
     {
         $accesstoken = null;
         if (!$accesstoken = Rcache::read('bingaccesstoken')) {
-            $url = 'https://www.godesigner.ru/microsoft.php';
+            $url = 'https://godesigner.ru/microsoft.php';
             $response = file_get_contents($url, false);
             $decoded = json_decode($response, true);
             $accesstoken = $decoded['access_token'];

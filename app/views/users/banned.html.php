@@ -9,7 +9,7 @@
             <div class="main">
 
                 <section>
-                    <p class="regular">Ваш аккаунт заблокирован на 30 дней, это произошло из-за несоблюдения <a href="https://www.godesigner.ru/answers/view/37">правил</a> Go Designer.</p>
+                    <p class="regular">Ваш аккаунт заблокирован на 30 дней, это произошло из-за несоблюдения <a href="https://godesigner.ru/answers/view/37">правил</a> Go Designer.</p>
                 </section>
 
             </div><!-- .main -->
@@ -19,7 +19,7 @@
             <div class="main">
 
                 <section>
-                    <p class="regular">Ваш аккаунт заблокирован, это произошло из-за несоблюдения <a href="https://www.godesigner.ru/answers/view/37">правил</a> Go Designer.</p>
+                    <p class="regular">Ваш аккаунт заблокирован, это произошло из-за несоблюдения <a href="https://godesigner.ru/answers/view/37">правил</a> Go Designer.</p>
                 </section>
 
             </div><!-- .main -->

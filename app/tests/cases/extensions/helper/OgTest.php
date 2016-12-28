@@ -32,20 +32,20 @@ class OgTest extends \lithium\test\Unit
     }
 
     public function testGetOgImage() {
-        $expected = '<meta property="og:image" content="https://www.godesigner.ru/img/fb_icon.jpg"/>';
+        $expected = '<meta property="og:image" content="https://godesigner.ru/img/fb_icon.jpg"/>';
         $result = $this->og->getOgImage('');
         $this->assertEqual($expected, $result);
 
-        $expected = '<meta property="og:image" content="http://www.godesigner.ru/events/image.jpg"/>';
-        $result = $this->og->getOgImage('http://www.godesigner.ru/events/image.jpg');
+        $expected = '<meta property="og:image" content="http://godesigner.ru/events/image.jpg"/>';
+        $result = $this->og->getOgImage('http://godesigner.ru/events/image.jpg');
         $this->assertEqual($expected, $result);
 
-        $expected = '<meta property="og:image" content="https://www.godesigner.ru/events/image.jpg"/>';
+        $expected = '<meta property="og:image" content="https://godesigner.ru/events/image.jpg"/>';
         $result = $this->og->getOgImage('/events/image.jpg');
         $this->assertEqual($expected, $result);
 
-        $expected = '<meta property="og:image" content="https://www.godesigner.ru/blog/emojii/shutterstock_364647341_Converte-Copy1.png"/>';
-        $result = $this->og->getOgImage('https://www.godesigner.ru/blog/emojii/shutterstock_364647341_Converte-Copy1.png');
+        $expected = '<meta property="og:image" content="https://godesigner.ru/blog/emojii/shutterstock_364647341_Converte-Copy1.png"/>';
+        $result = $this->og->getOgImage('https://godesigner.ru/blog/emojii/shutterstock_364647341_Converte-Copy1.png');
         $this->assertEqual($expected, $result);
     }
 
@@ -72,7 +72,7 @@ class OgTest extends \lithium\test\Unit
     }
 
     public function testGetOgUrl() {
-        $expected = '<meta property="og:url" content="http://www.godesigner.ru' . $_SERVER['REQUEST_URI'] . '"/>';
+        $expected = '<meta property="og:url" content="http://godesigner.ru' . $_SERVER['REQUEST_URI'] . '"/>';
         $result = $this->og->getOgUrl();
         $this->assertEqual($expected, $result);
     }

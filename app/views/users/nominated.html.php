@@ -55,11 +55,11 @@
                 </ul>
                 <?php else:?>
                 <h2 class="largest-header" style="margin-top: 40px;text-transform: uppercase;text-align: center;">Сейчас у вас нет проектов, которые требуют завершения.<h2>
-                <!--h2 class="largest-header" style="margin-top: 40px;text-transform: uppercase;text-align: center;">у вас еще нет победивших решений,<br> мы знаем как вам <a href="http://www.godesigner.ru/answers">помочь</a>!</h2>
+                <!--h2 class="largest-header" style="margin-top: 40px;text-transform: uppercase;text-align: center;">у вас еще нет победивших решений,<br> мы знаем как вам <a href="http://godesigner.ru/answers">помочь</a>!</h2>
                 <div style="text-align:center;">
                     <img style="margin-top:35px" src="/img/no-win-yet.png" alt="помощь"/>
                     <div class="supplement3" style="margin-top:10px;">
-                    ОЗНАКОМТЕСЬ С НАШИМИМ СОВЕТАМИ В РУБРИКЕ<br> <a href="http://www.godesigner.ru/answers">ПОМОЩЬ ДИЗАЙНЕРУ</a>
+                    ОЗНАКОМТЕСЬ С НАШИМИМ СОВЕТАМИ В РУБРИКЕ<br> <a href="http://godesigner.ru/answers">ПОМОЩЬ ДИЗАЙНЕРУ</a>
                     </div>
                 </div-->
                 <?php endif?>

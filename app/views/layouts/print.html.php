@@ -27,9 +27,9 @@
     <!--[if lte IE 7]><?= $this->html->style(array('/ie7.css')); ?><![endif]-->
     <?php if((isset($solution)) && (isset($solution->images)) && (isset($solution->images['solution_solutionView']))):
     if(!isset($solution->images['solution_galleryLargeSize'][0])):
-        $url = 'https://www.godesigner.ru' . $solution->images['solution_galleryLargeSize']['weburl'];
+        $url = 'https://godesigner.ru' . $solution->images['solution_galleryLargeSize']['weburl'];
     else:
-        $url = 'https://www.godesigner.ru' . $solution->images['solution_galleryLargeSize'][0]['weburl'];
+        $url = 'https://godesigner.ru' . $solution->images['solution_galleryLargeSize'][0]['weburl'];
     endif;
     $description = '';
     ?>
@@ -38,13 +38,13 @@
     <?php endif;?>
     <?php if(preg_match('@/posts/view@', $_SERVER['REQUEST_URI'])):
     /*if(!isset($solution->images['solution_galleryLargeSize'][0])):
-        $url = 'http://www.godesigner.ru' . $solution->images['solution_galleryLargeSize']['weburl'];
+        $url = 'http://godesigner.ru' . $solution->images['solution_galleryLargeSize']['weburl'];
     else:
-        $url = 'http://www.godesigner.ru' . $solution->images['solution_galleryLargeSize'][0]['weburl'];
+        $url = 'http://godesigner.ru' . $solution->images['solution_galleryLargeSize'][0]['weburl'];
     endif;
     $description = '';*/
     echo '<meta content="article" property="og:type"/>';
-    echo '<meta property="og:url" content="https://www.godesigner.ru/posts/view/' . $post->id . '/"/>';
+    echo '<meta property="og:url" content="https://godesigner.ru/posts/view/' . $post->id . '/"/>';
     echo '<meta property="og:description" content="' . str_replace('&nbsp;', ' ', strip_tags($post->short)) . '"/>';
     echo '<meta property="og:title" content="' . $post->title . '"/>';
     echo '<meta property="og:image" content="' . $post->imageurl . '"/>';

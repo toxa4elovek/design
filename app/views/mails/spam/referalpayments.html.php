@@ -5,7 +5,7 @@
     <title></title>
 </head>
 <body style="margin: 0; padding: 0;">
-<img src="https://www.godesigner.ru/img/logo_original-03.png" width="200">
+<img src="https://godesigner.ru/img/logo_original-03.png" width="200">
 
 <table>
     <tr>

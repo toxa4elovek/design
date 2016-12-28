@@ -36,18 +36,18 @@
 
                                 <div style="margin-top:20px;" class="underline-link">
                                 <p style="text-align:center"><span class="greyboldheader" style="font-size:17px;">Брифы, которые мы заполнили</span></p><br><br>
-                                <p><span><a style="font-size:14px;" target="_blank" href="https://www.godesigner.ru/pitches/details/100657%20">Логотип для дизайнерской компании</a><br></span></p><br>
-                                <p><a style="font-size:14px;" href="https://www.godesigner.ru/pitches/details/100573">Логотип для туристического сервиса</a></p><br>
-                                <p><a style="font-size:14px;" href="https://www.godesigner.ru/pitches/details/100723">Иллюстрация-шапка для сайта</a></p><br>
-                                <p><span><a style="font-size:14px;" target="_blank" href="https://www.godesigner.ru/pitches/details/100147">Логотип для дизайн-бюро</a><br></span></p><br>
-                                <p><a style="font-size:14px;" target="_parent" href="https://www.godesigner.ru/pitches/details/100309">Оформление страницы в fb</a></p><br>
-                                <p><a style="font-size:14px;" href="https://www.godesigner.ru/pitches/details/100341">Сайт туристических услуг</a></p><br>
-                                <p><span><a style="font-size:14px;" href="https://www.godesigner.ru/pitches/details/100819">Логотип для хостела</a></span></p><br>
-                                <p><span><a style="font-size:14px;" href="https://www.godesigner.ru/pitches/view/100700">Лого для кафе</a><br></span></p><br>
-                                <p><a style="font-size:14px;" target="_blank" href="https://www.godesigner.ru/pitches/details/100508">Логотип для фото-блога</a>&nbsp;</p><br>
-                                <p><span><a style="font-size:14px;" target="_blank" href="https://www.godesigner.ru/pitches/details/100919">Сайт визитка для консультанта по управлению</a></span></p><br>
-                                <p><span><a style="font-size:14px;" target="_blank" href="https://www.godesigner.ru/pitches/details/100172">Логотип для чайного магазина</a></span></p><br>
-                                <p><span><a style="font-size:14px;" target="_blank" href="https://www.godesigner.ru/pitches/details/100101">Сайт, где выпить бесплатно в Москве</a></span></p><br>
+                                <p><span><a style="font-size:14px;" target="_blank" href="https://godesigner.ru/pitches/details/100657%20">Логотип для дизайнерской компании</a><br></span></p><br>
+                                <p><a style="font-size:14px;" href="https://godesigner.ru/pitches/details/100573">Логотип для туристического сервиса</a></p><br>
+                                <p><a style="font-size:14px;" href="https://godesigner.ru/pitches/details/100723">Иллюстрация-шапка для сайта</a></p><br>
+                                <p><span><a style="font-size:14px;" target="_blank" href="https://godesigner.ru/pitches/details/100147">Логотип для дизайн-бюро</a><br></span></p><br>
+                                <p><a style="font-size:14px;" target="_parent" href="https://godesigner.ru/pitches/details/100309">Оформление страницы в fb</a></p><br>
+                                <p><a style="font-size:14px;" href="https://godesigner.ru/pitches/details/100341">Сайт туристических услуг</a></p><br>
+                                <p><span><a style="font-size:14px;" href="https://godesigner.ru/pitches/details/100819">Логотип для хостела</a></span></p><br>
+                                <p><span><a style="font-size:14px;" href="https://godesigner.ru/pitches/view/100700">Лого для кафе</a><br></span></p><br>
+                                <p><a style="font-size:14px;" target="_blank" href="https://godesigner.ru/pitches/details/100508">Логотип для фото-блога</a>&nbsp;</p><br>
+                                <p><span><a style="font-size:14px;" target="_blank" href="https://godesigner.ru/pitches/details/100919">Сайт визитка для консультанта по управлению</a></span></p><br>
+                                <p><span><a style="font-size:14px;" target="_blank" href="https://godesigner.ru/pitches/details/100172">Логотип для чайного магазина</a></span></p><br>
+                                <p><span><a style="font-size:14px;" target="_blank" href="https://godesigner.ru/pitches/details/100101">Сайт, где выпить бесплатно в Москве</a></span></p><br>
 </div>
 
                             </div>

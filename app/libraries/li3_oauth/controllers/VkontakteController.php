@@ -12,7 +12,7 @@ class VkontakteController extends \li3_oauth\controllers\ClientController {
         parent::_init();
         VkontakteConsumer::config(array(
             'client_id' => 2950889, //2305673
-            'redirect_uri' => 'http://www.godesigner.ru/vkontakte', // http://94.127.68.233/vkontakte'
+            'redirect_uri' => 'http://godesigner.ru/vkontakte', // http://94.127.68.233/vkontakte'
             'display' => 'page',
             'scheme' => 'https',
             'host' => 'api.vkontakte.ru',

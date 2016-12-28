@@ -188,7 +188,7 @@
 
             <div class="explanation premium" style="display:none;" id="explanation_premium">
                 <p>В премиум-проекте принимают участие только сильнейшие дизайнеры и копирайтеры, которые уже побеждали на сервисе. Мы пригласим их по e-mail и СМС.</p>
-                <p style="margin-bottom: 20px;"><a href="https://www.godesigner.ru/answers/view/112" target="_blank">Подробнее тут</a></p>
+                <p style="margin-bottom: 20px;"><a href="https://godesigner.ru/answers/view/112" target="_blank">Подробнее тут</a></p>
             </div>
 
             <div class="ribbon" style="padding-top: 35px; height: 56px; padding-bottom: 0;">
@@ -212,7 +212,7 @@
                     <li>Проект станет недоступен поисковым системам</li>
                     <li>Участники подпишут «Cоглашение о неразглашении»</li>
                     <li>Идеи будут не доступны для просмотра посторонними</li>
-                    <li style="list-style: outside none none; margin-top: 12px; margin-left: 0px;"><a href="https://www.godesigner.ru/answers/view/64" target="_blank">Подробнее тут</a></li>
+                    <li style="list-style: outside none none; margin-top: 12px; margin-left: 0px;"><a href="https://godesigner.ru/answers/view/64" target="_blank">Подробнее тут</a></li>
                 </ul>
                 <div style="clear:both; font-size: 18px; font-family: OfficinaSansC Book, serif;"></div>
             </div>
@@ -268,7 +268,7 @@
                     <li style="width: 480px;">социальные сети GoDesigner: <a href="https://www.facebook.com/godesigner.ru" target="_blank">fb,</a> <a href="http://vk.com/godesigner" target="_blank">vk,</a> <a href="https://twitter.com/go_deer" target="_blank">twitter</a> (> 10 000 подписчиков)</li>
                     <li style="width: 480px;">выделение цветом в списке проектов</li>
                     <li style="width: 480px;">отображение на главной странице сайта</li>
-                    <li style="list-style: outside none none; margin-left:0;"><a href="https://www.godesigner.ru/answers/view/67" target="_blank">Подробнее тут</a></li>
+                    <li style="list-style: outside none none; margin-left:0;"><a href="https://godesigner.ru/answers/view/67" target="_blank">Подробнее тут</a></li>
                 </ul>
             </div>
 

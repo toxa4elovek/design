@@ -5,7 +5,7 @@
     <title></title>
 </head>
 <body style="margin: 0; padding: 0;">
-<img src="https://www.godesigner.ru/img/logo_original-01.png" width="200">
+<img src="https://godesigner.ru/img/logo_original-01.png" width="200">
 
 <table>
     <tr><td width="5"></td><td width="30"></td><td>
@@ -17,7 +17,7 @@
         <td>
             <span style="color: #444444; line-height: 17px; font-size: 12px; font-family: Arial, sans-serif;">
                 Проект завершается в <?= date('H:i:s d.m.y', strtotime($project->chooseWinnerFinishDate)) ?>. Пожалуйста, активизируйтесь на сайте и выберите победителя.<br/><br/>
-В противном случае конкурс  завершится автоматически, и вы не сможете номинировать работу. Подробнее – в разделе <a href="https://www.godesigner.ru/answers/view/102">Как работает годовое обслуживание?</a><br/><br/>
+В противном случае конкурс  завершится автоматически, и вы не сможете номинировать работу. Подробнее – в разделе <a href="https://godesigner.ru/answers/view/102">Как работает годовое обслуживание?</a><br/><br/>
 У вас также есть право отказаться от решений до этого срока, нажав «Отказаться от всех решений». Сумма установленного гонорара разблокируется и вернется на лицевой счет.
             </span><br/>
         </td>

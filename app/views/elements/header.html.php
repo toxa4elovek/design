@@ -85,11 +85,11 @@
                                     <?php endif;?>
                                     <?php if (($mypitch->published == 0) && ($mypitch->billed == 0) && ($mypitch->status == 0) && ($mypitch->moderated != 1) && ($mypitch->type != 'plan-payment')):
                                         $types['needpay'] += 1?>
-                                        <a href="https://www.godesigner.ru<?= ($fastpitch !== false) ? '/pitches/fastpitch/' : '/pitches/edit/'?><?=$mypitch->id?>">Ожидание оплаты</a>
+                                        <a href="https://godesigner.ru<?= ($fastpitch !== false) ? '/pitches/fastpitch/' : '/pitches/edit/'?><?=$mypitch->id?>">Ожидание оплаты</a>
                                     <?php endif;?>
                                     <?php if (($mypitch->published == 0) && ($mypitch->billed == 0) && ($mypitch->status > 0) && ($mypitch->multiwinner != 0) && ($mypitch->type != 'plan-payment')):
                                         $types['needpay'] += 1?>
-                                        <a href="https://www.godesigner.ru<?= ($fastpitch !== false) ? '/pitches/fastpitch/' : '/pitches/edit/'?><?=$mypitch->id?>">Ожидание оплаты</a>
+                                        <a href="https://godesigner.ru<?= ($fastpitch !== false) ? '/pitches/fastpitch/' : '/pitches/edit/'?><?=$mypitch->id?>">Ожидание оплаты</a>
                                         <a data-id="<?=$mypitch->id?>" href="/pitches/delete/<?=$mypitch->id?>" class="delete deleteheader mypitch_delete_link" title="удалить">удалить</a>
                                     <?php endif;?>
                                     <?php if (($mypitch->billed == 0) && ($mypitch->status == 0) && ($mypitch->type == 'plan-payment')):

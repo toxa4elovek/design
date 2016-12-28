@@ -57,7 +57,7 @@ $(function () {
       display: 'iframe',
       caption: ' ',
       name: 'Мой новый заказ на лучший дизайн',
-      link: 'https://www.godesigner.ru/pitches/details/' + shareid,
+      link: 'https://godesigner.ru/pitches/details/' + shareid,
       description: $('.post-to-facebook').data('share-text')
     }
     FB.ui(dataFbWallPost, function () {})
@@ -65,7 +65,7 @@ $(function () {
   shareid = 0
   var initShares = function () {
     setTimeout(function () {
-      $('a.twitter-share-button').attr('data-url', 'https://www.godesigner.ru/pitches/details/' + shareid)
+      $('a.twitter-share-button').attr('data-url', 'https://godesigner.ru/pitches/details/' + shareid)
       !function (d, s, id) {
         var js, fjs = d.getElementsByTagName(s)[0]
         if (!d.getElementById(id)) {
@@ -79,7 +79,7 @@ $(function () {
       const vkShareButton = $('.vk_share_button')
       vkShareButton.replaceWith(VK.Share.button(
         {
-          url: 'https://www.godesigner.ru/pitches/details/' + shareid,
+          url: 'https://godesigner.ru/pitches/details/' + shareid,
           title: 'Мой новый заказ на лучший дизайн',
           description: vkShareButton.data('share-text'),
           noparse: true
@@ -1298,7 +1298,7 @@ $(document).on('click', function () {
 /* ==============*/
 $('.ajaxoffice').live('click', function () {
   var url = $(this).attr('href')
-  if (url == 'https://www.godesigner.ru/news/' || url == 'https://www.godesigner.ru/users/feed') {
+  if (url == 'https://godesigner.ru/news/' || url == 'https://godesigner.ru/users/feed') {
     window.location.href = url
     return false
   }

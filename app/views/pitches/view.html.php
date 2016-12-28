@@ -64,7 +64,7 @@
                             <?php if($pitch->billed == 1):?>
                             Ещё никто не выложил свои идеи.
                             <?php else: ?>
-                            Проект будет запущен после <a href="https://www.godesigner.ru/pitches/edit/<?= $pitch->id?>#step3">оплаты.</a>
+                            Проект будет запущен после <a href="https://godesigner.ru/pitches/edit/<?= $pitch->id?>#step3">оплаты.</a>
                             <?php endif;?>
                         </h2>
                         <?php if(!$this->user->isPitchOwner($pitch->user_id)):?>
@@ -135,12 +135,12 @@
                             <h2 style="margin-top: 80px; font-size: 15px; font-weight: bold; color: rgb(102, 102, 102); text-shadow: -1px 0px 0px rgb(255, 255, 255); margin-left: 12px; width: 163px; text-align: center;" id="refundLabel"></h2>
                             <?php if($pitch->type == 'company_project'):?>
                                 <p style="color: rgb(102, 102, 102); margin-left: 0; margin-top: 17px; font: 14px/15px arial;">
-                                    <a target="_blank" id="whatIsIt" href="https://www.godesigner.ru/answers/view/102">Абонентское обслуживание</a>
+                                    <a target="_blank" id="whatIsIt" href="https://godesigner.ru/answers/view/102">Абонентское обслуживание</a>
                                     <br />
                                 </p>
                             <?php else: ?>
                                 <p style="color: rgb(102, 102, 102); margin-left: 34px; margin-top: 17px; font: 14px/15px arial;">
-                                    <a target="_blank" id="whatIsIt" href="https://www.godesigner.ru/answers/view/71">Что это значит?</a>
+                                    <a target="_blank" id="whatIsIt" href="https://godesigner.ru/answers/view/71">Что это значит?</a>
                                     <br />
                                 </p>
                             <?php endif?>

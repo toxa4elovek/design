@@ -35,7 +35,7 @@ class PaytureTest extends AppUnit {
             'SessionType' => 'Pay',
             'OrderId' => $this->orderId,
             'Amount' => $amount,
-            'Url' => 'http://www.godesigner.ru/users/mypitches',
+            'Url' => 'http://godesigner.ru/users/mypitches',
             'Total' => $amount,
             'Product' => 'Оплата проекта'
         ));

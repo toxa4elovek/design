@@ -39,8 +39,8 @@ class TagTest extends AppUnit {
         $this->assertEqual($tag->id, $latestTag->id);
 
         // Уже существующий тег
-        $tag = Tag::saveTag("www.godesigner.ru");
-        $existingTag = Tag::first(array('conditions' => array('name' => "www.godesigner.ru")));
+        $tag = Tag::saveTag("godesigner.ru");
+        $existingTag = Tag::first(array('conditions' => array('name' => "godesigner.ru")));
         $this->assertEqual($tag->id, $existingTag->id);
 
         // Уже существующий тег, но неточное написание

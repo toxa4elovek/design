@@ -5,7 +5,7 @@
     <title></title>
 </head>
 <body style="margin: 0; padding: 0;">
-<img src="https://www.godesigner.ru/img/logo_original-01.png" width="200">
+<img src="https://godesigner.ru/img/logo_original-01.png" width="200">
 
 <table>
     <tr><td width="5"></td><td width="30"></td><td>
@@ -17,9 +17,9 @@
         <td>
             <span style="color: #444444; line-height: 17px; font-size: 12px; font-family: Arial, sans-serif;">
                 <?= date('d.m.Y H:i:s', $time) ?> истекает штрафной период для выбора победителя.
-                Пожалуйста, активизируйтесь на сайте и примите решение в проекте <a href="https://www.godesigner.ru/pitches/view/<?= $project->id ?>">&laquo;<?= $project->title ?>&raquo;</a>.<br/><br/>
+                Пожалуйста, активизируйтесь на сайте и примите решение в проекте <a href="https://godesigner.ru/pitches/view/<?= $project->id ?>">&laquo;<?= $project->title ?>&raquo;</a>.<br/><br/>
                 Вы можете номинировать работу, перейти к завершительному этапу и вносить правки после оплаты штрафа из расчёта 25 руб./час.<br/><br/>
-                В случае вашей неактивности победитель в проекте будет назначен автоматически. Подробнее – в <a href="https://www.godesigner.ru/answers/view/53">Регламенте</a>
+                В случае вашей неактивности победитель в проекте будет назначен автоматически. Подробнее – в <a href="https://godesigner.ru/answers/view/53">Регламенте</a>
             </span><br/>
         </td>
     </tr>

@@ -29,9 +29,9 @@
     <?php echo $this->Og->getOgUrl(''); ?>
     <?php if((isset($solution)) && (isset($solution->images)) && (isset($solution->images['solution_solutionView']))):
         if(!isset($solution->images['solution_galleryLargeSize'][0])):
-            $url = 'https://www.godesigner.ru' . $solution->images['solution_gallerySiteSize']['weburl'];
+            $url = 'https://godesigner.ru' . $solution->images['solution_gallerySiteSize']['weburl'];
         else:
-            $url = 'https://www.godesigner.ru' . $solution->images['solution_gallerySiteSize'][0]['weburl'];
+            $url = 'https://godesigner.ru' . $solution->images['solution_gallerySiteSize'][0]['weburl'];
         endif;
         $description = isset($description) ? $description : '';
         ?>
@@ -45,7 +45,7 @@
             $first_img = $matches[1][0];
         }
         if (stripos($first_img, 'https://') === false) {
-            $first_img = 'https://www.godesigner.ru' . $first_img;
+            $first_img = 'https://godesigner.ru' . $first_img;
         }
         echo '<meta content="article" property="og:type"/>';
         echo $this->Og->getOgDescription($post->short);
@@ -95,27 +95,27 @@
     elseif(preg_match('@/questions@', $_SERVER['REQUEST_URI'])):
         if((!empty($_GET)) && (isset($_GET['result']))):
             if($_GET['result'] == 'dvornik'):
-                echo $this->Og->getOgImage('https://www.godesigner.ru/img/questions/dvornik_468_246.png');
+                echo $this->Og->getOgImage('https://godesigner.ru/img/questions/dvornik_468_246.png');
                 echo $this->Og->getOgTitle('Тест «Какой ты дизайнер на самом деле» показал, что я дворник, совсем не дизайнер!');
             endif;
 
             if($_GET['result'] == 'malyar'):
-                echo $this->Og->getOgImage('https://www.godesigner.ru/img/questions/malyar_468_246.png');
+                echo $this->Og->getOgImage('https://godesigner.ru/img/questions/malyar_468_246.png');
                 echo $this->Og->getOgTitle('Тест «Какой ты дизайнер на самом деле» показал, что я маляр, лучший кандидат в команду Тома Сойера!');
             endif;
 
             if($_GET['result'] == 'master'):
-                echo $this->Og->getOgImage('https://www.godesigner.ru/img/questions/master_468_246.png');
+                echo $this->Og->getOgImage('https://godesigner.ru/img/questions/master_468_246.png');
                 echo $this->Og->getOgTitle('Тест «Какой ты дизайнер на самом деле» показал, что я Большой мастер, и выше только бог!');
             endif;
 
             if($_GET['result'] == 'apollo'):
-                echo $this->Og->getOgImage('https://www.godesigner.ru/img/questions/apollo_468_246.png');
+                echo $this->Og->getOgImage('https://godesigner.ru/img/questions/apollo_468_246.png');
                 echo $this->Og->getOgTitle('Тест «Какой ты дизайнер на самом деле» показал, что я Аполлон, бог искусств!');
             endif;
         else:
             echo $this->Og->getOgTitle("Тест на знание основ графического дизайна");
-            echo $this->Og->getOgImage('https://www.godesigner.ru/img/questions/general.jpg');
+            echo $this->Og->getOgImage('https://godesigner.ru/img/questions/general.jpg');
         endif;
         echo $this->Og->getOgDescription("Узнай, какой ты дизайнер на самом деле!");
     elseif(isset($shareEvent)):
@@ -145,10 +145,10 @@
     {
       "@context": "http://schema.org",
       "@type": "WebSite",
-      "url": "https://www.godesigner.ru/",
+      "url": "https://godesigner.ru/",
       "potentialAction": {
         "@type": "SearchAction",
-        "target": "https://www.godesigner.ru/logosale?search={search_term_string}",
+        "target": "https://godesigner.ru/logosale?search={search_term_string}",
         "query-input": "required name=search_term_string"
       }
     }
@@ -158,7 +158,7 @@
        "@type" : "WebSite",
        "name" : "GoDesigner",
        "alternateName" : "GoDesigner.ru",
-       "url" : "https://www.godesigner.ru"
+       "url" : "https://godesigner.ru"
     }
     </script>
 </head>

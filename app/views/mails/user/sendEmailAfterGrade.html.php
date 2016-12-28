@@ -5,7 +5,7 @@
     <title></title>
 </head>
 <body style="margin: 0; padding: 0;">
-<img src="https://www.godesigner.ru/img/logo_original-01.png" width="200">
+<img src="https://godesigner.ru/img/logo_original-01.png" width="200">
 
 <table>
     <tr><td width="5"></td><td width="30"></td><td>
@@ -34,7 +34,7 @@
     <tr>
         <td width="5"></td>
         <td valign="top"></td>
-        <td><img src="https://www.godesigner.ru/img/logo_email.png" ><br>
+        <td><img src="https://godesigner.ru/img/logo_email.png" ><br>
 
         <span style="font-family: Arial, sans-serif; font-size:13px; color: rgb(181, 181, 181); font-style: italic">С уважением,</span><br>
         <span style="font-family: Arial, sans-serif;font-size:13px; color: rgb(181, 181, 181); font-style: italic">команда Go Designer</span><br>

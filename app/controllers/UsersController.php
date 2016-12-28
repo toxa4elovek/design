@@ -426,7 +426,40 @@ class UsersController extends \app\controllers\AppController
             if ($this->userHelper->isSolutionAuthor($solution->user_id)) {
                 $type = 'designer';
                 $designer = User::first($this->userHelper->getId());
-                if (($designer->phone_valid != 1) || ($designer->phone == '')) {
+                if (unserialize($solution->user->paymentOptions)) {
+                    $paydata = unserialize($solution->user->paymentOptions);
+                    $paydata = $paydata[0];
+                } else {
+                    $paydata = [
+                        'cashintype' => 'none',
+                        'phone' => '',
+                        'birthdate' => '',
+                        'fio' => '',
+                        'birthplace' => '',
+                        'accountnum' => '',
+                        'inn' => '',
+                        'bankname' => '',
+                        'bik' => '',
+                        'coraccount' => '',
+                        'wmr-phone' => '',
+                        'wmr-account' => '',
+                        'wmr-fio' => '',
+                        'passseries' => '',
+                        'passnum' => '',
+                        'issuedby' => '',
+                        'yandex-phone' => '',
+                        'yandex-account' => '',
+                        'yandex-fio' => '',
+                        'passseriesyandex' => '',
+                        'passnumyandex' => '',
+                        'issuedbyyandex' => ''
+                    ];
+                }
+                if (($designer->phone_valid != 1) || ($designer->phone == '') ||
+                    ($paydata['birthdate'] === '') || ($paydata['birthplace'] === '') ||
+                    ($paydata['fio'] === '') || ($paydata['passeries'] === '') || ($paydata['passnum'] === '') ||
+                    ($paydata['issuedby'] === '')
+                ) {
                     return $this->redirect(['controller' => 'users', 'action' => 'step1', 'id' => $this->request->id]);
                 }
                 $messageTo = $client = User::first($solution->pitch->user_id);
@@ -1212,7 +1245,7 @@ class UsersController extends \app\controllers\AppController
 
         $client_id = '2950889'; // ID приложения
         $client_secret = 'j1bFzKfXP4lIa0wA7vaV'; // Защищённый ключ
-        $redirect_uri = 'https://www.godesigner.ru/users/vklogin'; // Адрес сайта
+        $redirect_uri = 'https://godesigner.ru/users/vklogin'; // Адрес сайта
 
 
         $params = [
