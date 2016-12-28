@@ -240,6 +240,7 @@ class PostsController extends AppController
                 $post->full = preg_replace("/$pattern/im", '$1$2&nbsp;', $post->full);
                 $post->short = preg_replace("/$pattern/im", '$1$2&nbsp;', $post->short);
             }
+            $post->title = str_replace('&nbsp;', ' ', $post->title);
             return compact('post', 'related');
         } else {
             return $this->redirect('/posts');
