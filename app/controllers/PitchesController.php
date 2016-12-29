@@ -130,7 +130,7 @@ class PitchesController extends AppController
                 'order' => $order,
             ]) / $limit);
         $pitches = Pitch::all([
-            'with' => 'Category',
+            'with' => ['Category', 'User'],
             'conditions' => $conditions,
             'order' => $order,
             'limit' => $limit,

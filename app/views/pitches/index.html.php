@@ -209,7 +209,12 @@ height: 41px;margin-left:15px;margin-top:2px;display: block" href="#" id="goSear
                     $multiple = (is_null($pitch['multiple'])) ? '' : '<br>' . $pitch['multiple'];
                     $categoryLinkHref = '#';
                     if ($pitch['category_id'] == 20) {
-                        $categoryLinkHref = '/pages/subscribe';
+                        if($pitch['user']['subscription_status'] < 4) {
+                            $categoryLinkHref = '/pages/subscribe';
+                        }else {
+                            $categoryLinkHref = '/golden-fish';
+                            $pitch['category']['title'] = 'Золотая рыбка';
+                        }
                     }
                     $iconsItems = [];
                     if (((int)$pitch['status'] === 2) || (((int) $pitch['awarded'] !== 0) && ((int) $pitch['status'] === 1))) {
