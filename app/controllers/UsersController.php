@@ -560,7 +560,7 @@ class UsersController extends \app\controllers\AppController
                 $comment = Wincomment::create($data);
                 $comment->save();
                 User::sendSpamWincomment($comment, $client);
-                if (($solution->pitch->isCopyrighting()) && (!User::isSubscriptionActive($client->id, $client))) {
+                if (!User::isSubscriptionActive($client->id, $client)) {
                     $nameInflector = new NameInflector();
                     $ownerFormatted = $nameInflector->renderName($client->first_name, $client->last_name);
                     $text = '<a href="#" class="mention-link" data-comment-to="' . $ownerFormatted . '">@' . $ownerFormatted . ',</a> Нам понравилось работать с вами, и мы хотим продолжить наше партнерство. Сотрудничайте с&nbsp;дизайнерами и&nbsp;копирайтерами без рисков дальше, корректируйте макеты без сервисных сборов, создавайте проекты от 500р. в&nbsp;течение года, став нашим абонентом. В течение недели <a href="/pages/subscribe?utm_source=GDsite&utm_medium=final_stage_comment&utm_campaign=off10percent" target="_blank">мы предлагаем вам скидку 10%</a> на <a href="/pages/subscribe?utm_source=GDsite&utm_medium=final_stage_comment&utm_campaign=off10percent" target="_blank">годовое обслуживание</a>.';
@@ -658,7 +658,7 @@ class UsersController extends \app\controllers\AppController
                     ($this->userHelper->isAdmin() || ($this->userHelper->isPitchOwner($solution->pitch->user_id))) && ($solution->step < 3)) {
                 $user = User::first($solution->user_id);
                 $client = User::first($solution->pitch->user_id);
-                if (!User::isSubscriptionActive($client->id, $client)) {
+                /*if (!User::isSubscriptionActive($client->id, $client)) {
                     $nameInflector = new NameInflector();
                     $ownerFormatted = $nameInflector->renderName($client->first_name, $client->last_name);
                     $text = '<a href="#" class="mention-link" data-comment-to="' . $ownerFormatted . '">@' . $ownerFormatted . ',</a> Нам понравилось работать с вами, и мы хотим продолжить наше партнерство. Сотрудничайте с&nbsp;дизайнерами и&nbsp;копирайтерами без рисков дальше, корректируйте макеты без сервисных сборов, создавайте проекты от 500р. в&nbsp;течение года, став нашим абонентом. В течение недели <a href="/pages/subscribe?utm_source=GDsite&utm_medium=final_stage_comment&utm_campaign=off10percent" target="_blank">мы предлагаем вам скидку 10%</a> на <a href="/pages/subscribe?utm_source=GDsite&utm_medium=final_stage_comment&utm_campaign=off10percent" target="_blank">годовое обслуживание</a>.';
@@ -698,7 +698,7 @@ class UsersController extends \app\controllers\AppController
                             SubscriptionPlan::setFundBalanceForPayment($paymentId, 0);
                         }
                     }
-                }
+                }*/
                 User::sendSpamWinstep($user, $solution, '3');
                 $solution->step = 3;
                 $solution->save();
