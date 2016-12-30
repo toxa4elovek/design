@@ -185,10 +185,12 @@ function TableLoader () {
       }
       let categoryLinkHref = '#'
       if (object.category_id == 20) {
-        categoryLinkHref = '/pages/subscribe'
-      } else {
-        categoryLinkHref = '/golden-fish'
-        object.category.title = 'Золотая рыбка'
+        if (object.user.subscription_status < 4) {
+          categoryLinkHref = '/pages/subscribe'
+        } else {
+          categoryLinkHref = '/golden-fish'
+          object.category.title = 'Золотая рыбка'
+        }
       }
       let iconsItems = []
       if ((object.status == 2) || ((object.status == 1) && (object.awarded != 0))) {
@@ -207,7 +209,6 @@ function TableLoader () {
           iconsItems.push('icons-private-light')
         }
       }
-        console.log(iconsItems)
       const iconsString = iconsItems.reduce((prev, currentIndex) => {
         let carry = prev + `<li class="${currentIndex}"></li>`
         return carry
