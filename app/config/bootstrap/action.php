@@ -127,10 +127,7 @@ Dispatcher::applyFilter('_callable', function($self, $params, $chain) {
             $needWrite = false;
         }
         if ($needWrite) {
-            $path = '/'. $params['request']->url;
-            if(Environment::is('development')) {
-                $path = '/'. $params['request']->url;
-            }
+            $path = $params['request']->url;
             Session::write('redirect', $path);
         }
         return new Response(compact('request') + array('location' => '/users/login'));
