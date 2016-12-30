@@ -1,6 +1,7 @@
 <?php
 
 namespace app\models;
+use lithium\storage\Session;
 
 /**
  * Class Post
@@ -11,6 +12,17 @@ namespace app\models;
 class Post extends AppModel {
 
     public $belongsTo = array('User');
+
+    private static function __replaceNbspWithNonBreakingSpace($result) {
+        if (get_class($result) === 'lithium\data\entity\Record') {
+            $result->title = str_replace('&nbsp;', ' ', $result->title);
+            return $result;
+        }
+        foreach($result as $item) {
+            $item->title = str_replace('&nbsp;', ' ', $item->title);
+        }
+        return $result;
+    }
 
     /**
      * Write Common Post Tags here
@@ -31,22 +43,13 @@ class Post extends AppModel {
 
     public static function __init() {
         parent::__init();
-        /*
-        self::applyFilter('save', function ($self, $params, $chain) {
-            $record = $params['entity'];
-            $postNonBreakList = array('и', 'в', 'для', 'не', 'на', 'с', '&mdash;', '-', 'по');
-            foreach($postNonBreakList as $word) {
-                $postNonBreakList[] = $self::mb_ucfirst($word);
-            }
-            foreach($postNonBreakList as $word) {
-                $pattern = "(\s)($word)\s";
-                $record->full = preg_replace("/$pattern/im", '$1$2&nbsp;', $record->full);
-                $record->short = preg_replace("/$pattern/im", '$1$2&nbsp;', $record->short);
-            }
+        self::applyFilter('find', function ($self, $params, $chain) {
             $result = $chain->next($self, $params, $chain);
+            if(($params['type'] === 'all') || ($params['type'] === 'first')) {
+                $result = $self::__replaceNbspWithNonBreakingSpace($result);
+            }
             return $result;
         });
-        */
     }
 
     /**
