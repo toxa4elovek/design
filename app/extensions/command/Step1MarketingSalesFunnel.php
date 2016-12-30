@@ -61,6 +61,8 @@ class Step1MarketingSalesFunnel extends CronJob
             ];
             $payment = SubscriptionPlan::first(SubscriptionPlan::getNextFundBalanceId($project->user->id));
             $payment->title = sprintf('Пополнение счёта, сгорает %s', date('d.m.Y', strtotime($project->finishDate)));
+            $payment->total = $bonus;
+            $payment->price = $bonus;
             $payment->save();
             SubscriptionPlan::setFundBalanceForPayment($payment->id, $bonus);
             SubscriptionPlan::activatePlanPayment($payment->id);
