@@ -72,8 +72,11 @@ class Mailer extends \lithium\core\StaticObject
         $to = $options['to'];
         $subject = '=?UTF-8?B?'.base64_encode($options['subject']).'?=';
         $hash = $options['data']['hash'] = sha1(uniqid());
-        $body = static::render(['data' => $options['data'], 'template' => $options['template']]);
-        $html = $body;
+        $html = 'Шаблон';
+        if(!isset($options['headers'])) {
+            $body = static::render(['data' => $options['data'], 'template' => $options['template']]);
+            $html = $body;
+        }
         self::logemail([
             'email' => $to,
             'subject' => $options['subject'],
@@ -88,7 +91,14 @@ class Mailer extends \lithium\core\StaticObject
             ];
             $object = new \Swift_Message();
             $message = $object->newInstance();
-            $message->setBody($html, 'text/html');
+            if(isset($options['headers'])) {
+                $messageHeaders = $message->getHeaders();
+                foreach($options['headers'] as $headerName => $headerValue) {
+                    $messageHeaders->addTextHeader($headerName, $headerValue);
+                }
+            }else {
+                $message->setBody($html, 'text/html');
+            }
             $message->setSubject($headers['Subject']);
             $message->setFrom([$from => 'GoDesigner']);
             $message->setTo([$to]);

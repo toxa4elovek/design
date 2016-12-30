@@ -36,4 +36,21 @@ class PromoMailer extends \li3_mailer\extensions\Mailer
             'data' => $data,
         ));
     }
+
+    public static function sendStep3MarketingSalesFunnelEmail($data) {
+        return self::_mail(array(
+            'use-smtp' => true,
+            'to' => $data['email'],
+            'subject' => '20% скидка!',
+            'headers' => [
+                'X-MC-Template' => '20% скидка',
+                'X-MC-MergeVars' => json_encode([
+                    'FNAME' => $data['first_name'],
+                    'LIST:COMPANY' => 'OOO CROWD MEDIA',
+                    'UPDATE_PROFILE' => 'https://godesigner.ru/users/profile'
+                ]),
+            ],
+            'data' => $data,
+        ));
+    }
 }
