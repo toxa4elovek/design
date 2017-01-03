@@ -24,6 +24,10 @@ class ComposerStaticInit9230158b536f4a7596da000677944e7d
         array (
             'React\\Promise\\' => 14,
         ),
+        'P' => 
+        array (
+            'Psr\\Log\\' => 8,
+        ),
         'O' => 
         array (
             'OneSignal\\' => 10,
@@ -33,6 +37,10 @@ class ComposerStaticInit9230158b536f4a7596da000677944e7d
             'GuzzleHttp\\Stream\\' => 18,
             'GuzzleHttp\\Ring\\' => 16,
             'GuzzleHttp\\' => 11,
+        ),
+        'D' => 
+        array (
+            'DrewM\\MailChimp\\' => 16,
         ),
         'B' => 
         array (
@@ -61,6 +69,10 @@ class ComposerStaticInit9230158b536f4a7596da000677944e7d
         array (
             0 => __DIR__ . '/..' . '/react/promise/src',
         ),
+        'Psr\\Log\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
+        ),
         'OneSignal\\' => 
         array (
             0 => __DIR__ . '/..' . '/norkunas/onesignal-php-api/src',
@@ -76,6 +88,10 @@ class ComposerStaticInit9230158b536f4a7596da000677944e7d
         'GuzzleHttp\\' => 
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/guzzle/src',
+        ),
+        'DrewM\\MailChimp\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/drewm/mailchimp-api/src',
         ),
         'ByteUnits\\' => 
         array (
@@ -100,10 +116,6 @@ class ComposerStaticInit9230158b536f4a7596da000677944e7d
         ),
         'P' => 
         array (
-            'Psr\\Log\\' => 
-            array (
-                0 => __DIR__ . '/..' . '/psr/log',
-            ),
             'PHPHtmlParser' => 
             array (
                 0 => __DIR__ . '/..' . '/paquettg/php-html-parser/src',

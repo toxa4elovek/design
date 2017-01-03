@@ -2,9 +2,9 @@
 
 [![Latest Stable Version](https://poser.pugx.org/norkunas/onesignal-php-api/v/stable)](https://packagist.org/packages/norkunas/onesignal-php-api)
 [![Latest Unstable Version](https://poser.pugx.org/norkunas/onesignal-php-api/v/unstable)](https://packagist.org/packages/norkunas/onesignal-php-api)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/norkunas/onesignal-php-api/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/norkunas/onesignal-php-api/?branch=master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/norkunas/onesignal-php-api/badges/quality-score.png?b=0.1)](https://scrutinizer-ci.com/g/norkunas/onesignal-php-api/?branch=master)
 [![Total Downloads](https://poser.pugx.org/norkunas/onesignal-php-api/downloads)](https://packagist.org/packages/norkunas/onesignal-php-api)
-[![Build Status](https://travis-ci.org/norkunas/onesignal-php-api.svg?branch=master)](https://travis-ci.org/norkunas/onesignal-php-api)
+[![Build Status](https://travis-ci.org/norkunas/onesignal-php-api.svg?branch=0.1)](https://travis-ci.org/norkunas/onesignal-php-api)
 [![StyleCI](https://styleci.io/repos/34352212/shield?style=flat)](https://styleci.io/repos/34352212)
 [![License](https://poser.pugx.org/norkunas/onesignal-php-api/license)](https://packagist.org/packages/norkunas/onesignal-php-api)
 
@@ -16,7 +16,7 @@ composer require norkunas/onesignal-php-api
 
 ### Info
 
-All API responses can be found at [Official Documentation](http://documentation.onesignal.com/v2.0/docs/server-api-overview).
+All API responses can be found at [Official Documentation](https://documentation.onesignal.com/reference).
 
 ### Initialize
 ```php
@@ -36,7 +36,7 @@ $api = new OneSignal($config);
 ```
 
 ### Applications
-Possible options are listed at [Official Documentation](http://documentation.onesignal.com/v2.0/docs/apps-create-an-app).
+Possible options are listed at [Official Documentation](https://documentation.onesignal.com/reference#create-an-app).
 ```php
 // Get the list of your OneSignal applications
 $myApps = $api->apps->getAll();
@@ -52,7 +52,7 @@ $api->apps->update('application_id', ['name' => 'new app name']);
 ```
 
 ### Devices
-Possible options are listed at [Official Documentation](http://documentation.onesignal.com/v2.0/docs/players-add-a-device).
+Possible options are listed at [Official Documentation](https://documentation.onesignal.com/reference#add-a-device).
 ```php
 $devices = $api->devices->getAll();
 $device = $api->devices->getOne('device_id');
@@ -68,7 +68,7 @@ $api->devices->update('device_id', [
 ```
 
 ### Notifications
-Possible options are listed at [Official Documentation](http://documentation.onesignal.com/v2.0/docs/notifications-create-notification).
+Possible options are listed at [Official Documentation](https://documentation.onesignal.com/reference#create-notification).
 ```php
 $notifications = $api->notifications->getAll();
 $notification = $api->notifications->getOne('notification_id');
@@ -81,17 +81,22 @@ $api->notifications->add([
     'data' => ['foo' => 'bar'],
     'isChrome' => true,
     'send_after' => new \DateTime('1 hour'),
-    'tags' => [
+    'filters' => [
         [
-            'key' => 'level',
-            'relation' => '>',
-            'value' => '10',
+            'field' => 'tag',
+            'key' => 'is_vip',
+            'relation' => '!=',
+            'value' => 'true',
         ],
         [
-            'key' => 'madePurchase',
+            'operator' => 'OR',
+        ],
+        [
+            'field' => 'tag',
+            'key' => 'is_admin',
             'relation' => '=',
             'value' => 'true',
-        ]
+        ],
     ],
     // ..other options
 ]));

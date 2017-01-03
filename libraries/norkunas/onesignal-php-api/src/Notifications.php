@@ -56,15 +56,15 @@ class Notifications
      */
     public function getAll($limit = self::NOTIFICATIONS_LIMIT, $offset = 0)
     {
-        return $this->api->request('GET', '/notifications?' . http_build_query([
-             'limit' => max(0, min(self::NOTIFICATIONS_LIMIT, filter_var($limit, FILTER_VALIDATE_INT))),
-             'offset' => max(0, min(self::NOTIFICATIONS_LIMIT, filter_var($offset, FILTER_VALIDATE_INT))),
-        ]), [
+        $query = [
+            'limit' => max(1, min(self::NOTIFICATIONS_LIMIT, filter_var($limit, FILTER_VALIDATE_INT))),
+            'offset' => max(0, min(self::NOTIFICATIONS_LIMIT, filter_var($offset, FILTER_VALIDATE_INT))),
+            'app_id' => $this->api->getConfig()->getApplicationId(),
+        ];
+
+        return $this->api->request('GET', '/notifications?' . http_build_query($query), [
             'headers' => [
                 'Authorization' => 'Basic ' . $this->api->getConfig()->getApplicationAuthKey(),
-            ],
-            'json' => [
-                'app_id' => $this->api->getConfig()->getApplicationId(),
             ],
         ]);
     }
@@ -124,12 +124,11 @@ class Notifications
      */
     public function cancel($id)
     {
-        return $this->api->request('DELETE', '/notifications/' . $id, [
+        $url = '/notifications/' . $id . '?app_id=' . $this->api->getConfig()->getApplicationId();
+
+        return $this->api->request('DELETE', $url, [
             'headers' => [
                 'Authorization' => 'Basic ' . $this->api->getConfig()->getApplicationAuthKey(),
-            ],
-            'json' => [
-                'app_id' => $this->api->getConfig()->getApplicationId(),
             ],
         ]);
     }
@@ -181,6 +180,21 @@ class Notifications
             ->setAllowedTypes('include_chrome_web_reg_ids', 'array')
             ->setDefined('app_ids')
             ->setAllowedTypes('app_ids', 'array')
+            ->setDefined('filters')
+            ->setAllowedTypes('filters', 'array')
+            ->setNormalizer('filters', function (Options $options, array $value) {
+                $filters = [];
+
+                foreach ($value as $filter) {
+                    if (isset($filter['field'])) {
+                        $filters[] = $filter;
+                    } elseif (isset($filter['operator'])) {
+                        $filters[] = ['operator' => 'OR'];
+                    }
+                }
+
+                return $filters;
+            })
             ->setDefined('tags')
             ->setAllowedTypes('tags', 'array')
             ->setNormalizer('tags', function (Options $options, array $value) {
@@ -248,6 +262,21 @@ class Notifications
             ->setAllowedTypes('adm_large_icon', 'string')
             ->setDefined('adm_big_picture')
             ->setAllowedTypes('adm_big_picture', 'string')
+            ->setDefined('web_buttons')
+            ->setAllowedTypes('web_buttons', 'array')
+            ->setAllowedValues('web_buttons', function ($buttons) {
+                $required_keys = ['id', 'text', 'icon', 'url'];
+                foreach ($buttons as $button) {
+                    if (!is_array($button)) {
+                        return false;
+                    }
+                    if (count(array_intersect_key(array_flip($required_keys), $button)) != count($required_keys)) {
+                        return false;
+                    }
+                }
+
+                return true;
+            })
             ->setDefined('chrome_icon')
             ->setAllowedTypes('chrome_icon', 'string')
             ->setDefined('chrome_big_picture')
