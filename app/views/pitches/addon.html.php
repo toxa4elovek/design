@@ -32,13 +32,13 @@
         <?php if((int) $pitch->status === 0):?>
         <div class="ribbon">
             <p class="option"><label><input type="checkbox" name="" class="single-check" <?php if(isset($this->_request->query['click']) && $this->_request->query['click'] == 'prolong'): echo 'checked'; endif?> data-option-title="продлить срок" data-option-value="<?= $prolongCoeff?>" id="prolong-checkbox">Продлить срок</label></p>
-            <?php if($pitch->category_id == 20):?>
+            <?php if((int) $pitch->category_id === 20):?>
             <p class="description">Укажите количество дней, на которое вы хотите продлить проект. каждый день стоит 1 000 Р.-, которая будет добавлена на увеличение гонорара.
             <?php else:?>
             <p class="description">Укажите количество дней, на которое вы хотите продлить проект. Каждый день стоит 1 950 Р.-, из которых<br> 1 000Р.- добавляется в счет гонорара для дизайнера.
             <?php endif; ?>
                 <a href="#" class="second tooltip" title="">(?)</a></p>
-            <p class="label <?php if(isset($this->_request->query['click']) && $this->_request->query['click'] == 'prolong'): echo 'unfold'; endif?>" id="prolong-label" style="font:16px/68px "RodeoC",sans-serif">+<?= $prolongCoeff?>.-</p>
+            <p class="label <?php if(isset($this->_request->query['click']) && $this->_request->query['click'] === 'prolong'): echo 'unfold'; endif?>" id="prolong-label" style="font:16px/68px "RodeoC",sans-serif">+<?= $prolongCoeff?>.-</p>
         </div>
         <?php endif ?>
 
@@ -54,7 +54,7 @@
                 endif;
             endforeach;
         endif;
-        if($pitch->brief == '0'): ?>
+        if(((int) $pitch->brief === '0') && ((int) $pitch->status === 0)): ?>
         <div class="ribbon complete-brief">
             <p class="option"><label><input  type="checkbox" name="" <?php if(isset($this->_request->query['click']) && $this->_request->query['click'] == 'phonebrief'): echo 'checked'; endif?> class="single-check" data-option-title="Заполнение брифа" data-option-value="<?=$briefValue?>" id="phonebrief">Заполнить бриф</label></p>
             <p class="description">Вы можете ознакомиться с примерами заполнения брифа <a href="/docs/<?=$briefExamples[$category->id]?>" target="_blank">тут</a>, или мы заполним его за вас. Оставьте свой № телефона, мы свяжемся с вами для интервью в течении рабочего дня с момента оплаты <a href="#" class="second tooltip" title="Мы работаем пн-пт с 10:00-19:00. Поставив галочку, вы сможете пропустить следующую страницу (или ответить на легкие вопросы) и перейти непосредственно к оплате.">(?)</a></p>
@@ -114,7 +114,7 @@
             endforeach?>
         </ul><!-- .experts -->
 
-        <?php if($pitch->guaranteed == '0'): ?>
+        <?php if(((int) $pitch->guaranteed === '0') && ((int) $pitch->status === 0)): ?>
             <div class="ribbon" id="guaranteed-block">
                 <p class="option"><label><input type="checkbox" id="guaranteed" name="" <?php if(isset($this->_request->query['click']) && $this->_request->query['click'] == 'guarantee'): echo 'checked'; endif?> class="single-check" data-option-title="Гарантировать проект" data-option-value="1400">Гарантировать проект</label></p>
                 <p class="description">Гарантировать выбор победителя <a href="#" class="second tooltip" title="Вы гарантируете, что выберете победителя в любом случае, тем самым инициировав до 40% больше решений. Мы выделяем такой проект в списке. Дизайнеры увидят, что проект не останется без победителя, и вы получите больший выбор идей.">(?)</a></p>
@@ -132,7 +132,7 @@
                 endif;
             endforeach;
         endif;
-        if($pitch->pinned == '0'): ?>
+        if(((int) $pitch->pinned === '0') && ((int) $pitch->status === 0)): ?>
             <div class="ribbon" id="pinned-block">
                 <p class="option"><label><input type="checkbox" id="pinned" name="" <?php if(isset($this->_request->query['click']) && $this->_request->query['click'] == 'pinned'): echo 'checked'; endif?> class="single-check" data-option-title="“Прокачать” бриф" data-option-value="<?=$pinnedValue?>">“Прокачать” бриф</label></p>
                 <p class="description">Увеличить количество решений <a href="#" class="second tooltip" title="Вы сможете увеличить количество предложенных вариантов на 15-40%. Для привлечения дизайнеров мы используем e-mail рассылку, facebook, vkontakte, twitter, выделение синим цветом в списке и на главной странице">(?)</a></p>
@@ -149,7 +149,7 @@
         <?php endif ?>
 
         <p class="submit">
-            <?php if($pitch->category_id == 20):?>
+            <?php if((int) $pitch->category_id === 20):?>
                 <input type="submit" value="Оплатить со счёта" id="activate" class="button steps-link" data-step="3">
             <?php else: ?>
                 <input type="submit" value="Продолжить" id="next" class="button steps-link" data-step="3">
@@ -169,36 +169,6 @@
                 <div class="g_line"></div>
                 <div id="P_card">
                     <table>
-                        <!--tr>
-                            <td>
-                                <input type="radio" name="1" class="rb1" data-pay="payanyway">
-                            </td>
-                            <td colspan="2" class="s3_text" style="padding-left: 20px;">
-                                Оплата пластиковыми картами <br>через Payanyway<br><br>
-                            </td>
-                            <td>
-                                <form id="payanyway_form" method="post" action="https://www.moneta.ru/assistant.htm">
-                                    <input type="hidden" name="MNT_ID" value="36102238">
-                                    <input type="hidden" name="MNT_TRANSACTION_ID" value="">
-                                    <input type="hidden" name="MNT_CURRENCY_CODE" value="RUB">
-                                    <input type="hidden" name="MNT_AMOUNT" value="">
-                                    <input type="hidden" name="MNT_TEST_MODE" value="0">
-                                    <input type="hidden" name="paymentSystem.unitId" value="499669">
-                                    <input type="hidden" name="followup" value="true">
-                                    <input type="submit" id="paybutton-payanyway" value="продолжить оплату" class="button" style="background: #a2b2bb;">
-                                </form>
-                            </td>
-                        </tr>
-                        <tr id="online-images">
-                            <td colspan="4" style="padding: 20px 0 0 40px;">
-                                <img src="/img/s3_master.png" alt="">
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td colspan="4"><div class="g_line"><i>или</i></div></td>
-                        </tr-->
-
                         <tr class="paymaster-section">
                             <td>
                                 <input type="radio" name="1" class="rb1" data-pay="paymaster" style="background: #a2b2bb;">
