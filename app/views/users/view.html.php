@@ -55,8 +55,6 @@
                         <ul class="profile-list-info"></ul>
                         <div class="pitches">
                             <ul class="profile-list">
-                                <li class="regular-small-grey" style="color:#666666;">Город:<span> <?= $this->brief->stripUrl($this->brief->removeEmailClean($userdata['city'])) ?></span></li>
-                                <div class="g_line"></div>
                                 <li class="regular-small-grey" style="color:#666666;">Проектов:<span> <?= $pitchCount ?></span></li>
                                 <div class="g_line"></div>
                                 <li class="regular-small-grey" style="color:#666666;">Решений:<span> <?= $totalSolutionNum ?></span></li>
@@ -69,8 +67,6 @@
                         </div>
                         <div class="likes">
                             <ul class="profile-list">
-                                <li class="regular-small-grey" style="color:#666666;">Дата рожд:<span> <?= $this->brief->stripUrl($this->brief->removeEmailClean($userdata['birthdate'])) ?></span></li>
-                                <div class="g_line"></div>
                                 <li class="regular-small-grey" style="color:#666666;">Лайков:<span> <?= $totalLikes ?></span></li>
                                 <div class="g_line"></div>
                                 <li class="regular-small-grey" style="color:#666666;">Просмотров:<span> <?= $totalViews ?></span></li>
