@@ -17,10 +17,10 @@
         </td>
             <td>
                 <a style="color: #ff585d; line-height: 17px; font-size: 20px; font-weight: bold; font-family: Arial, sans-serif;text-decoration: none;" href="https://godesigner.ru/pitches/details/<?=$pitch->id?>"><?=$pitch->title?></a><br/>
-                <span style="color: #C7C6C7; line-height: 17px; font-size: 9px; font-family: Arial, sans-serif;"><?=$this->view()->render(array('template' => 'pitch-info'), array('pitch' => $pitch));?></span><br/>
-                <?php if((int) $pitch->private === 1):?>
+                <span style="color: #C7C6C7; line-height: 17px; font-size: 9px; font-family: Arial, sans-serif;"><?=$this->view()->render(['template' => 'pitch-info'], ['pitch' => $pitch]);?></span><br/>
+                <?php if ((int) $pitch->private === 1):?>
                 <span style="color: #444444; line-height: 17px; font-size: 12px; font-family: Arial, sans-serif;">Это <a target="_blank" href="https://godesigner.ru/answers/view/64">закрытый проект</a> и вам нужно подписать соглашение о неразглашении!</span><br/>
-                <?php elseif((int) $pitch->premium === 1):?>
+                <?php elseif ((int) $pitch->premium === 1):?>
                 <span style="color: #444444; line-height: 17px; font-size: 12px; font-family: Arial, sans-serif;">Это <a target="_blank" href="https://godesigner.ru/answers/view/112">премиум проект</a>, принять участие в нём могут только победители проектов.</span><br/>
                 <?php else:?>
                 <span style="color: #444444; line-height: 17px; font-size: 12px; font-family: Arial, sans-serif;"><?php echo strip_tags($pitch->editedDescription, '<br><br/><p><a><ul><li><ol>')?></span><br/>

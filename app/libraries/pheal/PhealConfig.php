@@ -70,13 +70,13 @@ class PhealConfig
      * to the API on every request.
      * @var array
      */
-    public $additional_request_parameters = array();
+    public $additional_request_parameters = [];
 
     /**
      * which http request method should be used 'curl' or 'file'
      * @var String
      */
-    public $http_method	= "curl";
+    public $http_method    = "curl";
     
     /**
      * which outgoing ip/inteface should be used for the http request
@@ -141,8 +141,9 @@ class PhealConfig
      */
     public static function getInstance()
     {
-        if(is_null(self::$myInstance))
+        if (is_null(self::$myInstance)) {
             self::$myInstance = new PhealConfig();
+        }
         return self::$myInstance;
     }
 }

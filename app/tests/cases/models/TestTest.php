@@ -5,7 +5,8 @@ namespace app\tests\cases\models;
 use app\extensions\tests\AppUnit;
 use app\models\Test;
 
-class TestTest extends AppUnit {
+class TestTest extends AppUnit
+{
 
     public function setUp()
     {
@@ -17,7 +18,8 @@ class TestTest extends AppUnit {
         $this->rollDown('Test');
     }
 
-    public function testActivate() {
+    public function testActivate()
+    {
         $result = Test::activate(10000);
         $this->assertFalse($result);
         $result = Test::activate(1);

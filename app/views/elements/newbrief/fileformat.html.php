@@ -3,37 +3,37 @@
 </p>
 
 <?php
-$defaults = array(
-    '1' => array('EPS', 'JPG', 'PNG'),
-    '2' => array('PSD', 'GIF', 'JPG', 'PNG'),
-    '3' => array('PSD', 'JPG'),
-    '4' => array('Indd', 'TIFF', 'JPG'),
-    '5' => array('EPS', 'JPG'),
-    '6' => array('PSD', 'EPS', 'JPG'),
-    '7' => array('PDF', 'DOC', 'TXT'),
-    '8' => array(),
-    '9' => array('TIFF', 'JPG'),
-    '10' => array('EPS', 'PSD', 'JPG'),
-    '11' => array('EPS', 'JPG'),
-    '12' => array('EPS', 'TIFF', 'JPG'),
-    '13' => array('EPS', 'JPG'),
-    '20' => array('EPS', 'PSD', 'JPG'),
-);
+$defaults = [
+    '1' => ['EPS', 'JPG', 'PNG'],
+    '2' => ['PSD', 'GIF', 'JPG', 'PNG'],
+    '3' => ['PSD', 'JPG'],
+    '4' => ['Indd', 'TIFF', 'JPG'],
+    '5' => ['EPS', 'JPG'],
+    '6' => ['PSD', 'EPS', 'JPG'],
+    '7' => ['PDF', 'DOC', 'TXT'],
+    '8' => [],
+    '9' => ['TIFF', 'JPG'],
+    '10' => ['EPS', 'PSD', 'JPG'],
+    '11' => ['EPS', 'JPG'],
+    '12' => ['EPS', 'TIFF', 'JPG'],
+    '13' => ['EPS', 'JPG'],
+    '20' => ['EPS', 'PSD', 'JPG'],
+];
 
-function extensionsCheckboxChecked($extension, $listOfExtensionsOfCategories, $category, $pitch = null) {
-    if(isset($pitch)):
-        $haystack = unserialize($pitch->fileFormats);
-    else:
+function extensionsCheckboxChecked($extension, $listOfExtensionsOfCategories, $category, $pitch = null)
+{
+    if (isset($pitch)):
+        $haystack = unserialize($pitch->fileFormats); else:
         $haystack = $listOfExtensionsOfCategories[$category->id];
     endif;
     $checkResult = in_array($extension, $haystack);
-    if($checkResult):
+    if ($checkResult):
         return 'checked';
     endif;
     return '';
 }
 
-if($category->id != 7):?>
+if ($category->id != 7):?>
     <ul class="extensions">
         <li class="wide graysupplement"><label><input type="checkbox" name="" <?php echo extensionsCheckboxChecked('EPS', $defaults, $category, $pitch);?> data-value="EPS">.EPS</label></li>
         <li class="wide graysupplement"><label><input type="checkbox" name="" <?php echo extensionsCheckboxChecked('AI', $defaults, $category, $pitch);?> data-value="AI">.AI (Illustrator)</label></li>

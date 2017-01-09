@@ -4,7 +4,8 @@ namespace app\extensions\billing;
 
 use \lithium\net\http\Service;
 
-class Payture {
+class Payture
+{
 
     #public static $url = 'sandbox.payture.com';
     #public static $key = 'MerchantGoDesigner';
@@ -20,11 +21,12 @@ class Payture {
      * @param $data
      * @return mixed
      */
-    public static function init($data) {
-        $config = array(
+    public static function init($data)
+    {
+        $config = [
             'scheme'     => self::$scheme,
             'host'       => self::$url
-        );
+        ];
         $service = new Service($config);
         $result = $service->get(self::__formUrl('Init'), self::__formRequestData($data));
         return self::__getArrayFromXml($result);
@@ -36,21 +38,23 @@ class Payture {
      * @param $orderId
      * @return mixed
      */
-    public static function payStatus($orderId){
-        $config = array(
+    public static function payStatus($orderId)
+    {
+        $config = [
             'scheme'     => self::$scheme,
             'host'       => self::$url
-        );
+        ];
         $service = new Service($config);
         $result = $service->get(self::__formUrl('PayStatus'), self::__formOrderRequestData($orderId));
         return self::__getArrayFromXml($result);
     }
 
-    public static function refund($orderId, $amount){
-        $config = array(
+    public static function refund($orderId, $amount)
+    {
+        $config = [
             'scheme'     => self::$scheme,
             'host'       => self::$url
-        );
+        ];
         $service = new Service($config);
         $result = $service->get(self::__formUrl('Refund'), self::__formOrderRefundData($orderId, $amount));
         return self::__getArrayFromXml($result);
@@ -62,7 +66,8 @@ class Payture {
      * @param $sessionId
      * @return string
      */
-    public static function pay($sessionId) {
+    public static function pay($sessionId)
+    {
         return self::$scheme . '://' . self::$url . '/apim/Pay?SessionId=' . $sessionId;
     }
 
@@ -72,7 +77,8 @@ class Payture {
      * @param $methodName
      * @return string
      */
-    private static function __formUrl($methodName) {
+    private static function __formUrl($methodName)
+    {
         return 'apim/' . $methodName;
     }
 
@@ -82,7 +88,8 @@ class Payture {
      * @param $xml
      * @return mixed
      */
-    private static function __getArrayFromXml($xml) {
+    private static function __getArrayFromXml($xml)
+    {
         $xml = simplexml_load_string($xml);
         $json = json_encode($xml);
         $array = json_decode($json, true);
@@ -94,11 +101,12 @@ class Payture {
      * @param $data
      * @return array
      */
-    private static function __formRequestData($data) {
-        return array(
+    private static function __formRequestData($data)
+    {
+        return [
             'Key' => self::$key,
             'Data' => http_build_query($data, null, ';')
-        );
+        ];
     }
 
     /**
@@ -107,20 +115,21 @@ class Payture {
      * @param $orderId
      * @return array
      */
-    private static function __formOrderRequestData($orderId) {
-        return array(
+    private static function __formOrderRequestData($orderId)
+    {
+        return [
             'Key' => self::$key,
             'OrderId' => $orderId
-        );
+        ];
     }
 
-    private static function __formOrderRefundData($orderId, $amount) {
-        return array(
+    private static function __formOrderRefundData($orderId, $amount)
+    {
+        return [
             'Key' => self::$key,
             'Password' => self::$password,
             'OrderId' => $orderId,
             'Amount' => $amount
-        );
+        ];
     }
-
 }

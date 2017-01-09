@@ -3,7 +3,8 @@ namespace app\extensions\social;
 
 use \lithium\net\http\Service;
 
-class FacebookAPI extends AbstractAPI {
+class FacebookAPI extends AbstractAPI
+{
 
     /**
      * @var string переменная для хранения токена доступа к странице
@@ -15,7 +16,8 @@ class FacebookAPI extends AbstractAPI {
      *
      * @return string
      */
-    public function getAccessToken() {
+    public function getAccessToken()
+    {
         return $this->accessToken;
     }
 
@@ -25,22 +27,22 @@ class FacebookAPI extends AbstractAPI {
      * @param array $data
      * @return mixed
      */
-    public function postMessageToPage(Array $data) {
-        $config = array(
+    public function postMessageToPage(array $data)
+    {
+        $config = [
             'persistent' => false,
             'scheme'     => 'https',
             'host'       => 'graph.facebook.com',
             'encoding'   => 'UTF-8',
-        );
+        ];
         $service = new Service($config);
 
         $data['access_token'] = $this->tutAccessToken;
-        if(!isset($data['page_id'])) {
+        if (!isset($data['page_id'])) {
             $data['page_id'] = '160482360714084';
             $data['access_token'] = $this->getAccessToken();
         }
         $result = $service->post('v2.3/' . $data['page_id'] . '/feed', $data);
         return json_decode($result, true);
     }
-
 }

@@ -1,9 +1,9 @@
 <?php $bestResult = false; $secondResult = false; ?>
 <?php
-    if($result['percent'] >= 80 && $result['percent'] < 90) {
+    if ($result['percent'] >= 80 && $result['percent'] < 90) {
         $secondResult = true;
     }
-    if($result['percent'] >= 90) {
+    if ($result['percent'] >= 90) {
         $bestResult = true;
     }
 ?>
@@ -13,13 +13,13 @@
         $datetime1 = new DateTime();
         $datetime2 = new DateTime(date('Y-m-d H:i:s', (strtotime($result['user_created']) + 5 * DAY)));
         $interval = $datetime2->diff($datetime1);
-        if(($interval->y > 0) or ($interval->m > 0) or ($interval->d > 10)) {
+        if (($interval->y > 0) or ($interval->m > 0) or ($interval->d > 10)) {
             $old = true;
         }
         $remain = $interval->format('%d дн. %h ч. %i мин.');
 
         $helpText = '<br>Oh my God! Вам самое место на платформе <a href="/pitches" target="_blank">GoDesigner</a>!';
-        if(!$old):
+        if (!$old):
             //$helpText .= '<br>Ваш аккаунт будет активирован через ' . $remain . ' (срок сокращен на 5 дн.). Подробнее <a href="http://godesigner.ru/answers/view/96" target="_blank">тут</a>';
         endif;
         $addonText = '<p style="width: 650px">Поделитесь результатом с друзьями, и мы сократим ваш срок активации<br>
@@ -30,13 +30,13 @@
         $datetime1 = new DateTime();
         $datetime2 = new DateTime(date('Y-m-d H:i:s', (strtotime($result['user_created']) + 5 * DAY)));
         $interval = $datetime2->diff($datetime1);
-        if(($interval->y > 0) or ($interval->m > 0) or ($interval->d > 10)) {
+        if (($interval->y > 0) or ($interval->m > 0) or ($interval->d > 10)) {
             $old = true;
         }
         $remain = $interval->format('%d дн. %h ч. %i мин.');
 
         $helpText = '<br>Вам самое место на <a href="/pitches" target="_blank">GoDesigner</a>!';
-        if(!$old):
+        if (!$old):
             //$helpText .= '<br>Ваш аккаунт будет активирован через ' . $remain . ' (срок сокращен на 5 дн.). Подробнее <a href="http://godesigner.ru/answers/view/96" target="_blank">тут</a>';
         endif;
         $addonText = '<p style="width: 650px">Поделитесь результатом с друзьями, и мы сократим ваш срок активации<br>
@@ -47,13 +47,13 @@
         $datetime1 = new DateTime();
         $datetime2 = new DateTime(date('Y-m-d H:i:s', (strtotime($result['user_created']) + 10 * DAY)));
         $interval = $datetime2->diff($datetime1);
-        if(($interval->y > 0) or ($interval->m > 0) or ($interval->d > 10)) {
+        if (($interval->y > 0) or ($interval->m > 0) or ($interval->d > 10)) {
             $old = true;
         }
         $remain = $interval->format('%d дн. %h ч. %i мин.');
 
         $helpText = '<br>Этого,  однако, недостаточно для участия на платформе <a href="/pitches" target="_blank">GoDesigner</a>, поэтому мы просим вас подтянуть профессиональные навыки! Помните, что на сокращение сроков активации влияет только первое прохождение теста.';
-        if(!$old):
+        if (!$old):
             $helpText .= '<br>Ваш аккаунт будет активирован через ' . $remain;
         endif;
         $helpText .= 'Подробнее <a href="https://godesigner.ru/answers/view/96" target="_blank">тут</a>';
@@ -65,7 +65,7 @@
     $datetime1 = new DateTime();
     $datetime2 = new DateTime(date('Y-m-d H:i:s', (strtotime($result['user_created']) + 10 * DAY)));
     $interval = $datetime2->diff($datetime1);
-    if(($interval->y > 0) or ($interval->m > 0) or ($interval->d > 10)) {
+    if (($interval->y > 0) or ($interval->m > 0) or ($interval->d > 10)) {
         $old = true;
     }
     $remain = $interval->format('%d дн. %h ч. %i мин.');
@@ -77,7 +77,7 @@
         $helpText = '<br>Вам самое место на <a href="/pitches" target="_blank">GoDesigner</a>!';
     else:
         $helpText = '';
-        if(!$old):
+        if (!$old):
             $helpText = '<br>Этого,  однако, недостаточно для участия на платформе <a href="/pitches" target="_blank">GoDesigner</a>, поэтому мы просим вас подтянуть профессиональные навыки!';
             $addonText = '<p style="">К сожалению, вы уже упустили шанс сократить срок активации, завалив первую попытку.';
             $addonText .= ' Вы сможете принимать участие в проектах через ' . $remain . '.';
@@ -146,10 +146,10 @@
     <div class="share-this">
         <div style="display: block; float: left; margin-top: 8px; margin-bottom: 10px;">
             <div class="social-likes" data-counters="no" data-title="<?= $shareText ?>" data-url="https://godesigner.ru/questions?result=<?= $urlParam ?>" style="padding-left: 230px;">
-                <div onclick="activate(this);" <?php if(!is_null($test)):?>data-testid="<?= $test->id ?>"<?php endif?> style="margin: 7px 0 0 9px;" class="activate-user facebook" data-image="<?=$shareImage ?>" title="Поделиться ссылкой на Фейсбуке">SHARE</div>
-                <div onclick="activate(this);" <?php if(!is_null($test)):?>data-testid="<?= $test->id ?>"<?php endif?> style="margin: 7px 0 0 7px;" class="activate-user twitter" data-via="Go_Deer">TWITT</div>
-                <div onclick="activate(this);" <?php if(!is_null($test)):?>data-testid="<?= $test->id ?>"<?php endif?> style="margin: 7px 0 0 7px;" class="activate-user vkontakte" data-image="<?=$shareImage ?>" title="Поделиться ссылкой во Вконтакте">SHARE</div>
-                <div onclick="activate(this);" <?php if(!is_null($test)):?>data-testid="<?= $test->id ?>"<?php endif?> style="margin: 7px 0 0 7px;" class="activate-user pinterest" data-media="<?=$shareImage ?>" title="Поделиться картинкой на Пинтересте">PIN</div>
+                <div onclick="activate(this);" <?php if (!is_null($test)):?>data-testid="<?= $test->id ?>"<?php endif?> style="margin: 7px 0 0 9px;" class="activate-user facebook" data-image="<?=$shareImage ?>" title="Поделиться ссылкой на Фейсбуке">SHARE</div>
+                <div onclick="activate(this);" <?php if (!is_null($test)):?>data-testid="<?= $test->id ?>"<?php endif?> style="margin: 7px 0 0 7px;" class="activate-user twitter" data-via="Go_Deer">TWITT</div>
+                <div onclick="activate(this);" <?php if (!is_null($test)):?>data-testid="<?= $test->id ?>"<?php endif?> style="margin: 7px 0 0 7px;" class="activate-user vkontakte" data-image="<?=$shareImage ?>" title="Поделиться ссылкой во Вконтакте">SHARE</div>
+                <div onclick="activate(this);" <?php if (!is_null($test)):?>data-testid="<?= $test->id ?>"<?php endif?> style="margin: 7px 0 0 7px;" class="activate-user pinterest" data-media="<?=$shareImage ?>" title="Поделиться картинкой на Пинтересте">PIN</div>
             </div>
         </div>
         <div style="clear:both;width:300px;height:1px;"></div>

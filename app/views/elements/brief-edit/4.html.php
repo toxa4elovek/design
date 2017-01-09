@@ -15,7 +15,7 @@
     <div class="extra_options" style="display: none">
         <div class="groupc">
 
-    <?php if($pitch->billed == 1):?>
+    <?php if ($pitch->billed == 1):?>
         <?php if ($this->user->isAdmin()):?>
             <p><label>Ведите количество макетов/страниц</label>
             <input type="text" class="specific-prop" value="<?=$specifics['site-sub']?>" name="site-sub" />

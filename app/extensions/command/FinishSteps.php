@@ -4,9 +4,11 @@ namespace app\extensions\command;
 
 use \app\models\User;
 
-class FinishSteps extends \app\extensions\command\CronJob {
+class FinishSteps extends \app\extensions\command\CronJob
+{
 
-    public function run() {
+    public function run()
+    {
         $count = User::sendStep2Spam();
         $this->out('Step2 emails has been set to ' . $count . 'users');
         $count = User::sendStep3Spam();
@@ -15,5 +17,3 @@ class FinishSteps extends \app\extensions\command\CronJob {
         $this->out('Step4 emails has been set to ' . $count . 'users');
     }
 }
-
-?>

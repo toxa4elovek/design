@@ -5,7 +5,7 @@ $details = unserialize($pitch->specifics);
 
 <div class="group">
 
-    <?php if(!empty($details['site-units'])):?>
+    <?php if (!empty($details['site-units'])):?>
         <h2 class="blueheading">Необходимые единицы фирменного стиля</h2>
         <p class="regular"><?php echo nl2br($details['site-units'])?></p>
     <?php endif;?>
@@ -40,12 +40,12 @@ $details = unserialize($pitch->specifics);
         </li>
     </ul><!-- .logo-properties -->
 
-    <?php if(!empty($details['qualities'])):?>
+    <?php if (!empty($details['qualities'])):?>
         <h2 class="blueheading">Какие 3 основных качества нужно донести до аудитории?</h2>
         <p class="regular"><?=$this->brief->deleteHtmlTagsAndInsertHtmlLinkInText($details['qualities'])?></p>
     <?php endif;?>
 
-    <?php if(!empty($details['site-inspiration'])):?>
+    <?php if (!empty($details['site-inspiration'])):?>
         <h2 class="blueheading">Предпочтения</h2>
         <p class="regular"><?=$this->brief->deleteHtmlTagsAndInsertHtmlLinkInText($details['site-inspiration'])?></p>
     <?php endif;?>

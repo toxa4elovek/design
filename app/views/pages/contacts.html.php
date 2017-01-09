@@ -1,7 +1,7 @@
 <div class="wrapper">
 
 
-    <?=$this->view()->render(array('element' => 'header'), array('logo' => 'logo'))?>
+    <?=$this->view()->render(['element' => 'header'], ['logo' => 'logo'])?>
     <div class="middle">
         <div class="middle_inner">
             <div class="content group">
@@ -80,5 +80,5 @@
     </div><!-- /middle -->
 
 </div><!-- .wrapper -->
-<?=$this->html->style(array('/contact2', '/howitworks'), array('inline' => false))?>
-<?=$this->html->script(array('pages/howitworks.js'), array('inline' => false))?>
+<?=$this->html->style(['/contact2', '/howitworks'], ['inline' => false])?>
+<?=$this->html->script(['pages/howitworks.js'], ['inline' => false])?>

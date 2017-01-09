@@ -2,18 +2,20 @@
 
 namespace app\models;
 
-class Sendemail extends \app\models\AppModel {
+class Sendemail extends \app\models\AppModel
+{
 
     /**
      * Delete Old Sent Messages
      * @return boolean
      */
-    public static function clearOldSpam() {
-        return self::remove(array(
-            'created' => array(
+    public static function clearOldSpam()
+    {
+        return self::remove([
+            'created' => [
                 '<' => date('Y-m-d H:i:s', time() - (WEEK * 3)),
-            ),
-        ));
+            ],
+        ]);
     }
 
     /**
@@ -21,14 +23,15 @@ class Sendemail extends \app\models\AppModel {
      *
      * @return int
      */
-    public static function clearOldSpamSimple() {
-        $sentEmails = self::find('all', array(
-            'fields' => array('id'),
+    public static function clearOldSpamSimple()
+    {
+        $sentEmails = self::find('all', [
+            'fields' => ['id'],
             'limit' => 1000,
-            'conditions' =>  array('created' => array('<' => date('Y-m-d H:i:s', time() - (WEEK * 3.00)))),
-            'order' => array('id' => 'asc')
-        ));
-        foreach($sentEmails as $email) {
+            'conditions' =>  ['created' => ['<' => date('Y-m-d H:i:s', time() - (WEEK * 3.00))]],
+            'order' => ['id' => 'asc']
+        ]);
+        foreach ($sentEmails as $email) {
             $email->delete();
         }
         return count($sentEmails);

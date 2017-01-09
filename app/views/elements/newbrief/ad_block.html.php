@@ -1,7 +1,7 @@
 <div class="ribbon" style="padding-top: 35px; height: 56px; padding-bottom: 0;">
-    <p class="option"><label><input type="checkbox" name="" <?php if(($pitch) && ($pitch->social)): echo "checked"; endif;?> class="single-check" data-option-title="Рекламный Кейс" data-option-value="15900" id="createad">Рекламный Кейс</label></p>
+    <p class="option"><label><input type="checkbox" name="" <?php if (($pitch) && ($pitch->social)): echo "checked"; endif;?> class="single-check" data-option-title="Рекламный Кейс" data-option-value="15900" id="createad">Рекламный Кейс</label></p>
     <!--p class="description">С его помощью ваш питч может стать началом или частью рекламной кампании. Подробнее <a target="_blank" href="http://godesigner.ru/answers/view/65">тут</a> <a href="#" class="second tooltip" title="Мы публикуем информацию о результатах питча в интернет СМИ и на страницах социальных сетей. Используя обилие полученных вариантов мы создадим медийное событие.">(?)</a></p-->
-    <p class="label <?php if(($pitch) && ($pitch->social)): echo "unfold"; endif;?>" style="text-transform: none;" >15900р.</p>
+    <p class="label <?php if (($pitch) && ($pitch->social)): echo "unfold"; endif;?>" style="text-transform: none;" >15900р.</p>
 </div>
 
 <div class="explanation ad" style="margin-left: 24px; margin-top: 0; padding-bottom: 0; display: none;" id="explanation_ad">

@@ -21,7 +21,9 @@
 Бланк А4
 Коверт А4
 Папка А4
-Шаблон для рекламы 6X3" rows="5" cols="30" name="site-units" class="<?php if(empty($specifics['site-units'])) echo 'placeholder'?> specific-prop"><?=$specifics['site-units']?></textarea>
+Шаблон для рекламы 6X3" rows="5" cols="30" name="site-units" class="<?php if (empty($specifics['site-units'])) {
+    echo 'placeholder';
+}?> specific-prop"><?=$specifics['site-units']?></textarea>
     </p>
 
 

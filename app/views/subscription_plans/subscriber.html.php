@@ -1,18 +1,18 @@
 <div class="wrapper">
-    <?= $this->view()->render(array('element' => 'header'), array('header' => 'header2')) ?>
+    <?= $this->view()->render(['element' => 'header'], ['header' => 'header2']) ?>
     <?php
     $total = 0;
     $startValue = 9000;
-    foreach($receipt as $row) {
+    foreach ($receipt as $row) {
         $total += $row['value'];
-        if($row['name'] === 'Пополнение счёта') {
+        if ($row['name'] === 'Пополнение счёта') {
             $startValue = $row['value'];
         }
     }
-    if($plan['id'] === 4) {
+    if ($plan['id'] === 4) {
         $heading = 'Бизнес-план';
         $description = 'бизнес-плана';
-    }else {
+    } else {
         $heading = 'Тариф';
         $description = 'тарифного плана';
     }
@@ -74,15 +74,15 @@
     <div class="middle">
         <div class="main">
             <h3 class="page-title-with-flag" style="margin-top: 10px;">Оплата</h3>
-            <?php if(isset($plan)):
-                if($discount == 0) {
+            <?php if (isset($plan)):
+                if ($discount == 0) {
                     $value = $plan['price'];
-                }else {
+                } else {
                     $value = $this->MoneyFormatter->applyDiscount($plan['price'], $discount);
                 }
                 ?>
-                <h4 style="line-height: 30px;"><?=$heading?> «<?=$plan['title']?>» <?=$this->MoneyFormatter->formatMoney($value, array('suffix' => ' р.-'))?>
-                    <?php if($discount):?><br/>(со скидкой <?=$discount?>%)<?php endif;?>
+                <h4 style="line-height: 30px;"><?=$heading?> «<?=$plan['title']?>» <?=$this->MoneyFormatter->formatMoney($value, ['suffix' => ' р.-'])?>
+                    <?php if ($discount):?><br/>(со скидкой <?=$discount?>%)<?php endif;?>
 
                 </h4>
                 <p>Действителен с <?= date('d.m.Y')?>–<?= date('d.m.Y', time() + YEAR)?><br/>
@@ -91,7 +91,7 @@
                 </p>
             <?php else: ?>
                 <h4>Пополнение счёта</h4>
-                <?php if(isset($predefined)): ?>
+                <?php if (isset($predefined)): ?>
                     <p>Для выбранного действия необходимо пополнить личный счёт на указанную сумму.</p>
                 <?php else:?>
                     <p>Пополнить кошелёк можно по мере необходимости в любое время</p>
@@ -101,7 +101,7 @@
             <span class="label-fund-balance">Пополнить личный счет, руб.</span>
             <section id="fund-balance-container"></section>
 
-            <?php if(!$this->user->isLoggedIn()):?>
+            <?php if (!$this->user->isLoggedIn()):?>
                 <span class="label-fund-balance">Оставьте номер телефона</span>
                 <section id="phone-number-container"></section>
             <?php endif?>
@@ -112,7 +112,7 @@
             </div>
         </div><!-- .main -->
     </div><!-- .middle -->
-<?= $this->html->script(array(
+<?= $this->html->script([
     'flux/flux.min.js',
     'jquery-plugins/jquery.numeric.min.js',
     'jquery-plugins/jquery.scrollto.min.js',
@@ -131,8 +131,8 @@
     'subscription_plans/paymentSystems/PaymentTypesList.js',
     'subscription_plans/paymentSystems/PaymentAdmin.js',
     'subscription_plans/subscriber.js'
-), array('inline' => false)) ?>
-<?= $this->html->style(array(
+], ['inline' => false]) ?>
+<?= $this->html->style([
     '/css/common/page-title-with-flag.css',
     '/css/common/receipt.css',
     '/css/common/payment-options.css',
@@ -140,4 +140,4 @@
     '/brief',
     '/step3',
     '/css/subscription_plans/subscribe.css'
-), array('inline' => false))?>
+], ['inline' => false])?>

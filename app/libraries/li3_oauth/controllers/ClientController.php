@@ -11,15 +11,13 @@ namespace li3_oauth\controllers;
 use \li3_oauth\models\Consumer;
 use \lithium\storage\Session;
 
-class ClientController extends \lithium\action\Controller {
+class ClientController extends \lithium\action\Controller
+{
 
-	public $publicActions = array(
-		'index',
-		'authorize',
-		'access',
-		'login',
-	);
-	
+    public $publicActions = [
+        'index',
+        'authorize',
+        'access',
+        'login',
+    ];
 }
-
-?>

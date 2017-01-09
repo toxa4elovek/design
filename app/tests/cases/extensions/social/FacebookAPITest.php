@@ -5,11 +5,13 @@ namespace app\tests\cases\extensions\social;
 use app\extensions\social\FacebookAPI;
 use app\extensions\tests\AppUnit;
 
-class FacebookAPITest extends AppUnit {
+class FacebookAPITest extends AppUnit
+{
 
     public $api = null;
 
-    public function setUp() {
+    public function setUp()
+    {
         $this->api = new FacebookAPI();
     }
 /*

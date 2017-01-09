@@ -420,7 +420,8 @@ class UserTest extends AppUnit
         $this->assertEqual(11, $count);
     }
 
-    public function testIsValidReferalCodeForSubscribers() {
+    public function testIsValidReferalCodeForSubscribers()
+    {
         $this->assertFalse(User::isValidReferalCodeForSubscribers('213121'));
         $this->assertFalse(User::isValidReferalCodeForSubscribers(false));
         $this->assertFalse(User::isValidReferalCodeForSubscribers([]));
@@ -429,7 +430,8 @@ class UserTest extends AppUnit
         $this->assertTrue(User::isValidReferalCodeForSubscribers('fl18f'));
     }
 
-    public function testSetReferalForSubscriberCookie() {
+    public function testSetReferalForSubscriberCookie()
+    {
         $this->assertNoCookie(['key' => 'sref', 'value' => 'fl18f']);
         $this->assertFalse(isset($_COOKIE['sref']));
         $this->assertTrue(User::setReferalForSubscriberCookie('fl18f'));
@@ -438,6 +440,5 @@ class UserTest extends AppUnit
          */
         //$this->assertCookie(['key' => 'sref', 'value' => 'fl18f']);
         //$this->assertTrue(isset($_COOKIE['sref']));
-
     }
 }

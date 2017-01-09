@@ -5,23 +5,25 @@ namespace app\tests\cases\extensions\billing;
 use app\extensions\billing\Payture;
 use app\extensions\tests\AppUnit;
 
-class PaytureTest extends AppUnit {
+class PaytureTest extends AppUnit
+{
 
     public $sessionId = null;
     public $orderId = null;
 
-    public function testInit() {
+    public function testInit()
+    {
         // Новый заказ
         $amount = 1000 * 100;
         $this->orderId = $this->__generateRandomString();
-        $result = Payture::init(array(
+        $result = Payture::init([
             'SessionType' => 'Pay',
             'OrderId' => $this->orderId,
             'Amount' => $amount,
             'Url' => 'http://godesigner/users/mypitches',
             'Total' => $amount,
             'Product' => 'Оплата проекта'
-        ));
+        ]);
 
         $this->assertEqual('True', $result['Success']);
         $this->assertEqual($this->orderId, $result['OrderId']);
@@ -31,19 +33,20 @@ class PaytureTest extends AppUnit {
         var_dump($result['SessionId']);
         var_dump($this->orderId);
         // Повторный заказ
-        $result = Payture::init(array(
+        $result = Payture::init([
             'SessionType' => 'Pay',
             'OrderId' => $this->orderId,
             'Amount' => $amount,
             'Url' => 'http://godesigner.ru/users/mypitches',
             'Total' => $amount,
             'Product' => 'Оплата проекта'
-        ));
+        ]);
         $this->assertEqual('False', $result['Success']);
         $this->assertEqual('DUPLICATE_ORDER_ID', $result['ErrCode']);
     }
 
-    public function testPay() {
+    public function testPay()
+    {
         $expected = 'https://sandbox.payture.com/apim/Pay?SessionId=' . $this->sessionId;
         $result = Payture::pay($this->sessionId);
         $this->assertEqual($expected, $result);
@@ -70,7 +73,8 @@ class PaytureTest extends AppUnit {
         $this->assertEqual('Charged', $result['State']);
     }
 */
-    private function __generateRandomString($length = 50) {
+    private function __generateRandomString($length = 50)
+    {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
         $randomString = '';
@@ -79,5 +83,4 @@ class PaytureTest extends AppUnit {
         }
         return $randomString;
     }
-
 }

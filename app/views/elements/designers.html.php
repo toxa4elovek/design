@@ -7,7 +7,7 @@
             </a>
             <a href="/users/view/<?=$designer->user->id;?>">
                 <span class="designer_name"><?=$this->user->getFormattedName($designer->user->first_name, $designer->user->last_name);?></span><br />
-                <span class="designer_plate"><?=count($designer->solutions);?> <?=$this->numInflector->formatString(count($designer->solutions), array('string' => array('first' => 'решение', 'second' => 'решения', 'third' => 'решений')))?></span>
+                <span class="designer_plate"><?=count($designer->solutions);?> <?=$this->numInflector->formatString(count($designer->solutions), ['string' => ['first' => 'решение', 'second' => 'решения', 'third' => 'решений']])?></span>
             </a>
             <div class="clr"></div>
         </div>
@@ -17,7 +17,7 @@
         ?>
         <div class="designer_wrapper">
             <ul class="list_portfolio designers_tab">
-                <?=$this->view()->render(array('element' => 'gallery'), compact('solutions', 'pitch', 'sort', 'canViewPrivate', 'fromDesignersTab', 'winnersUserIds'))?>
+                <?=$this->view()->render(['element' => 'gallery'], compact('solutions', 'pitch', 'sort', 'canViewPrivate', 'fromDesignersTab', 'winnersUserIds'))?>
             </ul>
             <div class="scroll_left" style="display: none;"><i></i></div>
             <div class="scroll_right" style="display: none;"><i></i></div>

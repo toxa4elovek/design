@@ -2,7 +2,6 @@
 
 namespace app\models;
 
-class Paymaster extends \app\models\AppModel {
-
-
+class Paymaster extends \app\models\AppModel
+{
 }

@@ -9,15 +9,16 @@
 
 namespace app\extensions\helper;
 
-class Session extends \lithium\storage\Session {
+class Session extends \lithium\storage\Session
+{
 
     /**
      * Метод определяет, залогинен ли текущий пользователь
      *
      * @return bool
      */
-    public function isLoggedIn() {
+    public function isLoggedIn()
+    {
         return (bool) self::read('user');
     }
-
 }

@@ -2,7 +2,6 @@
 
 namespace app\tests\mocks\social;
 
-
-class TwitterServerMock extends \lithium\core\Object {
-
+class TwitterServerMock extends \lithium\core\Object
+{
 }

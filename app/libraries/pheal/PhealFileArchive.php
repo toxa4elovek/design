@@ -40,29 +40,31 @@ class PhealFileArchive implements PhealArchiveInterface
      * valid keys are: delimiter, umask, umask_directory
      * @var array
      */
-    protected $options = array(
+    protected $options = [
         'delimiter' => ':',
         'umask' => 0666,
         'umask_directory' => 0777
-    );
+    ];
 
     /**
      * construct PhealFileCache,
      * @param string $basepath optional string on where to store files, defaults to the current/users/home/.pheal/cache/
      * @param array $options optional config array, valid keys are: delimiter, umask, umask_directory
      */
-    public function __construct($basepath = false, $options = array())
+    public function __construct($basepath = false, $options = [])
     {
-        if(!$basepath)
+        if (!$basepath) {
             $basepath = getenv('HOME'). "/.pheal/archive/";
+        }
         $this->basepath = $basepath;
 
         // Windows systems don't allow : as part of the filename
-        $this->options['delimiter'] = (strtoupper (substr(PHP_OS, 0,3)) == 'WIN') ? "#" : ":";
+        $this->options['delimiter'] = (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') ? "#" : ":";
 
         // add options
-        if(is_array($options) && count($options))
+        if (is_array($options) && count($options)) {
             $this->options = array_merge($this->options, $options);
+        }
     }
 
     /**
@@ -81,21 +83,21 @@ class PhealFileArchive implements PhealArchiveInterface
         // maybe this should be tweaked or hashed
         $regexp = '/[^a-z0-9,.-_=]/i';
         $userid = (int)$userid;
-        $apikey = preg_replace($regexp,'_',$apikey);
+        $apikey = preg_replace($regexp, '_', $apikey);
         
         // build cache filename
         $argstr = "";
-        foreach($args as $key => $val)
-        {
-            if(strlen($val) < 1)
+        foreach ($args as $key => $val) {
+            if (strlen($val) < 1) {
                 unset($args[$key]);
-            elseif(!in_array(strtolower($key), array('userid','apikey','keyid','vcode')))
-                $argstr .= preg_replace($regexp,'_',$key) . $this->options['delimiter'] . preg_replace($regexp,'_',$val) . $this->options['delimiter'];
+            } elseif (!in_array(strtolower($key), ['userid', 'apikey', 'keyid', 'vcode'])) {
+                $argstr .= preg_replace($regexp, '_', $key) . $this->options['delimiter'] . preg_replace($regexp, '_', $val) . $this->options['delimiter'];
+            }
         }
         $argstr = substr($argstr, 0, -1);
         $filename = "Request_" . gmdate('Ymd-His') . ($argstr ? "_" . $argstr : "") . ".xml";
         $filepath = $this->basepath . gmdate("Y-m-d") . "/" . ($userid ? "$userid/$apikey/$scope/$name/" : "public/public/$scope/$name/");
-        if(!file_exists($filepath)) {
+        if (!file_exists($filepath)) {
             $oldUmask = umask(0);
             mkdir($filepath, $this->options['umask_directory'], true);
             umask($oldUmask);
@@ -112,7 +114,7 @@ class PhealFileArchive implements PhealArchiveInterface
      * @param array $args
      * @param string $xml
      */
-    public function save($userid,$apikey,$scope,$name,$args,$xml) 
+    public function save($userid, $apikey, $scope, $name, $args, $xml)
     {
         $filename= $this->filename($userid, $apikey, $scope, $name, $args);
         file_put_contents($filename, $xml);

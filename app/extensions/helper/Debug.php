@@ -1,27 +1,28 @@
 <?php
 namespace app\extensions\helper;
 
-class Debug extends User {
+class Debug extends User
+{
 
     /**
      * Визуальные стили для вывода
      *
      * @var array
      */
-    public $styles = array(
+    public $styles = [
         'verySlow' => 'font-weight: bold, color: red',
         'slow' => 'color: orange',
         'fast' => 'font-style: italic',
         'info' => 'font-weight: bold'
-    );
+    ];
 
     /**
      * @var array границы между скоростными категориями запросов
      */
-    public $speedBoundaries = array(
+    public $speedBoundaries = [
         'verySlow' => 0.4,
         'slow' => 0.2,
-    );
+    ];
 
     /**
      * Метод сортируем запросы по их времени создания
@@ -29,14 +30,15 @@ class Debug extends User {
      * @param $debugQueries
      * @return array|null
      */
-    public function sortQueriesByTimestamp($debugQueries) {
-        if(!is_array($debugQueries)) {
+    public function sortQueriesByTimestamp($debugQueries)
+    {
+        if (!is_array($debugQueries)) {
             return null;
         }
-        usort($debugQueries, function($a, $b) {
-            if($a['timestamp'] < $b['timestamp']) {
+        usort($debugQueries, function ($a, $b) {
+            if ($a['timestamp'] < $b['timestamp']) {
                 return -1;
-            }elseif($a['timestamp'] > $b['timestamp']) {
+            } elseif ($a['timestamp'] > $b['timestamp']) {
                 return 1;
             }
             return 0;
@@ -49,9 +51,10 @@ class Debug extends User {
      *
      * @return bool
      */
-    public function isDebugInfoExists() {
+    public function isDebugInfoExists()
+    {
         $debugQueries = $this->read('debug.queries');
-        if(($debugQueries) && (is_array($debugQueries)) && (!empty($debugQueries))) {
+        if (($debugQueries) && (is_array($debugQueries)) && (!empty($debugQueries))) {
             return true;
         }
         return false;
@@ -62,9 +65,10 @@ class Debug extends User {
      *
      * @return bool
      */
-    public function clearDebugInfo() {
-        if($this->isDebugInfoExists()) {
-            $this->write('debug.queries', array());
+    public function clearDebugInfo()
+    {
+        if ($this->isDebugInfoExists()) {
+            $this->write('debug.queries', []);
             return true;
         }
         return false;
@@ -76,13 +80,14 @@ class Debug extends User {
      * @param $query
      * @return null|string
      */
-    public function detectSpeedOfQuery($query) {
+    public function detectSpeedOfQuery($query)
+    {
         if ($this->isDebugQuery($query)) {
-            if($query['elapsed_time'] > $this->speedBoundaries['verySlow']) {
+            if ($query['elapsed_time'] > $this->speedBoundaries['verySlow']) {
                 $style = 'verySlow';
-            }elseif($query['elapsed_time'] > $this->speedBoundaries['slow']) {
+            } elseif ($query['elapsed_time'] > $this->speedBoundaries['slow']) {
                 $style = 'slow';
-            }else {
+            } else {
                 $style = 'fast';
             }
             return $style;
@@ -96,7 +101,8 @@ class Debug extends User {
      * @param $stringQuery
      * @return string
      */
-    public function escapeQuery($stringQuery) {
+    public function escapeQuery($stringQuery)
+    {
         return addslashes($stringQuery);
     }
 
@@ -106,7 +112,8 @@ class Debug extends User {
      * @param $float
      * @return float
      */
-    public function roundTime($float) {
+    public function roundTime($float)
+    {
         return round($float, 5);
     }
 
@@ -115,7 +122,8 @@ class Debug extends User {
      *
      * @return mixed
      */
-    public function getDebugQueries() {
+    public function getDebugQueries()
+    {
         return $this->read('debug.queries');
     }
 
@@ -125,8 +133,9 @@ class Debug extends User {
      * @param $key
      * @return null
      */
-    public function getVisualStyle($key) {
-        if((is_string($key)) && (isset($this->styles[$key]))) {
+    public function getVisualStyle($key)
+    {
+        if ((is_string($key)) && (isset($this->styles[$key]))) {
             return $this->styles[$key];
         }
         return null;
@@ -138,13 +147,14 @@ class Debug extends User {
      * @param $query
      * @return null|string
      */
-    public function getHtmlForQuery($query) {
+    public function getHtmlForQuery($query)
+    {
         if ($this->isDebugQuery($query)) {
             $escapedQuery = $this->escapeQuery($query['query']);
             $elapsed = $this->roundTime($query['elapsed_time']);
             $style = $this->getVisualStyle($this->detectSpeedOfQuery($query));
             return "console.log('%c$elapsed $escapedQuery', '$style');\r\n";
-        }else {
+        } else {
             //var_dump($query);
             //var_dump($this->isDebugQuery($query));
             //die();
@@ -158,7 +168,8 @@ class Debug extends User {
      * @param $query
      * @return null
      */
-    public function getQueryArray($query) {
+    public function getQueryArray($query)
+    {
         if ($this->isDebugQuery($query)) {
             $query['style'] = $this->getVisualStyle($this->detectSpeedOfQuery($query));
             return $query;
@@ -172,11 +183,12 @@ class Debug extends User {
      * @param $query
      * @return bool
      */
-    public function isDebugQuery($query) {
-        $keys = array('timestamp', 'elapsed_time', 'query', 'type');
-        if(is_array($query)) {
-            foreach($keys as $key) {
-                if(!array_key_exists($key, $query)) {
+    public function isDebugQuery($query)
+    {
+        $keys = ['timestamp', 'elapsed_time', 'query', 'type'];
+        if (is_array($query)) {
+            foreach ($keys as $key) {
+                if (!array_key_exists($key, $query)) {
                     return false;
                 }
             }
@@ -185,11 +197,12 @@ class Debug extends User {
         return false;
     }
 
-    public function dumpDebugInfo(){
-        if($this->isDebugInfoExists()) {
+    public function dumpDebugInfo()
+    {
+        if ($this->isDebugInfoExists()) {
             $queries = $this->sortQueriesByTimestamp($this->getDebugQueries());
-            $result = array();
-            foreach($queries as $query) {
+            $result = [];
+            foreach ($queries as $query) {
                 $result[] = $this->getQueryArray($query);
             }
             return $result;

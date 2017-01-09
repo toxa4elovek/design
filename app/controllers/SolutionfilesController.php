@@ -7,18 +7,20 @@ use \app\models\Solutionfile;
 use \app\models\Solution;
 use \app\models\Uploadnonce;
 
-class SolutionfilesController extends \app\controllers\AppController {
+class SolutionfilesController extends \app\controllers\AppController
+{
 
-    public function download() {
+    public function download()
+    {
         $originalfilename = $this->request->params['args'][1];
         $decodedArray = explode('separator', base64_decode($this->request->params['args'][0]));
         $fileId = $decodedArray[0];
         $modelId = $decodedArray[1];
-        if($fileRecord = Solutionfile::first(array('conditions' => array(
+        if ($fileRecord = Solutionfile::first(['conditions' => [
             'id' => $fileId,
             'model_id' => $modelId,
             'originalbasename' => $originalfilename
-        )))) {
+        ]])) {
             header('Content-Type: application/octet-stream');
             header("Content-Transfer-Encoding: Binary");
             header("Content-disposition: attachment; filename=\"" . $originalfilename . "\"");
@@ -27,8 +29,9 @@ class SolutionfilesController extends \app\controllers\AppController {
         die();
     }
 
-    public function solutions() {
-        if (null != Session::read('user.id') && $file = Solutionfile::first(array('conditions' => array('filename' => array('LIKE' => '%' . substr($this->request->url, -30)))))) {
+    public function solutions()
+    {
+        if (null != Session::read('user.id') && $file = Solutionfile::first(['conditions' => ['filename' => ['LIKE' => '%' . substr($this->request->url, -30)]]])) {
             if (file_exists($file->filename)) {
                 header('Content-Type: application/download');
                 header('Content-Disposition: attachment; filename="' . $file->originalbasename . '"');
@@ -38,24 +41,25 @@ class SolutionfilesController extends \app\controllers\AppController {
         exit;
     }
 
-    public function resize() {
-        $res = array(
+    public function resize()
+    {
+        $res = [
             'error' => false,
-        );
-        $params = array();
+        ];
+        $params = [];
         if (!isset($this->request->data['id']) || empty($this->request->data['id']) || !isset($this->request->data['name']) || empty($this->request->data['name'])) {
             $res['error'] = 'Wrong request';
             return compact('res');
         }
         $params['name'] = $this->request->data['name'];
-        $params['solution'] = Solution::first(array(
-            'conditions' => array(
+        $params['solution'] = Solution::first([
+            'conditions' => [
                 'Solution.id' => $this->request->data['id'],
-            ),
-            'with' => array(
+            ],
+            'with' => [
                 'Pitch',
-            ),
-        ));
+            ],
+        ]);
 
         if ($params['solution']->user_id != Session::read('user.id')) {
             $res['error'] = 'Wrong user';
@@ -67,10 +71,11 @@ class SolutionfilesController extends \app\controllers\AppController {
         return compact('res');
     }
 
-    public function delete() {
-        $res = array(
+    public function delete()
+    {
+        $res = [
             'error' => false,
-        );
+        ];
         if (!$this->request->is('json') || (Session::read('user') == null)) {
             $this->redirect('/pitches/');
         }
@@ -78,15 +83,15 @@ class SolutionfilesController extends \app\controllers\AppController {
             $res['error'] = 'wrong data';
             return compact('res');
         }
-        if ($nonce = Uploadnonce::first(array('fields' => array('id'), 'conditions' => array('nonce' => $this->request->data['nonce'])))) {
+        if ($nonce = Uploadnonce::first(['fields' => ['id'], 'conditions' => ['nonce' => $this->request->data['nonce']]])) {
             $nonce = $nonce->id;
-            $files = Solutionfile::all(array(
-                'conditions' => array(
+            $files = Solutionfile::all([
+                'conditions' => [
                     'model' => '\app\models\Uploadnonce',
                     'model_id' => $nonce,
                     'position' => $this->request->data['position'],
-                ),
-            ));
+                ],
+            ]);
             foreach ($files as $file) {
                 if (file_exists($file->filename)) {
                     unlink($file->filename);

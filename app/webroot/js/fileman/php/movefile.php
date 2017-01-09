@@ -28,19 +28,20 @@ checkAccess('MOVEFILE');
 
 $path = trim(empty($_POST['f'])?'':$_POST['f']);
 $newPath = trim(empty($_POST['n'])?'':$_POST['n']);
-if(!$newPath)
-  $newPath = getFilesPath();
+if (!$newPath) {
+    $newPath = getFilesPath();
+}
 verifyPath($path);
 verifyPath($newPath);
 
-if(is_file(fixPath($path))){
-  if(file_exists(fixPath($newPath)))
-    echo getErrorRes(t('E_MoveFileAlreadyExists').' '.basename($newPath));
-  elseif(rename(fixPath($path), fixPath($newPath)))
-    echo getSuccessRes();
-  else
-    echo getErrorRes(t('E_MoveFile').' '.basename($path));
+if (is_file(fixPath($path))) {
+    if (file_exists(fixPath($newPath))) {
+        echo getErrorRes(t('E_MoveFileAlreadyExists').' '.basename($newPath));
+    } elseif (rename(fixPath($path), fixPath($newPath))) {
+        echo getSuccessRes();
+    } else {
+        echo getErrorRes(t('E_MoveFile').' '.basename($path));
+    }
+} else {
+    echo getErrorRes(t('E_MoveFileInvalisPath'));
 }
-else
-  echo getErrorRes(t('E_MoveFileInvalisPath'));
-?>

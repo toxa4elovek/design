@@ -73,7 +73,7 @@ class Mailer extends \lithium\core\StaticObject
         $subject = '=?UTF-8?B?'.base64_encode($options['subject']).'?=';
         $hash = $options['data']['hash'] = sha1(uniqid());
         $html = 'Шаблон';
-        if(!isset($options['headers'])) {
+        if (!isset($options['headers'])) {
             $body = static::render(['data' => $options['data'], 'template' => $options['template']]);
             $html = $body;
         }
@@ -91,12 +91,12 @@ class Mailer extends \lithium\core\StaticObject
             ];
             $object = new \Swift_Message();
             $message = $object->newInstance();
-            if(isset($options['headers'])) {
+            if (isset($options['headers'])) {
                 $messageHeaders = $message->getHeaders();
-                foreach($options['headers'] as $headerName => $headerValue) {
+                foreach ($options['headers'] as $headerName => $headerValue) {
                     $messageHeaders->addTextHeader($headerName, $headerValue);
                 }
-            }else {
+            } else {
                 $message->setBody($html, 'text/html');
             }
             $message->setSubject($headers['Subject']);

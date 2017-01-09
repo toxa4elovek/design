@@ -2,13 +2,15 @@
 
 namespace app\models\behaviors\handlers;
 
-Class ValidateFileHandler extends \app\models\behaviors\handlers\StaticHandler {
+class ValidateFileHandler extends \app\models\behaviors\handlers\StaticHandler
+{
 
-    static public function useHandler($behavior) {
-        $behavior::applyFilter('afterSave', function($self, $params, $chain) {
+    public static function useHandler($behavior)
+    {
+        $behavior::applyFilter('afterSave', function ($self, $params, $chain) {
             if ((isset($params['uploadedFile']['data'])) && (!isset($params['uploadedFile']['data'][0]))) {
                 if (!isset($params['uploadedFile']['attachInfo']['validateFile'])) {
-                    $useroptions = array();
+                    $useroptions = [];
                 } else {
                     $useroptions = $params['uploadedFile']['attachInfo']['validateFile'];
                 }
@@ -26,14 +28,14 @@ Class ValidateFileHandler extends \app\models\behaviors\handlers\StaticHandler {
             } else {
                 foreach ($params['uploadedFile']['data'] as &$file) {
                     if (!isset($params['uploadedFile']['attachInfo']['validateFile'])) {
-                        $useroptions = array();
+                        $useroptions = [];
                     } else {
                         $useroptions = $params['uploadedFile']['attachInfo']['validateFile'];
                     }
                     if (isset($self::$defaults['validateFile'])) {
                         $options = $useroptions + $self::$defaults['validate'];
                     } else {
-                       $options = $useroptions;
+                        $options = $useroptions;
                     }
 
                     $fileinfo = pathinfo($file['name']);

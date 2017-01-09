@@ -8,16 +8,18 @@
 
 namespace li3_oauth\tests\mocks\extensions\service;
 
-class MockStorage extends \lithium\net\http\Service {
+class MockStorage extends \lithium\net\http\Service
+{
 
-	protected $_data;
+    protected $_data;
 
-	public function read() {
-		return $this->_data;
-	}
+    public function read()
+    {
+        return $this->_data;
+    }
 
-	public function write($data, $options = array()) {
-		$this->_data = $data;
-	}
-
+    public function write($data, $options = [])
+    {
+        $this->_data = $data;
+    }
 }

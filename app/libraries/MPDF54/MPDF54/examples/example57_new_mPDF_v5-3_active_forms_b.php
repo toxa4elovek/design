@@ -3,7 +3,7 @@
 
 include("../mpdf.php");
 
-$mpdf=new mPDF(''); 
+$mpdf=new mPDF('');
 
 //==============================================================
 
@@ -171,14 +171,17 @@ this.getField(\'inputfield\').value = \'T\u00f6rkylempij\u00e4\';
 
 
 //==============================================================
-if ($_REQUEST['html']) { echo $html; exit; }
-if ($_REQUEST['source']) { 
-	$file = __FILE__;
-	header("Content-Type: text/plain");
-	header("Content-Length: ". filesize($file));
-	header("Content-Disposition: attachment; filename='".$file."'");
-	readfile($file);
-	exit; 
+if ($_REQUEST['html']) {
+    echo $html;
+    exit;
+}
+if ($_REQUEST['source']) {
+    $file = __FILE__;
+    header("Content-Type: text/plain");
+    header("Content-Length: ". filesize($file));
+    header("Content-Disposition: attachment; filename='".$file."'");
+    readfile($file);
+    exit;
 }
 
 //==============================================================
@@ -192,8 +195,8 @@ $mpdf->formSubmitNoValueFields = true;
 
 $mpdf->formExportType = 'xfdf'; // 'html' or 'xfdf'
 $mpdf->formSelectDefaultOption = true;	// for Select drop down box; if no option is explicitly maked as selected,
-							// this determines whether to select 1st option (as per browser)
-							// - affects whether "required" attribute is relevant
+                            // this determines whether to select 1st option (as per browser)
+                            // - affects whether "required" attribute is relevant
 $mpdf->form_border_color = '0.0 0.820 0.0'; 
 $mpdf->form_background_color = '0.941 0.941 0.941';
 $mpdf->form_border_width = '1';
@@ -229,6 +232,4 @@ $mpdf->Output(); exit;
 //==============================================================
 //==============================================================
 //==============================================================
-
-
-?>
+;

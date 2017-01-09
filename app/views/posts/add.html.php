@@ -1,6 +1,6 @@
 <div class="wrapper" xmlns="http://www.w3.org/1999/html">
 
-    <?=$this->view()->render(array('element' => 'header'), array('logo' => 'logo'))?>
+    <?=$this->view()->render(['element' => 'header'], ['logo' => 'logo'])?>
 
     <div class="middle">
         <div class="middle_inner">
@@ -50,7 +50,7 @@
                                     <label>Автореклама (после первого параграфа)</label>
                                     <select name="blog_ad_id">
                                         <option value="0">Не использовать</option>
-                                        <?php foreach($snippets as $snippet):?>
+                                        <?php foreach ($snippets as $snippet):?>
                                             <option value="<?= $snippet->id?>"><?= $snippet->title?></option>
                                         <?php endforeach;?>
                                     </select>
@@ -64,7 +64,7 @@
                                 </p>
                             </div>
 
-                            <?php if($this->user->isAuthor()): ?>
+                            <?php if ($this->user->isAuthor()): ?>
                                 <input type="hidden" value="0" name="published">
                             <?php else: ?>
                                 <div class="groupc">
@@ -90,5 +90,5 @@
 var commonTags = [ <?php echo implode(',', app\models\Post::getCommonTags()); ?> ];
 var existingTags = [];
 </script>
-<?=$this->html->style(array('/help', '/brief', '/css/ui-lightness/jquery-ui.css', '/css/datetimepicker.css'), array('inline' => false))?>
-<?php $this->html->script(array('/js/tinymce/tinymce.min.js', 'jquery-ui-1.11.4.min.js', '/js/datetimepicker.js', '/js/posts/textext.min.js', '/js/posts/save.js'), array('inline' => false));?>
+<?=$this->html->style(['/help', '/brief', '/css/ui-lightness/jquery-ui.css', '/css/datetimepicker.css'], ['inline' => false])?>
+<?php $this->html->script(['/js/tinymce/tinymce.min.js', 'jquery-ui-1.11.4.min.js', '/js/datetimepicker.js', '/js/posts/textext.min.js', '/js/posts/save.js'], ['inline' => false]);?>

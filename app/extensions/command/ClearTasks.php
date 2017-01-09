@@ -4,9 +4,11 @@ namespace app\extensions\command;
 
 use \app\models\Task;
 
-class ClearTasks extends \app\extensions\command\CronJob {
+class ClearTasks extends \app\extensions\command\CronJob
+{
 
-    public function run() {
+    public function run()
+    {
         $this->header('Welcome to the ClearTask command!');
         $count = Task::deleteCompleted();
         $this->out('Total tasks deleted - ' . $count);

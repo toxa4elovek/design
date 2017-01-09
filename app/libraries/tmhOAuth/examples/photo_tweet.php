@@ -27,12 +27,12 @@
 
 require '../tmhOAuth.php';
 require '../tmhUtilities.php';
-$tmhOAuth = new tmhOAuth(array(
+$tmhOAuth = new tmhOAuth([
   'consumer_key'    => 'YOUR_CONSUMER_KEY',
   'consumer_secret' => 'YOUR_CONSUMER_SECRET',
   'user_token'      => 'A_USER_TOKEN',
   'user_secret'     => 'A_USER_SECRET',
-));
+]);
 
 // we're using a hardcoded image path here. You can easily replace this with
 // an uploaded image - see images.php in the examples folder for how to do this
@@ -44,18 +44,16 @@ $image = 'image.jpg';
 $code = $tmhOAuth->request(
   'POST',
   'https://upload.twitter.com/1/statuses/update_with_media.json',
-  array(
+  [
     'media[]'  => "@{$image};type=image/jpeg;filename={$image}",
     'status'   => 'Picture time',
-  ),
+  ],
   true, // use auth
   true  // multipart
 );
 
 if ($code == 200) {
-  tmhUtilities::pr(json_decode($tmhOAuth->response['response']));
+    tmhUtilities::pr(json_decode($tmhOAuth->response['response']));
 } else {
-  tmhUtilities::pr($tmhOAuth->response['response']);
+    tmhUtilities::pr($tmhOAuth->response['response']);
 }
-
-?>

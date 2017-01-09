@@ -1,7 +1,7 @@
 <?php
 $name='ArialMT';
 $type='TTF';
-$desc=array (
+$desc= [
   'Ascent' => 905,
   'Descent' => -212,
   'CapHeight' => 716,
@@ -10,7 +10,7 @@ $desc=array (
   'ItalicAngle' => 0,
   'StemV' => 87,
   'MissingWidth' => 750,
-);
+];
 $up=-106;
 $ut=73;
 $ttffile='/home/ubuntu/www/gdev/app/libraries/MPDF54/MPDF54/ttfonts/Arial.ttf';
@@ -22,4 +22,3 @@ $BMPselected=false;
 $fontkey='arial';
 $panose='8 5 2 11 6 4 2 2 2 2 2 4';
 $haskerninfo=false;
-?>

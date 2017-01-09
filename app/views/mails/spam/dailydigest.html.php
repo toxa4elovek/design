@@ -13,7 +13,7 @@
             <span style="color: #AEAEAE; line-height: 17px; font-size: 11px; font-family: Arial, sans-serif;">ДОБАВЛЕНО РЕШЕНИЕ ИЛИ КОММЕНТАРИЙ:</span>
         </td></tr>
         <tr><td colspan="3" height="40"></td></tr>
-        <?php foreach($blocks as $block):?>
+        <?php foreach ($blocks as $block):?>
         <tr><td width="5"></td><td valign="top">
 
 
@@ -21,7 +21,7 @@
         </td>
             <td>
                 <a style="color: #ff585d; line-height: 17px; font-size: 20px; font-weight: bold; font-family: Arial, sans-serif;text-decoration: none;" href="https://godesigner.ru/pitches/view/<?=$block['pitch']->id?>"><?=$block['pitch']->title?></a><br/>
-                <span style="color: #AEAEAE; line-height: 17px; font-size: 11px; font-family: Arial, sans-serif;"><?=$this->view()->render(array('template' => 'pitch-info'), array('pitch' => $pitch));?></span><br/>
+                <span style="color: #AEAEAE; line-height: 17px; font-size: 11px; font-family: Arial, sans-serif;"><?=$this->view()->render(['template' => 'pitch-info'], ['pitch' => $pitch]);?></span><br/>
                 <span style="color: #444444; line-height: 17px; font-size: 12px; font-family: Arial, sans-serif;">
                 <?php echo $block['solutions']?>
                 <br><br>

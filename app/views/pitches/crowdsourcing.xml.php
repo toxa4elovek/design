@@ -3,9 +3,9 @@
     <project>
         <platform>GoDesigner</platform>
         <name><?= $pitch->title?></name>
-        <photo><?php if((count($pitch->solution) > 0) && ($pitch->category_id != 7) && ($pitch->private == 0)):?>
+        <photo><?php if ((count($pitch->solution) > 0) && ($pitch->category_id != 7) && ($pitch->private == 0)):?>
         <?php $solution = $pitch->solution;
-            if(isset($solution->images['solution_solutionView'])):
+            if (isset($solution->images['solution_solutionView'])):
                 echo 'https://godesigner.ru' . $this->solution->renderImageUrl($solution->images['solution_solutionView']);
             else:
 
@@ -14,7 +14,7 @@
         else: ?>https://godesigner.ru/img/fb_icon.jpg<?php endif?></photo>
         <city></city>
         <user-name><?= $pitch->user->first_name . ' ' . $pitch->user->last_name ?></user-name>
-        <short-description><?php if($pitch->private == 0):?><?php echo $this->Brief->trimAllInvisibleCharacter(htmlspecialchars(nl2br($pitch->description)), "\x0B", '');?><?php else:?>Это закрытый проект и вам нужно подписать соглашение о неразглашении!<?php endif?></short-description>
+        <short-description><?php if ($pitch->private == 0):?><?php echo $this->Brief->trimAllInvisibleCharacter(htmlspecialchars(nl2br($pitch->description)), "\x0B", '');?><?php else:?>Это закрытый проект и вам нужно подписать соглашение о неразглашении!<?php endif?></short-description>
         <prize type="integer"><?= (int) $pitch->price ?></prize>
         <start-date><?=gmdate('Y-m-d H:i:s', strtotime($pitch->started))?> UTC</start-date>
         <start_unix_time type="integer"><?= strtotime($pitch->started) ?></start_unix_time>

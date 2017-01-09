@@ -2,6 +2,6 @@
 
 namespace app\models;
 
-class Option extends \app\models\AppModel {
-
+class Option extends \app\models\AppModel
+{
 }

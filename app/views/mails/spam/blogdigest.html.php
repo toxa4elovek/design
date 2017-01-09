@@ -26,7 +26,7 @@
                             <?php
                             $total = count($posts);
                             $i = 0;
-                            foreach($posts as $post):
+                            foreach ($posts as $post):
                                 $i++;?>
 
                                 <tr><td height="20"></td></tr>
@@ -60,7 +60,7 @@
                                     </td>
                                 </tr>
                                 <?php
-                                if($i != $total):?>
+                                if ($i != $total):?>
                                     <tr><td height="20"></td></tr>
 
                                     <tr><td height="1" bgcolor="#dddddd"></td></tr>

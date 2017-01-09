@@ -1,3164 +1,3163 @@
 <?php
-	$volt = array (
-  0 => 
-  array (
+    $volt =  [
+  0 =>
+   [
     'match' => '0995 09CD 09B7',
     'replace' => 'E002',
-  ),
-  1 => 
-  array (
+  ],
+  1 =>
+   [
     'match' => '099C 09CD 099E',
     'replace' => 'E003',
-  ),
-  2 => 
-  array (
+  ],
+  2 =>
+   [
     'match' => '09CD 200D',
     'replace' => '007E',
-  ),
-  3 => 
-  array (
+  ],
+  3 =>
+   [
     'match' => '09CD 200C',
     'replace' => '200C',
-  ),
-  4 => 
-  array (
+  ],
+  4 =>
+   [
     'match' => '200D 09CD',
     'replace' => '00D0',
-  ),
-  5 => 
-  array (
+  ],
+  5 =>
+   [
     'match' => '((0995|0996|0997|0998|0999|099A|099B|099C|099D|099E|099F|09A0|09A1|09A2|09A3|09A4|09A5|09A6|09A7|09A8|09AA|09AB|09AC|09AD|09AE|09AF|09B0|09B2|09B6|09B7|09B8|09B9)) 09CD 09B0',
     'replace' => '\\1 E1CD',
-  ),
-  6 => 
-  array (
+  ],
+  6 =>
+   [
     'match' => '((0995|0996|0997|0998|0999|099A|099B|099C|099D|099E|099F|09A0|09A1|09A2|09A3|09A4|09A5|09A6|09A7|09A8|09AA|09AB|09AC|09AD|09AE|09AF|09B0|09B2|09B6|09B7|09B8|09B9)) 09B0 09CD',
     'replace' => '\\1 E068',
-  ),
-  7 => 
-  array (
+  ],
+  7 =>
+   [
     'match' => '((09BE|09C0|09C1|09C2|09C3|09C4|09CB|09CC|09D7|09BC)) 09CD 09B0',
     'replace' => '\\1 E1CD',
-  ),
-  8 => 
-  array (
+  ],
+  8 =>
+   [
     'match' => '((09BE|09C0|09C1|09C2|09C3|09C4|09CB|09CC|09D7|09BC)) 09B0 09CD',
     'replace' => '\\1 E068',
-  ),
-  9 => 
-  array (
+  ],
+  9 =>
+   [
     'match' => '(0020) 09CD 09B0',
     'replace' => '\\1 E1CD',
-  ),
-  10 => 
-  array (
+  ],
+  10 =>
+   [
     'match' => '(0020) 09B0 09CD',
     'replace' => '\\1 E068',
-  ),
-  11 => 
-  array (
+  ],
+  11 =>
+   [
     'match' => '(25CC) 09CD 09B0',
     'replace' => '\\1 E1CD',
-  ),
-  12 => 
-  array (
+  ],
+  12 =>
+   [
     'match' => '(25CC) 09B0 09CD',
     'replace' => '\\1 E068',
-  ),
-  13 => 
-  array (
+  ],
+  13 =>
+   [
     'match' => '((09B0|E042|E043|E044|E048|E049|E04E|E04F|E050|E051|E052|E053|E054|E056|E057|E058|E059|E05B|E05C|E05D|E05E|E062|E063|E064|E065|E0A8|E0BC|E0EF|E0FD|E101|E11C|E11E|E14F|E151|E152|E164|E17D|E18E|E190)) 09C1',
     'replace' => '\\1 E03C',
-  ),
-  14 => 
-  array (
+  ],
+  14 =>
+   [
     'match' => '((09B0|E042|E043|E044|E048|E049|E04E|E04F|E050|E051|E052|E053|E054|E056|E057|E058|E059|E05B|E05C|E05D|E05E|E062|E063|E064|E065|E0A8|E0BC|E0EF|E0FD|E101|E11C|E11E|E14F|E151|E152|E164|E17D|E18E|E190)) 09C2',
     'replace' => '\\1 E03E',
-  ),
-  15 => 
-  array (
+  ],
+  15 =>
+   [
     'match' => '((E045|E046|E047|E04A|E04B|E04C|E04D|E05F|E060|E061|E07C|E07D|E0B1|E0E8|E0E9|E11A|E11B|E163|E17B|E18D)) 09C1',
     'replace' => '\\1 E03D',
-  ),
-  16 => 
-  array (
+  ],
+  16 =>
+   [
     'match' => 'E068 0981',
     'replace' => 'E069',
-  ),
-  17 => 
-  array (
+  ],
+  17 =>
+   [
     'match' => '0995 09CD 0995',
     'replace' => 'E06A',
-  ),
-  18 => 
-  array (
+  ],
+  18 =>
+   [
     'match' => '0995 09CD 0996',
     'replace' => 'E06B',
-  ),
-  19 => 
-  array (
+  ],
+  19 =>
+   [
     'match' => '0995 09CD 099A',
     'replace' => 'E06C',
-  ),
-  20 => 
-  array (
+  ],
+  20 =>
+   [
     'match' => '0995 09CD 099B',
     'replace' => 'E06D',
-  ),
-  21 => 
-  array (
+  ],
+  21 =>
+   [
     'match' => '0995 09CD 099F',
     'replace' => 'E06E',
-  ),
-  22 => 
-  array (
+  ],
+  22 =>
+   [
     'match' => '0995 09CD 09A0',
     'replace' => 'E06F',
-  ),
-  23 => 
-  array (
+  ],
+  23 =>
+   [
     'match' => '0995 09CD 09A3',
     'replace' => 'E070',
-  ),
-  24 => 
-  array (
+  ],
+  24 =>
+   [
     'match' => '0995 09CD 09A4',
     'replace' => 'E071',
-  ),
-  25 => 
-  array (
+  ],
+  25 =>
+   [
     'match' => '0995 09CD 09A5',
     'replace' => 'E072',
-  ),
-  26 => 
-  array (
+  ],
+  26 =>
+   [
     'match' => '0995 09CD 09A8',
     'replace' => 'E073',
-  ),
-  27 => 
-  array (
+  ],
+  27 =>
+   [
     'match' => '0995 09CD 09AA',
     'replace' => 'E074',
-  ),
-  28 => 
-  array (
+  ],
+  28 =>
+   [
     'match' => '0995 09CD 09AB',
     'replace' => 'E075',
-  ),
-  29 => 
-  array (
+  ],
+  29 =>
+   [
     'match' => '0995 09CD 09AE',
     'replace' => 'E076',
-  ),
-  30 => 
-  array (
+  ],
+  30 =>
+   [
     'match' => '0995 09CD 09B2',
     'replace' => 'E077',
-  ),
-  31 => 
-  array (
+  ],
+  31 =>
+   [
     'match' => '0995 09CD 09AC',
     'replace' => 'E078',
-  ),
-  32 => 
-  array (
+  ],
+  32 =>
+   [
     'match' => '0995 09CD 09B6',
     'replace' => 'E079',
-  ),
-  33 => 
-  array (
+  ],
+  33 =>
+   [
     'match' => '0995 09CD 09B8',
     'replace' => 'E07A',
-  ),
-  34 => 
-  array (
+  ],
+  34 =>
+   [
     'match' => '0996 09CD 0996',
     'replace' => 'E083',
-  ),
-  35 => 
-  array (
+  ],
+  35 =>
+   [
     'match' => '0996 09CD 09A4',
     'replace' => 'E084',
-  ),
-  36 => 
-  array (
+  ],
+  36 =>
+   [
     'match' => '0996 09CD 09A8',
     'replace' => 'E085',
-  ),
-  37 => 
-  array (
+  ],
+  37 =>
+   [
     'match' => '0996 09CD 09AE',
     'replace' => 'E086',
-  ),
-  38 => 
-  array (
+  ],
+  38 =>
+   [
     'match' => '0996 09CD 09AC',
     'replace' => 'E087',
-  ),
-  39 => 
-  array (
+  ],
+  39 =>
+   [
     'match' => '0997 09CD 0997',
     'replace' => 'E088',
-  ),
-  40 => 
-  array (
+  ],
+  40 =>
+   [
     'match' => '0997 09CD 0998',
     'replace' => 'E089',
-  ),
-  41 => 
-  array (
+  ],
+  41 =>
+   [
     'match' => '0997 09CD 099C',
     'replace' => 'E08A',
-  ),
-  42 => 
-  array (
+  ],
+  42 =>
+   [
     'match' => '0997 09CD 099D',
     'replace' => 'E08B',
-  ),
-  43 => 
-  array (
+  ],
+  43 =>
+   [
     'match' => '0997 09CD 09A1',
     'replace' => 'E08C',
-  ),
-  44 => 
-  array (
+  ],
+  44 =>
+   [
     'match' => '0997 09CD 09A2',
     'replace' => 'E08D',
-  ),
-  45 => 
-  array (
+  ],
+  45 =>
+   [
     'match' => '0997 09CD 09A3',
     'replace' => 'E08E',
-  ),
-  46 => 
-  array (
+  ],
+  46 =>
+   [
     'match' => '0997 09CD 09A6',
     'replace' => 'E08F',
-  ),
-  47 => 
-  array (
+  ],
+  47 =>
+   [
     'match' => '0997 09CD 09A7',
     'replace' => 'E090',
-  ),
-  48 => 
-  array (
+  ],
+  48 =>
+   [
     'match' => '0997 09CD 09A8',
     'replace' => 'E091',
-  ),
-  49 => 
-  array (
+  ],
+  49 =>
+   [
     'match' => '0997 09CD 09AB',
     'replace' => 'E092',
-  ),
-  50 => 
-  array (
+  ],
+  50 =>
+   [
     'match' => '0997 09CD 09AC',
     'replace' => 'E093',
-  ),
-  51 => 
-  array (
+  ],
+  51 =>
+   [
     'match' => '0997 09CD 09AD',
     'replace' => 'E094',
-  ),
-  52 => 
-  array (
+  ],
+  52 =>
+   [
     'match' => '0997 09CD 09AE',
     'replace' => 'E095',
-  ),
-  53 => 
-  array (
+  ],
+  53 =>
+   [
     'match' => '0997 09CD 09B2',
     'replace' => 'E096',
-  ),
-  54 => 
-  array (
+  ],
+  54 =>
+   [
     'match' => '0998 09CD 09A8',
     'replace' => 'E099',
-  ),
-  55 => 
-  array (
+  ],
+  55 =>
+   [
     'match' => '0998 09CD 09AE',
     'replace' => 'E09A',
-  ),
-  56 => 
-  array (
+  ],
+  56 =>
+   [
     'match' => '0998 09CD 09AC',
     'replace' => 'E09B',
-  ),
-  57 => 
-  array (
+  ],
+  57 =>
+   [
     'match' => '0999 09CD 0995',
     'replace' => 'E09C',
-  ),
-  58 => 
-  array (
+  ],
+  58 =>
+   [
     'match' => '0999 09CD 0996',
     'replace' => 'E09D',
-  ),
-  59 => 
-  array (
+  ],
+  59 =>
+   [
     'match' => '0999 09CD 0997',
     'replace' => 'E09E',
-  ),
-  60 => 
-  array (
+  ],
+  60 =>
+   [
     'match' => '0999 09CD 0998',
     'replace' => 'E09F',
-  ),
-  61 => 
-  array (
+  ],
+  61 =>
+   [
     'match' => '0999 09CD 09A8',
     'replace' => 'E0A0',
-  ),
-  62 => 
-  array (
+  ],
+  62 =>
+   [
     'match' => '0999 09CD 09AD',
     'replace' => 'E0A1',
-  ),
-  63 => 
-  array (
+  ],
+  63 =>
+   [
     'match' => '0999 09CD 09AE',
     'replace' => 'E0A2',
-  ),
-  64 => 
-  array (
+  ],
+  64 =>
+   [
     'match' => '0999 09CD 09AC',
     'replace' => 'E0A3',
-  ),
-  65 => 
-  array (
+  ],
+  65 =>
+   [
     'match' => '0999 09CD 09B6',
     'replace' => 'E0A4',
-  ),
-  66 => 
-  array (
+  ],
+  66 =>
+   [
     'match' => '0999 09CD 09B7',
     'replace' => 'E0A5',
-  ),
-  67 => 
-  array (
+  ],
+  67 =>
+   [
     'match' => '0999 09CD 09B9',
     'replace' => 'E0A6',
-  ),
-  68 => 
-  array (
+  ],
+  68 =>
+   [
     'match' => '099A 09CD 099A',
     'replace' => 'E0AC',
-  ),
-  69 => 
-  array (
+  ],
+  69 =>
+   [
     'match' => '099A 09CD 099B',
     'replace' => 'E0AD',
-  ),
-  70 => 
-  array (
+  ],
+  70 =>
+   [
     'match' => '099A 09CD 099E',
     'replace' => 'E0AE',
-  ),
-  71 => 
-  array (
+  ],
+  71 =>
+   [
     'match' => '099A 09CD 09AE',
     'replace' => 'E0AF',
-  ),
-  72 => 
-  array (
+  ],
+  72 =>
+   [
     'match' => '099A 09CD 09AC',
     'replace' => 'E0B0',
-  ),
-  73 => 
-  array (
+  ],
+  73 =>
+   [
     'match' => '099B 09CD 099B',
     'replace' => 'E0B4',
-  ),
-  74 => 
-  array (
+  ],
+  74 =>
+   [
     'match' => '099B 09CD 09B2',
     'replace' => 'E0B5',
-  ),
-  75 => 
-  array (
+  ],
+  75 =>
+   [
     'match' => '099B 09CD 09AC',
     'replace' => 'E0B6',
-  ),
-  76 => 
-  array (
+  ],
+  76 =>
+   [
     'match' => '099C 09CD 099C',
     'replace' => 'E0B7',
-  ),
-  77 => 
-  array (
+  ],
+  77 =>
+   [
     'match' => '099C 09CD 099D',
     'replace' => 'E0B8',
-  ),
-  78 => 
-  array (
+  ],
+  78 =>
+   [
     'match' => '099C 09CD 09A6',
     'replace' => 'E0B9',
-  ),
-  79 => 
-  array (
+  ],
+  79 =>
+   [
     'match' => '099C 09CD 09AC',
     'replace' => 'E0BA',
-  ),
-  80 => 
-  array (
+  ],
+  80 =>
+   [
     'match' => '099C 09CD 09AE',
     'replace' => 'E0BB',
-  ),
-  81 => 
-  array (
+  ],
+  81 =>
+   [
     'match' => '099D 09CD 099D',
     'replace' => 'E0BE',
-  ),
-  82 => 
-  array (
+  ],
+  82 =>
+   [
     'match' => '099D 09CD 09AE',
     'replace' => 'E0BF',
-  ),
-  83 => 
-  array (
+  ],
+  83 =>
+   [
     'match' => '099D 09CD 09AC',
     'replace' => 'E0C0',
-  ),
-  84 => 
-  array (
+  ],
+  84 =>
+   [
     'match' => '099E 09CD 099A',
     'replace' => 'E0C1',
-  ),
-  85 => 
-  array (
+  ],
+  85 =>
+   [
     'match' => '099E 09CD 099B',
     'replace' => 'E0C2',
-  ),
-  86 => 
-  array (
+  ],
+  86 =>
+   [
     'match' => '099E 09CD 099C',
     'replace' => 'E0C3',
-  ),
-  87 => 
-  array (
+  ],
+  87 =>
+   [
     'match' => '099E 09CD 099D',
     'replace' => 'E0C4',
-  ),
-  88 => 
-  array (
+  ],
+  88 =>
+   [
     'match' => '099E 09CD 09B6',
     'replace' => 'E0C5',
-  ),
-  89 => 
-  array (
+  ],
+  89 =>
+   [
     'match' => '099F 09CD 0995',
     'replace' => 'E0C6',
-  ),
-  90 => 
-  array (
+  ],
+  90 =>
+   [
     'match' => '099F 09CD 0996',
     'replace' => 'E0C7',
-  ),
-  91 => 
-  array (
+  ],
+  91 =>
+   [
     'match' => '099F 09CD 099A',
     'replace' => 'E0C8',
-  ),
-  92 => 
-  array (
+  ],
+  92 =>
+   [
     'match' => '099F 09CD 099B',
     'replace' => 'E0C9',
-  ),
-  93 => 
-  array (
+  ],
+  93 =>
+   [
     'match' => '099F 09CD 099F',
     'replace' => 'E0CA',
-  ),
-  94 => 
-  array (
+  ],
+  94 =>
+   [
     'match' => '099F 09CD 09A0',
     'replace' => 'E0CB',
-  ),
-  95 => 
-  array (
+  ],
+  95 =>
+   [
     'match' => '099F 09CD 09A4',
     'replace' => 'E0CC',
-  ),
-  96 => 
-  array (
+  ],
+  96 =>
+   [
     'match' => '099F 09CD 09A5',
     'replace' => 'E0CD',
-  ),
-  97 => 
-  array (
+  ],
+  97 =>
+   [
     'match' => '099F 09CD 09AA',
     'replace' => 'E0CE',
-  ),
-  98 => 
-  array (
+  ],
+  98 =>
+   [
     'match' => '099F 09CD 09AB',
     'replace' => 'E0CF',
-  ),
-  99 => 
-  array (
+  ],
+  99 =>
+   [
     'match' => '099F 09CD 09AC',
     'replace' => 'E0D0',
-  ),
-  100 => 
-  array (
+  ],
+  100 =>
+   [
     'match' => '099F 09CD 09AE',
     'replace' => 'E0D1',
-  ),
-  101 => 
-  array (
+  ],
+  101 =>
+   [
     'match' => '099F 09CD 09B6',
     'replace' => 'E0D2',
-  ),
-  102 => 
-  array (
+  ],
+  102 =>
+   [
     'match' => '099F 09CD 09B7',
     'replace' => 'E0D3',
-  ),
-  103 => 
-  array (
+  ],
+  103 =>
+   [
     'match' => '099F 09CD 09B8',
     'replace' => 'E0D4',
-  ),
-  104 => 
-  array (
+  ],
+  104 =>
+   [
     'match' => '09A0 09CD 09A0',
     'replace' => 'E0D5',
-  ),
-  105 => 
-  array (
+  ],
+  105 =>
+   [
     'match' => '09A0 09CD 09A3',
     'replace' => 'E0D6',
-  ),
-  106 => 
-  array (
+  ],
+  106 =>
+   [
     'match' => '09A0 09CD 09AC',
     'replace' => 'E0D7',
-  ),
-  107 => 
-  array (
+  ],
+  107 =>
+   [
     'match' => '09A1 09CD 0997',
     'replace' => 'E0D8',
-  ),
-  108 => 
-  array (
+  ],
+  108 =>
+   [
     'match' => '09A1 09CD 09A1',
     'replace' => 'E0D9',
-  ),
-  109 => 
-  array (
+  ],
+  109 =>
+   [
     'match' => '09A1 09CD 09A2',
     'replace' => 'E0DA',
-  ),
-  110 => 
-  array (
+  ],
+  110 =>
+   [
     'match' => '09A1 09CD 09AE',
     'replace' => 'E0DB',
-  ),
-  111 => 
-  array (
+  ],
+  111 =>
+   [
     'match' => '09A1 09CD 09AC',
     'replace' => 'E0DC',
-  ),
-  112 => 
-  array (
+  ],
+  112 =>
+   [
     'match' => '09A2 09CD 09A2',
     'replace' => 'E0DD',
-  ),
-  113 => 
-  array (
+  ],
+  113 =>
+   [
     'match' => '09A2 09CD 09A3',
     'replace' => 'E0DE',
-  ),
-  114 => 
-  array (
+  ],
+  114 =>
+   [
     'match' => '09A2 09CD 09AC',
     'replace' => 'E0DF',
-  ),
-  115 => 
-  array (
+  ],
+  115 =>
+   [
     'match' => '09A3 09CD 099F',
     'replace' => 'E0E0',
-  ),
-  116 => 
-  array (
+  ],
+  116 =>
+   [
     'match' => '09A3 09CD 09A0',
     'replace' => 'E0E1',
-  ),
-  117 => 
-  array (
+  ],
+  117 =>
+   [
     'match' => '09A3 09CD 09A1',
     'replace' => 'E0E2',
-  ),
-  118 => 
-  array (
+  ],
+  118 =>
+   [
     'match' => '09A3 09CD 09A2',
     'replace' => 'E0E3',
-  ),
-  119 => 
-  array (
+  ],
+  119 =>
+   [
     'match' => '09A3 09CD 09A3',
     'replace' => 'E0E4',
-  ),
-  120 => 
-  array (
+  ],
+  120 =>
+   [
     'match' => '09A3 09CD 09AE',
     'replace' => 'E0E5',
-  ),
-  121 => 
-  array (
+  ],
+  121 =>
+   [
     'match' => '09A3 09CD 09AC',
     'replace' => 'E0E6',
-  ),
-  122 => 
-  array (
+  ],
+  122 =>
+   [
     'match' => '09A3 09CD 09B8',
     'replace' => 'E0E7',
-  ),
-  123 => 
-  array (
+  ],
+  123 =>
+   [
     'match' => '09A4 09CD 09A4',
     'replace' => 'E0EA',
-  ),
-  124 => 
-  array (
+  ],
+  124 =>
+   [
     'match' => '09A4 09CD 09A5',
     'replace' => 'E0EB',
-  ),
-  125 => 
-  array (
+  ],
+  125 =>
+   [
     'match' => '09A4 09CD 09A8',
     'replace' => 'E0EC',
-  ),
-  126 => 
-  array (
+  ],
+  126 =>
+   [
     'match' => '09A4 09CD 09AE',
     'replace' => 'E0ED',
-  ),
-  127 => 
-  array (
+  ],
+  127 =>
+   [
     'match' => '09A4 09CD 09AC',
     'replace' => 'E0EE',
-  ),
-  128 => 
-  array (
+  ],
+  128 =>
+   [
     'match' => '09A5 09CD 09A5',
     'replace' => 'E0F1',
-  ),
-  129 => 
-  array (
+  ],
+  129 =>
+   [
     'match' => '09A5 09CD 09A8',
     'replace' => 'E0F2',
-  ),
-  130 => 
-  array (
+  ],
+  130 =>
+   [
     'match' => '09A5 09CD 09AC',
     'replace' => 'E0F3',
-  ),
-  131 => 
-  array (
+  ],
+  131 =>
+   [
     'match' => '09A6 09CD 0997',
     'replace' => 'E0F4',
-  ),
-  132 => 
-  array (
+  ],
+  132 =>
+   [
     'match' => '09A6 09CD 0998',
     'replace' => 'E0F5',
-  ),
-  133 => 
-  array (
+  ],
+  133 =>
+   [
     'match' => '09A6 09CD 09A6',
     'replace' => 'E0F6',
-  ),
-  134 => 
-  array (
+  ],
+  134 =>
+   [
     'match' => '09A6 09CD 09A7',
     'replace' => 'E0F7',
-  ),
-  135 => 
-  array (
+  ],
+  135 =>
+   [
     'match' => '09A6 09CD 09A8',
     'replace' => 'E0F8',
-  ),
-  136 => 
-  array (
+  ],
+  136 =>
+   [
     'match' => '09A6 09CD 09AC',
     'replace' => 'E0F9',
-  ),
-  137 => 
-  array (
+  ],
+  137 =>
+   [
     'match' => '09A6 09CD 09AE',
     'replace' => 'E0FB',
-  ),
-  138 => 
-  array (
+  ],
+  138 =>
+   [
     'match' => '09A6 09CD 09AF',
     'replace' => 'E0FC',
-  ),
-  139 => 
-  array (
+  ],
+  139 =>
+   [
     'match' => '09A7 09CD 09A7',
     'replace' => 'E102',
-  ),
-  140 => 
-  array (
+  ],
+  140 =>
+   [
     'match' => '09A7 09CD 09A8',
     'replace' => 'E103',
-  ),
-  141 => 
-  array (
+  ],
+  141 =>
+   [
     'match' => '09A7 09CD 09AE',
     'replace' => 'E104',
-  ),
-  142 => 
-  array (
+  ],
+  142 =>
+   [
     'match' => '09A7 09CD 09AC',
     'replace' => 'E105',
-  ),
-  143 => 
-  array (
+  ],
+  143 =>
+   [
     'match' => '09A8 09CD 0995',
     'replace' => 'E106',
-  ),
-  144 => 
-  array (
+  ],
+  144 =>
+   [
     'match' => '09A8 09CD 0997',
     'replace' => 'E107',
-  ),
-  145 => 
-  array (
+  ],
+  145 =>
+   [
     'match' => '09A8 09CD 099A',
     'replace' => 'E108',
-  ),
-  146 => 
-  array (
+  ],
+  146 =>
+   [
     'match' => '09A8 09CD 099C',
     'replace' => 'E109',
-  ),
-  147 => 
-  array (
+  ],
+  147 =>
+   [
     'match' => '09A8 09CD 099F',
     'replace' => 'E10A',
-  ),
-  148 => 
-  array (
+  ],
+  148 =>
+   [
     'match' => '09A8 09CD 09A0',
     'replace' => 'E10B',
-  ),
-  149 => 
-  array (
+  ],
+  149 =>
+   [
     'match' => '09A8 09CD 09A1',
     'replace' => 'E10C',
-  ),
-  150 => 
-  array (
+  ],
+  150 =>
+   [
     'match' => '09A8 09CD 09A4',
     'replace' => 'E10D',
-  ),
-  151 => 
-  array (
+  ],
+  151 =>
+   [
     'match' => '09A8 09CD 09A5',
     'replace' => 'E10E',
-  ),
-  152 => 
-  array (
+  ],
+  152 =>
+   [
     'match' => '09A8 09CD 09A6',
     'replace' => 'E10F',
-  ),
-  153 => 
-  array (
+  ],
+  153 =>
+   [
     'match' => '09A8 09CD 09A7',
     'replace' => 'E110',
-  ),
-  154 => 
-  array (
+  ],
+  154 =>
+   [
     'match' => '09A8 09CD 09A8',
     'replace' => 'E111',
-  ),
-  155 => 
-  array (
+  ],
+  155 =>
+   [
     'match' => '09A8 09CD 09AB',
     'replace' => 'E112',
-  ),
-  156 => 
-  array (
+  ],
+  156 =>
+   [
     'match' => '09A8 09CD 09AD',
     'replace' => 'E113',
-  ),
-  157 => 
-  array (
+  ],
+  157 =>
+   [
     'match' => '09A8 09CD 09AE',
     'replace' => 'E114',
-  ),
-  158 => 
-  array (
+  ],
+  158 =>
+   [
     'match' => '09A8 09CD 09AF',
     'replace' => 'E115',
-  ),
-  159 => 
-  array (
+  ],
+  159 =>
+   [
     'match' => '09A8 09CD 09AC',
     'replace' => 'E116',
-  ),
-  160 => 
-  array (
+  ],
+  160 =>
+   [
     'match' => '09A8 09CD 09B6',
     'replace' => 'E117',
-  ),
-  161 => 
-  array (
+  ],
+  161 =>
+   [
     'match' => '09A8 09CD 09B7',
     'replace' => 'E118',
-  ),
-  162 => 
-  array (
+  ],
+  162 =>
+   [
     'match' => '09A8 09CD 09B8',
     'replace' => 'E119',
-  ),
-  163 => 
-  array (
+  ],
+  163 =>
+   [
     'match' => '09AA 09CD 0995',
     'replace' => 'E122',
-  ),
-  164 => 
-  array (
+  ],
+  164 =>
+   [
     'match' => '09AA 09CD 0996',
     'replace' => 'E123',
-  ),
-  165 => 
-  array (
+  ],
+  165 =>
+   [
     'match' => '09AA 09CD 099A',
     'replace' => 'E124',
-  ),
-  166 => 
-  array (
+  ],
+  166 =>
+   [
     'match' => '09AA 09CD 099B',
     'replace' => 'E125',
-  ),
-  167 => 
-  array (
+  ],
+  167 =>
+   [
     'match' => '09AA 09CD 099F',
     'replace' => 'E126',
-  ),
-  168 => 
-  array (
+  ],
+  168 =>
+   [
     'match' => '09AA 09CD 09A0',
     'replace' => 'E127',
-  ),
-  169 => 
-  array (
+  ],
+  169 =>
+   [
     'match' => '09AA 09CD 09A4',
     'replace' => 'E128',
-  ),
-  170 => 
-  array (
+  ],
+  170 =>
+   [
     'match' => '09AA 09CD 09A8',
     'replace' => 'E129',
-  ),
-  171 => 
-  array (
+  ],
+  171 =>
+   [
     'match' => '09AA 09CD 09AA',
     'replace' => 'E12A',
-  ),
-  172 => 
-  array (
+  ],
+  172 =>
+   [
     'match' => '09AA 09CD 09AB',
     'replace' => 'E12B',
-  ),
-  173 => 
-  array (
+  ],
+  173 =>
+   [
     'match' => '09AA 09CD 09AE',
     'replace' => 'E12C',
-  ),
-  174 => 
-  array (
+  ],
+  174 =>
+   [
     'match' => '09AA 09CD 09B2',
     'replace' => 'E12D',
-  ),
-  175 => 
-  array (
+  ],
+  175 =>
+   [
     'match' => '09AA 09CD 09AC',
     'replace' => 'E12E',
-  ),
-  176 => 
-  array (
+  ],
+  176 =>
+   [
     'match' => '09AA 09CD 09B6',
     'replace' => 'E12F',
-  ),
-  177 => 
-  array (
+  ],
+  177 =>
+   [
     'match' => '09AA 09CD 09B7',
     'replace' => 'E130',
-  ),
-  178 => 
-  array (
+  ],
+  178 =>
+   [
     'match' => '09AA 09CD 09B8',
     'replace' => 'E131',
-  ),
-  179 => 
-  array (
+  ],
+  179 =>
+   [
     'match' => '09AB 09CD 099F',
     'replace' => 'E132',
-  ),
-  180 => 
-  array (
+  ],
+  180 =>
+   [
     'match' => '09AB 09CD 09A4',
     'replace' => 'E133',
-  ),
-  181 => 
-  array (
+  ],
+  181 =>
+   [
     'match' => '09AB 09CD 09AA',
     'replace' => 'E134',
-  ),
-  182 => 
-  array (
+  ],
+  182 =>
+   [
     'match' => '09AB 09CD 09AB',
     'replace' => 'E135',
-  ),
-  183 => 
-  array (
+  ],
+  183 =>
+   [
     'match' => '09AB 09CD 09B2',
     'replace' => 'E136',
-  ),
-  184 => 
-  array (
+  ],
+  184 =>
+   [
     'match' => '09AC 09CD 099C',
     'replace' => 'E137',
-  ),
-  185 => 
-  array (
+  ],
+  185 =>
+   [
     'match' => '09AC 09CD 099D',
     'replace' => 'E138',
-  ),
-  186 => 
-  array (
+  ],
+  186 =>
+   [
     'match' => '09AC 09CD 09A1',
     'replace' => 'E139',
-  ),
-  187 => 
-  array (
+  ],
+  187 =>
+   [
     'match' => '09AC 09CD 09A2',
     'replace' => 'E13A',
-  ),
-  188 => 
-  array (
+  ],
+  188 =>
+   [
     'match' => '09AC 09CD 09A6',
     'replace' => 'E13B',
-  ),
-  189 => 
-  array (
+  ],
+  189 =>
+   [
     'match' => '09AC 09CD 09A7',
     'replace' => 'E13C',
-  ),
-  190 => 
-  array (
+  ],
+  190 =>
+   [
     'match' => '09AC 09CD 09A8',
     'replace' => 'E13D',
-  ),
-  191 => 
-  array (
+  ],
+  191 =>
+   [
     'match' => '09AC 09CD 09B2',
     'replace' => 'E13E',
-  ),
-  192 => 
-  array (
+  ],
+  192 =>
+   [
     'match' => '09AC 09CD 09AC',
     'replace' => 'E13F',
-  ),
-  193 => 
-  array (
+  ],
+  193 =>
+   [
     'match' => '09AD 09CD 09A3',
     'replace' => 'E141',
-  ),
-  194 => 
-  array (
+  ],
+  194 =>
+   [
     'match' => '09AD 09CD 09A8',
     'replace' => 'E142',
-  ),
-  195 => 
-  array (
+  ],
+  195 =>
+   [
     'match' => '09AD 09CD 09AD',
     'replace' => 'E143',
-  ),
-  196 => 
-  array (
+  ],
+  196 =>
+   [
     'match' => '09AD 09CD 09AE',
     'replace' => 'E144',
-  ),
-  197 => 
-  array (
+  ],
+  197 =>
+   [
     'match' => '09AD 09CD 09B2',
     'replace' => 'E145',
-  ),
-  198 => 
-  array (
+  ],
+  198 =>
+   [
     'match' => '09AD 09CD 09AC',
     'replace' => 'E146',
-  ),
-  199 => 
-  array (
+  ],
+  199 =>
+   [
     'match' => '09AE 09CD 09A3',
     'replace' => 'E147',
-  ),
-  200 => 
-  array (
+  ],
+  200 =>
+   [
     'match' => '09AE 09CD 09A8',
     'replace' => 'E148',
-  ),
-  201 => 
-  array (
+  ],
+  201 =>
+   [
     'match' => '09AE 09CD 09AA',
     'replace' => 'E149',
-  ),
-  202 => 
-  array (
+  ],
+  202 =>
+   [
     'match' => '09AE 09CD 09AB',
     'replace' => 'E14A',
-  ),
-  203 => 
-  array (
+  ],
+  203 =>
+   [
     'match' => '09AE 09CD 09AC',
     'replace' => 'E14B',
-  ),
-  204 => 
-  array (
+  ],
+  204 =>
+   [
     'match' => '09AE 09CD 09AD',
     'replace' => 'E14C',
-  ),
-  205 => 
-  array (
+  ],
+  205 =>
+   [
     'match' => '09AE 09CD 09AE',
     'replace' => 'E14D',
-  ),
-  206 => 
-  array (
+  ],
+  206 =>
+   [
     'match' => '09AE 09CD 09B2',
     'replace' => 'E14E',
-  ),
-  207 => 
-  array (
+  ],
+  207 =>
+   [
     'match' => '09B2 09CD 0995',
     'replace' => 'E153',
-  ),
-  208 => 
-  array (
+  ],
+  208 =>
+   [
     'match' => '09B2 09CD 0996',
     'replace' => 'E154',
-  ),
-  209 => 
-  array (
+  ],
+  209 =>
+   [
     'match' => '09B2 09CD 0997',
     'replace' => 'E155',
-  ),
-  210 => 
-  array (
+  ],
+  210 =>
+   [
     'match' => '09B2 09CD 099A',
     'replace' => 'E156',
-  ),
-  211 => 
-  array (
+  ],
+  211 =>
+   [
     'match' => '09B2 09CD 099C',
     'replace' => 'E157',
-  ),
-  212 => 
-  array (
+  ],
+  212 =>
+   [
     'match' => '09B2 09CD 099F',
     'replace' => 'E158',
-  ),
-  213 => 
-  array (
+  ],
+  213 =>
+   [
     'match' => '09B2 09CD 09A1',
     'replace' => 'E159',
-  ),
-  214 => 
-  array (
+  ],
+  214 =>
+   [
     'match' => '09B2 09CD 09A6',
     'replace' => 'E15A',
-  ),
-  215 => 
-  array (
+  ],
+  215 =>
+   [
     'match' => '09B2 09CD 09AA',
     'replace' => 'E15B',
-  ),
-  216 => 
-  array (
+  ],
+  216 =>
+   [
     'match' => '09B2 09CD 09AB',
     'replace' => 'E15C',
-  ),
-  217 => 
-  array (
+  ],
+  217 =>
+   [
     'match' => '09B2 09CD 09AC',
     'replace' => 'E15D',
-  ),
-  218 => 
-  array (
+  ],
+  218 =>
+   [
     'match' => '09B2 09CD 09AE',
     'replace' => 'E15E',
-  ),
-  219 => 
-  array (
+  ],
+  219 =>
+   [
     'match' => '09B2 09CD 09B2',
     'replace' => 'E15F',
-  ),
-  220 => 
-  array (
+  ],
+  220 =>
+   [
     'match' => '09B2 09CD 09B6',
     'replace' => 'E160',
-  ),
-  221 => 
-  array (
+  ],
+  221 =>
+   [
     'match' => '09B2 09CD 09B8',
     'replace' => 'E161',
-  ),
-  222 => 
-  array (
+  ],
+  222 =>
+   [
     'match' => '09B2 09CD 09B9',
     'replace' => 'E162',
-  ),
-  223 => 
-  array (
+  ],
+  223 =>
+   [
     'match' => '09B6 09CD 0995',
     'replace' => 'E166',
-  ),
-  224 => 
-  array (
+  ],
+  224 =>
+   [
     'match' => '09B6 09CD 099A',
     'replace' => 'E167',
-  ),
-  225 => 
-  array (
+  ],
+  225 =>
+   [
     'match' => '09B6 09CD 099B',
     'replace' => 'E168',
-  ),
-  226 => 
-  array (
+  ],
+  226 =>
+   [
     'match' => '09B6 09CD 09A4',
     'replace' => 'E169',
-  ),
-  227 => 
-  array (
+  ],
+  227 =>
+   [
     'match' => '09B6 09CD 09A8',
     'replace' => 'E16A',
-  ),
-  228 => 
-  array (
+  ],
+  228 =>
+   [
     'match' => '09B6 09CD 09AA',
     'replace' => 'E16B',
-  ),
-  229 => 
-  array (
+  ],
+  229 =>
+   [
     'match' => '09B6 09CD 09AE',
     'replace' => 'E16C',
-  ),
-  230 => 
-  array (
+  ],
+  230 =>
+   [
     'match' => '09B6 09CD 09AF',
     'replace' => 'E16D',
-  ),
-  231 => 
-  array (
+  ],
+  231 =>
+   [
     'match' => '09B6 09CD 09B2',
     'replace' => 'E16E',
-  ),
-  232 => 
-  array (
+  ],
+  232 =>
+   [
     'match' => '09B6 09CD 09AC',
     'replace' => 'E16F',
-  ),
-  233 => 
-  array (
+  ],
+  233 =>
+   [
     'match' => '09B6 09CD 09B6',
     'replace' => 'E170',
-  ),
-  234 => 
-  array (
+  ],
+  234 =>
+   [
     'match' => '09B7 09CD 0995',
     'replace' => 'E171',
-  ),
-  235 => 
-  array (
+  ],
+  235 =>
+   [
     'match' => '09B7 09CD 099F',
     'replace' => 'E172',
-  ),
-  236 => 
-  array (
+  ],
+  236 =>
+   [
     'match' => '09B7 09CD 09A0',
     'replace' => 'E173',
-  ),
-  237 => 
-  array (
+  ],
+  237 =>
+   [
     'match' => '09B7 09CD 09A3',
     'replace' => 'E174',
-  ),
-  238 => 
-  array (
+  ],
+  238 =>
+   [
     'match' => '09B7 09CD 09AA',
     'replace' => 'E175',
-  ),
-  239 => 
-  array (
+  ],
+  239 =>
+   [
     'match' => '09B7 09CD 09AB',
     'replace' => 'E176',
-  ),
-  240 => 
-  array (
+  ],
+  240 =>
+   [
     'match' => '09B7 09CD 09AE',
     'replace' => 'E177',
-  ),
-  241 => 
-  array (
+  ],
+  241 =>
+   [
     'match' => '09B7 09CD 09AF',
     'replace' => 'E178',
-  ),
-  242 => 
-  array (
+  ],
+  242 =>
+   [
     'match' => '09B7 09CD 09AC',
     'replace' => 'E179',
-  ),
-  243 => 
-  array (
+  ],
+  243 =>
+   [
     'match' => '09B8 09CD 0995',
     'replace' => 'E17E',
-  ),
-  244 => 
-  array (
+  ],
+  244 =>
+   [
     'match' => '09B8 09CD 0996',
     'replace' => 'E17F',
-  ),
-  245 => 
-  array (
+  ],
+  245 =>
+   [
     'match' => '09B8 09CD 099C',
     'replace' => 'E180',
-  ),
-  246 => 
-  array (
+  ],
+  246 =>
+   [
     'match' => '09B8 09CD 099F',
     'replace' => 'E181',
-  ),
-  247 => 
-  array (
+  ],
+  247 =>
+   [
     'match' => '09B8 09CD 09A4',
     'replace' => 'E182',
-  ),
-  248 => 
-  array (
+  ],
+  248 =>
+   [
     'match' => '09B8 09CD 09A5',
     'replace' => 'E183',
-  ),
-  249 => 
-  array (
+  ],
+  249 =>
+   [
     'match' => '09B8 09CD 09A8',
     'replace' => 'E184',
-  ),
-  250 => 
-  array (
+  ],
+  250 =>
+   [
     'match' => '09B8 09CD 09AA',
     'replace' => 'E185',
-  ),
-  251 => 
-  array (
+  ],
+  251 =>
+   [
     'match' => '09B8 09CD 09AB',
     'replace' => 'E186',
-  ),
-  252 => 
-  array (
+  ],
+  252 =>
+   [
     'match' => '09B8 09CD 09AE',
     'replace' => 'E187',
-  ),
-  253 => 
-  array (
+  ],
+  253 =>
+   [
     'match' => '09B8 09CD 09AF',
     'replace' => 'E188',
-  ),
-  254 => 
-  array (
+  ],
+  254 =>
+   [
     'match' => '09B8 09CD 09B2',
     'replace' => 'E189',
-  ),
-  255 => 
-  array (
+  ],
+  255 =>
+   [
     'match' => '09B8 09CD 09AC',
     'replace' => 'E18A',
-  ),
-  256 => 
-  array (
+  ],
+  256 =>
+   [
     'match' => '09B8 09CD 09B8',
     'replace' => 'E18B',
-  ),
-  257 => 
-  array (
+  ],
+  257 =>
+   [
     'match' => '09B9 09CD 09A3',
     'replace' => 'E192',
-  ),
-  258 => 
-  array (
+  ],
+  258 =>
+   [
     'match' => '09B9 09CD 09A8',
     'replace' => 'E193',
-  ),
-  259 => 
-  array (
+  ],
+  259 =>
+   [
     'match' => '09B9 09CD 09AE',
     'replace' => 'E194',
-  ),
-  260 => 
-  array (
+  ],
+  260 =>
+   [
     'match' => '09B9 09CD 09AF',
     'replace' => 'E195',
-  ),
-  261 => 
-  array (
+  ],
+  261 =>
+   [
     'match' => '09B9 09CD 09B2',
     'replace' => 'E196',
-  ),
-  262 => 
-  array (
+  ],
+  262 =>
+   [
     'match' => '09B9 09CD 09AC',
     'replace' => 'E197',
-  ),
-  263 => 
-  array (
+  ],
+  263 =>
+   [
     'match' => '09DC 09CD 0997',
     'replace' => 'E198',
-  ),
-  264 => 
-  array (
+  ],
+  264 =>
+   [
     'match' => '09DC 09CD 099C',
     'replace' => 'E199',
-  ),
-  265 => 
-  array (
+  ],
+  265 =>
+   [
     'match' => '09DC 09CD 09A7',
     'replace' => 'E19A',
-  ),
-  266 => 
-  array (
+  ],
+  266 =>
+   [
     'match' => '0995 E1CD',
     'replace' => 'E041',
-  ),
-  267 => 
-  array (
+  ],
+  267 =>
+   [
     'match' => '0996 E1CD',
     'replace' => 'E042',
-  ),
-  268 => 
-  array (
+  ],
+  268 =>
+   [
     'match' => '0997 E1CD',
     'replace' => 'E043',
-  ),
-  269 => 
-  array (
+  ],
+  269 =>
+   [
     'match' => '0998 E1CD',
     'replace' => 'E044',
-  ),
-  270 => 
-  array (
+  ],
+  270 =>
+   [
     'match' => '0999 E1CD',
     'replace' => 'E045',
-  ),
-  271 => 
-  array (
+  ],
+  271 =>
+   [
     'match' => '099A E1CD',
     'replace' => 'E046',
-  ),
-  272 => 
-  array (
+  ],
+  272 =>
+   [
     'match' => '099B E1CD',
     'replace' => 'E047',
-  ),
-  273 => 
-  array (
+  ],
+  273 =>
+   [
     'match' => '099C E1CD',
     'replace' => 'E048',
-  ),
-  274 => 
-  array (
+  ],
+  274 =>
+   [
     'match' => '099D E1CD',
     'replace' => 'E049',
-  ),
-  275 => 
-  array (
+  ],
+  275 =>
+   [
     'match' => '099F E1CD',
     'replace' => 'E04A',
-  ),
-  276 => 
-  array (
+  ],
+  276 =>
+   [
     'match' => '09A0 E1CD',
     'replace' => 'E04B',
-  ),
-  277 => 
-  array (
+  ],
+  277 =>
+   [
     'match' => '09A1 E1CD',
     'replace' => 'E04C',
-  ),
-  278 => 
-  array (
+  ],
+  278 =>
+   [
     'match' => '09A2 E1CD',
     'replace' => 'E04D',
-  ),
-  279 => 
-  array (
+  ],
+  279 =>
+   [
     'match' => '09A3 E1CD',
     'replace' => 'E04E',
-  ),
-  280 => 
-  array (
+  ],
+  280 =>
+   [
     'match' => '09A4 E1CD',
     'replace' => 'E04F',
-  ),
-  281 => 
-  array (
+  ],
+  281 =>
+   [
     'match' => '09A5 E1CD',
     'replace' => 'E050',
-  ),
-  282 => 
-  array (
+  ],
+  282 =>
+   [
     'match' => '09A6 E1CD',
     'replace' => 'E051',
-  ),
-  283 => 
-  array (
+  ],
+  283 =>
+   [
     'match' => '09A7 E1CD',
     'replace' => 'E052',
-  ),
-  284 => 
-  array (
+  ],
+  284 =>
+   [
     'match' => '09A8 E1CD',
     'replace' => 'E053',
-  ),
-  285 => 
-  array (
+  ],
+  285 =>
+   [
     'match' => '09AA E1CD',
     'replace' => 'E054',
-  ),
-  286 => 
-  array (
+  ],
+  286 =>
+   [
     'match' => '09AB E1CD',
     'replace' => 'E055',
-  ),
-  287 => 
-  array (
+  ],
+  287 =>
+   [
     'match' => '09AC E1CD',
     'replace' => 'E056',
-  ),
-  288 => 
-  array (
+  ],
+  288 =>
+   [
     'match' => '09AD E1CD',
     'replace' => 'E057',
-  ),
-  289 => 
-  array (
+  ],
+  289 =>
+   [
     'match' => '09AE E1CD',
     'replace' => 'E058',
-  ),
-  290 => 
-  array (
+  ],
+  290 =>
+   [
     'match' => '09AF E1CD',
     'replace' => 'E059',
-  ),
-  291 => 
-  array (
+  ],
+  291 =>
+   [
     'match' => '09B0 E1CD',
     'replace' => 'E05A',
-  ),
-  292 => 
-  array (
+  ],
+  292 =>
+   [
     'match' => '09B2 E1CD',
     'replace' => 'E05B',
-  ),
-  293 => 
-  array (
+  ],
+  293 =>
+   [
     'match' => '09B6 E1CD',
     'replace' => 'E05C',
-  ),
-  294 => 
-  array (
+  ],
+  294 =>
+   [
     'match' => '09B7 E1CD',
     'replace' => 'E05D',
-  ),
-  295 => 
-  array (
+  ],
+  295 =>
+   [
     'match' => '09B8 E1CD',
     'replace' => 'E05E',
-  ),
-  296 => 
-  array (
+  ],
+  296 =>
+   [
     'match' => '09B9 E1CD',
     'replace' => 'E05F',
-  ),
-  297 => 
-  array (
+  ],
+  297 =>
+   [
     'match' => '09DC E1CD',
     'replace' => 'E060',
-  ),
-  298 => 
-  array (
+  ],
+  298 =>
+   [
     'match' => '09DD E1CD',
     'replace' => 'E061',
-  ),
-  299 => 
-  array (
+  ],
+  299 =>
+   [
     'match' => '09DF E1CD',
     'replace' => 'E062',
-  ),
-  300 => 
-  array (
+  ],
+  300 =>
+   [
     'match' => '00D0 09B0',
     'replace' => 'E1CD',
-  ),
-  301 => 
-  array (
+  ],
+  301 =>
+   [
     'match' => 'E06A E1CD',
     'replace' => 'E07B',
-  ),
-  302 => 
-  array (
+  ],
+  302 =>
+   [
     'match' => 'E06E E1CD',
     'replace' => 'E07C',
-  ),
-  303 => 
-  array (
+  ],
+  303 =>
+   [
     'match' => 'E071 E1CD',
     'replace' => 'E07D',
-  ),
-  304 => 
-  array (
+  ],
+  304 =>
+   [
     'match' => 'E071 09CD 09AC',
     'replace' => 'E07E',
-  ),
-  305 => 
-  array (
+  ],
+  305 =>
+   [
     'match' => 'E002 09CD 09A3',
     'replace' => 'E07F',
-  ),
-  306 => 
-  array (
+  ],
+  306 =>
+   [
     'match' => 'E002 09CD 09AE',
     'replace' => 'E080',
-  ),
-  307 => 
-  array (
+  ],
+  307 =>
+   [
     'match' => 'E002 E1CD',
     'replace' => 'E081',
-  ),
-  308 => 
-  array (
+  ],
+  308 =>
+   [
     'match' => 'E002 09CD 09AC',
     'replace' => 'E082',
-  ),
-  309 => 
-  array (
+  ],
+  309 =>
+   [
     'match' => 'E090 E1CD',
     'replace' => 'E097',
-  ),
-  310 => 
-  array (
+  ],
+  310 =>
+   [
     'match' => 'E090 09CD 09AC',
     'replace' => 'E098',
-  ),
-  311 => 
-  array (
+  ],
+  311 =>
+   [
     'match' => 'E09C E1CD',
     'replace' => 'E0A7',
-  ),
-  312 => 
-  array (
+  ],
+  312 =>
+   [
     'match' => 'E09F E1CD',
     'replace' => 'E0A8',
-  ),
-  313 => 
-  array (
+  ],
+  313 =>
+   [
     'match' => '0999 09CD E002',
     'replace' => 'E0A9',
-  ),
-  314 => 
-  array (
+  ],
+  314 =>
+   [
     'match' => 'E0AD E1CD',
     'replace' => 'E0B1',
-  ),
-  315 => 
-  array (
+  ],
+  315 =>
+   [
     'match' => 'E0AD 09CD 09B2',
     'replace' => 'E0B2',
-  ),
-  316 => 
-  array (
+  ],
+  316 =>
+   [
     'match' => 'E0AD 09CD 09AC',
     'replace' => 'E0B3',
-  ),
-  317 => 
-  array (
+  ],
+  317 =>
+   [
     'match' => 'E0B7 E1CD',
     'replace' => 'E0BC',
-  ),
-  318 => 
-  array (
+  ],
+  318 =>
+   [
     'match' => 'E0B7 09CD 09AC',
     'replace' => 'E0BD',
-  ),
-  319 => 
-  array (
+  ],
+  319 =>
+   [
     'match' => 'E0E0 E1CD',
     'replace' => 'E0E8',
-  ),
-  320 => 
-  array (
+  ],
+  320 =>
+   [
     'match' => 'E0E2 E1CD',
     'replace' => 'E0E9',
-  ),
-  321 => 
-  array (
+  ],
+  321 =>
+   [
     'match' => 'E0EA E1CD',
     'replace' => 'E0EF',
-  ),
-  322 => 
-  array (
+  ],
+  322 =>
+   [
     'match' => 'E0EA 09CD 09AC',
     'replace' => 'E0F0',
-  ),
-  323 => 
-  array (
+  ],
+  323 =>
+   [
     'match' => 'E0F6 E1CD',
     'replace' => 'E0FD',
-  ),
-  324 => 
-  array (
+  ],
+  324 =>
+   [
     'match' => 'E0F6 09CD 09AC',
     'replace' => 'E0FE',
-  ),
-  325 => 
-  array (
+  ],
+  325 =>
+   [
     'match' => 'E0F7 E1CD',
     'replace' => 'E0FF',
-  ),
-  326 => 
-  array (
+  ],
+  326 =>
+   [
     'match' => 'E0F7 09CD 09AC',
     'replace' => 'E100',
-  ),
-  327 => 
-  array (
+  ],
+  327 =>
+   [
     'match' => 'E0FA E1CD',
     'replace' => 'E101',
-  ),
-  328 => 
-  array (
+  ],
+  328 =>
+   [
     'match' => 'E10A E1CD',
     'replace' => 'E11A',
-  ),
-  329 => 
-  array (
+  ],
+  329 =>
+   [
     'match' => 'E10C E1CD',
     'replace' => 'E11B',
-  ),
-  330 => 
-  array (
+  ],
+  330 =>
+   [
     'match' => 'E10D E1CD',
     'replace' => 'E11C',
-  ),
-  331 => 
-  array (
+  ],
+  331 =>
+   [
     'match' => 'E10D 09CD 09AC',
     'replace' => 'E11D',
-  ),
-  332 => 
-  array (
+  ],
+  332 =>
+   [
     'match' => 'E10F E1CD',
     'replace' => 'E11E',
-  ),
-  333 => 
-  array (
+  ],
+  333 =>
+   [
     'match' => 'E10F 09CD 09AC',
     'replace' => 'E11F',
-  ),
-  334 => 
-  array (
+  ],
+  334 =>
+   [
     'match' => 'E110 E1CD',
     'replace' => 'E120',
-  ),
-  335 => 
-  array (
+  ],
+  335 =>
+   [
     'match' => 'E110 09CD 09AC',
     'replace' => 'E121',
-  ),
-  336 => 
-  array (
+  ],
+  336 =>
+   [
     'match' => 'E13C 09CD 09AC',
     'replace' => 'E140',
-  ),
-  337 => 
-  array (
+  ],
+  337 =>
+   [
     'match' => 'E149 E1CD',
     'replace' => 'E14F',
-  ),
-  338 => 
-  array (
+  ],
+  338 =>
+   [
     'match' => 'E14A E1CD',
     'replace' => 'E150',
-  ),
-  339 => 
-  array (
+  ],
+  339 =>
+   [
     'match' => 'E14B E1CD',
     'replace' => 'E151',
-  ),
-  340 => 
-  array (
+  ],
+  340 =>
+   [
     'match' => 'E14C E1CD',
     'replace' => 'E152',
-  ),
-  341 => 
-  array (
+  ],
+  341 =>
+   [
     'match' => 'E158 E1CD',
     'replace' => 'E163',
-  ),
-  342 => 
-  array (
+  ],
+  342 =>
+   [
     'match' => 'E15B E1CD',
     'replace' => 'E164',
-  ),
-  343 => 
-  array (
+  ],
+  343 =>
+   [
     'match' => 'E161 09CD 099F',
     'replace' => 'E165',
-  ),
-  344 => 
-  array (
+  ],
+  344 =>
+   [
     'match' => 'E171 E1CD',
     'replace' => 'E17A',
-  ),
-  345 => 
-  array (
+  ],
+  345 =>
+   [
     'match' => 'E172 E1CD',
     'replace' => 'E17B',
-  ),
-  346 => 
-  array (
+  ],
+  346 =>
+   [
     'match' => 'E172 09CD 09AC',
     'replace' => 'E17C',
-  ),
-  347 => 
-  array (
+  ],
+  347 =>
+   [
     'match' => 'E175 E1CD',
     'replace' => 'E17D',
-  ),
-  348 => 
-  array (
+  ],
+  348 =>
+   [
     'match' => 'E17E E1CD',
     'replace' => 'E18C',
-  ),
-  349 => 
-  array (
+  ],
+  349 =>
+   [
     'match' => 'E181 E1CD',
     'replace' => 'E18D',
-  ),
-  350 => 
-  array (
+  ],
+  350 =>
+   [
     'match' => 'E182 E1CD',
     'replace' => 'E18E',
-  ),
-  351 => 
-  array (
+  ],
+  351 =>
+   [
     'match' => 'E182 09CD 09AC',
     'replace' => 'E18F',
-  ),
-  352 => 
-  array (
+  ],
+  352 =>
+   [
     'match' => 'E185 E1CD',
     'replace' => 'E190',
-  ),
-  353 => 
-  array (
+  ],
+  353 =>
+   [
     'match' => 'E185 09CD 09B2',
     'replace' => 'E191',
-  ),
-  354 => 
-  array (
+  ],
+  354 =>
+   [
     'match' => '((0995|0996|0997|0998|0999|099A|099B|099C|099D|099F|09A0|09A1|09A2|09A3|09A4|09A5|09A6|09A7|09A8|09AA|09AB|09AC|09AD|09AE|09AF|09B0|09B2|09B6|09B7|09B8|09B9|09DC|09DD|09DF)) 09CD 09AF',
     'replace' => '\\1 E067',
-  ),
-  355 => 
-  array (
+  ],
+  355 =>
+   [
     'match' => '((E041|E042|E043|E044|E045|E046|E047|E048|E049|E04A|E04B|E04C|E04D|E04E|E04F|E050|E051|E052|E053|E054|E055|E056|E057|E058|E059|E05A|E05B|E05C|E05D|E05E|E05F|E060|E061|E062)) 09CD 09AF',
     'replace' => '\\1 E067',
-  ),
-  356 => 
-  array (
+  ],
+  356 =>
+   [
     'match' => '((E002|E003|E06B|E06C|E06D|E06E|E06F|E070|E071|E072|E073|E074|E075|E076|E079|E07A|E07C|E07D|E07E|E07F|E080|E081|E082|E083|E086|E089|E08A|E08B|E08C|E08D|E08F|E090|E092|E095|E097|E098|E09A|E09B|E09D|E09F|E0A2|E0A4|E0A5|E0A6|E0A7|E0A8|E0A9|E0AA|E0AB|E0AC|E0AD|E0AE|E0AF|E0B1|E0B2|E0B3|E0B4|E0B7|E0B8|E0B9|E0BB|E0BC|E0BD|E0BE|E0BF|E0C5|E0C6|E0C7|E0C8|E0C9|E0CB|E0CC|E0CD|E0CE|E0CF|E0D2|E0D3|E0D5|E0D6|E0D8|E0D9|E0DA|E0DB|E0E0|E0E1|E0E3|E0E5|E0E7|E0E8|E0ED|E0F1|E0F5|E0F6|E0FB|E0FC|E0FD|E0FE|E102|E104|E105|E106|E108|E109|E10A|E10B|E10C|E10F|E110|E112|E114|E115|E117|E118|E119|E11A|E11B|E11E|E11F|E120|E121|E122|E123|E124|E125|E126|E127|E12B|E12C|E130|E131|E132|E133|E134|E135|E136|E137|E139|E13A|E13B|E13F|E144|E149|E14A|E14D|E14F|E150|E153|E154|E156|E157|E158|E159|E15A|E15C|E161|E162|E163|E165|E166|E167|E168|E16C|E16D|E174|E175|E176|E177|E178|E17A|E17B|E17C|E17D|E17E|E17F|E180|E181|E185|E186|E187|E188|E18B|E18C|E18D|E190|E191|E193|E194|E195|E198|E199|E19A|0995|0999|099A|099B|099E|09A1|09A2|09A4|09AB|09AD|09B9|E002|E003|E06A|E073|E074|E077|E078|E07B|E07D|E07E|E07F|E081|E082|E084|E08A|E08C|E08D|E090|E092|E094|E097|E098|E09C|E0A0|E0A1|E0A6|E0A7|E0A9|E0AA|E0AB|E0AC|E0AD|E0AE|E0B1|E0B2|E0B3|E0B4|E0B5|E0B6|E0C1|E0C2|E0C3|E0C4|E0C6|E0C8|E0C9|E0CC|E0CF|E0D9|E0DA|E0DC|E0DD|E0DF|E0E2|E0E3|E0E9|E0EA|E0F0|E108|E109|E10C|E10D|E10E|E110|E112|E113|E11B|E120|E121|E122|E124|E125|E128|E12B|E133|E134|E135|E136|E137|E139|E13A|E13C|E140|E143|E14A|E14C|E153|E156|E157|E159|E15C|E162|E166|E167|E168|E169|E171|E174|E176|E17A|E17E|E180|E182|E183|E18C|E192|E193|E194|E195|E196|E197|09A6|E08F|E0B9|E0F4|E0F6|E0F7|E0F8|E0F9|E0FA|E0FD|E0DC|E0FF|E100|E101|E10F|E11E|E11F|E13B|E15A|099F|09A0|E06E|E06F|E07C|E0CA|E0CB|E0D0|E0D1|E0D4|E0D5|E0D7|E0E0|E0E1|E0E8|E10A|E10B|E11A|E126|E127|E132|E158|E163|E165|E172|E173|E17B|E17C|E181|E18D)) 09CD 09AF',
     'replace' => '\\1 E067',
-  ),
-  357 => 
-  array (
+  ],
+  357 =>
+   [
     'match' => '(200C) 09CD 09AF',
     'replace' => '\\1 E067',
-  ),
-  358 => 
-  array (
+  ],
+  358 =>
+   [
     'match' => 'E0A9 E1CD',
     'replace' => 'E0AA',
-  ),
-  359 => 
-  array (
+  ],
+  359 =>
+   [
     'match' => 'E0A9 E1CD',
     'replace' => 'E0AB',
-  ),
-  360 => 
-  array (
+  ],
+  360 =>
+   [
     'match' => '(09BF (0995|0996|0997|0998|0999|099A|099B|099C|099D|099F|09A0|09A1|09A2|09A3|09A4|09A5|09A6|09A7|09A8|09AA|09AB|09AC|09AD|09AE|09AF|09B0|09B2|09B6|09B7|09B8|09B9|09DC|09DD|09DF)) 09CD',
     'replace' => '\\1 09CD 09BF',
-  ),
-  361 => 
-  array (
+  ],
+  361 =>
+   [
     'match' => '(09BF (0995|0996|0997|0998|0999|099A|099B|099C|099D|099F|09A0|09A1|09A2|09A3|09A4|09A5|09A6|09A7|09A8|09AA|09AB|09AC|09AD|09AE|09AF|09B0|09B2|09B6|09B7|09B8|09B9|09DC|09DD|09DF)) 007E',
     'replace' => '\\1 007E 09BF',
-  ),
-  362 => 
-  array (
+  ],
+  362 =>
+   [
     'match' => '(09C7 (0995|0996|0997|0998|0999|099A|099B|099C|099D|099F|09A0|09A1|09A2|09A3|09A4|09A5|09A6|09A7|09A8|09AA|09AB|09AC|09AD|09AE|09AF|09B0|09B2|09B6|09B7|09B8|09B9|09DC|09DD|09DF)) 09CD',
     'replace' => '\\1 09CD 09C7',
-  ),
-  363 => 
-  array (
+  ],
+  363 =>
+   [
     'match' => '(09C7 (0995|0996|0997|0998|0999|099A|099B|099C|099D|099F|09A0|09A1|09A2|09A3|09A4|09A5|09A6|09A7|09A8|09AA|09AB|09AC|09AD|09AE|09AF|09B0|09B2|09B6|09B7|09B8|09B9|09DC|09DD|09DF)) 007E',
     'replace' => '\\1 007E 09C7',
-  ),
-  364 => 
-  array (
+  ],
+  364 =>
+   [
     'match' => '(09C8 (0995|0996|0997|0998|0999|099A|099B|099C|099D|099F|09A0|09A1|09A2|09A3|09A4|09A5|09A6|09A7|09A8|09AA|09AB|09AC|09AD|09AE|09AF|09B0|09B2|09B6|09B7|09B8|09B9|09DC|09DD|09DF)) 09CD',
     'replace' => '\\1 09CD 09C8',
-  ),
-  365 => 
-  array (
+  ],
+  365 =>
+   [
     'match' => '(09C8 (0995|0996|0997|0998|0999|099A|099B|099C|099D|099F|09A0|09A1|09A2|09A3|09A4|09A5|09A6|09A7|09A8|09AA|09AB|09AC|09AD|09AE|09AF|09B0|09B2|09B6|09B7|09B8|09B9|09DC|09DD|09DF)) 007E',
     'replace' => '\\1 007E 09C8',
-  ),
-  366 => 
-  array (
+  ],
+  366 =>
+   [
     'match' => '09BF 0995 (09CD (09BF|09C7|09C8))',
     'replace' => '0995 \\1',
-  ),
-  367 => 
-  array (
+  ],
+  367 =>
+   [
     'match' => '09BF 0996 (09CD (09BF|09C7|09C8))',
     'replace' => '0996 \\1',
-  ),
-  368 => 
-  array (
+  ],
+  368 =>
+   [
     'match' => '09BF 0997 (09CD (09BF|09C7|09C8))',
     'replace' => '0997 \\1',
-  ),
-  369 => 
-  array (
+  ],
+  369 =>
+   [
     'match' => '09BF 0998 (09CD (09BF|09C7|09C8))',
     'replace' => '0998 \\1',
-  ),
-  370 => 
-  array (
+  ],
+  370 =>
+   [
     'match' => '09BF 0999 (09CD (09BF|09C7|09C8))',
     'replace' => '0999 \\1',
-  ),
-  371 => 
-  array (
+  ],
+  371 =>
+   [
     'match' => '09BF 099A (09CD (09BF|09C7|09C8))',
     'replace' => '099A \\1',
-  ),
-  372 => 
-  array (
+  ],
+  372 =>
+   [
     'match' => '09BF 099B (09CD (09BF|09C7|09C8))',
     'replace' => '099B \\1',
-  ),
-  373 => 
-  array (
+  ],
+  373 =>
+   [
     'match' => '09BF 099C (09CD (09BF|09C7|09C8))',
     'replace' => '099C \\1',
-  ),
-  374 => 
-  array (
+  ],
+  374 =>
+   [
     'match' => '09BF 099D (09CD (09BF|09C7|09C8))',
     'replace' => '099D \\1',
-  ),
-  375 => 
-  array (
+  ],
+  375 =>
+   [
     'match' => '09BF 099F (09CD (09BF|09C7|09C8))',
     'replace' => '099F \\1',
-  ),
-  376 => 
-  array (
+  ],
+  376 =>
+   [
     'match' => '09BF 09A0 (09CD (09BF|09C7|09C8))',
     'replace' => '09A0 \\1',
-  ),
-  377 => 
-  array (
+  ],
+  377 =>
+   [
     'match' => '09BF 09A1 (09CD (09BF|09C7|09C8))',
     'replace' => '09A1 \\1',
-  ),
-  378 => 
-  array (
+  ],
+  378 =>
+   [
     'match' => '09BF 09A2 (09CD (09BF|09C7|09C8))',
     'replace' => '09A2 \\1',
-  ),
-  379 => 
-  array (
+  ],
+  379 =>
+   [
     'match' => '09BF 09A3 (09CD (09BF|09C7|09C8))',
     'replace' => '09A3 \\1',
-  ),
-  380 => 
-  array (
+  ],
+  380 =>
+   [
     'match' => '09BF 09A4 (09CD (09BF|09C7|09C8))',
     'replace' => '09A4 \\1',
-  ),
-  381 => 
-  array (
+  ],
+  381 =>
+   [
     'match' => '09BF 09A5 (09CD (09BF|09C7|09C8))',
     'replace' => '09A5 \\1',
-  ),
-  382 => 
-  array (
+  ],
+  382 =>
+   [
     'match' => '09BF 09A6 (09CD (09BF|09C7|09C8))',
     'replace' => '09A6 \\1',
-  ),
-  383 => 
-  array (
+  ],
+  383 =>
+   [
     'match' => '09BF 09A7 (09CD (09BF|09C7|09C8))',
     'replace' => '09A7 \\1',
-  ),
-  384 => 
-  array (
+  ],
+  384 =>
+   [
     'match' => '09BF 09A8 (09CD (09BF|09C7|09C8))',
     'replace' => '09A8 \\1',
-  ),
-  385 => 
-  array (
+  ],
+  385 =>
+   [
     'match' => '09BF 09AA (09CD (09BF|09C7|09C8))',
     'replace' => '09AA \\1',
-  ),
-  386 => 
-  array (
+  ],
+  386 =>
+   [
     'match' => '09BF 09AB (09CD (09BF|09C7|09C8))',
     'replace' => '09AB \\1',
-  ),
-  387 => 
-  array (
+  ],
+  387 =>
+   [
     'match' => '09BF 09AC (09CD (09BF|09C7|09C8))',
     'replace' => '09AC \\1',
-  ),
-  388 => 
-  array (
+  ],
+  388 =>
+   [
     'match' => '09BF 09AD (09CD (09BF|09C7|09C8))',
     'replace' => '09AD \\1',
-  ),
-  389 => 
-  array (
+  ],
+  389 =>
+   [
     'match' => '09BF 09AE (09CD (09BF|09C7|09C8))',
     'replace' => '09AE \\1',
-  ),
-  390 => 
-  array (
+  ],
+  390 =>
+   [
     'match' => '09BF 09AF (09CD (09BF|09C7|09C8))',
     'replace' => '09AF \\1',
-  ),
-  391 => 
-  array (
+  ],
+  391 =>
+   [
     'match' => '09BF 09B0 (09CD (09BF|09C7|09C8))',
     'replace' => '09B0 \\1',
-  ),
-  392 => 
-  array (
+  ],
+  392 =>
+   [
     'match' => '09BF 09B2 (09CD (09BF|09C7|09C8))',
     'replace' => '09B2 \\1',
-  ),
-  393 => 
-  array (
+  ],
+  393 =>
+   [
     'match' => '09BF 09B6 (09CD (09BF|09C7|09C8))',
     'replace' => '09B6 \\1',
-  ),
-  394 => 
-  array (
+  ],
+  394 =>
+   [
     'match' => '09BF 09B7 (09CD (09BF|09C7|09C8))',
     'replace' => '09B7 \\1',
-  ),
-  395 => 
-  array (
+  ],
+  395 =>
+   [
     'match' => '09BF 09B8 (09CD (09BF|09C7|09C8))',
     'replace' => '09B8 \\1',
-  ),
-  396 => 
-  array (
+  ],
+  396 =>
+   [
     'match' => '09BF 09B9 (09CD (09BF|09C7|09C8))',
     'replace' => '09B9 \\1',
-  ),
-  397 => 
-  array (
+  ],
+  397 =>
+   [
     'match' => '09BF 09DC (09CD (09BF|09C7|09C8))',
     'replace' => '09DC \\1',
-  ),
-  398 => 
-  array (
+  ],
+  398 =>
+   [
     'match' => '09BF 09DD (09CD (09BF|09C7|09C8))',
     'replace' => '09DD \\1',
-  ),
-  399 => 
-  array (
+  ],
+  399 =>
+   [
     'match' => '09BF 09DF (09CD (09BF|09C7|09C8))',
     'replace' => '09DF \\1',
-  ),
-  400 => 
-  array (
+  ],
+  400 =>
+   [
     'match' => '09C7 0995 (09CD (09BF|09C7|09C8))',
     'replace' => '0995 \\1',
-  ),
-  401 => 
-  array (
+  ],
+  401 =>
+   [
     'match' => '09C7 0996 (09CD (09BF|09C7|09C8))',
     'replace' => '0996 \\1',
-  ),
-  402 => 
-  array (
+  ],
+  402 =>
+   [
     'match' => '09C7 0997 (09CD (09BF|09C7|09C8))',
     'replace' => '0997 \\1',
-  ),
-  403 => 
-  array (
+  ],
+  403 =>
+   [
     'match' => '09C7 0998 (09CD (09BF|09C7|09C8))',
     'replace' => '0998 \\1',
-  ),
-  404 => 
-  array (
+  ],
+  404 =>
+   [
     'match' => '09C7 0999 (09CD (09BF|09C7|09C8))',
     'replace' => '0999 \\1',
-  ),
-  405 => 
-  array (
+  ],
+  405 =>
+   [
     'match' => '09C7 099A (09CD (09BF|09C7|09C8))',
     'replace' => '099A \\1',
-  ),
-  406 => 
-  array (
+  ],
+  406 =>
+   [
     'match' => '09C7 099B (09CD (09BF|09C7|09C8))',
     'replace' => '099B \\1',
-  ),
-  407 => 
-  array (
+  ],
+  407 =>
+   [
     'match' => '09C7 099C (09CD (09BF|09C7|09C8))',
     'replace' => '099C \\1',
-  ),
-  408 => 
-  array (
+  ],
+  408 =>
+   [
     'match' => '09C7 099D (09CD (09BF|09C7|09C8))',
     'replace' => '099D \\1',
-  ),
-  409 => 
-  array (
+  ],
+  409 =>
+   [
     'match' => '09C7 099F (09CD (09BF|09C7|09C8))',
     'replace' => '099F \\1',
-  ),
-  410 => 
-  array (
+  ],
+  410 =>
+   [
     'match' => '09C7 09A0 (09CD (09BF|09C7|09C8))',
     'replace' => '09A0 \\1',
-  ),
-  411 => 
-  array (
+  ],
+  411 =>
+   [
     'match' => '09C7 09A1 (09CD (09BF|09C7|09C8))',
     'replace' => '09A1 \\1',
-  ),
-  412 => 
-  array (
+  ],
+  412 =>
+   [
     'match' => '09C7 09A2 (09CD (09BF|09C7|09C8))',
     'replace' => '09A2 \\1',
-  ),
-  413 => 
-  array (
+  ],
+  413 =>
+   [
     'match' => '09C7 09A3 (09CD (09BF|09C7|09C8))',
     'replace' => '09A3 \\1',
-  ),
-  414 => 
-  array (
+  ],
+  414 =>
+   [
     'match' => '09C7 09A4 (09CD (09BF|09C7|09C8))',
     'replace' => '09A4 \\1',
-  ),
-  415 => 
-  array (
+  ],
+  415 =>
+   [
     'match' => '09C7 09A5 (09CD (09BF|09C7|09C8))',
     'replace' => '09A5 \\1',
-  ),
-  416 => 
-  array (
+  ],
+  416 =>
+   [
     'match' => '09C7 09A6 (09CD (09BF|09C7|09C8))',
     'replace' => '09A6 \\1',
-  ),
-  417 => 
-  array (
+  ],
+  417 =>
+   [
     'match' => '09C7 09A7 (09CD (09BF|09C7|09C8))',
     'replace' => '09A7 \\1',
-  ),
-  418 => 
-  array (
+  ],
+  418 =>
+   [
     'match' => '09C7 09A8 (09CD (09BF|09C7|09C8))',
     'replace' => '09A8 \\1',
-  ),
-  419 => 
-  array (
+  ],
+  419 =>
+   [
     'match' => '09C7 09AA (09CD (09BF|09C7|09C8))',
     'replace' => '09AA \\1',
-  ),
-  420 => 
-  array (
+  ],
+  420 =>
+   [
     'match' => '09C7 09AB (09CD (09BF|09C7|09C8))',
     'replace' => '09AB \\1',
-  ),
-  421 => 
-  array (
+  ],
+  421 =>
+   [
     'match' => '09C7 09AC (09CD (09BF|09C7|09C8))',
     'replace' => '09AC \\1',
-  ),
-  422 => 
-  array (
+  ],
+  422 =>
+   [
     'match' => '09C7 09AD (09CD (09BF|09C7|09C8))',
     'replace' => '09AD \\1',
-  ),
-  423 => 
-  array (
+  ],
+  423 =>
+   [
     'match' => '09C7 09AE (09CD (09BF|09C7|09C8))',
     'replace' => '09AE \\1',
-  ),
-  424 => 
-  array (
+  ],
+  424 =>
+   [
     'match' => '09C7 09AF (09CD (09BF|09C7|09C8))',
     'replace' => '09AF \\1',
-  ),
-  425 => 
-  array (
+  ],
+  425 =>
+   [
     'match' => '09C7 09B0 (09CD (09BF|09C7|09C8))',
     'replace' => '09B0 \\1',
-  ),
-  426 => 
-  array (
+  ],
+  426 =>
+   [
     'match' => '09C7 09B2 (09CD (09BF|09C7|09C8))',
     'replace' => '09B2 \\1',
-  ),
-  427 => 
-  array (
+  ],
+  427 =>
+   [
     'match' => '09C7 09B6 (09CD (09BF|09C7|09C8))',
     'replace' => '09B6 \\1',
-  ),
-  428 => 
-  array (
+  ],
+  428 =>
+   [
     'match' => '09C7 09B7 (09CD (09BF|09C7|09C8))',
     'replace' => '09B7 \\1',
-  ),
-  429 => 
-  array (
+  ],
+  429 =>
+   [
     'match' => '09C7 09B8 (09CD (09BF|09C7|09C8))',
     'replace' => '09B8 \\1',
-  ),
-  430 => 
-  array (
+  ],
+  430 =>
+   [
     'match' => '09C7 09B9 (09CD (09BF|09C7|09C8))',
     'replace' => '09B9 \\1',
-  ),
-  431 => 
-  array (
+  ],
+  431 =>
+   [
     'match' => '09C7 09DC (09CD (09BF|09C7|09C8))',
     'replace' => '09DC \\1',
-  ),
-  432 => 
-  array (
+  ],
+  432 =>
+   [
     'match' => '09C7 09DD (09CD (09BF|09C7|09C8))',
     'replace' => '09DD \\1',
-  ),
-  433 => 
-  array (
+  ],
+  433 =>
+   [
     'match' => '09C7 09DF (09CD (09BF|09C7|09C8))',
     'replace' => '09DF \\1',
-  ),
-  434 => 
-  array (
+  ],
+  434 =>
+   [
     'match' => '09C8 0995 (09CD (09BF|09C7|09C8))',
     'replace' => '0995 \\1',
-  ),
-  435 => 
-  array (
+  ],
+  435 =>
+   [
     'match' => '09C8 0996 (09CD (09BF|09C7|09C8))',
     'replace' => '0996 \\1',
-  ),
-  436 => 
-  array (
+  ],
+  436 =>
+   [
     'match' => '09C8 0997 (09CD (09BF|09C7|09C8))',
     'replace' => '0997 \\1',
-  ),
-  437 => 
-  array (
+  ],
+  437 =>
+   [
     'match' => '09C8 0998 (09CD (09BF|09C7|09C8))',
     'replace' => '0998 \\1',
-  ),
-  438 => 
-  array (
+  ],
+  438 =>
+   [
     'match' => '09C8 0999 (09CD (09BF|09C7|09C8))',
     'replace' => '0999 \\1',
-  ),
-  439 => 
-  array (
+  ],
+  439 =>
+   [
     'match' => '09C8 099A (09CD (09BF|09C7|09C8))',
     'replace' => '099A \\1',
-  ),
-  440 => 
-  array (
+  ],
+  440 =>
+   [
     'match' => '09C8 099B (09CD (09BF|09C7|09C8))',
     'replace' => '099B \\1',
-  ),
-  441 => 
-  array (
+  ],
+  441 =>
+   [
     'match' => '09C8 099C (09CD (09BF|09C7|09C8))',
     'replace' => '099C \\1',
-  ),
-  442 => 
-  array (
+  ],
+  442 =>
+   [
     'match' => '09C8 099D (09CD (09BF|09C7|09C8))',
     'replace' => '099D \\1',
-  ),
-  443 => 
-  array (
+  ],
+  443 =>
+   [
     'match' => '09C8 099F (09CD (09BF|09C7|09C8))',
     'replace' => '099F \\1',
-  ),
-  444 => 
-  array (
+  ],
+  444 =>
+   [
     'match' => '09C8 09A0 (09CD (09BF|09C7|09C8))',
     'replace' => '09A0 \\1',
-  ),
-  445 => 
-  array (
+  ],
+  445 =>
+   [
     'match' => '09C8 09A1 (09CD (09BF|09C7|09C8))',
     'replace' => '09A1 \\1',
-  ),
-  446 => 
-  array (
+  ],
+  446 =>
+   [
     'match' => '09C8 09A2 (09CD (09BF|09C7|09C8))',
     'replace' => '09A2 \\1',
-  ),
-  447 => 
-  array (
+  ],
+  447 =>
+   [
     'match' => '09C8 09A3 (09CD (09BF|09C7|09C8))',
     'replace' => '09A3 \\1',
-  ),
-  448 => 
-  array (
+  ],
+  448 =>
+   [
     'match' => '09C8 09A4 (09CD (09BF|09C7|09C8))',
     'replace' => '09A4 \\1',
-  ),
-  449 => 
-  array (
+  ],
+  449 =>
+   [
     'match' => '09C8 09A5 (09CD (09BF|09C7|09C8))',
     'replace' => '09A5 \\1',
-  ),
-  450 => 
-  array (
+  ],
+  450 =>
+   [
     'match' => '09C8 09A6 (09CD (09BF|09C7|09C8))',
     'replace' => '09A6 \\1',
-  ),
-  451 => 
-  array (
+  ],
+  451 =>
+   [
     'match' => '09C8 09A7 (09CD (09BF|09C7|09C8))',
     'replace' => '09A7 \\1',
-  ),
-  452 => 
-  array (
+  ],
+  452 =>
+   [
     'match' => '09C8 09A8 (09CD (09BF|09C7|09C8))',
     'replace' => '09A8 \\1',
-  ),
-  453 => 
-  array (
+  ],
+  453 =>
+   [
     'match' => '09C8 09AA (09CD (09BF|09C7|09C8))',
     'replace' => '09AA \\1',
-  ),
-  454 => 
-  array (
+  ],
+  454 =>
+   [
     'match' => '09C8 09AB (09CD (09BF|09C7|09C8))',
     'replace' => '09AB \\1',
-  ),
-  455 => 
-  array (
+  ],
+  455 =>
+   [
     'match' => '09C8 09AC (09CD (09BF|09C7|09C8))',
     'replace' => '09AC \\1',
-  ),
-  456 => 
-  array (
+  ],
+  456 =>
+   [
     'match' => '09C8 09AD (09CD (09BF|09C7|09C8))',
     'replace' => '09AD \\1',
-  ),
-  457 => 
-  array (
+  ],
+  457 =>
+   [
     'match' => '09C8 09AE (09CD (09BF|09C7|09C8))',
     'replace' => '09AE \\1',
-  ),
-  458 => 
-  array (
+  ],
+  458 =>
+   [
     'match' => '09C8 09AF (09CD (09BF|09C7|09C8))',
     'replace' => '09AF \\1',
-  ),
-  459 => 
-  array (
+  ],
+  459 =>
+   [
     'match' => '09C8 09B0 (09CD (09BF|09C7|09C8))',
     'replace' => '09B0 \\1',
-  ),
-  460 => 
-  array (
+  ],
+  460 =>
+   [
     'match' => '09C8 09B2 (09CD (09BF|09C7|09C8))',
     'replace' => '09B2 \\1',
-  ),
-  461 => 
-  array (
+  ],
+  461 =>
+   [
     'match' => '09C8 09B6 (09CD (09BF|09C7|09C8))',
     'replace' => '09B6 \\1',
-  ),
-  462 => 
-  array (
+  ],
+  462 =>
+   [
     'match' => '09C8 09B7 (09CD (09BF|09C7|09C8))',
     'replace' => '09B7 \\1',
-  ),
-  463 => 
-  array (
+  ],
+  463 =>
+   [
     'match' => '09C8 09B8 (09CD (09BF|09C7|09C8))',
     'replace' => '09B8 \\1',
-  ),
-  464 => 
-  array (
+  ],
+  464 =>
+   [
     'match' => '09C8 09B9 (09CD (09BF|09C7|09C8))',
     'replace' => '09B9 \\1',
-  ),
-  465 => 
-  array (
+  ],
+  465 =>
+   [
     'match' => '09C8 09DC (09CD (09BF|09C7|09C8))',
     'replace' => '09DC \\1',
-  ),
-  466 => 
-  array (
+  ],
+  466 =>
+   [
     'match' => '09C8 09DD (09CD (09BF|09C7|09C8))',
     'replace' => '09DD \\1',
-  ),
-  467 => 
-  array (
+  ],
+  467 =>
+   [
     'match' => '09C8 09DF (09CD (09BF|09C7|09C8))',
     'replace' => '09DF \\1',
-  ),
-  468 => 
-  array (
+  ],
+  468 =>
+   [
     'match' => '09BF 0995 (007E (09BF|09C7|09C8))',
     'replace' => '0995 \\1',
-  ),
-  469 => 
-  array (
+  ],
+  469 =>
+   [
     'match' => '09BF 0996 (007E (09BF|09C7|09C8))',
     'replace' => '0996 \\1',
-  ),
-  470 => 
-  array (
+  ],
+  470 =>
+   [
     'match' => '09BF 0997 (007E (09BF|09C7|09C8))',
     'replace' => '0997 \\1',
-  ),
-  471 => 
-  array (
+  ],
+  471 =>
+   [
     'match' => '09BF 0998 (007E (09BF|09C7|09C8))',
     'replace' => '0998 \\1',
-  ),
-  472 => 
-  array (
+  ],
+  472 =>
+   [
     'match' => '09BF 0999 (007E (09BF|09C7|09C8))',
     'replace' => '0999 \\1',
-  ),
-  473 => 
-  array (
+  ],
+  473 =>
+   [
     'match' => '09BF 099A (007E (09BF|09C7|09C8))',
     'replace' => '099A \\1',
-  ),
-  474 => 
-  array (
+  ],
+  474 =>
+   [
     'match' => '09BF 099B (007E (09BF|09C7|09C8))',
     'replace' => '099B \\1',
-  ),
-  475 => 
-  array (
+  ],
+  475 =>
+   [
     'match' => '09BF 099C (007E (09BF|09C7|09C8))',
     'replace' => '099C \\1',
-  ),
-  476 => 
-  array (
+  ],
+  476 =>
+   [
     'match' => '09BF 099D (007E (09BF|09C7|09C8))',
     'replace' => '099D \\1',
-  ),
-  477 => 
-  array (
+  ],
+  477 =>
+   [
     'match' => '09BF 099F (007E (09BF|09C7|09C8))',
     'replace' => '099F \\1',
-  ),
-  478 => 
-  array (
+  ],
+  478 =>
+   [
     'match' => '09BF 09A0 (007E (09BF|09C7|09C8))',
     'replace' => '09A0 \\1',
-  ),
-  479 => 
-  array (
+  ],
+  479 =>
+   [
     'match' => '09BF 09A1 (007E (09BF|09C7|09C8))',
     'replace' => '09A1 \\1',
-  ),
-  480 => 
-  array (
+  ],
+  480 =>
+   [
     'match' => '09BF 09A2 (007E (09BF|09C7|09C8))',
     'replace' => '09A2 \\1',
-  ),
-  481 => 
-  array (
+  ],
+  481 =>
+   [
     'match' => '09BF 09A3 (007E (09BF|09C7|09C8))',
     'replace' => '09A3 \\1',
-  ),
-  482 => 
-  array (
+  ],
+  482 =>
+   [
     'match' => '09BF 09A4 (007E (09BF|09C7|09C8))',
     'replace' => '09A4 \\1',
-  ),
-  483 => 
-  array (
+  ],
+  483 =>
+   [
     'match' => '09BF 09A5 (007E (09BF|09C7|09C8))',
     'replace' => '09A5 \\1',
-  ),
-  484 => 
-  array (
+  ],
+  484 =>
+   [
     'match' => '09BF 09A6 (007E (09BF|09C7|09C8))',
     'replace' => '09A6 \\1',
-  ),
-  485 => 
-  array (
+  ],
+  485 =>
+   [
     'match' => '09BF 09A7 (007E (09BF|09C7|09C8))',
     'replace' => '09A7 \\1',
-  ),
-  486 => 
-  array (
+  ],
+  486 =>
+   [
     'match' => '09BF 09A8 (007E (09BF|09C7|09C8))',
     'replace' => '09A8 \\1',
-  ),
-  487 => 
-  array (
+  ],
+  487 =>
+   [
     'match' => '09BF 09AA (007E (09BF|09C7|09C8))',
     'replace' => '09AA \\1',
-  ),
-  488 => 
-  array (
+  ],
+  488 =>
+   [
     'match' => '09BF 09AB (007E (09BF|09C7|09C8))',
     'replace' => '09AB \\1',
-  ),
-  489 => 
-  array (
+  ],
+  489 =>
+   [
     'match' => '09BF 09AC (007E (09BF|09C7|09C8))',
     'replace' => '09AC \\1',
-  ),
-  490 => 
-  array (
+  ],
+  490 =>
+   [
     'match' => '09BF 09AD (007E (09BF|09C7|09C8))',
     'replace' => '09AD \\1',
-  ),
-  491 => 
-  array (
+  ],
+  491 =>
+   [
     'match' => '09BF 09AE (007E (09BF|09C7|09C8))',
     'replace' => '09AE \\1',
-  ),
-  492 => 
-  array (
+  ],
+  492 =>
+   [
     'match' => '09BF 09AF (007E (09BF|09C7|09C8))',
     'replace' => '09AF \\1',
-  ),
-  493 => 
-  array (
+  ],
+  493 =>
+   [
     'match' => '09BF 09B0 (007E (09BF|09C7|09C8))',
     'replace' => '09B0 \\1',
-  ),
-  494 => 
-  array (
+  ],
+  494 =>
+   [
     'match' => '09BF 09B2 (007E (09BF|09C7|09C8))',
     'replace' => '09B2 \\1',
-  ),
-  495 => 
-  array (
+  ],
+  495 =>
+   [
     'match' => '09BF 09B6 (007E (09BF|09C7|09C8))',
     'replace' => '09B6 \\1',
-  ),
-  496 => 
-  array (
+  ],
+  496 =>
+   [
     'match' => '09BF 09B7 (007E (09BF|09C7|09C8))',
     'replace' => '09B7 \\1',
-  ),
-  497 => 
-  array (
+  ],
+  497 =>
+   [
     'match' => '09BF 09B8 (007E (09BF|09C7|09C8))',
     'replace' => '09B8 \\1',
-  ),
-  498 => 
-  array (
+  ],
+  498 =>
+   [
     'match' => '09BF 09B9 (007E (09BF|09C7|09C8))',
     'replace' => '09B9 \\1',
-  ),
-  499 => 
-  array (
+  ],
+  499 =>
+   [
     'match' => '09BF 09DC (007E (09BF|09C7|09C8))',
     'replace' => '09DC \\1',
-  ),
-  500 => 
-  array (
+  ],
+  500 =>
+   [
     'match' => '09BF 09DD (007E (09BF|09C7|09C8))',
     'replace' => '09DD \\1',
-  ),
-  501 => 
-  array (
+  ],
+  501 =>
+   [
     'match' => '09BF 09DF (007E (09BF|09C7|09C8))',
     'replace' => '09DF \\1',
-  ),
-  502 => 
-  array (
+  ],
+  502 =>
+   [
     'match' => '09C7 0995 (007E (09BF|09C7|09C8))',
     'replace' => '0995 \\1',
-  ),
-  503 => 
-  array (
+  ],
+  503 =>
+   [
     'match' => '09C7 0996 (007E (09BF|09C7|09C8))',
     'replace' => '0996 \\1',
-  ),
-  504 => 
-  array (
+  ],
+  504 =>
+   [
     'match' => '09C7 0997 (007E (09BF|09C7|09C8))',
     'replace' => '0997 \\1',
-  ),
-  505 => 
-  array (
+  ],
+  505 =>
+   [
     'match' => '09C7 0998 (007E (09BF|09C7|09C8))',
     'replace' => '0998 \\1',
-  ),
-  506 => 
-  array (
+  ],
+  506 =>
+   [
     'match' => '09C7 0999 (007E (09BF|09C7|09C8))',
     'replace' => '0999 \\1',
-  ),
-  507 => 
-  array (
+  ],
+  507 =>
+   [
     'match' => '09C7 099A (007E (09BF|09C7|09C8))',
     'replace' => '099A \\1',
-  ),
-  508 => 
-  array (
+  ],
+  508 =>
+   [
     'match' => '09C7 099B (007E (09BF|09C7|09C8))',
     'replace' => '099B \\1',
-  ),
-  509 => 
-  array (
+  ],
+  509 =>
+   [
     'match' => '09C7 099C (007E (09BF|09C7|09C8))',
     'replace' => '099C \\1',
-  ),
-  510 => 
-  array (
+  ],
+  510 =>
+   [
     'match' => '09C7 099D (007E (09BF|09C7|09C8))',
     'replace' => '099D \\1',
-  ),
-  511 => 
-  array (
+  ],
+  511 =>
+   [
     'match' => '09C7 099F (007E (09BF|09C7|09C8))',
     'replace' => '099F \\1',
-  ),
-  512 => 
-  array (
+  ],
+  512 =>
+   [
     'match' => '09C7 09A0 (007E (09BF|09C7|09C8))',
     'replace' => '09A0 \\1',
-  ),
-  513 => 
-  array (
+  ],
+  513 =>
+   [
     'match' => '09C7 09A1 (007E (09BF|09C7|09C8))',
     'replace' => '09A1 \\1',
-  ),
-  514 => 
-  array (
+  ],
+  514 =>
+   [
     'match' => '09C7 09A2 (007E (09BF|09C7|09C8))',
     'replace' => '09A2 \\1',
-  ),
-  515 => 
-  array (
+  ],
+  515 =>
+   [
     'match' => '09C7 09A3 (007E (09BF|09C7|09C8))',
     'replace' => '09A3 \\1',
-  ),
-  516 => 
-  array (
+  ],
+  516 =>
+   [
     'match' => '09C7 09A4 (007E (09BF|09C7|09C8))',
     'replace' => '09A4 \\1',
-  ),
-  517 => 
-  array (
+  ],
+  517 =>
+   [
     'match' => '09C7 09A5 (007E (09BF|09C7|09C8))',
     'replace' => '09A5 \\1',
-  ),
-  518 => 
-  array (
+  ],
+  518 =>
+   [
     'match' => '09C7 09A6 (007E (09BF|09C7|09C8))',
     'replace' => '09A6 \\1',
-  ),
-  519 => 
-  array (
+  ],
+  519 =>
+   [
     'match' => '09C7 09A7 (007E (09BF|09C7|09C8))',
     'replace' => '09A7 \\1',
-  ),
-  520 => 
-  array (
+  ],
+  520 =>
+   [
     'match' => '09C7 09A8 (007E (09BF|09C7|09C8))',
     'replace' => '09A8 \\1',
-  ),
-  521 => 
-  array (
+  ],
+  521 =>
+   [
     'match' => '09C7 09AA (007E (09BF|09C7|09C8))',
     'replace' => '09AA \\1',
-  ),
-  522 => 
-  array (
+  ],
+  522 =>
+   [
     'match' => '09C7 09AB (007E (09BF|09C7|09C8))',
     'replace' => '09AB \\1',
-  ),
-  523 => 
-  array (
+  ],
+  523 =>
+   [
     'match' => '09C7 09AC (007E (09BF|09C7|09C8))',
     'replace' => '09AC \\1',
-  ),
-  524 => 
-  array (
+  ],
+  524 =>
+   [
     'match' => '09C7 09AD (007E (09BF|09C7|09C8))',
     'replace' => '09AD \\1',
-  ),
-  525 => 
-  array (
+  ],
+  525 =>
+   [
     'match' => '09C7 09AE (007E (09BF|09C7|09C8))',
     'replace' => '09AE \\1',
-  ),
-  526 => 
-  array (
+  ],
+  526 =>
+   [
     'match' => '09C7 09AF (007E (09BF|09C7|09C8))',
     'replace' => '09AF \\1',
-  ),
-  527 => 
-  array (
+  ],
+  527 =>
+   [
     'match' => '09C7 09B0 (007E (09BF|09C7|09C8))',
     'replace' => '09B0 \\1',
-  ),
-  528 => 
-  array (
+  ],
+  528 =>
+   [
     'match' => '09C7 09B2 (007E (09BF|09C7|09C8))',
     'replace' => '09B2 \\1',
-  ),
-  529 => 
-  array (
+  ],
+  529 =>
+   [
     'match' => '09C7 09B6 (007E (09BF|09C7|09C8))',
     'replace' => '09B6 \\1',
-  ),
-  530 => 
-  array (
+  ],
+  530 =>
+   [
     'match' => '09C7 09B7 (007E (09BF|09C7|09C8))',
     'replace' => '09B7 \\1',
-  ),
-  531 => 
-  array (
+  ],
+  531 =>
+   [
     'match' => '09C7 09B8 (007E (09BF|09C7|09C8))',
     'replace' => '09B8 \\1',
-  ),
-  532 => 
-  array (
+  ],
+  532 =>
+   [
     'match' => '09C7 09B9 (007E (09BF|09C7|09C8))',
     'replace' => '09B9 \\1',
-  ),
-  533 => 
-  array (
+  ],
+  533 =>
+   [
     'match' => '09C7 09DC (007E (09BF|09C7|09C8))',
     'replace' => '09DC \\1',
-  ),
-  534 => 
-  array (
+  ],
+  534 =>
+   [
     'match' => '09C7 09DD (007E (09BF|09C7|09C8))',
     'replace' => '09DD \\1',
-  ),
-  535 => 
-  array (
+  ],
+  535 =>
+   [
     'match' => '09C7 09DF (007E (09BF|09C7|09C8))',
     'replace' => '09DF \\1',
-  ),
-  536 => 
-  array (
+  ],
+  536 =>
+   [
     'match' => '09C8 0995 (007E (09BF|09C7|09C8))',
     'replace' => '0995 \\1',
-  ),
-  537 => 
-  array (
+  ],
+  537 =>
+   [
     'match' => '09C8 0996 (007E (09BF|09C7|09C8))',
     'replace' => '0996 \\1',
-  ),
-  538 => 
-  array (
+  ],
+  538 =>
+   [
     'match' => '09C8 0997 (007E (09BF|09C7|09C8))',
     'replace' => '0997 \\1',
-  ),
-  539 => 
-  array (
+  ],
+  539 =>
+   [
     'match' => '09C8 0998 (007E (09BF|09C7|09C8))',
     'replace' => '0998 \\1',
-  ),
-  540 => 
-  array (
+  ],
+  540 =>
+   [
     'match' => '09C8 0999 (007E (09BF|09C7|09C8))',
     'replace' => '0999 \\1',
-  ),
-  541 => 
-  array (
+  ],
+  541 =>
+   [
     'match' => '09C8 099A (007E (09BF|09C7|09C8))',
     'replace' => '099A \\1',
-  ),
-  542 => 
-  array (
+  ],
+  542 =>
+   [
     'match' => '09C8 099B (007E (09BF|09C7|09C8))',
     'replace' => '099B \\1',
-  ),
-  543 => 
-  array (
+  ],
+  543 =>
+   [
     'match' => '09C8 099C (007E (09BF|09C7|09C8))',
     'replace' => '099C \\1',
-  ),
-  544 => 
-  array (
+  ],
+  544 =>
+   [
     'match' => '09C8 099D (007E (09BF|09C7|09C8))',
     'replace' => '099D \\1',
-  ),
-  545 => 
-  array (
+  ],
+  545 =>
+   [
     'match' => '09C8 099F (007E (09BF|09C7|09C8))',
     'replace' => '099F \\1',
-  ),
-  546 => 
-  array (
+  ],
+  546 =>
+   [
     'match' => '09C8 09A0 (007E (09BF|09C7|09C8))',
     'replace' => '09A0 \\1',
-  ),
-  547 => 
-  array (
+  ],
+  547 =>
+   [
     'match' => '09C8 09A1 (007E (09BF|09C7|09C8))',
     'replace' => '09A1 \\1',
-  ),
-  548 => 
-  array (
+  ],
+  548 =>
+   [
     'match' => '09C8 09A2 (007E (09BF|09C7|09C8))',
     'replace' => '09A2 \\1',
-  ),
-  549 => 
-  array (
+  ],
+  549 =>
+   [
     'match' => '09C8 09A3 (007E (09BF|09C7|09C8))',
     'replace' => '09A3 \\1',
-  ),
-  550 => 
-  array (
+  ],
+  550 =>
+   [
     'match' => '09C8 09A4 (007E (09BF|09C7|09C8))',
     'replace' => '09A4 \\1',
-  ),
-  551 => 
-  array (
+  ],
+  551 =>
+   [
     'match' => '09C8 09A5 (007E (09BF|09C7|09C8))',
     'replace' => '09A5 \\1',
-  ),
-  552 => 
-  array (
+  ],
+  552 =>
+   [
     'match' => '09C8 09A6 (007E (09BF|09C7|09C8))',
     'replace' => '09A6 \\1',
-  ),
-  553 => 
-  array (
+  ],
+  553 =>
+   [
     'match' => '09C8 09A7 (007E (09BF|09C7|09C8))',
     'replace' => '09A7 \\1',
-  ),
-  554 => 
-  array (
+  ],
+  554 =>
+   [
     'match' => '09C8 09A8 (007E (09BF|09C7|09C8))',
     'replace' => '09A8 \\1',
-  ),
-  555 => 
-  array (
+  ],
+  555 =>
+   [
     'match' => '09C8 09AA (007E (09BF|09C7|09C8))',
     'replace' => '09AA \\1',
-  ),
-  556 => 
-  array (
+  ],
+  556 =>
+   [
     'match' => '09C8 09AB (007E (09BF|09C7|09C8))',
     'replace' => '09AB \\1',
-  ),
-  557 => 
-  array (
+  ],
+  557 =>
+   [
     'match' => '09C8 09AC (007E (09BF|09C7|09C8))',
     'replace' => '09AC \\1',
-  ),
-  558 => 
-  array (
+  ],
+  558 =>
+   [
     'match' => '09C8 09AD (007E (09BF|09C7|09C8))',
     'replace' => '09AD \\1',
-  ),
-  559 => 
-  array (
+  ],
+  559 =>
+   [
     'match' => '09C8 09AE (007E (09BF|09C7|09C8))',
     'replace' => '09AE \\1',
-  ),
-  560 => 
-  array (
+  ],
+  560 =>
+   [
     'match' => '09C8 09AF (007E (09BF|09C7|09C8))',
     'replace' => '09AF \\1',
-  ),
-  561 => 
-  array (
+  ],
+  561 =>
+   [
     'match' => '09C8 09B0 (007E (09BF|09C7|09C8))',
     'replace' => '09B0 \\1',
-  ),
-  562 => 
-  array (
+  ],
+  562 =>
+   [
     'match' => '09C8 09B2 (007E (09BF|09C7|09C8))',
     'replace' => '09B2 \\1',
-  ),
-  563 => 
-  array (
+  ],
+  563 =>
+   [
     'match' => '09C8 09B6 (007E (09BF|09C7|09C8))',
     'replace' => '09B6 \\1',
-  ),
-  564 => 
-  array (
+  ],
+  564 =>
+   [
     'match' => '09C8 09B7 (007E (09BF|09C7|09C8))',
     'replace' => '09B7 \\1',
-  ),
-  565 => 
-  array (
+  ],
+  565 =>
+   [
     'match' => '09C8 09B8 (007E (09BF|09C7|09C8))',
     'replace' => '09B8 \\1',
-  ),
-  566 => 
-  array (
+  ],
+  566 =>
+   [
     'match' => '09C8 09B9 (007E (09BF|09C7|09C8))',
     'replace' => '09B9 \\1',
-  ),
-  567 => 
-  array (
+  ],
+  567 =>
+   [
     'match' => '09C8 09DC (007E (09BF|09C7|09C8))',
     'replace' => '09DC \\1',
-  ),
-  568 => 
-  array (
+  ],
+  568 =>
+   [
     'match' => '09C8 09DD (007E (09BF|09C7|09C8))',
     'replace' => '09DD \\1',
-  ),
-  569 => 
-  array (
+  ],
+  569 =>
+   [
     'match' => '09C8 09DF (007E (09BF|09C7|09C8))',
     'replace' => '09DF \\1',
-  ),
-  570 => 
-  array (
+  ],
+  570 =>
+   [
     'match' => '09A4 09CD',
     'replace' => 'E066',
-  ),
-  571 => 
-  array (
+  ],
+  571 =>
+   [
     'match' => '09A4 007E',
     'replace' => 'E066',
-  ),
-  572 => 
-  array (
+  ],
+  572 =>
+   [
     'match' => 'E066 200D',
     'replace' => 'E066',
-  ),
-  573 => 
-  array (
+  ],
+  573 =>
+   [
     'match' => '09BF 200D',
     'replace' => '09BF',
-  ),
-  574 => 
-  array (
+  ],
+  574 =>
+   [
     'match' => '09C7 200D',
     'replace' => '09C7',
-  ),
-  575 => 
-  array (
+  ],
+  575 =>
+   [
     'match' => '09C8 200D',
     'replace' => '09C8',
-  ),
-  576 => 
-  array (
+  ],
+  576 =>
+   [
     'match' => '007E',
     'replace' => '09CD',
-  ),
-  577 => 
-  array (
+  ],
+  577 =>
+   [
     'match' => '200C',
     'replace' => '09CD',
-  ),
-  578 => 
-  array (
+  ],
+  578 =>
+   [
     'match' => '00D0',
     'replace' => '09CD',
-  ),
-  579 => 
-  array (
+  ],
+  579 =>
+   [
     'match' => '0997 09C1',
     'replace' => 'E00A',
-  ),
-  580 => 
-  array (
+  ],
+  580 =>
+   [
     'match' => '09DC 09C1',
     'replace' => 'E012',
-  ),
-  581 => 
-  array (
+  ],
+  581 =>
+   [
     'match' => '09DC 09C2',
     'replace' => 'E013',
-  ),
-  582 => 
-  array (
+  ],
+  582 =>
+   [
     'match' => '09DC 09C3',
     'replace' => 'E014',
-  ),
-  583 => 
-  array (
+  ],
+  583 =>
+   [
     'match' => '09DC 09C4',
     'replace' => 'E015',
-  ),
-  584 => 
-  array (
+  ],
+  584 =>
+   [
     'match' => '09DD 09C1',
     'replace' => 'E016',
-  ),
-  585 => 
-  array (
+  ],
+  585 =>
+   [
     'match' => '09DD 09C2',
     'replace' => 'E017',
-  ),
-  586 => 
-  array (
+  ],
+  586 =>
+   [
     'match' => '09DD 09C3',
     'replace' => 'E018',
-  ),
-  587 => 
-  array (
+  ],
+  587 =>
+   [
     'match' => '09DD 09C4',
     'replace' => 'E019',
-  ),
-  588 => 
-  array (
+  ],
+  588 =>
+   [
     'match' => '09B6 09C1',
     'replace' => 'E00F',
-  ),
-  589 => 
-  array (
+  ],
+  589 =>
+   [
     'match' => '09B9 09C1',
     'replace' => 'E010',
-  ),
-  590 => 
-  array (
+  ],
+  590 =>
+   [
     'match' => '09B9 09C3',
     'replace' => 'E011',
-  ),
-  591 => 
-  array (
+  ],
+  591 =>
+   [
     'match' => 'E084 09C1',
     'replace' => 'E19B',
-  ),
-  592 => 
-  array (
+  ],
+  592 =>
+   [
     'match' => 'E0F4 09C1',
     'replace' => 'E19C',
-  ),
-  593 => 
-  array (
+  ],
+  593 =>
+   [
     'match' => 'E10D 09C1',
     'replace' => 'E19D',
-  ),
-  594 => 
-  array (
+  ],
+  594 =>
+   [
     'match' => 'E128 09C1',
     'replace' => 'E19E',
-  ),
-  595 => 
-  array (
+  ],
+  595 =>
+   [
     'match' => 'E133 09C1',
     'replace' => 'E19F',
-  ),
-  596 => 
-  array (
+  ],
+  596 =>
+   [
     'match' => 'E155 09C1',
     'replace' => 'E1A0',
-  ),
-  597 => 
-  array (
+  ],
+  597 =>
+   [
     'match' => 'E169 09C1',
     'replace' => 'E1A1',
-  ),
-  598 => 
-  array (
+  ],
+  598 =>
+   [
     'match' => 'E182 09C1',
     'replace' => 'E1A2',
-  ),
-  599 => 
-  array (
+  ],
+  599 =>
+   [
     'match' => '09BF ((E002|E003|E06B|E06C|E06D|E06E|E06F|E070|E071|E072|E073|E074|E075|E076|E079|E07A|E07C|E07D|E07E|E07F|E080|E081|E082|E083|E086|E089|E08A|E08B|E08C|E08D|E08F|E090|E092|E095|E097|E098|E09A|E09B|E09D|E09F|E0A2|E0A4|E0A5|E0A6|E0A7|E0A8|E0A9|E0AA|E0AB|E0AC|E0AD|E0AE|E0AF|E0B1|E0B2|E0B3|E0B4|E0B7|E0B8|E0B9|E0BB|E0BC|E0BD|E0BE|E0BF|E0C5|E0C6|E0C7|E0C8|E0C9|E0CB|E0CC|E0CD|E0CE|E0CF|E0D2|E0D3|E0D5|E0D6|E0D8|E0D9|E0DA|E0DB|E0E0|E0E1|E0E3|E0E5|E0E7|E0E8|E0ED|E0F1|E0F5|E0F6|E0FB|E0FC|E0FD|E0FE|E102|E104|E105|E106|E108|E109|E10A|E10B|E10C|E10F|E110|E112|E114|E115|E117|E118|E119|E11A|E11B|E11E|E11F|E120|E121|E122|E123|E124|E125|E126|E127|E12B|E12C|E130|E131|E132|E133|E134|E135|E136|E137|E139|E13A|E13B|E13F|E144|E149|E14A|E14D|E14F|E150|E153|E154|E156|E157|E158|E159|E15A|E15C|E161|E162|E163|E165|E166|E167|E168|E16C|E16D|E174|E175|E176|E177|E178|E17A|E17B|E17C|E17D|E17E|E17F|E180|E181|E185|E186|E187|E188|E18B|E18C|E18D|E190|E191|E193|E194|E195|E198|E199|E19A))',
     'replace' => 'E01C \\1',
-  ),
-  600 => 
-  array (
+  ],
+  600 =>
+   [
     'match' => '((0995|0999|099A|099B|099F|09A0|09A1|09A2|09A4|09AB|09AD|09B9)) 09BE',
     'replace' => '\\1 E01A',
-  ),
-  601 => 
-  array (
+  ],
+  601 =>
+   [
     'match' => '((0995|0999|099A|099B|099F|09A0|09A1|09A2|09A4|09AB|09AD|09B9)) 09D7',
     'replace' => '\\1 E03F',
-  ),
-  602 => 
-  array (
+  ],
+  602 =>
+   [
     'match' => '((09A6)) 09BE',
     'replace' => '\\1 E01B',
-  ),
-  603 => 
-  array (
+  ],
+  603 =>
+   [
     'match' => '((09A6)) 09D7',
     'replace' => '\\1 E040',
-  ),
-  604 => 
-  array (
+  ],
+  604 =>
+   [
     'match' => '09C0 0981',
     'replace' => 'E1B4',
-  ),
-  605 => 
-  array (
+  ],
+  605 =>
+   [
     'match' => '09D7 0981',
     'replace' => 'E1B5',
-  ),
-  606 => 
-  array (
+  ],
+  606 =>
+   [
     'match' => 'E01D 0981',
     'replace' => 'E1B6',
-  ),
-  607 => 
-  array (
+  ],
+  607 =>
+   [
     'match' => 'E01E 0981',
     'replace' => 'E1B7',
-  ),
-  608 => 
-  array (
+  ],
+  608 =>
+   [
     'match' => 'E01F 0981',
     'replace' => 'E1B8',
-  ),
-  609 => 
-  array (
+  ],
+  609 =>
+   [
     'match' => 'E03F 0981',
     'replace' => 'E1B9',
-  ),
-  610 => 
-  array (
+  ],
+  610 =>
+   [
     'match' => 'E040 0981',
     'replace' => 'E1BA',
-  ),
-  611 => 
-  array (
+  ],
+  611 =>
+   [
     'match' => '09C0 E069',
     'replace' => 'E1BB',
-  ),
-  612 => 
-  array (
+  ],
+  612 =>
+   [
     'match' => '09D7 E069',
     'replace' => 'E1BC',
-  ),
-  613 => 
-  array (
+  ],
+  613 =>
+   [
     'match' => 'E01D E069',
     'replace' => 'E1BD',
-  ),
-  614 => 
-  array (
+  ],
+  614 =>
+   [
     'match' => 'E01E E069',
     'replace' => 'E1BE',
-  ),
-  615 => 
-  array (
+  ],
+  615 =>
+   [
     'match' => 'E01F E069',
     'replace' => 'E1BF',
-  ),
-  616 => 
-  array (
+  ],
+  616 =>
+   [
     'match' => 'E03F E069',
     'replace' => 'E1C0',
-  ),
-  617 => 
-  array (
+  ],
+  617 =>
+   [
     'match' => 'E040 E069',
     'replace' => 'E1C1',
-  ),
-  618 => 
-  array (
+  ],
+  618 =>
+   [
     'match' => '0987 0981',
     'replace' => 'E1C2',
-  ),
-  619 => 
-  array (
+  ],
+  619 =>
+   [
     'match' => '0988 0981',
     'replace' => 'E1C3',
-  ),
-  620 => 
-  array (
+  ],
+  620 =>
+   [
     'match' => '098A 0981',
     'replace' => 'E1C4',
-  ),
-  621 => 
-  array (
+  ],
+  621 =>
+   [
     'match' => '0990 0981',
     'replace' => 'E1C5',
-  ),
-  622 => 
-  array (
+  ],
+  622 =>
+   [
     'match' => '0994 0981',
     'replace' => 'E1C6',
-  ),
-  623 => 
-  array (
+  ],
+  623 =>
+   [
     'match' => '099F 0981',
     'replace' => 'E1C7',
-  ),
-  624 => 
-  array (
+  ],
+  624 =>
+   [
     'match' => '09A0 0981',
     'replace' => 'E1C8',
-  ),
-  625 => 
-  array (
+  ],
+  625 =>
+   [
     'match' => '099F E068',
     'replace' => 'E1C9',
-  ),
-  626 => 
-  array (
+  ],
+  626 =>
+   [
     'match' => '09A0 E068',
     'replace' => 'E1CA',
-  ),
-  627 => 
-  array (
+  ],
+  627 =>
+   [
     'match' => '099F E069',
     'replace' => 'E1CB',
-  ),
-  628 => 
-  array (
+  ],
+  628 =>
+   [
     'match' => '09A0 E069',
     'replace' => 'E1CC',
-  ),
-  629 => 
-  array (
+  ],
+  629 =>
+   [
     'match' => '((0995|0999|099A|099B|099E|09A1|09A2|09A4|09AB|09AD|09B9|E002|E003|E06A|E073|E074|E077|E078|E07B|E07D|E07E|E07F|E081|E082|E084|E08A|E08C|E08D|E090|E092|E094|E097|E098|E09C|E0A0|E0A1|E0A6|E0A7|E0A9|E0AA|E0AB|E0AC|E0AD|E0AE|E0B1|E0B2|E0B3|E0B4|E0B5|E0B6|E0C1|E0C2|E0C3|E0C4|E0C6|E0C8|E0C9|E0CC|E0CF|E0D9|E0DA|E0DC|E0DD|E0DF|E0E2|E0E3|E0E9|E0EA|E0F0|E108|E109|E10C|E10D|E10E|E110|E112|E113|E11B|E120|E121|E122|E124|E125|E128|E12B|E133|E134|E135|E136|E137|E139|E13A|E13C|E140|E143|E14A|E14C|E153|E156|E157|E159|E15C|E162|E166|E167|E168|E169|E171|E174|E176|E17A|E17E|E180|E182|E183|E18C|E192|E193|E194|E195|E196|E197)) 09C0',
     'replace' => '\\1 E01D',
-  ),
-  630 => 
-  array (
+  ],
+  630 =>
+   [
     'match' => '((09A6|E08F|E0B9|E0F4|E0F6|E0F7|E0F8|E0F9|E0FA|E0FD|E0DC|E0FF|E100|E101|E10F|E11E|E11F|E13B|E15A)) 09C0',
     'replace' => '\\1 E01E',
-  ),
-  631 => 
-  array (
+  ],
+  631 =>
+   [
     'match' => '((099F|09A0|E06E|E06F|E07C|E0CA|E0CB|E0D0|E0D1|E0D4|E0D5|E0D7|E0E0|E0E1|E0E8|E10A|E10B|E11A|E126|E127|E132|E158|E163|E165|E172|E173|E17B|E17C|E181|E18D)) 09C0',
     'replace' => '\\1 E01F',
-  ),
-);
-?>
+  ],
+];

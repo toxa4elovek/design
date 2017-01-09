@@ -23,7 +23,7 @@ class EventsController extends AppController
     /**
      * @var array публичные методы
      */
-    public $publicActions = array('feed', 'getsol', 'autolikes', 'getaccesstoken', 'access');
+    public $publicActions = ['feed', 'getsol', 'autolikes', 'getaccesstoken', 'access'];
 
     /**
      *
@@ -53,11 +53,11 @@ class EventsController extends AppController
     {
         if (isset($this->request->query['created'])) {
             $offsetDate = date('Y-m-d H:i:s', strtotime($this->request->query['created']) + (2 * HOUR));
-            $events = Event::all(array('conditions' => array(
+            $events = Event::all(['conditions' => [
                 'Event.type' => 'LikeAdded',
-                'created' => array('>=' => $offsetDate),
+                'created' => ['>=' => $offsetDate],
 
-            ), 'order' => array('created' => 'desc')));
+            ], 'order' => ['created' => 'desc']]);
             $eventsCount = 0;
             if ($events) {
                 $newLatestDate = $this->request->query['created'];
@@ -96,7 +96,7 @@ class EventsController extends AppController
             $this->request->query['page'] = 1;
         }
         if (!empty($this->request->query['pitchDate'])) {
-            $pitches = Pitch::all(['fields' => array('title', 'price', 'started'), 'conditions' => ['status' => 0, 'published' => 1, 'multiwinner' => 0, 'started' => ['>' => $this->request->query['pitchDate']]], 'order' => ['started' => 'desc'], 'limit' => 5]);
+            $pitches = Pitch::all(['fields' => ['title', 'price', 'started'], 'conditions' => ['status' => 0, 'published' => 1, 'multiwinner' => 0, 'started' => ['>' => $this->request->query['pitchDate']]], 'order' => ['started' => 'desc'], 'limit' => 5]);
         }
         if (!empty($this->request->query['created'])) {
             $updates = Event::getEvents(User::getSubscribedPitches($this->userHelper->getId()), $this->request->query['page'], $this->request->query['created'], $this->userHelper->getId(), $tag);
@@ -131,8 +131,8 @@ class EventsController extends AppController
      */
     public function job()
     {
-        $job = \app\models\Tweet::all(array('limit' => 10, 'page' => $this->request->data['page']));
-        $count = count(\app\models\Tweet::all(array('limit' => 10, 'page' => $this->request->data['page'] + 1)));
+        $job = \app\models\Tweet::all(['limit' => 10, 'page' => $this->request->data['page']]);
+        $count = count(\app\models\Tweet::all(['limit' => 10, 'page' => $this->request->data['page'] + 1]));
         return compact('job', 'count');
     }
 
@@ -143,10 +143,10 @@ class EventsController extends AppController
      */
     public function pitches()
     {
-        $pitches = Pitch::all(array('fields' => array('id', 'title', 'price', 'started'), 'conditions' => array('status' => 0, 'published' => 1, 'multiwinner' => 0), 'order' => array('started' => 'desc'), 'limit' => 5, 'page' => $this->request->data['page']));
+        $pitches = Pitch::all(['fields' => ['id', 'title', 'price', 'started'], 'conditions' => ['status' => 0, 'published' => 1, 'multiwinner' => 0], 'order' => ['started' => 'desc'], 'limit' => 5, 'page' => $this->request->data['page']]);
         $count = 0;
         if ($pitches) {
-            $count = count(Pitch::all(array('conditions' => array('status' => 0, 'published' => 1, 'multiwinner' => 0), 'order' => array('started' => 'desc'), 'limit' => 5, 'page' => $this->request->data['page'] + 1)));
+            $count = count(Pitch::all(['conditions' => ['status' => 0, 'published' => 1, 'multiwinner' => 0], 'order' => ['started' => 'desc'], 'limit' => 5, 'page' => $this->request->data['page'] + 1]));
         }
         return compact('pitches', 'count');
     }
@@ -170,19 +170,19 @@ class EventsController extends AppController
      */
     public function liked()
     {
-        $likes = array();
-        $temp = array();
-        $fav = array();
+        $likes = [];
+        $temp = [];
+        $fav = [];
         if ($this->request->id) {
-            $likes = Event::all(array('conditions' => array(
+            $likes = Event::all(['conditions' => [
                 'Event.type' => 'LikeAdded',
                 'solution_id' => $this->request->id
-            ), 'order' => array('Event.created' => 'desc')));
+            ], 'order' => ['Event.created' => 'desc']]);
             foreach ($likes as $like) {
                 $temp[] = $like->user->id;
             }
             if (!empty($temp)) {
-                $fav = Favourite::all(array('conditions' => array('pitch_id' => 0, 'fav_user_id' => $temp)));
+                $fav = Favourite::all(['conditions' => ['pitch_id' => 0, 'fav_user_id' => $temp]]);
             }
         }
         return compact('likes', 'fav');
@@ -196,7 +196,7 @@ class EventsController extends AppController
     public function newstags()
     {
         if (isset($this->request->query['name']) && strlen($this->request->query['name']) > 0) {
-            $tags = News::all(array('fields' => array('tags'), 'conditions' => array('tags' => array('LIKE' => array('%' . $this->request->query['name'] . '%')))));
+            $tags = News::all(['fields' => ['tags'], 'conditions' => ['tags' => ['LIKE' => ['%' . $this->request->query['name'] . '%']]]]);
             return json_encode($tags->data());
         }
     }

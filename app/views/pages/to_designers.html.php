@@ -1,6 +1,6 @@
 <div class="wrapper">
 
-    <?=$this->view()->render(array('element' => 'header'), array('logo' => 'logo'))?>
+    <?=$this->view()->render(['element' => 'header'], ['logo' => 'logo'])?>
 
     <div class="middle">
         <div class="middle_inner" style="padding-left: 45px; padding-right: 15px;">
@@ -103,7 +103,7 @@
                 </div>
 
                 <ul class="faq vp_one" style="margin-left: 35px;">
-                    <?php foreach($answers as $answer): ?>
+                    <?php foreach ($answers as $answer): ?>
                         <li>
                             <p class="regular" style=""><a href="/answers/view/<?=$answer->id ?>" target="_blank"><?= $answer->title ?></a></p>
                             <div style="background:url(/img/sep.png) repeat-x;height:4px;"></div>
@@ -118,4 +118,4 @@
     </div><!-- /middle -->
 
 </div><!-- .wrapper -->
-<?=$this->html->style(array('/howitworks', '/to_designers'), array('inline' => false))?>
+<?=$this->html->style(['/howitworks', '/to_designers'], ['inline' => false])?>

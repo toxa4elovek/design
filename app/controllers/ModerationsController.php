@@ -7,35 +7,37 @@ use \app\models\Comment;
 use \app\models\Solution;
 use \lithium\storage\Session;
 
-class ModerationsController extends AppController {
+class ModerationsController extends AppController
+{
 
-    public function add() {
+    public function add()
+    {
         $result = false;
         $currentUser = Session::read('user.id');
         if (isset($this->request->data) && ($this->userHelper->isAdmin())) {
-            if ( ($this->request->data['model'] == 'comment') && ($comment = Comment::first($this->request->data['model_id'])) ) {
-                $data = array(
+            if (($this->request->data['model'] == 'comment') && ($comment = Comment::first($this->request->data['model_id']))) {
+                $data = [
                     'model' => '\app\models\Comment',
                     'model_id' => $comment->id,
                     'model_user' => $comment->user_id,
-                    'model_data' => serialize(array(
+                    'model_data' => serialize([
                         'created' => $comment->created,
                         'text' => $comment->text,
-                )));
+                ])];
                 $pitch_id = $comment->pitch_id;
             }
-            if ( ($this->request->data['model'] == 'solution') && ($solution = Solution::first($this->request->data['model_id'])) ) {
-                $data = array(
+            if (($this->request->data['model'] == 'solution') && ($solution = Solution::first($this->request->data['model_id']))) {
+                $data = [
                     'model' => '\app\models\Solution',
                     'model_id' => $solution->id,
                     'model_user' => $solution->user_id,
-                    'model_data' => serialize(array(
+                    'model_data' => serialize([
                         'created' => $solution->created,
                         'description' => $solution->description,
                         'image' => self::getThumbnail($solution),
-                )));
+                ])];
                 $pitch_id = $solution->pitch_id;
-                if($this->request->data['penalty'] == 3) {
+                if ($this->request->data['penalty'] == 3) {
                     $data['pitch_id'] = $pitch_id;
                 }
             }
@@ -57,7 +59,8 @@ class ModerationsController extends AppController {
         return json_encode($result);
     }
 
-    private static function getThumbnail($solution) {
+    private static function getThumbnail($solution)
+    {
         if (isset($solution->images['solution_galleryLargeSize'][0])) {
             $image = $solution->images['solution_galleryLargeSize'][0];
         } else {

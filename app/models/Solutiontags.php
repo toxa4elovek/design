@@ -2,6 +2,6 @@
 
 namespace app\models;
 
-class Solutiontags extends \app\models\AppModel {
-
+class Solutiontags extends \app\models\AppModel
+{
 }

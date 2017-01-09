@@ -6,25 +6,29 @@ use app\extensions\helper\Avatar;
 use app\extensions\tests\AppUnit;
 use app\models\User;
 
-class AvatarTest extends AppUnit {
+class AvatarTest extends AppUnit
+{
 
-    public $models = array('User');
+    public $models = ['User'];
     public $avatar = null;
 
-    public function setUp() {
+    public function setUp()
+    {
         $this->avatar = new Avatar();
         $this->rollUp($this->models);
         copy(LITHIUM_APP_PATH . '/webroot/img/default_small_avatar.png', LITHIUM_APP_PATH . '/webroot/avatars/1_small.png');
         copy(LITHIUM_APP_PATH . '/webroot/img/default_large_avatar.png', LITHIUM_APP_PATH . '/webroot/avatars/1_normal.png');
     }
 
-    public function tearDown() {
+    public function tearDown()
+    {
         $this->rollDown($this->models);
         unlink(LITHIUM_APP_PATH . '/webroot/avatars/1_small.png');
         unlink(LITHIUM_APP_PATH . '/webroot/avatars/1_normal.png');
     }
 
-    public function testShow() {
+    public function testShow()
+    {
         $result = $this->avatar->show(1);
         $expected = '<img src="/img/default_small_avatar.png" alt="Портрет пользователя" width="41" height="41"/>';
         $this->assertEqual($expected, $result);
@@ -40,11 +44,11 @@ class AvatarTest extends AppUnit {
         $user = User::first(1);
         $data = $user->data();
         $data['id'] = null;
-        $data['images'] = array(
-            'avatar' => array(),
-            'avatar_small' => array('weburl' => '/img/avatars/1_small.png'),
-            'avatar_normal' => array('weburl' => '/img/avatars/1_normal.png'),
-        );
+        $data['images'] = [
+            'avatar' => [],
+            'avatar_small' => ['weburl' => '/img/avatars/1_small.png'],
+            'avatar_normal' => ['weburl' => '/img/avatars/1_normal.png'],
+        ];
         $result = $this->avatar->show($data);
         $expected = '<img src="/img/avatars/1_small.png" alt="Портрет пользователя" width="41" height="41"/>';
         $this->assertEqual($expected, $result);
@@ -63,11 +67,11 @@ class AvatarTest extends AppUnit {
 
         $data = $user->data();
         $data['id'] = null;
-        $data['images'] = array(
-            'avatar' => array('true'),
-            'avatar_small' => array('weburl' => '/img/avatars/1_small.png'),
-            'avatar_normal' => array('weburl' => '/img/avatars/1_normal.png'),
-        );
+        $data['images'] = [
+            'avatar' => ['true'],
+            'avatar_small' => ['weburl' => '/img/avatars/1_small.png'],
+            'avatar_normal' => ['weburl' => '/img/avatars/1_normal.png'],
+        ];
         $result = $this->avatar->show($data);
         $expected = '<img src="/img/avatars/1_small.png" alt="Портрет пользователя" width="41" height="41"/>';
         $this->assertEqual($expected, $result);
@@ -76,5 +80,4 @@ class AvatarTest extends AppUnit {
         $expected = '<img src="/img/avatars/1_normal.png" alt="Портрет пользователя" width="180" height="180" id="photoselectpic"/>';
         $this->assertEqual($expected, $result);
     }
-
 }

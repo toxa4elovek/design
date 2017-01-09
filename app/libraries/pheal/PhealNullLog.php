@@ -52,7 +52,7 @@ class PhealNullLog implements PhealLogInterface
      * @param string $name
      * @param array $opts
      */
-    public function log($scope,$name,$opts)
+    public function log($scope, $name, $opts)
     {
         return true;
     }
@@ -64,7 +64,7 @@ class PhealNullLog implements PhealLogInterface
      * @param array $opts
      * @param string $message
      */
-    public function errorLog($scope,$name,$opts,$message)
+    public function errorLog($scope, $name, $opts, $message)
     {
         return true;
     }

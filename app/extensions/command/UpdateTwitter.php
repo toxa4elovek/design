@@ -6,15 +6,17 @@ use app\extensions\social\TwitterAPI;
 use app\extensions\storage\Rcache;
 use app\models\Wp_post;
 
-class UpdateTwitter extends CronJob {
+class UpdateTwitter extends CronJob
+{
 
-    public function run() {
+    public function run()
+    {
         Rcache::init();
         $api = new TwitterAPI();
-        $api->search('godesigner.ru', function($object) {
+        $api->search('godesigner.ru', function ($object) {
             $data = json_decode($object->response['response'], true);
-            $censoredTweets = array();
-            $censoredTweets['statuses'] = array();
+            $censoredTweets = [];
+            $censoredTweets['statuses'] = [];
             $minTimestamp = 1893355200;
             foreach ($data['statuses'] as $key => &$tweet) {
                 echo '<pre>';
@@ -38,7 +40,7 @@ class UpdateTwitter extends CronJob {
 
             if (($tutPosts = Wp_post::getPostsForStream($minTimestamp)) && (count($tutPosts) > 0)) {
                 foreach ($tutPosts as $post) {
-                    $censoredTweets['statuses'][] = array(
+                    $censoredTweets['statuses'][] = [
                         'type' => 'tutdesign',
                         'text' => $post->post_title,
                         'timestamp' => strtotime($post->post_modified),
@@ -47,11 +49,11 @@ class UpdateTwitter extends CronJob {
                         'category' => $post->category,
                         'id' => $post->ID,
                         'thumbnail' => $post->thumbnail,
-                    );
+                    ];
                 }
             }
 
-            uasort($censoredTweets['statuses'], function($a, $b) {
+            uasort($censoredTweets['statuses'], function ($a, $b) {
                 return ($a['timestamp'] > $b['timestamp']) ? -1 : 1;
             });
 

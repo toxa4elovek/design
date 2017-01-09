@@ -5,7 +5,8 @@ namespace app\tests\cases\models;
 use app\extensions\tests\AppUnit;
 use app\models\Grade;
 
-class GradeTest extends AppUnit {
+class GradeTest extends AppUnit
+{
 
     public function setUp()
     {
@@ -17,10 +18,9 @@ class GradeTest extends AppUnit {
         $this->rollDown('Grade');
     }
 
-    public function testGetFavouriteProjectsIdsForUser() {
+    public function testGetFavouriteProjectsIdsForUser()
+    {
         $this->assertFalse(Grade::isDesignerRatingExistsForProject(1));
         $this->assertTrue(Grade::isDesignerRatingExistsForProject(7));
     }
-
-
 }

@@ -1,1 +1,1 @@
-<?php json_decode($result)?>
+<?php json_decode($result);

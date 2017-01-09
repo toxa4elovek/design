@@ -17,7 +17,7 @@ class Pitch extends \lithium\template\Helper
 {
 
     protected $expert;
-    protected $dates = array();
+    protected $dates = [];
 
     /**
      * Метод возвращяет дату публикации экспертного мнения или дату завершения проекта

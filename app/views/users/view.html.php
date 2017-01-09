@@ -1,6 +1,6 @@
 <div class="wrapper register">
 
-    <?= $this->view()->render(array('element' => 'header'), array('logo' => 'logo')) ?>
+    <?= $this->view()->render(['element' => 'header'], ['logo' => 'logo']) ?>
     <?php
     $userdata = unserialize($user->userdata);
     ?>
@@ -9,12 +9,12 @@
         <div class="middle_inner user_view" style="min-height:330px;">
 
             <?php if ($this->user->isAdmin()): ?>
-                <div class="right-sidebar-user" style="<?php if((bool) $user->subscription_status): echo 'margin-top: 66px;'; endif;?>">
+                <div class="right-sidebar-user" style="<?php if ((bool) $user->subscription_status): echo 'margin-top: 66px;'; endif;?>">
                     <a id="enter-name" class="order-button" href="http://cp.godesigner.ru/users/loginasadmin?query=redirect&redirect=https://godesigner.ru/users/loginasuser/<?= $user->id ?>">Войти под именем</a>
-                    <p style="<?php if((bool) $user->subscription_status): echo 'margin-top:32px'; else: echo 'margin-top:41px';endif;?>"><a class="email-profile" href="mailto:<?= $user->email ?>"><?= $user->email ?></a></p>
+                    <p style="<?php if ((bool) $user->subscription_status): echo 'margin-top:32px'; else: echo 'margin-top:41px';endif;?>"><a class="email-profile" href="mailto:<?= $user->email ?>"><?= $user->email ?></a></p>
                     <div class="g_line" style="margin-top: 8px;"></div>
                     <p class="regular-small-grey">Online: <span class="date-profile"><?= date('d.m.Y H:i', strtotime($user->lastTimeOnline)) ?></span></p>
-                    <div class="g_line" style="margin-top: 5px; <?php if((bool) $user->subscription_status): echo 'padding-bottom:0'; else: echo 'padding-bottom:4px;';endif;?>"></div>
+                    <div class="g_line" style="margin-top: 5px; <?php if ((bool) $user->subscription_status): echo 'padding-bottom:0'; else: echo 'padding-bottom:4px;';endif;?>"></div>
                     <?php if ($user->silenceCount > 0): ?>
                         <p class="regular-small-grey">Запретов на общение: <?= $user->silenceCount ?></p>
                         <div class="g_line" style="margin-top: 7px;"></div>
@@ -25,14 +25,14 @@
                         <?php endif ?>
                     <?php endif ?>
                     <input type="hidden" value="<?= $user->id ?>" id="user_id"/>
-                    <button class="order-button banhammer" data-term="10" style="<?php if((bool) $user->subscription_status): echo 'margin-bottom:7px';endif;?>" />Бан на 10 дней</button>
-                    <button class="order-button banhammer" data-term="30" style="<?php if((bool) $user->subscription_status): echo 'margin-bottom:7px';endif;?>" />Бан на 1 месяц</button>
-                    <button class="order-button block" data-term="" <?php if ($user->banned == 1): ?>style="display: none;"<?php else: ?>style="display: inline;<?php if((bool) $user->subscription_status): echo 'margin-bottom:7px';endif;?>"<?php endif ?>/>Навсегда</button>
-                    <button class="order-button unblock" data-term="" <?php if(($user->banned_until != '0000-00-00 00:00:00') || ($user->banned == 1)): ?>style="display: inline;<?php if((bool) $user->subscription_status): echo 'margin-bottom:7px';endif;?>"<?php else: ?>style="display: none;"<?php endif ?>/>Разблокировать</button>
+                    <button class="order-button banhammer" data-term="10" style="<?php if ((bool) $user->subscription_status): echo 'margin-bottom:7px';endif;?>" />Бан на 10 дней</button>
+                    <button class="order-button banhammer" data-term="30" style="<?php if ((bool) $user->subscription_status): echo 'margin-bottom:7px';endif;?>" />Бан на 1 месяц</button>
+                    <button class="order-button block" data-term="" <?php if ($user->banned == 1): ?>style="display: none;"<?php else: ?>style="display: inline;<?php if ((bool) $user->subscription_status): echo 'margin-bottom:7px';endif;?>"<?php endif ?>/>Навсегда</button>
+                    <button class="order-button unblock" data-term="" <?php if (($user->banned_until != '0000-00-00 00:00:00') || ($user->banned == 1)): ?>style="display: inline;<?php if ((bool) $user->subscription_status): echo 'margin-bottom:7px';endif;?>"<?php else: ?>style="display: none;"<?php endif ?>/>Разблокировать</button>
                     <div class="g_line"></div>
                 </div>
             <?php elseif ($this->user->isLoggedIn()):?>
-                <div class="right-sidebar-user" style="<?php if((bool) $user->subscription_status): echo 'margin-top: 66px;'; endif;?>">
+                <div class="right-sidebar-user" style="<?php if ((bool) $user->subscription_status): echo 'margin-top: 66px;'; endif;?>">
                     <a id="invite-user" class="order-button" style="padding:5px 15px 5px 13px" href="http://cp.godesigner.ru/users/loginasadmin?query=redirect&redirect=https://godesigner.ru/users/invite/<?= $user->id ?>">Пригласить в проект</a>
                 </div>
             <?php endif ?>
@@ -46,7 +46,7 @@
                     </div>
                     <div class="info_profile_about">
                         <span class="nickname"><?= $this->user->getFormattedName($user->first_name, $user->last_name, true) ?></span>
-                        <?php if((bool) $user->subscription_status):?>
+                        <?php if ((bool) $user->subscription_status):?>
                         <br/><span style="position: relative; top: 6px; left: 2px; font-size: 13px; font-family: 'OfficinaSansC Book', serif; text-decoration: none; text-transform:  none; color: #666666;">тариф <a href="/pages/subscribe#plans" target="_blank">«<?= $this->user->getCurrentPlanData($user->id)['title']?>»</a></span>
                         <?php endif ?>
                         <?php if ($this->user->isLoggedIn()): ?>
@@ -106,12 +106,12 @@
                     <hr class="tiny-hr">
                     <h2 class="greyboldheader">История:</h2>
                     <?php foreach ($moderations as $moderation): ?>
-                        <?= $this->view()->render(array('element' => 'user/moderation'), array('moderation' => $moderation)) ?>
+                        <?= $this->view()->render(['element' => 'user/moderation'], ['moderation' => $moderation]) ?>
                     <?php endforeach; ?>
                 <?php endif ?>
             </div>
 
-            <?php if($userPitches):?>
+            <?php if ($userPitches):?>
                 <div class="middle_inner conteiners" style="text-transform: uppercase; margin-top: 0;padding-left: 0; padding-top: 45px;">
                     <section>
                         <table id="primary" style="margin-left: 0; width: 835px;" class="all-pitches">
@@ -127,51 +127,50 @@
                             <tbody id="table-content">
                             <?php
                             $i = 1;
-                            foreach($userPitches as $pitch):
+                            foreach ($userPitches as $pitch):
                                 $rowClass = 'odd';
-                                if(($i % 2 == 0)) {
+                                if (($i % 2 == 0)) {
                                     $rowClass = 'even';
                                 }
-                                if((strtotime($pitch['started']) + DAY) > time())  {
+                                if ((strtotime($pitch['started']) + DAY) > time()) {
                                     $rowClass .= ' newpitch';
-                                }else {
-                                    if(($pitch['pinned'] == 1) && ($pitch['status'] == 0)) {
+                                } else {
+                                    if (($pitch['pinned'] == 1) && ($pitch['status'] == 0)) {
                                         $rowClass .= ' highlighted';
                                     }
                                 }
 
-                                if($pitch['status'] == 0) {
-
+                                if ($pitch['status'] == 0) {
                                     if (($pitch['published'] == 0) && ($pitch['billed'] == 0) && ($pitch['moderated'] != 1)) {
                                         $timeleft = '<a href="/pitches/edit/' . $pitch['id'] . '#step3">Ожидание оплаты</a>';
-                                    } else if (($pitch['published'] == 0) && ($pitch['billed'] == 0) && ($pitch['moderated'] == 1)) {
+                                    } elseif (($pitch['published'] == 0) && ($pitch['billed'] == 0) && ($pitch['moderated'] == 1)) {
                                         $timeleft = 'Ожидание<br />модерации';
-                                    } else if (($pitch['published'] == 0) && ($pitch['billed'] == 1) && ($pitch['brief'] == 1)) {
+                                    } elseif (($pitch['published'] == 0) && ($pitch['billed'] == 1) && ($pitch['brief'] == 1)) {
                                         $timeleft = 'Ожидайте звонка';
                                     } else {
                                         $timeleft = $pitch['startedHuman'];
                                     }
-                                } else if (($pitch['status'] == 1) && ($pitch['awarded'] == 0)) {
+                                } elseif (($pitch['status'] == 1) && ($pitch['awarded'] == 0)) {
                                     $rowClass .= ' selection';
                                     $timeleft = 'Выбор победителя';
-                                } else if (($pitch['status'] == 2) || (($pitch['status'] == 1) && ($pitch['awarded'] > 0))) {
+                                } elseif (($pitch['status'] == 2) || (($pitch['status'] == 1) && ($pitch['awarded'] > 0))) {
                                     $rowClass .= ' pitch-end';
                                     if ($pitch['status'] == 2) {
                                         $timeleft = 'Проект завершен';
-                                    }else if(($pitch['status'] == 1) && ($pitch['awarded'] > 0)) {
+                                    } elseif (($pitch['status'] == 1) && ($pitch['awarded'] > 0)) {
                                         $timeleft = 'Победитель выбран';
-                                    }else if(($pitch['status'] == 1) && ($pitch['awarded'] == 0)) {
+                                    } elseif (($pitch['status'] == 1) && ($pitch['awarded'] == 0)) {
                                         $timeleft = 'Выбор победителя';
-                                    }else {
+                                    } else {
                                         $timeleft = $pitch['startedHuman'];
                                     }
                                 }
                                 $textGuarantee = '';
-                                if($pitch['guaranteed'] == 1) {
+                                if ($pitch['guaranteed'] == 1) {
                                     $textGuarantee = '<br><span style="font-size: 11px; font-weight: normal; font-family: Arial;text-transform:uppercase">гарантированы</span>';
                                 }
                                 $categoryLinkHref = '#';
-                                if($pitch['category_id'] == 20) {
+                                if ($pitch['category_id'] == 20) {
                                     $categoryLinkHref = '/pages/subscribe';
                                 }
                                 $multiple = (is_null($pitch['multiple'])) ? '' : '<br>' . $pitch['multiple'];
@@ -190,7 +189,7 @@
                                     </td>
                                     <td class="idea" style="font-family: Helvetica, sans-serif;font-size: 11px;font-weight:bold;color:#fff;"><?= $pitch['ideas_count'] ?></td>
                                     <td class="pitches-status mypitches" style="font-family: Helvetica, sans-serif;font-size: 11px;font-weight:bold;color:#fff;"><?=$timeleft?></td>
-                                    <td class="price"><?= $this->moneyFormatter->formatMoney($pitch['price'], array('suffix' => ' Р.-')) .
+                                    <td class="price"><?= $this->moneyFormatter->formatMoney($pitch['price'], ['suffix' => ' Р.-']) .
                                         $textGuarantee ?></td>
                                 </tr>
                                 <?php
@@ -238,7 +237,7 @@
                                 </div>
                                 <div class="selecting_numb">
                                     <span class="number_img">#<?= $solution->num ?></span>
-                                    <?= $this->html->link($solution->pitch->title, array('controller' => 'pitches', 'action' => 'view', 'id' => $solution->pitch->id), array('escape' => false)) ?>   </div>
+                                    <?= $this->html->link($solution->pitch->title, ['controller' => 'pitches', 'action' => 'view', 'id' => $solution->pitch->id], ['escape' => false]) ?>   </div>
                             </li>
                         <?php endforeach; ?>
                     </ul>
@@ -256,6 +255,6 @@
 
 </div><!-- .wrapper -->
 <?= $this->view()->render(['element' => 'popups/invite_popup']); ?>
-<?= $this->html->script(array('users/view'), array('inline' => false)) ?>
+<?= $this->html->script(['users/view'], ['inline' => false]) ?>
 <?=
-$this->html->style(array('/cabinet', '/portfolio', '/messages12'), array('inline' => false))?>
+$this->html->style(['/cabinet', '/portfolio', '/messages12'], ['inline' => false])?>

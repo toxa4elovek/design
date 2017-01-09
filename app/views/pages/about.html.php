@@ -1,6 +1,6 @@
 <div class="wrapper">
 	
-<?=$this->view()->render(array('element' => 'header'), array('logo' => 'logo', 'header' => 'header'))?>
+<?=$this->view()->render(['element' => 'header'], ['logo' => 'logo', 'header' => 'header'])?>
 
 	<div class="middle">
         <div class="middle_inner">
@@ -25,7 +25,7 @@
                             	<div id="ap_content_r_1" class="regular">
                                     <h2 class="greyboldheader">Возникли вопросы?</h2>
                                     Вы можете найти ответ в разделе <a href="/answers">«Часто задаваемые вопросы»</a>, или напишите нам сообщение. Мы постараемся вам ответить в течении 24 часов по рабочим дням.
-                                    <?=$this->html->link('<img src="/img/ap_r_1_1.gif" alt="">', 'Pages::contacts', array('escape' => false))?>
+                                    <?=$this->html->link('<img src="/img/ap_r_1_1.gif" alt="">', 'Pages::contacts', ['escape' => false])?>
                                 </div>
                                 <div id="ap_content_r_2">
                                     <h2 class="greyboldheader">Часто задаваемые вопросы</h2>
@@ -77,4 +77,4 @@
 	</div><!-- /middle -->
 
 </div><!-- .wrapper -->
-<?=$this->html->style(array('/howitworks', '/about_project'), array('inline' => false))?>
+<?=$this->html->style(['/howitworks', '/about_project'], ['inline' => false])?>

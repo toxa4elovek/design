@@ -5,12 +5,12 @@
 define("_JPGRAPH_PATH", '../../jpgraph_5/jpgraph/'); // must define this before including mpdf.php file
 $JpgUseSVGFormat = true;
 
-define('_MPDF_URI','../'); 	// must be  a relative or absolute URI - not a file system path
+define('_MPDF_URI', '../');    // must be  a relative or absolute URI - not a file system path
 //==============================================================
 //==============================================================
 
 
-ini_set("memory_limit","64M");
+ini_set("memory_limit", "64M");
 
 $html = '
 <html><head>
@@ -1569,12 +1569,12 @@ $mpdf->WriteHTML(\'<indexinsert cols="2" font="serif" div-font="sans-serif" link
 
 include("../mpdf.php");
 
-$mpdf=new mPDF('s','A4','','',25,15,21,22,10,10); 
+$mpdf=new mPDF('s', 'A4', '', '', 25, 15, 21, 22, 10, 10);
 
 $mpdf->StartProgressBarOutput();
 
 $mpdf->mirrorMargins = 1;
-$mpdf->SetDisplayMode('fullpage','two');
+$mpdf->SetDisplayMode('fullpage', 'two');
 $mpdf->list_number_suffix = ')';
 $mpdf->hyphenate = true;
 
@@ -1590,6 +1590,4 @@ exit;
 //==============================================================
 //==============================================================
 //==============================================================
-
-
-?>
+;

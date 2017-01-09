@@ -85,19 +85,17 @@ At the bottom of the page are two DIV elements with position:fixed and position:
 //==============================================================
 include("../mpdf.php");
 
-$mpdf=new mPDF(); 
+$mpdf=new mPDF();
 
 $mpdf->SetDisplayMode('fullpage');
 
 $mpdf->WriteHTML($html);
 
-$mpdf->Output(); 
+$mpdf->Output();
 
 exit;
 
 //==============================================================
 //==============================================================
 //==============================================================
-
-
-?>
+;

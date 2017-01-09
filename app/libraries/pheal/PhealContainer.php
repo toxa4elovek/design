@@ -34,7 +34,7 @@ class PhealContainer implements PhealArrayInterface
     /**
      * @var array
      */
-    private $_container = array();
+    private $_container = [];
 
     /**
      * Adds an Element to the container
@@ -43,7 +43,7 @@ class PhealContainer implements PhealArrayInterface
      */
     public function add_element($key, $val)
     {
-        $this->_container = array_merge($this->_container, array((String) $key => $val));
+        $this->_container = array_merge($this->_container, [(String) $key => $val]);
     }
 
     /**
@@ -51,10 +51,11 @@ class PhealContainer implements PhealArrayInterface
      * @param string $name
      * @return mixed
      */
-    public function  __get($name)
+    public function __get($name)
     {
-        if(isset($this->_container[$name]))
-                return $this->_container[$name];
+        if (isset($this->_container[$name])) {
+            return $this->_container[$name];
+        }
         return null;
     }
 
@@ -64,9 +65,10 @@ class PhealContainer implements PhealArrayInterface
      */
     public function toArray()
     {
-        $return = array();
-        foreach($this->_container AS $key => $value)
+        $return = [];
+        foreach ($this->_container as $key => $value) {
             $return[$key] = ($value instanceof PhealArrayInterface) ? $value->toArray() : $value;
+        }
 
         return $return;
     }

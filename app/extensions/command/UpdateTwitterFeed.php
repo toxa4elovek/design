@@ -5,12 +5,14 @@ namespace app\extensions\command;
 use app\extensions\social\TwitterAPI;
 use app\extensions\storage\Rcache;
 
-class UpdateTwitterFeed extends CronJob {
+class UpdateTwitterFeed extends CronJob
+{
 
-    public function run() {
+    public function run()
+    {
         Rcache::init();
         $api = new TwitterAPI();
-        $hashTags = array('работадлядизайнеров');
+        $hashTags = ['работадлядизайнеров'];
         $x = 0;
         $url = '';
         $countTags = count($hashTags);
@@ -18,12 +20,12 @@ class UpdateTwitterFeed extends CronJob {
             ++$x;
             $url .= $countTags > $x ? '%23' . $tag . '+' : '%23' . $tag;
         }
-        $api->search('работадлядизайнеров', function($object) {
+        $api->search('работадлядизайнеров', function ($object) {
             $data = json_decode($object->response['response'], true);
-            $censoredTweets = array();
-            $censoredTweets['statuses'] = array();
+            $censoredTweets = [];
+            $censoredTweets['statuses'] = [];
             $minTimestamp = 1893355200;
-            $listOfUsedIds = array();
+            $listOfUsedIds = [];
             foreach ($data['statuses'] as $key => &$tweet) {
                 $delete = false;
                 if (isset($tweet['entities']) and isset($tweet['entities']['urls'])) {
@@ -48,11 +50,9 @@ class UpdateTwitterFeed extends CronJob {
                             $text = str_replace('#' . $hashtag['text'], '<a style="display:inline;color:#ff585d" target="_blank" href="https://twitter.com/#!/search/%23' . $hashtag['text'] . '">' . '#' . $hashtag['text'] . '</a>', $text);
                         }
                         foreach ($tweet['entities']['urls'] as $url) {
-
                             $text = str_replace($url['url'], '<a class="url-twitter" style="display:inline;color:#ff585d" target="_blank" href="' . $url['url'] . '">' . $url['display_url'] . '</a>', $text);
                         }
                         foreach ($tweet['entities']['user_mentions'] as $user) {
-
                             $text = str_replace('@' . $user['screen_name'], '<a style="display:inline;color:#ff585d" target="_blank" href="https://twitter.com/#!/' . $user['screen_name'] . '">' . '@' . $user['screen_name'] . '</a>', $text);
                         }
                         $user = '<a style="display:inline;color:#ff585d" target="_blank" href="https://twitter.com/#!/' . $tweet['user']['screen_name'] . '">@' . $tweet['user']['screen_name'] . '</a>';
@@ -62,7 +62,7 @@ class UpdateTwitterFeed extends CronJob {
                 }
             }
 
-            uasort($censoredTweets['statuses'], function($a, $b) {
+            uasort($censoredTweets['statuses'], function ($a, $b) {
                 return ($a['timestamp'] > $b['timestamp']) ? -1 : 1;
             });
             $res = Rcache::write('twitterstreamFeed', $censoredTweets);

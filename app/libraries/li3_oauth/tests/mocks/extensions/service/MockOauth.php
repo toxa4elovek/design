@@ -8,11 +8,11 @@
 
 namespace li3_oauth\tests\mocks\extensions\service;
 
-class MockOauth extends \li3_oauth\extensions\service\Oauth {
+class MockOauth extends \li3_oauth\extensions\service\Oauth
+{
 
-	public function decode($body) {
-		return $this->_decode($body);
-	}
+    public function decode($body)
+    {
+        return $this->_decode($body);
+    }
 }
-
-?>

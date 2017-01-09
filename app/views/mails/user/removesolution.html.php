@@ -12,13 +12,13 @@
     <tr><td width="5"></td><td valign="top"></td>
         <td>
             <a style="color: #ff585d; line-height: 17px; font-size: 20px; font-weight: bold; font-family: Arial, sans-serif; text-decoration: none;" href="https://godesigner.ru/pitches/view/<?=$pitch->id?>"><?=$pitch->title?> <?=(int) $pitch->price?> Р.-</a><br/>
-            <span style="color: #AEAEAE; line-height: 17px; font-size: 11px; font-family: Arial, sans-serif;"><?=$this->view()->render(array('template' => 'pitch-info'), array('pitch' => $pitch));?></span><br/><br/>
+            <span style="color: #AEAEAE; line-height: 17px; font-size: 11px; font-family: Arial, sans-serif;"><?=$this->view()->render(['template' => 'pitch-info'], ['pitch' => $pitch]);?></span><br/><br/>
             <span style="color: #666666; line-height: 23px; font-size: 14px; font-family: Arial, sans-serif;">
                 Здравствуйте, <?=$user['first_name']?>!<br>
                 Пожалуйста, соблюдайте правила: <a href="http://godesigner.ru/answers/view/37" target="_blank">http://godesigner.ru/answers/view/37</a><br><br>
 
                 Мы были вынуждены <?php echo (is_null($term)) ? '' : 'приостановить вашу возможность комментирования на ' .
-                $term . ' ' . $this->numInflector->formatString($term, array('string' => array('first' => 'день', 'second' => 'дня', 'third' => 'дней'))) .
+                $term . ' ' . $this->numInflector->formatString($term, ['string' => ['first' => 'день', 'second' => 'дня', 'third' => 'дней']]) .
                 ' и ';?>удалить ваше решение #<?=$solution_num?> всвязи с несоблюдением правил и <?php switch ($reason) {
                     case 'plagiat':
                         echo 'неоригинальной идеей.';

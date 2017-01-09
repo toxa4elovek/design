@@ -18,7 +18,7 @@
                 Пожалуйста, соблюдайте правила: <a href="http://godesigner.ru/answers/view/37" target="_blank">http://godesigner.ru/answers/view/37</a><br><br>
 
                 Мы были вынуждены <?php echo (is_null($term)) ? '' : 'приостановить вашу возможность комментирования на ' .
-                $term . ' ' . $this->numInflector->formatString($term, array('string' => array('first' => 'день', 'second' => 'дня', 'third' => 'дней'))) .
+                $term . ' ' . $this->numInflector->formatString($term, ['string' => ['first' => 'день', 'second' => 'дня', 'third' => 'дней']]) .
                 ' и ';?>удалить ваш комментарий в связи с несоблюдением правил и <?php switch ($reason) {
                     case 'critique':
                         echo 'публичной критикой.';

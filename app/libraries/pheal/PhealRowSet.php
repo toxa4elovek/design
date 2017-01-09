@@ -42,19 +42,18 @@ class PhealRowSet extends ArrayObject implements PhealArrayInterface
      * @optional String $name
      * @optional String $rowname
      */
-    public function __construct($xml,$name=null,$rowname='row')
+    public function __construct($xml, $name=null, $rowname='row')
     {
         $this->_name = (String) ($name !== null) ? $name : $xml->attributes()->name;
        
-        foreach($xml->$rowname as $rowxml)
-        {
-            $row = array();
-            foreach($rowxml->attributes() as $attkey => $attval)
-            {
+        foreach ($xml->$rowname as $rowxml) {
+            $row = [];
+            foreach ($rowxml->attributes() as $attkey => $attval) {
                 $row[$attkey] = (String) $attval;
             }
-            foreach($rowxml->children() as $child) // nested tags in rowset/row
-            {
+            foreach ($rowxml->children() as $child) {
+                // nested tags in rowset/row
+
                 $element= PhealElement::parse_element($child);
                 $row[(String) $element->_name] = $element;
             }
@@ -70,12 +69,13 @@ class PhealRowSet extends ArrayObject implements PhealArrayInterface
      */
     public function toArray()
     {
-        $return = array();
-        foreach($this AS $row)
-            if($row instanceof PhealArrayInterface)
+        $return = [];
+        foreach ($this as $row) {
+            if ($row instanceof PhealArrayInterface) {
                 $return[] = $row->toArray();
+            }
+        }
 
         return $return;
     }
 }
-

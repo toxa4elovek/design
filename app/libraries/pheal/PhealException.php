@@ -29,5 +29,4 @@
  */
 class PhealException extends Exception
 {
-
 }

@@ -22,12 +22,12 @@
 
 require '../tmhOAuth.php';
 require '../tmhUtilities.php';
-$tmhOAuth = new tmhOAuth(array(
+$tmhOAuth = new tmhOAuth([
   'consumer_key'    => 'YOUR_CONSUMER_KEY',
   'consumer_secret' => 'YOUR_CONSUMER_SECRET',
   'user_token'      => 'A_USER_TOKEN',
   'user_secret'     => 'A_USER_SECRET',
-));
+]);
 
 // we're using a hardcoded image path here. You can easily replace this with
 // an uploaded image - see images.php in the examples folder for how to do this
@@ -46,57 +46,58 @@ $params = prepare_request($tmhOAuth, $x_auth_service_provider, $image, $mime);
 $code = make_request($tmhOAuth, $delegator, $params, false, true);
 
 if ($code != 200) {
-  tmhUtilities::pr('There was an error communicating with the delegator.');
-  tmhUtilities::pr($tmhOAuth);
-  die();
+    tmhUtilities::pr('There was an error communicating with the delegator.');
+    tmhUtilities::pr($tmhOAuth);
+    die();
 }
 
 $resp = json_decode($tmhOAuth->response['response']);
-$params = array(
+$params = [
   'status' => 'I just OAuth echoed a picture: ' . $resp->url
-);
+];
 $code = make_request($tmhOAuth, $tmhOAuth->url('1/statuses/update'), $params, true, false);
 
 if ($code == 200) {
-  tmhUtilities::pr('Picture OAuth Echo\'d!');
-  tmhUtilities::pr(json_decode($tmhOAuth->response['response']));
+    tmhUtilities::pr('Picture OAuth Echo\'d!');
+    tmhUtilities::pr(json_decode($tmhOAuth->response['response']));
 } else {
-  tmhUtilities::pr('There was an error from Twitter.');
-  tmhUtilities::pr($tmhOAuth);
-  die();
+    tmhUtilities::pr('There was an error from Twitter.');
+    tmhUtilities::pr($tmhOAuth);
+    die();
 }
 
-function generate_verify_header($tmhOAuth, $x_auth_service_provider) {
-  // generate the verify crendentials header -- BUT DON'T SEND
+function generate_verify_header($tmhOAuth, $x_auth_service_provider)
+{
+    // generate the verify crendentials header -- BUT DON'T SEND
   // we prevent the request because we're not the ones sending the verify_credentials request, the delegator is
   $tmhOAuth->config['prevent_request'] = true;
-  $tmhOAuth->request('GET', $x_auth_service_provider);
-  $tmhOAuth->config['prevent_request'] = false;
+    $tmhOAuth->request('GET', $x_auth_service_provider);
+    $tmhOAuth->config['prevent_request'] = false;
 }
 
-function prepare_request($tmhOAuth, $x_auth_service_provider, $media, $media_type='image/jpeg') {
-  // create the headers for the echo
-  $headers = array(
+function prepare_request($tmhOAuth, $x_auth_service_provider, $media, $media_type='image/jpeg')
+{
+    // create the headers for the echo
+  $headers = [
     'X-Auth-Service-Provider'            => $x_auth_service_provider,
     'X-Verify-Credentials-Authorization' => $tmhOAuth->auth_header,
-  );
+  ];
 
   // load the headers for the request
   $tmhOAuth->headers = $headers;
 
   // prepare the request to the delegator
-  $params = array(
+  $params = [
     'media'   => "@{$media};type={$media_type};filename={$media}",
     'message' => 'trying something out'
-  );
+  ];
 
-  return $params;
+    return $params;
 }
 
-function make_request($tmhOAuth, $url, $params, $auth, $multipart) {
-  // make the request, no auth, multipart, custom headers
+function make_request($tmhOAuth, $url, $params, $auth, $multipart)
+{
+    // make the request, no auth, multipart, custom headers
   $code = $tmhOAuth->request('POST', $url, $params, $auth, $multipart);
-  return $code;
+    return $code;
 }
-
-?>

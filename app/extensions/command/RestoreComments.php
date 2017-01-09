@@ -8,9 +8,11 @@ use app\models\Historycomment;
 use app\models\Sendemail;
 use app\models\Solution;
 
-class RestoreComments extends CronJob {
+class RestoreComments extends CronJob
+{
 
-    public function run() {
+    public function run()
+    {
         $this->header('Welcome to the ReferalPayments command!');
         $count = 0;
         /*$emails = Sendemail::all(['conditions' => [

@@ -41,91 +41,89 @@ use lithium\util\Collection;
  * @see lithium\util\Collection
  * @link http://rad-dev.org/li3_fixtures
  */
-class Fixture extends \lithium\core\StaticObject {
+class Fixture extends \lithium\core\StaticObject
+{
 
-	/**
-	 * Specifies the default values that get loaded.
-	 * @var array
-	 */
-	protected static $_defaults = array(
-		'path' => 'tests/fixtures',
-		'type' => 'json',
-		'sources' => array(),
-		'collection' => 'Collection'
-	);
+    /**
+     * Specifies the default values that get loaded.
+     * @var array
+     */
+    protected static $_defaults = [
+        'path' => 'tests/fixtures',
+        'type' => 'json',
+        'sources' => [],
+        'collection' => 'Collection'
+    ];
 
-	/**
-	 * Contains all supported datasources. You can override/extend this in the
-	 * Fixture::load()-call.
-	 * @var array
-	 */
-	protected static $_sources = array(
-		'json' => 'li3_fixtures\test\source\Json'
-	);
+    /**
+     * Contains all supported datasources. You can override/extend this in the
+     * Fixture::load()-call.
+     * @var array
+     */
+    protected static $_sources = [
+        'json' => 'li3_fixtures\test\source\Json'
+    ];
 
-	protected static $_collections = array(
-		'Collection' => 'lithium\util\Collection',
-		'DocumentSet'=> 'lithium\data\collection\DocumentSet',
-		'DocumentArray' => 'lithium\data\collection\DocumentArray',
-		'RecordSet' => 'lithium\data\collection\RecordSet'
-	);
+    protected static $_collections = [
+        'Collection' => 'lithium\util\Collection',
+        'DocumentSet'=> 'lithium\data\collection\DocumentSet',
+        'DocumentArray' => 'lithium\data\collection\DocumentArray',
+        'RecordSet' => 'lithium\data\collection\RecordSet'
+    ];
 
-	/**
-	 * Loads Fixture data and returns a Collection object.
-	 *
-	 * The load method loads the fixture file based on the $model param and then hands
-	 * it over to the source parser (Json by default). After parsing, it returns the
-	 * data as a Collection object. If you specify an optional collection parameter,
-	 * this class will be used as the return class instead of lithiu\util\Collection.
-	 *
-	 * @param string $model The name of the model. It will be lowercased and pluralized
-	 *											by the inflector.
-	 * @param array $options Additional options can be specified here. Possible options are:
-	 *											 - `path`: can be an absolute or relative path to the fixture file.
-	 *											 - `type`: the extension of the fixture. defaults to json.
-	 *											 - `sources`: add more parsing sources. Out of the box Json is used.
-	 *											 - `collection`: a different collection. Defaults to lithium\util\Collection.
-	 *														see static::$_collections for supported short hands or provide your own
-	 *														fully namespaced classname (it has to be some kind of collection!)
-	 * @return lithium\util\Collection A collection with all fixtures inside (or subclass from Collection).
-	 * @see lithium\util\Collection
-	 * @see lithium\data\collection\DocumentSet
-	 * @see lithium\data\collection\DocumentArray
-	 * @see lithium\data\collection\RecordSet
-	 */
-	public static function load($model, array $options = array()) {
-		$options = $options + static::$_defaults;
-		$sources = $options['sources'] + static::$_sources;
-		$collection = false;
+    /**
+     * Loads Fixture data and returns a Collection object.
+     *
+     * The load method loads the fixture file based on the $model param and then hands
+     * it over to the source parser (Json by default). After parsing, it returns the
+     * data as a Collection object. If you specify an optional collection parameter,
+     * this class will be used as the return class instead of lithiu\util\Collection.
+     *
+     * @param string $model The name of the model. It will be lowercased and pluralized
+     *											by the inflector.
+     * @param array $options Additional options can be specified here. Possible options are:
+     *											 - `path`: can be an absolute or relative path to the fixture file.
+     *											 - `type`: the extension of the fixture. defaults to json.
+     *											 - `sources`: add more parsing sources. Out of the box Json is used.
+     *											 - `collection`: a different collection. Defaults to lithium\util\Collection.
+     *														see static::$_collections for supported short hands or provide your own
+     *														fully namespaced classname (it has to be some kind of collection!)
+     * @return lithium\util\Collection A collection with all fixtures inside (or subclass from Collection).
+     * @see lithium\util\Collection
+     * @see lithium\data\collection\DocumentSet
+     * @see lithium\data\collection\DocumentArray
+     * @see lithium\data\collection\RecordSet
+     */
+    public static function load($model, array $options = [])
+    {
+        $options = $options + static::$_defaults;
+        $sources = $options['sources'] + static::$_sources;
+        $collection = false;
 
-		if(!array_key_exists($options['type'], $sources)) {
-			throw new \InvalidArgumentException("Unsupported type `".$options['type']."`");
-		}
+        if (!array_key_exists($options['type'], $sources)) {
+            throw new \InvalidArgumentException("Unsupported type `".$options['type']."`");
+        }
 
-		if(substr($options['path'], 0, 1) != "/") {
-			$options['path'] = LITHIUM_APP_PATH."/".$options['path'];
-		}
+        if (substr($options['path'], 0, 1) != "/") {
+            $options['path'] = LITHIUM_APP_PATH."/".$options['path'];
+        }
 
-		$model = strtolower(Inflector::pluralize($model));
-		$file = $options['path']."/".$model.".".$options['type'];
-		$source = $sources[$options['type']];
+        $model = strtolower(Inflector::pluralize($model));
+        $file = $options['path']."/".$model.".".$options['type'];
+        $source = $sources[$options['type']];
 
-		if(file_exists($file) && is_readable($file)) {
-			if(class_exists($options['collection'])) {
-				$collection = $options['collection'];
-			} elseif(isset(static::$_collections[$options['collection']])) {
-				$collection = static::$_collections[$options['collection']];
-			}
-			if(!$collection) {
-				throw new \InvalidArgumentException("Unsupported or empty collection given (`".$options['collection']."`)");
-			}
-			return new $collection(array('data' => $source::parse($file)));
-		} else {
-			throw new \RuntimeException("Could not read file `{$file}`");
-		}
-
-	}
-
+        if (file_exists($file) && is_readable($file)) {
+            if (class_exists($options['collection'])) {
+                $collection = $options['collection'];
+            } elseif (isset(static::$_collections[$options['collection']])) {
+                $collection = static::$_collections[$options['collection']];
+            }
+            if (!$collection) {
+                throw new \InvalidArgumentException("Unsupported or empty collection given (`".$options['collection']."`)");
+            }
+            return new $collection(['data' => $source::parse($file)]);
+        } else {
+            throw new \RuntimeException("Could not read file `{$file}`");
+        }
+    }
 }
-
-?>

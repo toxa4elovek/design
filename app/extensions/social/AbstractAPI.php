@@ -1,7 +1,8 @@
 <?php
 namespace app\extensions\social;
 
-abstract class AbstractAPI {
+abstract class AbstractAPI
+{
 
     /**
      * Метод для получения токена доступа для постинга в соц сети
@@ -16,6 +17,5 @@ abstract class AbstractAPI {
      * @param array $data
      * @return mixed
      */
-    abstract public function postMessageToPage(Array $data);
-
+    abstract public function postMessageToPage(array $data);
 }

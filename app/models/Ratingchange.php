@@ -2,13 +2,12 @@
 
 namespace app\models;
 
-class Ratingchange extends \app\models\AppModel {
+class Ratingchange extends \app\models\AppModel
+{
 
-    public $belongsTo = array('User', 'Solution');
+    public $belongsTo = ['User', 'Solution'];
 
-    public static function increaseCounter($id) {
-
+    public static function increaseCounter($id)
+    {
     }
-
-
 }

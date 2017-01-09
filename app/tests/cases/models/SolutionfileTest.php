@@ -6,17 +6,20 @@ use app\extensions\tests\AppUnit;
 use app\models\Solutionfile;
 use app\models\Solution;
 
-class SolutionfileTest extends AppUnit {
+class SolutionfileTest extends AppUnit
+{
 
-    public function setUp() {
-
+    public function setUp()
+    {
     }
 
-    public function tearDown() {
-        $this->rollDown(array('Solution', 'Solutionfile'));
+    public function tearDown()
+    {
+        $this->rollDown(['Solution', 'Solutionfile']);
     }
 
-    public function testSave() {
+    public function testSave()
+    {
         /*
         $this->assertTrue(Solutionfile::copy(2, 100075));
         $solutionFiles = Solutionfile::find('all',array('conditions'=>array('model_id'=>100075)));
@@ -25,5 +28,4 @@ class SolutionfileTest extends AppUnit {
         }
         $this->assertFalse(Solutionfile::copy(0, 0));*/
     }
-
 }

@@ -24,7 +24,7 @@ class UpdateSmsStatus extends CronJob
         $messages = TextMessage::all(['conditions' => ['status' => $waitingForUpdateStatuses]]);
         $smsService = new SmsUslugi();
         //$reports = $smsService->reports(date('Y-m-d', time() - 10 * MINUTE), date('Y-m-d'));
-        foreach($messages as $message) {
+        foreach ($messages as $message) {
             $details = $smsService->detailReport($message->text_id);
             $message->status = $details['descr'];
             $message->save();

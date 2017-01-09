@@ -66,16 +66,15 @@ class PagesController extends AppController
             'with' => ['Pitch']
         ]);
         foreach ($solutionRecords as $solution) {
-            if($solution->pitch->isSubscriberProjectForCopyrighting()) {
+            if ($solution->pitch->isSubscriberProjectForCopyrighting()) {
                 continue;
             }
-            if(isset($solution->images['solution_promo'])) {
+            if (isset($solution->images['solution_promo'])) {
                 continue;
             }
             if (isset($solution->images['solution'][0])) {
                 $newfiledata = pathinfo($solution->images['solution'][0]['filename']);
                 $originalFilename = $solution->images['solution'][0]['filename'];
-
             } else {
                 $newfiledata = pathinfo($solution->images['solution']['filename']);
                 $originalFilename = $solution->images['solution']['filename'];
@@ -94,9 +93,9 @@ class PagesController extends AppController
                 $imageProcessor->{$param} = $value;
             }
             $imageProcessor->process($newfiledata['dirname']);
-            $conditions = array('model' => '\app\models\Solution', 'model_id' => $solution->id, 'filekey' => 'solution' . '_promo', 'filename' => $newfilename);
-            $data = array('filename' => $newfilename) + $conditions;
-            if ($existingRow = Solutionfile::first(array('conditions' => $conditions))) {
+            $conditions = ['model' => '\app\models\Solution', 'model_id' => $solution->id, 'filekey' => 'solution' . '_promo', 'filename' => $newfilename];
+            $data = ['filename' => $newfilename] + $conditions;
+            if ($existingRow = Solutionfile::first(['conditions' => $conditions])) {
                 $existingRow->set($data);
                 $existingRow->save();
             } else {
@@ -108,21 +107,21 @@ class PagesController extends AppController
         $solutions = $lowList = $highList = [];
         $totalCount = count($solutionRecords);
         foreach ($solutionRecords as $solution) {
-            if($solution->pitch->isSubscriberProjectForCopyrighting()) {
+            if ($solution->pitch->isSubscriberProjectForCopyrighting()) {
                 continue;
             }
-            if((int) $solution->pitch->price < $separatorPrice) {
+            if ((int) $solution->pitch->price < $separatorPrice) {
                 $lowList[] = $solution;
-            }else {
+            } else {
                 $highList[] = $solution;
             }
             //$solutions[] = $solution;
         }
-        for($i = 0; $i < $totalCount; $i++) {
-            if(count($lowList) >= ($i + 1)) {
+        for ($i = 0; $i < $totalCount; $i++) {
+            if (count($lowList) >= ($i + 1)) {
                 $solutions[] = $lowList[$i];
             }
-            if(count($highList) >= ($i + 1)) {
+            if (count($highList) >= ($i + 1)) {
                 $solutions[] = $highList[$i];
             }
         }
@@ -272,5 +271,4 @@ class PagesController extends AppController
             }
         }
     }
-
 }

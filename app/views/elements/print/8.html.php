@@ -5,12 +5,12 @@ $details = unserialize($pitch->specifics);
 
 <div class="groupc">
 
-    <?php if(!empty($details['booklet-pages'])):?>
+    <?php if (!empty($details['booklet-pages'])):?>
     <h2 class="blueheading">Количество страниц</h2>
     <p class="regular"><?=$details['booklet-pages']?></p>
     <?php endif;?>
 
-    <?php if(!empty($details['site-sub'])):?>
+    <?php if (!empty($details['site-sub'])):?>
     <h2 class="blueheading">Количество страниц</h2>
     <p class="regular"><?=$details['site-sub']?></p>
     <?php endif;?>
@@ -45,12 +45,12 @@ $details = unserialize($pitch->specifics);
         </li>
     </ul><!-- .logo-properties -->
 
-    <?php if(!empty($details['site-inspiration'])):?>
+    <?php if (!empty($details['site-inspiration'])):?>
     <h2 class="blueheading">Предпочтения</h2>
     <p class="regular"><?=$this->brief->deleteHtmlTagsAndInsertHtmlLinkInText($details['site-inspiration'])?></p>
     <?php endif;?>
 
-    <?php if(!empty($details['qualities'])):?>
+    <?php if (!empty($details['qualities'])):?>
     <h2 class="blueheading">Какие 3 основных качества нужно донести до аудитории?</h2>
     <p class="regular"><?=$this->brief->deleteHtmlTagsAndInsertHtmlLinkInText($details['qualities'])?></p>
     <?php endif;?>

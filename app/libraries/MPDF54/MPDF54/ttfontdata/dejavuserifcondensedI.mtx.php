@@ -1,7 +1,7 @@
 <?php
 $name='DejaVuSerifCondensed-Italic';
 $type='TTF';
-$desc=array (
+$desc= [
   'Ascent' => 928,
   'Descent' => -236,
   'CapHeight' => 928,
@@ -10,7 +10,7 @@ $desc=array (
   'ItalicAngle' => -11,
   'StemV' => 87,
   'MissingWidth' => 540,
-);
+];
 $up=-63;
 $ut=44;
 $ttffile='C:/server/www/godesigner/app/libraries/MPDF54/MPDF54/ttfonts/DejaVuSerifCondensed-Italic.ttf';
@@ -23,4 +23,3 @@ $fontkey='dejavuserifcondensedI';
 $panose=' 0 0 2 6 6 6 5 3 5 b 2 4';
 $haskerninfo=false;
 $unAGlyphs=false;
-?>

@@ -1,6 +1,6 @@
 <div class="wrapper register">
 
-    <?= $this->view()->render(array('element' => 'header'), array('logo' => 'logo')) ?>
+    <?= $this->view()->render(['element' => 'header'], ['logo' => 'logo']) ?>
     <?php
     $userdata = unserialize($user->userdata);
     ?>
@@ -8,7 +8,7 @@
 
         <div class="middle_inner">
             <nav class="main_nav clear">
-                <?= $this->view()->render(array('element' => 'office/nav')); ?>
+                <?= $this->view()->render(['element' => 'office/nav']); ?>
             </nav>
             <div class="profile">
 
@@ -19,7 +19,7 @@
                     </div>
                     <div class="info_profile_about">
                         <span class="nickname"><?= $this->user->getFormattedName($user->first_name, $user->last_name) ?></span>
-                        <?php if((bool) $user->subscription_status):?>
+                        <?php if ((bool) $user->subscription_status):?>
                             <br/><span style="position: relative; top: 6px; left: 2px; font-size: 13px; font-family: 'OfficinaSansC Book'; text-decoration: none; text-transform:  none; color: #666666;">тариф <a href="/pages/subscribe#plans" target="_blank">«<?= $this->user->getCurrentPlanData($user->id)['title']?>»</a></span>
                         <?php endif ?>
                         <ul class="profile-list-info"></ul>
@@ -69,7 +69,7 @@
 margin-top: 50px;font-family: OfficinaSansC Bold, serif; text-align: center; font-size: 25px; font-weight: normal; color: #666666;">Укажите 5 тегов, которые описывают ваше решение</h3>
             <p style="text-shadow: 0 1px 1px #FFFFFF; margin-top: 20px;font-family: OfficinaSansC Book, serif; font-size: 17px; text-align: center; color: #666; margin-bottom: 40px;">Это поможет найти вашу идею тем, кто захочет его<br> купить. Т. о. мы дарим вам возможность продать работу,<br> если та не станет победителем с первого раза.</p-->
 
-            <?php if($userPitches):?>
+            <?php if ($userPitches):?>
                 <div class="middle_inner conteiners" style="text-transform: uppercase; margin-top: 0;padding-left: 0; padding-top: 45px;">
                     <section>
                         <table id="primary" style="margin-left: 0; width: 835px;" class="all-pitches">
@@ -85,51 +85,50 @@ margin-top: 50px;font-family: OfficinaSansC Bold, serif; text-align: center; fon
                             <tbody id="table-content">
                             <?php
                             $i = 1;
-                            foreach($userPitches as $pitch):
+                            foreach ($userPitches as $pitch):
                                 $rowClass = 'odd';
-                                if(($i % 2 == 0)) {
+                                if (($i % 2 == 0)) {
                                     $rowClass = 'even';
                                 }
-                                if((strtotime($pitch['started']) + DAY) > time())  {
+                                if ((strtotime($pitch['started']) + DAY) > time()) {
                                     $rowClass .= ' newpitch';
-                                }else {
-                                    if(($pitch['pinned'] == 1) && ($pitch['status'] == 0)) {
+                                } else {
+                                    if (($pitch['pinned'] == 1) && ($pitch['status'] == 0)) {
                                         $rowClass .= ' highlighted';
                                     }
                                 }
 
-                                if($pitch['status'] == 0) {
-
+                                if ($pitch['status'] == 0) {
                                     if (($pitch['published'] == 0) && ($pitch['billed'] == 0) && ($pitch['moderated'] != 1)) {
                                         $timeleft = '<a href="/pitches/edit/' . $pitch['id'] . '#step3">Ожидание оплаты</a>';
-                                    } else if (($pitch['published'] == 0) && ($pitch['billed'] == 0) && ($pitch['moderated'] == 1)) {
+                                    } elseif (($pitch['published'] == 0) && ($pitch['billed'] == 0) && ($pitch['moderated'] == 1)) {
                                         $timeleft = 'Ожидание<br />модерации';
-                                    } else if (($pitch['published'] == 0) && ($pitch['billed'] == 1) && ($pitch['brief'] == 1)) {
+                                    } elseif (($pitch['published'] == 0) && ($pitch['billed'] == 1) && ($pitch['brief'] == 1)) {
                                         $timeleft = 'Ожидайте звонка';
                                     } else {
                                         $timeleft = $pitch['startedHuman'];
                                     }
-                                } else if (($pitch['status'] == 1) && ($pitch['awarded'] == 0)) {
+                                } elseif (($pitch['status'] == 1) && ($pitch['awarded'] == 0)) {
                                     $rowClass .= ' selection';
                                     $timeleft = 'Выбор победителя';
-                                } else if (($pitch['status'] == 2) || (($pitch['status'] == 1) && ($pitch['awarded'] > 0))) {
+                                } elseif (($pitch['status'] == 2) || (($pitch['status'] == 1) && ($pitch['awarded'] > 0))) {
                                     $rowClass .= ' pitch-end';
                                     if ($pitch['status'] == 2) {
                                         $timeleft = 'Проект завершен';
-                                    }else if(($pitch['status'] == 1) && ($pitch['awarded'] > 0)) {
+                                    } elseif (($pitch['status'] == 1) && ($pitch['awarded'] > 0)) {
                                         $timeleft = 'Победитель выбран';
-                                    }else if(($pitch['status'] == 1) && ($pitch['awarded'] == 0)) {
+                                    } elseif (($pitch['status'] == 1) && ($pitch['awarded'] == 0)) {
                                         $timeleft = 'Выбор победителя';
-                                    }else {
+                                    } else {
                                         $timeleft = $pitch['startedHuman'];
                                     }
                                 }
                                 $textGuarantee = '';
-                                if($pitch['guaranteed'] == 1) {
+                                if ($pitch['guaranteed'] == 1) {
                                     $textGuarantee = '<br><span style="font-size: 11px; font-weight: normal; font-family: Arial;text-transform:uppercase">гарантированы</span>';
                                 }
                                 $categoryLinkHref = '#';
-                                if($pitch['category_id'] == 20) {
+                                if ($pitch['category_id'] == 20) {
                                     $categoryLinkHref = '/pages/subscribe';
                                 }
                                 $multiple = (is_null($pitch['multiple'])) ? '' : '<br>' . $pitch['multiple'];
@@ -148,7 +147,7 @@ margin-top: 50px;font-family: OfficinaSansC Bold, serif; text-align: center; fon
                                     </td>
                                     <td class="idea" style="font-family: Helvetica, sans-serif;font-size: 11px;font-weight:bold;color:#fff;"><?= $pitch['ideas_count'] ?></td>
                                     <td class="pitches-status mypitches" style="font-family: Helvetica, sans-serif;font-size: 11px;font-weight:bold;color:#fff;"><?=$timeleft?></td>
-                                    <td class="price"><?= $this->moneyFormatter->formatMoney($pitch['price'], array('suffix' => ' Р.-')) .
+                                    <td class="price"><?= $this->moneyFormatter->formatMoney($pitch['price'], ['suffix' => ' Р.-']) .
                                         $textGuarantee ?></td>
                                 </tr>
                                 <?php
@@ -173,7 +172,7 @@ margin-top: 50px;font-family: OfficinaSansC Bold, serif; text-align: center; fon
                             <li style="margin-bottom: 35px;">
                                 <div class="selecting_numb">
                                     <span class="number_img_new">#<?= $solution->num ?></span>
-                                    <?= $this->html->link($solution->pitch->title, array('controller' => 'pitches', 'action' => 'view', 'id' => $solution->pitch->id), array('escape' => false)) ?>   </div>
+                                    <?= $this->html->link($solution->pitch->title, ['controller' => 'pitches', 'action' => 'view', 'id' => $solution->pitch->id], ['escape' => false]) ?>   </div>
                                 <div class="photo_block">
                                         <?php if ($solution->pitch->category_id == 7): ?>
                                         <a href="/pitches/viewsolution/<?= $solution->id ?>" style="width:147px;height:104px;background-color:#efefef;display:block;color:#666666;text-decoration:none;font-weight:bold;padding-top:16px;padding: 16px;">
@@ -202,15 +201,15 @@ margin-top: 50px;font-family: OfficinaSansC Bold, serif; text-align: center; fon
                                         width: 168px;
                                         margin-bottom: 15px;
                                         height: 30px;
-                                        <?php if(count($solution->tags) > 4):?>
+                                        <?php if (count($solution->tags) > 4):?>
                                             display: none;
                                         <?php endif?>
                                     ">
                                     </form>
                                     <ul class="tags" data-solutionid="<?= $solution->id ?>">
                                         <?php
-                                        if(is_array($solution->tags)):
-                                        foreach($solution->tags as $tag):?>
+                                        if (is_array($solution->tags)):
+                                        foreach ($solution->tags as $tag):?>
                                         <li style="padding-left: 10px; padding-right: 10px; margin-right:6px; height: 21px; padding-top: 5px; margin-bottom:3px;"><?= $tag?>
                                         <a class="removeTag" href="#" style="margin-left: 10px;">
                                             <img src="/img/delete-tag.png" alt="" style="padding-top: 2px;">
@@ -236,6 +235,6 @@ margin-top: 50px;font-family: OfficinaSansC Bold, serif; text-align: center; fon
 
 </div><!-- .wrapper -->
 <?=
-$this->html->script(array('users/preview'), array('inline' => false))?>
+$this->html->script(['users/preview'], ['inline' => false])?>
 <?=
-$this->html->style(array('/cabinet', '/portfolio.css'), array('inline' => false))?>
+$this->html->style(['/cabinet', '/portfolio.css'], ['inline' => false])?>

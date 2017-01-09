@@ -9,7 +9,8 @@ namespace app\models;
  *
  * @package app\models
  */
-class Url extends AppModel {
+class Url extends AppModel
+{
 
     /**
      * Метод проверяет есть ли в базе указанный урл
@@ -17,8 +18,9 @@ class Url extends AppModel {
      * @param $url string
      * @return bool
      */
-    public static function check($url){
-        return (bool) self::first(array('conditions' => array('full' => $url)));
+    public static function check($url)
+    {
+        return (bool) self::first(['conditions' => ['full' => $url]]);
     }
 
     /**
@@ -27,8 +29,9 @@ class Url extends AppModel {
      * @param $short string
      * @return null|string
      */
-    public static function get($short) {
-        if($url = self::first(array('conditions' => array('short' => $short)))) {
+    public static function get($short)
+    {
+        if ($url = self::first(['conditions' => ['short' => $short]])) {
             return $url->full;
         }
         return null;
@@ -38,9 +41,10 @@ class Url extends AppModel {
      * @param $full string
      * @return string
      */
-    private static function fetchOrCreateNew($full) {
-        if(!$record = self::first(array('conditions' => array('full' => $full)))) {
-            $data = array('full' => $full, 'short' => self::generateUrl());
+    private static function fetchOrCreateNew($full)
+    {
+        if (!$record = self::first(['conditions' => ['full' => $full]])) {
+            $data = ['full' => $full, 'short' => self::generateUrl()];
             $record = self::create($data);
             $record->save();
         }
@@ -52,7 +56,8 @@ class Url extends AppModel {
      *
      * @return string
      */
-    private static function generateUrl(){
+    private static function generateUrl()
+    {
         return substr(md5(rand().rand()), 0, 6);
     }
 
@@ -64,9 +69,9 @@ class Url extends AppModel {
      * @param $full string
      * @return string
      */
-    public static function getShortUrlFor($full) {
+    public static function getShortUrlFor($full)
+    {
         $shortUrlCode = self::fetchOrCreateNew($full);
         return $shortUrlCode;
     }
-
 }

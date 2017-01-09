@@ -5,86 +5,87 @@ namespace app\models;
 use \app\models\User;
 use \app\models\Test;
 
-class Question extends \app\models\AppModel {
+class Question extends \app\models\AppModel
+{
 
-    public $hasMany = array('Variant');
+    public $hasMany = ['Variant'];
 
     public static $questionsLimit = 15;
 
-    public static function getStats() {
+    public static function getStats()
+    {
         $usersTotal = User::count();
-        $usersTested = Test::count(array(
-            'conditions' => array(
+        $usersTested = Test::count([
+            'conditions' => [
                 'first_time' => 1,
-            ),
-        ));
-        $usersNeud = Test::count(array(
-            'conditions' => array(
+            ],
+        ]);
+        $usersNeud = Test::count([
+            'conditions' => [
                 'first_time' => 1,
-                'percent' => array(
+                'percent' => [
                     '<' => 70,
-                ),
-            ),
-        ));
-        $usersUd = Test::count(array(
-            'conditions' => array(
+                ],
+            ],
+        ]);
+        $usersUd = Test::count([
+            'conditions' => [
                 'first_time' => 1,
-                'percent' => array(
+                'percent' => [
                     '>=' => 70,
                     '<' => 80,
-                ),
-            ),
-        ));
-        $usersGood = Test::count(array(
-            'conditions' => array(
+                ],
+            ],
+        ]);
+        $usersGood = Test::count([
+            'conditions' => [
                 'first_time' => 1,
-                'percent' => array(
+                'percent' => [
                     '>=' => 80,
                     '<' => 90,
-                ),
-            ),
-        ));
-        $usersExc = Test::count(array(
-            'conditions' => array(
+                ],
+            ],
+        ]);
+        $usersExc = Test::count([
+            'conditions' => [
                 'first_time' => 1,
-                'percent' => array(
+                'percent' => [
                     '>' => 90,
-                ),
-            ),
-        ));
+                ],
+            ],
+        ]);
         $totalPercent = ceil($usersTested / $usersTotal * 100);
-        if($totalPercent < 3) {
+        if ($totalPercent < 3) {
             $totalPercent = 3;
         }
-        $stats = array(
-            '0' => array(
+        $stats = [
+            '0' => [
                 'text' => 'Количество  тестируемых',
                 'percent' => $totalPercent,
                 'value' => $usersTested,
-            ),
-            '1' => array(
+            ],
+            '1' => [
                 'text' => 'Неудовлетворительно',
                 'percent' => round($usersNeud / $usersTested * 100),
                 'value' => $usersNeud,
-            ),
-            '2' => array(
+            ],
+            '2' => [
                 'text' => 'Удовлетворительно',
                 'percent' => round($usersUd / $usersTested * 100),
                 'value' => $usersUd,
-            ),
-            '3' => array(
+            ],
+            '3' => [
                 'text' => 'Хорошо',
                 'percent' => round($usersGood / $usersTested * 100),
                 'value' => $usersGood,
-            ),
-            '4' => array(
+            ],
+            '4' => [
                 'text' => 'Отлично',
                 'percent' => round($usersExc / $usersTested * 100),
                 'value' => $usersExc,
-            ),
-        );
+            ],
+        ];
 
         return $stats;
     }
-
 }

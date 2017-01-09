@@ -37,5 +37,4 @@ interface PhealAccessInterface
      * @param int $accessMask
      */
     public function check($scope, $name, $keyType, $accessMask);
-
 }

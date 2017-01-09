@@ -4,10 +4,12 @@ namespace app\extensions\command;
 
 use \app\models\User;
 
-class ChangeUserGender extends \app\extensions\command\CronJob {
+class ChangeUserGender extends \app\extensions\command\CronJob
+{
 
-    public function run() {
-        $users = User::all(array('conditions' => array('facebook_uid' => array('!=' => ''), 'gender' => 0), 'order' => array('lastTimeOnline' => 'desc'), 'limit' => 100));
+    public function run()
+    {
+        $users = User::all(['conditions' => ['facebook_uid' => ['!=' => ''], 'gender' => 0], 'order' => ['lastTimeOnline' => 'desc'], 'limit' => 100]);
         $count = count($users);
         $url = 'http://graph.facebook.com/?ids=';
         $x = 0;
@@ -31,7 +33,6 @@ class ChangeUserGender extends \app\extensions\command\CronJob {
                 }
             }
         }
-        $users->save(null, array('validate' => false));
+        $users->save(null, ['validate' => false]);
     }
-
 }

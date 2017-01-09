@@ -2,8 +2,8 @@
 
 namespace app\models;
 
-class Bill extends \app\models\AppModel {
+class Bill extends \app\models\AppModel
+{
 
-    public $belongsTo = array('User');
-
+    public $belongsTo = ['User'];
 }

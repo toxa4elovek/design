@@ -584,7 +584,7 @@ class PitchesController extends AppController
                 return compact('category', 'experts', 'referal', 'referalId', 'promocode');
             } else {
                 if ($this->userHelper->isLoggedIn() && !$this->userHelper->isSubscriptionActive()) {
-                   return $this->redirect('/pages/subscribe');
+                    return $this->redirect('/pages/subscribe');
                 }
                 $value = 9000;
                 if (isset($this->request->query['reward'])) {
@@ -1704,9 +1704,9 @@ Disallow: /pitches/upload/'.$pitch['id'];
             $pitch->applicantsCount = Solution::find('count', ['conditions' => ['pitch_id' => $this->request->id], 'fields' => ['distinct(user_id)']]);
             if (!$pitch->isCopyrighting()) {
                 $uploadnonce = Uploadnonce::getNonce();
-                if(((int) $pitch->category_id === 20)) {
+                if (((int) $pitch->category_id === 20)) {
                     $plan = SubscriptionPlan::getPlan($pitch->user->subscription_status);
-                    if(in_array('fullresolution', $plan['free'])) {
+                    if (in_array('fullresolution', $plan['free'])) {
                         $fullResolution = true;
                     }
                 }
@@ -1834,7 +1834,7 @@ Disallow: /pitches/upload/'.$pitch['id'];
                 $options = compact('pitch', 'bill', 'extracted');
                 $mpdf->WriteHTML(PdfGetter::get('BillSubscription', $options));
             } else {
-                if($pitch->type === 'fund-balance') {
+                if ($pitch->type === 'fund-balance') {
                     $lastPlanPayment = Pitch::first([
                         'conditions' => [
                             'Pitch.billed' => 1,
@@ -2141,7 +2141,8 @@ Disallow: /pitches/upload/'.$pitch['id'];
      * Метод для подготовки данных для R
      * @url godesigner.ru/pitches/prepare_data
      */
-    public function prepare_data() {
+    public function prepare_data()
+    {
         /**
          * Данные:
          *
@@ -2163,19 +2164,19 @@ Disallow: /pitches/upload/'.$pitch['id'];
         ]]);
         foreach ($projects as $project) {
             $project->refund = 0;
-            if($note = Note::first(['conditions' => ['Note.pitch_id' => $project->id]])) {
-                if($note->status == 2) {
+            if ($note = Note::first(['conditions' => ['Note.pitch_id' => $project->id]])) {
+                if ($note->status == 2) {
                     $project->refund = 1;
                 }
             }
             $project->days = round((strtotime($project->finishDate) - strtotime($project->started)) / DAY);
             $receipt = Receipt::fetchReceipt($project->id);
             $project->addonsCount = 0;
-            foreach($receipt as $row) {
-                if((preg_match('/Награда/i', $row->name)) || (preg_match('/Сбор/i', $row->name))) {
+            foreach ($receipt as $row) {
+                if ((preg_match('/Награда/i', $row->name)) || (preg_match('/Сбор/i', $row->name))) {
                     continue;
                 }
-                if((int) $row->value === 0) {
+                if ((int) $row->value === 0) {
                     continue;
                 }
                 $project->addonsCount++;
@@ -2197,7 +2198,7 @@ Disallow: /pitches/upload/'.$pitch['id'];
             ]]);
             $user = User::first($project->user_id);
             $project->fuid = 0;
-            if(!empty($user->facebook_uid)) {
+            if (!empty($user->facebook_uid)) {
                 $project->fuid = 1;
             }
             /*
@@ -2227,7 +2228,7 @@ Disallow: /pitches/upload/'.$pitch['id'];
             'DAYS',
             'USERFACEBOOK'
         ];
-        foreach($projects as $project) {
+        foreach ($projects as $project) {
             $array[] = [
                 $project->category_id,
                 $project->user_id,

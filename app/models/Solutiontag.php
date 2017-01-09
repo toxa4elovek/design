@@ -2,6 +2,7 @@
 
 namespace app\models;
 
-class Solutiontag extends \app\models\AppModel {
-    public $hasOne = array('Tag');
+class Solutiontag extends \app\models\AppModel
+{
+    public $hasOne = ['Tag'];
 }

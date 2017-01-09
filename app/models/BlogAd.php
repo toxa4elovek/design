@@ -9,4 +9,6 @@ namespace app\models;
  * Класс для взаимодействия с записями рекламных сниппетов для блога
  *
  */
-class BlogAd extends AppModel {}
+class BlogAd extends AppModel
+{
+}

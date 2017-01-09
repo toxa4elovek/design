@@ -2,7 +2,6 @@
 
 namespace app\extensions\helper;
 
-class Url extends \app\models\Url  {
-
-
+class Url extends \app\models\Url
+{
 }

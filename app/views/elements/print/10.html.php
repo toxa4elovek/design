@@ -3,9 +3,9 @@ $details = unserialize($pitch->specifics);
 ?>
 <script type="text/javascript">var logoProperties = <?php echo json_encode($details["audience"])?>;</script>
 
-<?php if(isset($details['site-sub'])):?>
+<?php if (isset($details['site-sub'])):?>
 <h2 class="blueheading">Сколько макетов необходимо создать?</h2>
-<p class="regular"><?=$details['site-sub']?> <?=$this->numInflector->formatString($details['site-sub'], array('first' => 'макет', 'second' => 'макета', 'third' => 'макетов'))?></p>
+<p class="regular"><?=$details['site-sub']?> <?=$this->numInflector->formatString($details['site-sub'], ['first' => 'макет', 'second' => 'макета', 'third' => 'макетов'])?></p>
 <?php endif?>
 
 <div class="groupc">

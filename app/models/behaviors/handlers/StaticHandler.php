@@ -2,12 +2,13 @@
 
 namespace app\models\behaviors\handlers;
 
-class StaticHandler extends \lithium\core\StaticObject {
+class StaticHandler extends \lithium\core\StaticObject
+{
 
-	static public $defaults = array();
+    public static $defaults = [];
 
-	static public function useHandler($behavior){
-		return false;
-	}
-		
+    public static function useHandler($behavior)
+    {
+        return false;
+    }
 }

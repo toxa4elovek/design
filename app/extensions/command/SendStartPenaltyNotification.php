@@ -34,8 +34,8 @@ class SendStartPenaltyNotification extends CronJob
         }
         $pitchHelper = new \app\extensions\helper\Pitch();
         array_walk($arrayOfProjects, function ($project) use ($pitchHelper) {
-            if(((int) $project->expert === 1) && (($allowSelect = $pitchHelper->expertOpinion($project->id)) && ($allowSelect == strtotime($project->finishDate)))) {
-            }else {
+            if (((int) $project->expert === 1) && (($allowSelect = $pitchHelper->expertOpinion($project->id)) && ($allowSelect == strtotime($project->finishDate)))) {
+            } else {
                 NotificationsMailer::sendStartPenaltyNotification($project);
             }
         });

@@ -1,7 +1,7 @@
 <?php
 function mb_basename($file)
 {
-    return end(explode('/',$file));
+    return end(explode('/', $file));
 };
 $details = unserialize($pitch->specifics);
 ?>
@@ -18,9 +18,9 @@ $details = unserialize($pitch->specifics);
                         <h2 class="blueheading">Название</h2>
                         <p class="regular"><?=$pitch->title?></p>
 
-                        <?php if(!empty($pitch->industry)):
-                        if($unserialized = unserialize($pitch->industry)):
-                            $job_types = array(
+                        <?php if (!empty($pitch->industry)):
+                        if ($unserialized = unserialize($pitch->industry)):
+                            $job_types = [
                                 'realty' => 'Недвижимость / Строительство',
                                 'auto' => 'Автомобили / Транспорт',
                                 'finances' => 'Финансы / Бизнес',
@@ -36,10 +36,10 @@ $details = unserialize($pitch->specifics);
                                 'children' => 'Дети',
                                 'security' => 'Охрана / Безопасность',
                                 'health' => 'Медицина / Здоровье',
-                                'it' => 'Компьютеры / IT');
-                            $selected = array();
+                                'it' => 'Компьютеры / IT'];
+                            $selected = [];
                             foreach ($job_types as $k => $v):
-                                if(in_array($k, $unserialized)):
+                                if (in_array($k, $unserialized)):
                                     $selected[] = $v;
                                 endif;
                             endforeach;
@@ -50,7 +50,7 @@ $details = unserialize($pitch->specifics);
                         <p class="regular"><?php echo $pitch->industry?></p>
                         <?php endif;?>
 
-                        <?php if(!empty($pitch->{'business-description'})):?>
+                        <?php if (!empty($pitch->{'business-description'})):?>
                         <h2 class="blueheading">Описание бизнеса/деятельности</h2>
                         <p class="regular"><?=$this->brief->deleteHtmlTagsAndInsertHtmlLinkInText($pitch->{'business-description'})?></p>
                         <?php endif;?>
@@ -58,11 +58,11 @@ $details = unserialize($pitch->specifics);
                         <h2 class="blueheading">Описание проекта</h2>
                         <p class="regular"><?=$this->brief->deleteHtmlTagsAndInsertHtmlLinkInText($pitch->description)?></p>
 
-                        <?=$this->view()->render(array('element' => 'print/' . $pitch->category_id), array('pitch' => $pitch))?>
+                        <?=$this->view()->render(['element' => 'print/' . $pitch->category_id], ['pitch' => $pitch])?>
 
-                        <?php if($pitch->category_id != 7):?>
+                        <?php if ($pitch->category_id != 7):?>
                         <h2 class="blueheading">Можно ли использовать материал из банков с изображениями</h2>
-                        <?php if($pitch->materials):?>
+                        <?php if ($pitch->materials):?>
                             <p class="regular">да, допустимая стоимость одного изображения — <?=$pitch->{'materials-limit'}?> Р.-</p>
                             <?php else:?>
                             <p class="regular">нет</p>
@@ -70,7 +70,7 @@ $details = unserialize($pitch->specifics);
                         <?php endif;?>
 
                         <h2 class="blueheading">Формат файла:</h2>
-                        <?php if(!empty($pitch->fileFormats)):?>
+                        <?php if (!empty($pitch->fileFormats)):?>
                         <p class="regular">
                             <?= implode(', ', unserialize($pitch->fileFormats))?>
                         </p>
@@ -79,18 +79,18 @@ $details = unserialize($pitch->specifics);
 
 
 
-                        <?php if((!empty($files)) && (count($files) > 0)):?>
+                        <?php if ((!empty($files)) && (count($files) > 0)):?>
                         <h2 class="blueheading">Прикрепленные документы:</h2>
 
                         <ul>
-                            <?php foreach($files as $file):?>
+                            <?php foreach ($files as $file):?>
                             <li class="regular">
                                 <?php if (empty($file->originalbasename)):?>
                                     <a style="font:10pt/16pt 'Arial',sans-serif" href="<?=$file->weburl?>"><?=mb_basename($file->filename)?></a><br>
                                 <?php else:?>
                                     <a style="font:10pt/16pt 'Arial',sans-serif" href="/pitchfiles/1<?=mb_basename($file->filename);?>"><?=$file->originalbasename;?></a><br>
                                 <?php endif;?>
-                                <?php if(!empty($file->{'file-description'})):?>
+                                <?php if (!empty($file->{'file-description'})):?>
                                 <p style="font:10pt/16pt 'Arial',sans-serif"><?=$file->{'file-description'}?></p>
                                 <?php endif;?>
                             </li>
@@ -112,4 +112,4 @@ $details = unserialize($pitch->specifics);
 </div><!-- /middle -->
 
 </div><!-- .wrapper -->
-<?=$this->html->style(array('/view', '/messages12', '/pitches12', '/pitch_overview', '/print'), array('inline' => false))?>
+<?=$this->html->style(['/view', '/messages12', '/pitches12', '/pitch_overview', '/print'], ['inline' => false])?>

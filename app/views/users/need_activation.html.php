@@ -1,6 +1,6 @@
 <div class="wrapper auth login">
 
-    <?=$this->view()->render(array('element' => 'header'))?>
+    <?=$this->view()->render(['element' => 'header'])?>
 
     <div class="middle" id="reg-section" style="display:block;">
 
@@ -18,4 +18,4 @@
     </div><!-- .middle -->
 
 </div><!-- .wrapper -->
-<?=$this->html->script(array('users/need_activation.js'), array('inline' => false))?>
+<?=$this->html->script(['users/need_activation.js'], ['inline' => false])?>

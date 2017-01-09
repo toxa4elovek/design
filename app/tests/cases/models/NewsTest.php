@@ -7,14 +7,17 @@ use app\models\News;
 use app\models\Like;
 use app\models\Event;
 
-class NewsTest extends AppUnit {
+class NewsTest extends AppUnit
+{
 
-    public function setUp() {
-        $this->rollUp(array('News', 'Like', 'Event'));
+    public function setUp()
+    {
+        $this->rollUp(['News', 'Like', 'Event']);
     }
 
-    public function tearDown() {
-        $this->rollDown(array('News', 'Like', 'Event'));
+    public function tearDown()
+    {
+        $this->rollDown(['News', 'Like', 'Event']);
     }
 
     /*public function testGetPost() {
@@ -66,7 +69,8 @@ class NewsTest extends AppUnit {
         Rcache::delete('middle-post');
     }*/
 
-    public function testdoesNewsExists() {
+    public function testdoesNewsExists()
+    {
         $result = News::doesNewsExists('Fake');
         $this->assertFalse($result);
 
@@ -89,15 +93,16 @@ class NewsTest extends AppUnit {
         $this->assertTrue($result);
     }
 
-    public function testSaveNewsByAdmin()  {
+    public function testSaveNewsByAdmin()
+    {
         $result = News::doesNewsExists('Проверка', 'https://www.google.ru/');
         $this->assertFalse($result);
 
-        $data = array(
+        $data = [
             'title' => 'Проверка',
             'short' => '',
             'link' => 'https://www.google.ru/'
-        );
+        ];
 
         $result = News::saveNewsByAdmin($data, false);
         $this->assertTrue($result);
@@ -109,29 +114,29 @@ class NewsTest extends AppUnit {
         $result = News::doesNewsExists('Проверка', 'https://www.google.ru/');
         $this->assertTrue($result);
 
-        $data = array(
+        $data = [
             'title' => 'Проверка',
             'short' => '',
             'link' => 'https://www.google.ru/'
-        );
+        ];
 
         $result = News::saveNewsByAdmin($data, false);
         $this->assertFalse($result);
 
-        $data = array(
+        $data = [
             'title' => 'Проверка',
             'short' => '',
             'link' => 'https://www.google.com/'
-        );
+        ];
 
         $result = News::saveNewsByAdmin($data, false);
         $this->assertTrue($result);
 
-        $data = array(
+        $data = [
             'title' => '',
             'short' => 'Текст для проверки',
             'link' => ''
-        );
+        ];
 
         $result = News::saveNewsByAdmin($data, false);
         $this->assertTrue($result);
@@ -139,9 +144,9 @@ class NewsTest extends AppUnit {
         $result = News::doesNewsExists('Проверка2');
         $this->assertFalse($result);
 
-        $data = array(
+        $data = [
             'short' => '<iframe width="560" height="315" src="https://www.youtube.com/embed/3bhLkorXLI8" frameborder="0" allowfullscreen></iframe>',
-        );
+        ];
 
         $result = News::saveNewsByAdmin($data, false);
         $this->assertTrue($result);
@@ -153,9 +158,9 @@ class NewsTest extends AppUnit {
         $this->assertEqual('', $news->description);
         $this->assertEqual('Как это работает?', $news->og_description);
 
-        $data = array(
+        $data = [
             'short' => '<iframe src="https://player.vimeo.com/video/24302498" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> <p><a href="https://vimeo.com/24302498">29 WAYS TO STAY CREATIVE</a> from <a href="https://vimeo.com/tofudesign">TO-FU</a> on <a href="https://vimeo.com">Vimeo</a>.</p>',
-        );
+        ];
 
         $result = News::saveNewsByAdmin($data, false);
         $this->assertTrue($result);
@@ -167,64 +172,66 @@ class NewsTest extends AppUnit {
         $this->assertEqual('', $news->description);
         $this->assertEqual('Motion Graphics: TO-FU Contact us at http://to-fu.tv Like us on Facebook http://www.facebook.com/TOFU.design twitter http://twitter.com/tofu_design  Reference: http://paulzii.tumblr.com/post/3360025995  Music:&hellip;', $news->og_description);
 
-        $data = array('short' => '<div id="fb-root"></div><script>(function(d, s, id)');
+        $data = ['short' => '<div id="fb-root"></div><script>(function(d, s, id)'];
         $result = News::saveNewsByAdmin($data, false);
         $this->assertTrue($result);
     }
 
-    public function testIsCoubNews(){
+    public function testIsCoubNews()
+    {
         $news = News::first(1);
         $this->assertFalse($news->isCoub());
         $news->short = '<iframe src="//coub.com/embed/g9jnfu?muted=false&autostart=false&originalSize=false&hideTopBar=false&startWithHD=false" allowfullscreen="true" frameborder="0" width="640" height="360"></iframe>';
         $this->assertTrue($news->isCoub());
     }
 
-    public function testIncreaseLike() {
+    public function testIncreaseLike()
+    {
         $result = News::increaseLike(9999);
-        $expected = array('result' => false);
+        $expected = ['result' => false];
         $this->assertEqual($expected, $result);
 
         $result = News::increaseLike(4);
-        $expected = array('result' => false, 'likes' => 10);
+        $expected = ['result' => false, 'likes' => 10];
         $this->assertEqual($expected, $result);
 
         $result = News::increaseLike(4, 2);
-        $expected = array('result' => true, 'likes' => 11);
+        $expected = ['result' => true, 'likes' => 11];
         $this->assertEqual($expected, $result);
 
-        $like = Like::first(array('conditions' => array('news_id' => 4, 'user_id' => 2)));
+        $like = Like::first(['conditions' => ['news_id' => 4, 'user_id' => 2]]);
         $this->assertEqual('object', gettype($like));
         $this->assertEqual('lithium\data\entity\Record', get_class($like));
 
-        $event = Event::first(array('conditions' => array('type' => 'LikeAdded', 'news_id' => 4, 'user_id' => 2)));
+        $event = Event::first(['conditions' => ['type' => 'LikeAdded', 'news_id' => 4, 'user_id' => 2]]);
         $this->assertEqual('object', gettype($event));
         $this->assertEqual('lithium\data\entity\Record', get_class($event));
 
         $result = News::increaseLike(4, 2);
-        $expected = array('result' => false, 'likes' => 11);
+        $expected = ['result' => false, 'likes' => 11];
         $this->assertEqual($expected, $result);
     }
 
-    public function testDecreaseLike() {
+    public function testDecreaseLike()
+    {
         $result = News::decreaseLike(9999);
-        $expected = array('result' => false);
+        $expected = ['result' => false];
         $this->assertEqual($expected, $result);
 
         $result = News::decreaseLike(4);
-        $expected = array('result' => false, 'likes' => 10);
+        $expected = ['result' => false, 'likes' => 10];
         $this->assertEqual($expected, $result);
 
         News::increaseLike(4, 2);
 
         $result = News::decreaseLike(4, 2);
-        $expected = array('result' => true, 'likes' => 10);
+        $expected = ['result' => true, 'likes' => 10];
         $this->assertEqual($expected, $result);
 
-        $like = Like::first(array('conditions' => array('news_id' => 4, 'user_id' => 2)));
-        $event = Event::first(array('conditions' => array('type' => 'LikeAdded', 'news_id' => 4, 'user_id' => 2)));
+        $like = Like::first(['conditions' => ['news_id' => 4, 'user_id' => 2]]);
+        $event = Event::first(['conditions' => ['type' => 'LikeAdded', 'news_id' => 4, 'user_id' => 2]]);
 
         $this->assertNull($like);
         $this->assertNull($event);
     }
-
 }

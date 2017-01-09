@@ -15,7 +15,7 @@ use lithium\data\entity\Record;
 class Grade extends AppModel
 {
 
-    public $belongsTo = array('User', 'Pitch');
+    public $belongsTo = ['User', 'Pitch'];
 
     /**
      * Метод определяет, есть ли рейтинг, оставленный дизайнером для проекта $projectId
@@ -25,10 +25,10 @@ class Grade extends AppModel
      */
     public static function isDesignerRatingExistsForProject($projectId)
     {
-        $grade = self::first(array('conditions' => array(
+        $grade = self::first(['conditions' => [
             'pitch_id' => $projectId,
             'type' => 'designer'
-        )));
+        ]]);
         return (bool) $grade;
     }
 }

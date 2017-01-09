@@ -77,58 +77,70 @@ mpdf-->
 //==============================================================
 include("../mpdf.php");
 
-$mpdf=new mPDF('c','A4','','',32,25,27,25,16,13); 
+$mpdf=new mPDF('c', 'A4', '', '', 32, 25, 27, 25, 16, 13);
 
 $mpdf->mirrorMargins = 1;
 
-$mpdf->SetDisplayMode('fullpage','two');
+$mpdf->SetDisplayMode('fullpage', 'two');
 
 // LOAD a stylesheet
 $stylesheet = file_get_contents('mpdfstyleA4.css');
-$mpdf->WriteHTML($stylesheet,1);	// The parameter 1 tells that this is css/style only and no body/html/text
+$mpdf->WriteHTML($stylesheet, 1);    // The parameter 1 tells that this is css/style only and no body/html/text
 
 $mpdf->WriteHTML($html);
 
 
 // Alternative ways to mark ToC entries and Bookmarks
 // This will automatically generate entries from the <h4> tag
-$mpdf->h2toc = array('H4'=>0);
-$mpdf->h2bookmarks = array('H4'=>0);
+$mpdf->h2toc = ['H4'=>0];
+$mpdf->h2bookmarks = ['H4'=>0];
 
 //==============================================================
 // CONTENT
-for ($j = 1; $j<7; $j++) { 
-   if ($j==2)	$mpdf->WriteHTML('<pagebreak resetpagenum="0" pagenumstyle="a" />',2);
-   if ($j==3)	$mpdf->WriteHTML('<pagebreak resetpagenum="1" pagenumstyle="I" />',2);
-   if ($j==4)	$mpdf->WriteHTML('<pagebreak resetpagenum="0" pagenumstyle="i" />',2);
-   if ($j==5)	$mpdf->WriteHTML('<pagebreak resetpagenum="0" pagenumstyle="1" />',2);
-   if ($j==6)	$mpdf->WriteHTML('<pagebreak resetpagenum="1" pagenumstyle="A" type="NEXT-ODD" /><div style="color:#AA0000">ODD</div>',2);
-   for ($x = 1; $x<7; $x++) {
+for ($j = 1; $j<7; $j++) {
+    if ($j==2) {
+        $mpdf->WriteHTML('<pagebreak resetpagenum="0" pagenumstyle="a" />', 2);
+    }
+    if ($j==3) {
+        $mpdf->WriteHTML('<pagebreak resetpagenum="1" pagenumstyle="I" />', 2);
+    }
+    if ($j==4) {
+        $mpdf->WriteHTML('<pagebreak resetpagenum="0" pagenumstyle="i" />', 2);
+    }
+    if ($j==5) {
+        $mpdf->WriteHTML('<pagebreak resetpagenum="0" pagenumstyle="1" />', 2);
+    }
+    if ($j==6) {
+        $mpdf->WriteHTML('<pagebreak resetpagenum="1" pagenumstyle="A" type="NEXT-ODD" /><div style="color:#AA0000">ODD</div>', 2);
+    }
+    for ($x = 1; $x<7; $x++) {
 
-	// Alternative way to mark ToC entries and Bookmarks manually
+    // Alternative way to mark ToC entries and Bookmarks manually
 //	$mpdf->WriteHTML('<h4>Section '.$j.'.'.$x.'<bookmark content="Section '.$j.'.'.$x.'" level="0" /><tocentry content="Section '.$j.'.'.$x.'" level="0" /></h4>',2);
 
-	// Using Automatic generation from <h4> tag
-	$mpdf->WriteHTML('<h4>Section '.$j.'.'.$x.'</h4>',2);
+    // Using Automatic generation from <h4> tag
+    $mpdf->WriteHTML('<h4>Section '.$j.'.'.$x.'</h4>', 2);
 
-	$html = '';
-	// Split $lorem into words
-	$words = preg_split('/([\s,\.]+)/',$lorem,-1,PREG_SPLIT_DELIM_CAPTURE);
-	foreach($words as $i => $e) {
-	   if($i%2==0) {
-		$y =  rand(1,10); 	// every tenth word
-		if (preg_match('/^[a-zA-Z]{4,99}$/',$e) && ($y > 8)) {
-			// If it is just a word use it as an index entry
-			$content = ucfirst(trim($e));
-			$html .= '<indexentry content="'.$content.'" />';
-			$html .= '<i>'.$e . '</i>';
-		}
-		else { $html .= $e; }
-	   }
-	   else { $html .= $e; }
-	}
-	$mpdf->WriteHTML($html);
-   }
+        $html = '';
+    // Split $lorem into words
+    $words = preg_split('/([\s,\.]+)/', $lorem, -1, PREG_SPLIT_DELIM_CAPTURE);
+        foreach ($words as $i => $e) {
+            if ($i%2==0) {
+                $y =  rand(1, 10);    // every tenth word
+        if (preg_match('/^[a-zA-Z]{4,99}$/', $e) && ($y > 8)) {
+            // If it is just a word use it as an index entry
+            $content = ucfirst(trim($e));
+            $html .= '<indexentry content="'.$content.'" />';
+            $html .= '<i>'.$e . '</i>';
+        } else {
+            $html .= $e;
+        }
+            } else {
+                $html .= $e;
+            }
+        }
+        $mpdf->WriteHTML($html);
+    }
 }
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // INDEX
@@ -143,6 +155,4 @@ $mpdf->Output();
 exit;
 //==============================================================
 //==============================================================
-
-
-?>
+;

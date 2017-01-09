@@ -1,4 +1,6 @@
-<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php  if (! defined('BASEPATH')) {
+     exit('No direct script access allowed');
+ }
 /**
  * CodeIgniter
  *
@@ -24,31 +26,32 @@
  * @author		ExpressionEngine Dev Team
  * @link		http://codeigniter.com/user_guide/libraries/config.html
  */
-class CI_Model {
+class CI_Model
+{
 
-	/**
-	 * Constructor
-	 *
-	 * @access public
-	 */
-	function __construct()
-	{
-		log_message('debug', "Model Class Initialized");
-	}
+    /**
+     * Constructor
+     *
+     * @access public
+     */
+    public function __construct()
+    {
+        log_message('debug', "Model Class Initialized");
+    }
 
-	/**
-	 * __get
-	 *
-	 * Allows models to access CI's loaded classes using the same
-	 * syntax as controllers.
-	 *
-	 * @access private
-	 */
-	function __get($key)
-	{
-		$CI =& get_instance();
-		return $CI->$key;
-	}
+    /**
+     * __get
+     *
+     * Allows models to access CI's loaded classes using the same
+     * syntax as controllers.
+     *
+     * @access private
+     */
+    public function __get($key)
+    {
+        $CI =& get_instance();
+        return $CI->$key;
+    }
 }
 // END Model Class
 

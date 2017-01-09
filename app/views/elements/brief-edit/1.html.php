@@ -1,6 +1,6 @@
 <?php
-if(!isset($specifics['logoType'])) {
-   $specifics['logoType'] = array();
+if (!isset($specifics['logoType'])) {
+    $specifics['logoType'] = [];
 }
 ?>
 <div class="groupc">
@@ -68,37 +68,37 @@ if(!isset($specifics['logoType'])) {
     <ul class="look-variants">
         <li>
             <span class="photo"><img src="/img/logo-looks/logo-looks-01.jpg" alt="Типографика"></span>
-            <label class="supplement"><input type="checkbox" <?php if(in_array(1, $specifics['logoType'])): echo 'checked'; endif;?> name="" data-id="1">Типографика</label>
+            <label class="supplement"><input type="checkbox" <?php if (in_array(1, $specifics['logoType'])): echo 'checked'; endif;?> name="" data-id="1">Типографика</label>
             <span class="graysupplement">Название стилизованным шрифтом</span>
         </li>
         <li>
             <span class="photo"><img src="/img/logo-looks/logo-looks-02.jpg" alt="Знак + название"></span>
-            <label class="supplement"><input type="checkbox" <?php if(in_array(2, $specifics['logoType'])): echo 'checked'; endif;?> name="" data-id="2">Знак + название</label>
+            <label class="supplement"><input type="checkbox" <?php if (in_array(2, $specifics['logoType'])): echo 'checked'; endif;?> name="" data-id="2">Знак + название</label>
             <span class="graysupplement">Создание графического символа и подпись</span>
         </li>
         <li>
             <span class="photo"><img src="/img/logo-looks/logo-looks-03.jpg" alt="Абстрактный знак"></span>
-            <label class="supplement"><input type="checkbox" <?php if(in_array(3, $specifics['logoType'])): echo 'checked'; endif;?> name="" data-id="3">Абстрактный знак</label>
+            <label class="supplement"><input type="checkbox" <?php if (in_array(3, $specifics['logoType'])): echo 'checked'; endif;?> name="" data-id="3">Абстрактный знак</label>
             <span class="graysupplement">Абстрактная форма станет символом бренда/бизнеса</span>
         </li>
         <li>
             <span class="photo"><img src="/img/logo-looks/logo-looks-04.jpg" alt="Эмблема"></span>
-            <label class="supplement"><input type="checkbox" <?php if(in_array(4, $specifics['logoType'])): echo 'checked'; endif;?> name="" data-id="4">Эмблема</label>
+            <label class="supplement"><input type="checkbox" <?php if (in_array(4, $specifics['logoType'])): echo 'checked'; endif;?> name="" data-id="4">Эмблема</label>
             <span class="graysupplement">Название вписано в графическую форму, герб, щит</span>
         </li>
         <li>
             <span class="photo"><img src="/img/logo-looks/logo-looks-05.jpg" alt="Персонаж"></span>
-            <label class="supplement"><input type="checkbox"<?php if(in_array(5, $specifics['logoType'])): echo 'checked'; endif;?>  name="" data-id="5">Персонаж</label>
+            <label class="supplement"><input type="checkbox"<?php if (in_array(5, $specifics['logoType'])): echo 'checked'; endif;?>  name="" data-id="5">Персонаж</label>
             <span class="graysupplement">Герой или талисман может стать символом компании или бинеса</span>
         </li>
         <li>
             <span class="photo"><img src="/img/logo-looks/logo-looks-06.jpg" alt="Буква"></span>
-            <label class="supplement"><input type="checkbox"<?php if(in_array(6, $specifics['logoType'])): echo 'checked'; endif;?>  name="" data-id="6">Буква</label>
+            <label class="supplement"><input type="checkbox"<?php if (in_array(6, $specifics['logoType'])): echo 'checked'; endif;?>  name="" data-id="6">Буква</label>
             <span class="graysupplement">Заглавные буквы названия или инициалы используются при создании лого</span>
         </li>
         <li>
             <span class="photo"><img src="/img/logo-looks/logo-looks-07.jpg" alt="Вэб-кнопка"></span>
-            <label class="supplement"><input type="checkbox"<?php if(in_array(7, $specifics['logoType'])): echo 'checked'; endif;?>  name="" data-id="7">Вэб-кнопка</label>
+            <label class="supplement"><input type="checkbox"<?php if (in_array(7, $specifics['logoType'])): echo 'checked'; endif;?>  name="" data-id="7">Вэб-кнопка</label>
             <span class="graysupplement">Тренды интернета, градиенты, закругления</span>
         </li>
     </ul><!-- .look-variants -->

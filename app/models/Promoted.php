@@ -2,6 +2,6 @@
 
 namespace app\models;
 
-class Promoted extends \app\models\AppModel {
-
+class Promoted extends \app\models\AppModel
+{
 }

@@ -13,29 +13,29 @@ class ReverseFileCheck extends CronJob
     {
         $this->_renderHeader();
         $directory = '/var/godesigner/webroot/solutions';
-        $directories = glob($directory . '/*' , GLOB_ONLYDIR);
+        $directories = glob($directory . '/*', GLOB_ONLYDIR);
         $dir = new \DirectoryIterator($directory);
         $i = 0;
         foreach ($dir as $fileinfo) {
             if ((!$fileinfo->isDot()) && (!$fileinfo->isDir())) {
                 $filename = $directory . '/' . $fileinfo->getFilename();
                 //$this->out(sprintf('Path - %s', $filename));
-                if($file = Solutionfile::first(['conditions' => [
+                if ($file = Solutionfile::first(['conditions' => [
                     'Solutionfile.filename' => $filename
                 ]])) {
-                    if($solution = Solution::first($file->model_id)) {
+                    if ($solution = Solution::first($file->model_id)) {
                         $this->out(sprintf('Model found - %s', $solution->id));
                         break;
-                    }else {
+                    } else {
                         $file->delete();
                         //$this->out(sprintf('Model not found, deleting'));
                         unlink($filename);
                     }
-                }else {
+                } else {
                     //$this->out(sprintf('Model not found, deleting'));
                     unlink($filename);
                 }
-                if($i > 10000) {
+                if ($i > 10000) {
                     break;
                 }
                 $this->out($i . '/10000');

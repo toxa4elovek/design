@@ -1,21 +1,21 @@
 <?php
 $details = unserialize($pitch->specifics);
-if((strtotime("2012-10-10 16:00:00") >= strtotime($pitch->started))):
-    $subValues = array('главная и одна внутренная', 'главная и 3 внутренних', 'главная и 2 внутренних', '= /> 5 страниц');
+if ((strtotime("2012-10-10 16:00:00") >= strtotime($pitch->started))):
+    $subValues = ['главная и одна внутренная', 'главная и 3 внутренних', 'главная и 2 внутренних', '= /> 5 страниц'];
 else:
-    $subValues = array('главная страница', 'главная и 1 внутренняя', 'главная и 2 внутренних', '= /> 4 страниц');
+    $subValues = ['главная страница', 'главная и 1 внутренняя', 'главная и 2 внутренних', '= /> 4 страниц'];
 endif;
 ?>
 <script type="text/javascript">var logoProperties = <?php echo json_encode($details["audience"])?>;</script>
-<?php if((!empty($subValues[$details['site-sub']])) && (strtotime($pitch->started) < strtotime('2012-11-19 12:00:00'))):?>
+<?php if ((!empty($subValues[$details['site-sub']])) && (strtotime($pitch->started) < strtotime('2012-11-19 12:00:00'))):?>
 <h2 class="blueheading">Сколько шаблонов страниц необходимо создать для этого сайта</h2>
 <p class="regular"><?=$subValues[$details['site-sub']]?></p>
 <?php else:?>
 <h2 class="blueheading">Сколько шаблонов страниц необходимо создать для этого сайта</h2>
-<p class="regular"><?=$details['site-sub']?> <?=$this->numInflector->formatString($details['site-sub'], array('first' => 'страница', 'second' => 'страницы', 'third' => 'страниц'))?></p>
+<p class="regular"><?=$details['site-sub']?> <?=$this->numInflector->formatString($details['site-sub'], ['first' => 'страница', 'second' => 'страницы', 'third' => 'страниц'])?></p>
 <?php endif?>
 
-<?php if(!empty($details['site-existing'])):?>
+<?php if (!empty($details['site-existing'])):?>
 <h2 class="blueheading">Cуществующий сайт</h2>
 <p class="regular"><?= $this->brief->deleteHtmlTagsAndInsertHtmlLinkInText($details['site-existing'])?></p>
 <?php endif?>
@@ -52,12 +52,12 @@ endif;
     </ul><!-- .logo-properties -->
 </div>
 
-<?php if(!empty($details['site-inspiration'])):?>
+<?php if (!empty($details['site-inspiration'])):?>
 <h2 class="blueheading">Какие сайты вам нравятся? Откуда дизайнерам черпать вдохновение</h2>
 <p class="regular"><?=$this->brief->deleteHtmlTagsAndInsertHtmlLinkInText($details['site-inspiration'])?></p>
 <?php endif;?>
 
-<?php if(!empty($details['qualities'])):?>
+<?php if (!empty($details['qualities'])):?>
 <h2 class="blueheading">Какие 3 основных качества нужно донести до аудитории?</h2>
 <p class="regular"><?=$details['qualities']?></p>
 <?php endif;?>

@@ -1,4 +1,4 @@
-<?=$this->view()->render(array('element' => 'scripts/viewsolution_init'), array('pitch' => $pitch));
+<?=$this->view()->render(['element' => 'scripts/viewsolution_init'], ['pitch' => $pitch]);
 if (
 (($pitch->status > 0) && ((int) $pitch->multiwinner === 0) && ($this->user->isAllowedToComment()) && (($this->user->isPitchOwner($pitch->user_id)) || ($this->user->isManagerOfProject($pitch->id)) || ($this->user->isExpert()) || ($this->user->isAdmin()))) ||
 (($pitch->status == 0) && ($pitch->published == 1) && ((($this->user->isPitchOwner($pitch->user_id)) || ($this->user->isManagerOfProject($pitch->id)) || ($this->user->isExpert()) || ($this->user->isAdmin())) || ($this->user->getTotalSolutionNum())) && ($this->user->isAllowedToComment()))
@@ -8,7 +8,9 @@ if (
     <?php $allowComments = true; ?>
     <script>var allowComments = true;</script>
 <?php endif;
-if (isset($fromDesignersTab)) return false; ?>
+if (isset($fromDesignersTab)) {
+    return false;
+} ?>
 <div class="messages_gallery">
     <?php if (isset($allowComments)):?>
         <section>

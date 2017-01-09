@@ -26,36 +26,36 @@
  * @author themattharris
  */
 
-if ( ! empty($_FILES)) {
-
-  require '../tmhOAuth.php';
-  require '../tmhUtilities.php';
-  $tmhOAuth = new tmhOAuth(array(
+if (! empty($_FILES)) {
+    require '../tmhOAuth.php';
+    require '../tmhUtilities.php';
+    $tmhOAuth = new tmhOAuth([
     'consumer_key'    => 'YOUR_CONSUMER_KEY',
     'consumer_secret' => 'YOUR_CONSUMER_SECRET',
     'user_token'      => 'A_USER_TOKEN',
     'user_secret'     => 'A_USER_SECRET',
-  ));
+  ]);
 
   // note the type and filename are set here as well
-  $params = array(
+  $params = [
     'image' => "@{$_FILES['image']['tmp_name']};type={$_FILES['image']['type']};filename={$_FILES['image']['name']}",
-  );
+  ];
 
   // if we are setting the background we want it to be displayed
-  if ($_POST['method'] == 'update_profile_background_image')
-    $params['use'] = 'true';
+  if ($_POST['method'] == 'update_profile_background_image') {
+      $params['use'] = 'true';
+  }
 
-  $code = $tmhOAuth->request('POST', $tmhOAuth->url("1/account/{$_POST['method']}"),
+    $code = $tmhOAuth->request('POST', $tmhOAuth->url("1/account/{$_POST['method']}"),
     $params,
     true, // use auth
     true  // multipart
   );
 
-  if ($code == 200) {
-    tmhUtilities::pr(json_decode($tmhOAuth->response['response']));
-  }
-  tmhUtilities::pr(htmlentities($tmhOAuth->response['response']));
+    if ($code == 200) {
+        tmhUtilities::pr(json_decode($tmhOAuth->response['response']));
+    }
+    tmhUtilities::pr(htmlentities($tmhOAuth->response['response']));
 }
 
 ?>

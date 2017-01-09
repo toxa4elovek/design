@@ -22,31 +22,32 @@
  * @author themattharris
  */
 
-function my_streaming_callback($data, $length, $metrics) {
-  echo $data .PHP_EOL;
-  return file_exists(dirname(__FILE__) . '/STOP');
+function my_streaming_callback($data, $length, $metrics)
+{
+    echo $data .PHP_EOL;
+    return file_exists(dirname(__FILE__) . '/STOP');
 }
 
 require '../tmhOAuth.php';
 require '../tmhUtilities.php';
-$tmhOAuth = new tmhOAuth(array(
+$tmhOAuth = new tmhOAuth([
   'consumer_key'    => 'YOUR_CONSUMER_KEY',
   'consumer_secret' => 'YOUR_CONSUMER_SECRET',
   'user_token'      => 'A_USER_TOKEN',
   'user_secret'     => 'A_USER_SECRET',
-));
+]);
 
 $method = 'https://stream.twitter.com/1/statuses/filter.json';
 
 // show Tweets which contan the word twitter OR have been geo-tagged within
 // the bounding box -122.41,37.77,-122.40,37.78 OR are by themattharris
 
-$params = array(
+$params = [
   'track'     => 'twitter',
   // Around Twitter HQ. First param is the SW corner of the bounding box
   'locations' => '-122.41,37.77,-122.40,37.78',
   'follow'    => '777925' // themattharris
-);
+];
 
 $tmhOAuth->streaming_request('POST', $method, $params, 'my_streaming_callback');
 

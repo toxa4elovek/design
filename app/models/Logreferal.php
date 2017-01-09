@@ -1,9 +1,10 @@
 <?php
 namespace app\models;
 
-class Logreferal extends AppModel {
+class Logreferal extends AppModel
+{
 
-    public $belongsTo = array('User');
+    public $belongsTo = ['User'];
 
     /**
      * Метод возвращяет количество завершенных реферальныйх платежей пользователя $userId
@@ -11,7 +12,8 @@ class Logreferal extends AppModel {
      * @param $userId
      * @return int
      */
-    public static function getCompletePaymentCount($userId) {
-        return self::count(array('conditions' => array('user_id' => $userId)));
+    public static function getCompletePaymentCount($userId)
+    {
+        return self::count(['conditions' => ['user_id' => $userId]]);
     }
 }

@@ -21,13 +21,13 @@ class PitchTest extends AppUnit
     public function setUp()
     {
         Rcache::init();
-        $this->rollUp(array('Pitch', 'User', 'Solution', 'Comment', 'Transaction', 'Paymaster', 'Payanyway', 'Note', 'Grade', 'Category', 'Expert', 'Wincomment'));
+        $this->rollUp(['Pitch', 'User', 'Solution', 'Comment', 'Transaction', 'Paymaster', 'Payanyway', 'Note', 'Grade', 'Category', 'Expert', 'Wincomment']);
     }
 
     public function tearDown()
     {
         Rcache::flushdb();
-        $this->rollDown(array('Pitch', 'User', 'Solution', 'Comment', 'Transaction', 'Paymaster', 'Payanyway', 'Note', 'Grade', 'Category', 'Expert', 'Wincomment'));
+        $this->rollDown(['Pitch', 'User', 'Solution', 'Comment', 'Transaction', 'Paymaster', 'Payanyway', 'Note', 'Grade', 'Category', 'Expert', 'Wincomment']);
         Session::clear();
     }
 /*
@@ -858,7 +858,8 @@ class PitchTest extends AppUnit
         $this->assertFalse($project->isOkToSendSmsForFinishWinnerSelectionWarning());
     }
 
-    public function testGetMinimalAwardForCategoryForDate() {
+    public function testGetMinimalAwardForCategoryForDate()
+    {
         $result = Pitch::getMinimalAwardForCategoryForDate(1, new \DateTime('2016-07-12 12:00:00'));
         $this->assertEqual((int) Category::first(1)->minAward, $result);
 
@@ -872,7 +873,8 @@ class PitchTest extends AppUnit
         $this->assertEqual((int) Category::first(3)->discountPrice, $result);
     }
 
-    public function testIsAwardValidForDate() {
+    public function testIsAwardValidForDate()
+    {
         $project = Pitch::first(1);
         $this->assertFalse($project->isAwardValidForDate(new \DateTime('2016-07-12 12:00:00')));
         $project->price = 10000;
@@ -887,5 +889,4 @@ class PitchTest extends AppUnit
         $project->save();
         $this->assertTrue($project->isAwardValidForDate(new \DateTime('2016-07-12 12:00:00')));
     }
-
 }

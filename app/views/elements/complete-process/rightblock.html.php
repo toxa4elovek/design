@@ -1,8 +1,8 @@
 <div class="right_block<?php echo ($type == 'designer') ? '' : ' for-client'; ?>">
     <div class="user_photo">
-        <?php if($solution->pitch->category_id == 7):?>
+        <?php if ($solution->pitch->category_id == 7):?>
             <a href="/users/step<?=$step?>" style="width:147px;height:104px;background-color:#efefef;display:block;color:#666666;text-decoration:none;font-weight:bold;padding-top:16px;padding: 16px;">
-                <?php if(mb_strlen(trim($solution->description)) > 100):?>
+                <?php if (mb_strlen(trim($solution->description)) > 100):?>
                 <?=mb_substr(trim($solution->description), 0, 100, 'UTF-8')?>
                 <?php else:?>
                 <?=trim($solution->description)?>
@@ -21,27 +21,27 @@
         <!--span class="bold supplement">Победил</span>
         <span class="supplement"><?=date('d.m.Y', strtotime($solution->change))?></span-->
         <span class="supplement">Дата окончания проекта <?php
-            if($solution->pitch->blank == 0):
+            if ($solution->pitch->blank == 0):
             echo date('d.m.Y', strtotime($solution->pitch->awardedDate));
             else:
             echo date('d.m.Y', strtotime($solution->pitch->started));
             endif;
             ?>. в <?php
-            if($solution->pitch->blank == 0):
+            if ($solution->pitch->blank == 0):
                 echo date('H:i', strtotime($solution->pitch->awardedDate));
             else:
                 echo date('H:i', strtotime($solution->pitch->started));
             endif;
             ?></span>
         <?php if ($solution->pitch->category_id == 7):?>
-            <?php if($type == 'designer'):?>
+            <?php if ($type == 'designer'):?>
                 <span class="supplement">Со дня определения победителя у заказчика есть 10 дней для получения полного объема работ, запрошенного в брифе.</span><br>
             <?php else: ?>
                 <span class="supplement">Со дня определения победителя у вас есть 10 дней для получения полного объема работ, запрошенного в брифе. Если вас все устраивает, пожалуйста, завершите проект.</span>
             <?php endif; ?>
         <?php else: ?>
         <span class="supplement">Ознакомьтесь с
-            <?php if($type == 'designer'):?>
+            <?php if ($type == 'designer'):?>
                 <a href="/answers/view/54">инструкциями</a>
             <?php else:?>
                 <a href="/answers/view/63">инструкциями</a>
@@ -49,24 +49,24 @@
     заключительного этапа.</span>
         <span class="supplement">Со дня определения победителя у вас есть <?php
             $timelimit = $solution->pitch->category->default_timelimit;
-            if($solution->pitch->category_id == 20) {
+            if ($solution->pitch->category_id == 20) {
                 $diff = ceil((strtotime($solution->pitch->finishDate) - strtotime($solution->pitch->started)) / DAY);
                 $timelimit = $diff;
-                if($timelimit < 5) {
+                if ($timelimit < 5) {
                     $timelimit = 5;
                 }
             }
             echo $timelimit;
-            ?> дней, чтобы доработать макеты <?php if($solution->pitch->category_id == 1):?>(3 поправки)<?php endif?> и исходники.
-        <?php if(!$this->user->isPitchOwner($solution->pitch->user_id)):?>
-            <?php if(mt_rand(0, 1)):?>
+            ?> дней, чтобы доработать макеты <?php if ($solution->pitch->category_id == 1):?>(3 поправки)<?php endif?> и исходники.
+        <?php if (!$this->user->isPitchOwner($solution->pitch->user_id)):?>
+            <?php if (mt_rand(0, 1)):?>
                 <br><br><a href="https://godesigner.ru/answers/view/101" target="_blank" class="supplement">Если заказчик пропал на завершительном этапе, что делать?</a>
             <?php else: ?>
                 <br><br><a href="https://godesigner.ru/answers/view/105" target="_blank" class="supplement">Как подготовить исходники</a>
             <?php endif ?>
         <?php endif ?>
             <?php
-            if(($step < 3) && ($this->user->isPitchOwner($solution->pitch->user_id))): echo ' Для начала вам нужно получить джипеги, внести правки и одобрить макеты.'; endif;?></span>
+            if (($step < 3) && ($this->user->isPitchOwner($solution->pitch->user_id))): echo ' Для начала вам нужно получить джипеги, внести правки и одобрить макеты.'; endif;?></span>
             <?php endif; ?>
     </div>
 </div>

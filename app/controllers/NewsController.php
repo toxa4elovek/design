@@ -11,14 +11,16 @@ use app\models\News;
  *
  * @package app\controllers
  */
-class NewsController extends AppController {
+class NewsController extends AppController
+{
 
     /**
      * Метод добавляет лайк для новости от имени пользователя
      * 
      * @return array
      */
-    public function like() {
+    public function like()
+    {
         $likes = News::increaseLike((int) $this->request->id, (int) $this->userHelper->getId());
         $result = $likes['result'];
         $likes = $likes['likes'];
@@ -30,7 +32,8 @@ class NewsController extends AppController {
      *
      * @return array
      */
-    public function unlike() {
+    public function unlike()
+    {
         $likes = News::decreaseLike((int) $this->request->id, (int) $this->userHelper->getId());
         $result = $likes['result'];
         $likes = $likes['likes'];
@@ -42,12 +45,12 @@ class NewsController extends AppController {
      *
      * @return array
      */
-    public function hide() {
+    public function hide()
+    {
         $result = false;
-        if($this->userHelper->isAdmin()) {
+        if ($this->userHelper->isAdmin()) {
             $result = News::hideNews((int) $this->request->id);
         }
         return compact('result');
     }
-
 }

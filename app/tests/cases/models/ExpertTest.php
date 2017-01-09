@@ -28,26 +28,26 @@ class ExpertTest extends AppUnit
     public function testGetExpertUserIds()
     {
         $result = Expert::getExpertUserIds();
-        $expected = array(5, 4, 6);
+        $expected = [5, 4, 6];
         $this->assertEqual($expected, $result);
 
-        $ids = array(1, 2);
+        $ids = [1, 2];
         $userIds = Expert::getExpertUserIds($ids);
-        $this->assertEqual(array(5, 4), $userIds);
+        $this->assertEqual([5, 4], $userIds);
 
         // список из двух членов
-        $ids = array(1);
+        $ids = [1];
         $userIds = Expert::getExpertUserIds($ids);
-        $this->assertEqual(array(5), $userIds);
+        $this->assertEqual([5], $userIds);
 
         // пустой список
-        $ids = array();
+        $ids = [];
         $userIds = Expert::getExpertUserIds($ids);
-        $this->assertEqual(array(5, 4, 6), $userIds);
+        $this->assertEqual([5, 4, 6], $userIds);
 
         // без аргумента
         $userIds = Expert::getExpertUserIds();
-        $this->assertEqual(array(5, 4, 6), $userIds);
+        $this->assertEqual([5, 4, 6], $userIds);
     }
 
     public function testIsExpertNeedToWriteComment()

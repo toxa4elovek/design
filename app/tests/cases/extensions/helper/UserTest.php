@@ -7,7 +7,8 @@ use app\extensions\helper\User;
 use app\models\Manager;
 use app\models\User as UserModel;
 
-class UserTest extends AppUnit {
+class UserTest extends AppUnit
+{
 
     protected $_user_model = 'app\tests\mocks\template\helper\MockUserModel';
     protected $_expert_model = 'app\tests\mocks\template\helper\MockExpertModel';
@@ -24,21 +25,24 @@ class UserTest extends AppUnit {
     /**
      * Initialize test by creating a new object instance with a default context.
      */
-    public function setUp() {
-        $this->user = new User(array(
+    public function setUp()
+    {
+        $this->user = new User([
             'userModel' => $this->_user_model,
             'expertModel' => $this->_expert_model,
             'inflector' => $this->_inflector
-        ));
+        ]);
         $this->user->clear();
-        $this->rollUp(array('User', 'Manager', 'Pitch'));
+        $this->rollUp(['User', 'Manager', 'Pitch']);
     }
 
-    public function tearDown() {
-        $this->rollDown(array('User', 'Manager', 'Pitch'));
+    public function tearDown()
+    {
+        $this->rollDown(['User', 'Manager', 'Pitch']);
     }
 
-    public function testIsAdmin() {
+    public function testIsAdmin()
+    {
         $this->assertFalse($this->user->isAdmin());
         $this->user->write('user.id', 4);
         $this->assertFalse($this->user->isAdmin());
@@ -46,7 +50,8 @@ class UserTest extends AppUnit {
         $this->assertTrue($this->user->isAdmin());
     }
 
-    public function testIsExpert() {
+    public function testIsExpert()
+    {
         $this->assertFalse($this->user->isExpert());
         $this->user->write('user.id', 4);
         $this->assertFalse($this->user->isExpert());
@@ -54,13 +59,15 @@ class UserTest extends AppUnit {
         $this->assertTrue($this->user->isExpert());
     }
 
-    public function testIsLoggedIn() {
+    public function testIsLoggedIn()
+    {
         $this->assertFalse($this->user->isLoggedIn());
         $this->user->write('user.id', 4);
         $this->assertTrue($this->user->isLoggedIn());
     }
 
-    public function testIsPitchOwner() {
+    public function testIsPitchOwner()
+    {
         $pitchOwnerId = 1;
         $randomUserId = 4;
         $this->assertFalse($this->user->isPitchOwner($pitchOwnerId));
@@ -70,7 +77,8 @@ class UserTest extends AppUnit {
         $this->assertTrue($this->user->isPitchOwner($pitchOwnerId));
     }
 
-    public function testIsManagerOfProject() {
+    public function testIsManagerOfProject()
+    {
         $pitchOwnerId = 1;
         $managerId = 2;
         $projectId = 1;
@@ -84,7 +92,8 @@ class UserTest extends AppUnit {
         $this->assertFalse($this->user->isManagerOfProject($managerId, $projectId));
     }
 
-    public function testIsUserManagerOfCurrentUser() {
+    public function testIsUserManagerOfCurrentUser()
+    {
         $managerId = 1;
         $subscriberId = 2;
         $this->assertFalse($this->user->isUserManagerOfCurrentUser($managerId));
@@ -94,7 +103,8 @@ class UserTest extends AppUnit {
         $this->assertTrue($this->user->isUserManagerOfCurrentUser($managerId));
     }
 
-    public function testIsSolutionAuthor() {
+    public function testIsSolutionAuthor()
+    {
         $solutionOwnerId = 1;
         $randomUserId = 4;
         $this->assertFalse($this->user->isSolutionAuthor($solutionOwnerId));
@@ -104,7 +114,8 @@ class UserTest extends AppUnit {
         $this->assertTrue($this->user->isSolutionAuthor($solutionOwnerId));
     }
 
-    public function testIsEditor() {
+    public function testIsEditor()
+    {
         $this->assertFalse($this->user->isEditor());
         $this->user->write('user.id', 5);
         $this->assertFalse($this->user->isEditor());
@@ -112,7 +123,8 @@ class UserTest extends AppUnit {
         $this->assertTrue($this->user->isEditor());
     }
 
-    public function testIsAuthor() {
+    public function testIsAuthor()
+    {
         $this->assertFalse($this->user->isAuthor());
         $this->user->write('user.id', 4);
         $this->assertFalse($this->user->isAuthor());
@@ -120,31 +132,36 @@ class UserTest extends AppUnit {
         $this->assertTrue($this->user->isAuthor());
     }
 
-    public function testGetId() {
+    public function testGetId()
+    {
         $this->assertFalse($this->user->getId());
         $this->user->write('user.id', '1');
         $this->assertIdentical(1, $this->user->getId());
     }
 
-    public function testGetFirstname() {
+    public function testGetFirstname()
+    {
         $this->assertFalse($this->user->getFirstname());
         $this->user->write('user.first_name', 'Дмитрий');
         $this->assertEqual('Дмитрий', $this->user->getFirstname());
     }
 
-    public function testGetLastname() {
+    public function testGetLastname()
+    {
         $this->assertFalse($this->user->getLastname());
         $this->user->write('user.last_name', 'Васильев');
         $this->assertEqual('Васильев', $this->user->getLastname());
     }
 
-    public function testGetEmail() {
+    public function testGetEmail()
+    {
         $this->assertFalse($this->user->getEmail());
         $this->user->write('user.email', 'nyudmitriy@gmail.com');
         $this->assertEqual('nyudmitriy@gmail.com', $this->user->getEmail());
     }
 
-    public function testIsCommentAuthor() {
+    public function testIsCommentAuthor()
+    {
         $commentAuthorId = 1;
         $randomUserId = 4;
         $this->assertFalse($this->user->isCommentAuthor($commentAuthorId));
@@ -154,7 +171,8 @@ class UserTest extends AppUnit {
         $this->assertTrue($this->user->isCommentAuthor($commentAuthorId));
     }
 
-    public function testGetFormattedName() {
+    public function testGetFormattedName()
+    {
         $this->assertFalse($this->user->getFormattedName());
         $this->user->write('user.first_name', 'Дмитрий');
         $this->user->write('user.last_name', 'Васильев');
@@ -192,7 +210,8 @@ class UserTest extends AppUnit {
         $this->assertEqual('ООО ПРОВЕРКА', $this->user->getFormattedName());
     }
 
-    public function testGetFormattedNameWithParams() {
+    public function testGetFormattedNameWithParams()
+    {
         $this->assertFalse($this->user->getFormattedName());
         $this->assertEqual('Дмитрий В.', $this->user->getFormattedName('Дмитрий', 'Васильев'));
         $this->assertFalse($this->user->getFormattedName());
@@ -203,7 +222,8 @@ class UserTest extends AppUnit {
         $this->assertEqual('Иван Леонтьев', $this->user->getFormattedName(null, null, true));
     }
 
-    public function testIsPostAuthor() {
+    public function testIsPostAuthor()
+    {
         $postAuthorId = 4;
         $randomUserId = 1;
         $this->assertFalse($this->user->isPostAuthor($postAuthorId));
@@ -213,7 +233,8 @@ class UserTest extends AppUnit {
         $this->assertTrue($this->user->isPostAuthor($postAuthorId));
     }
 
-    public function testIsAllowedToComment() {
+    public function testIsAllowedToComment()
+    {
         $this->assertFalse($this->user->isAllowedToComment());
         $timeInFuture = date('Y-m-d H:i:s', time() + 3000);
         $timeInPast = date('Y-m-d H:i:s', time() - 3000);
@@ -223,14 +244,16 @@ class UserTest extends AppUnit {
         $this->assertTrue($this->user->isAllowedToComment());
     }
 
-    public function testGetFullname() {
+    public function testGetFullname()
+    {
         $this->assertFalse($this->user->getFullname());
         $this->user->write('user.first_name', 'Дмитрий');
         $this->user->write('user.last_name', 'Васильев');
         $this->assertEqual('Дмитрий Васильев', $this->user->getFullname());
     }
 
-    public function testIsSocialNetworkUser() {
+    public function testIsSocialNetworkUser()
+    {
         $this->assertFalse($this->user->isSocialNetworkUser());
         $this->user->write('user.social', 0);
         $this->assertFalse($this->user->isSocialNetworkUser());
@@ -238,26 +261,29 @@ class UserTest extends AppUnit {
         $this->assertTrue($this->user->isSocialNetworkUser());
     }
 
-    public function testHasFavouritePitches() {
+    public function testHasFavouritePitches()
+    {
         $this->assertFalse($this->user->hasFavouritePitches());
         $this->user->write('user.id', 1);
         $this->assertFalse($this->user->hasFavouritePitches());
-        $this->user->write('user.faves', array(1, 2, 3));
+        $this->user->write('user.faves', [1, 2, 3]);
         $this->assertTrue($this->user->hasFavouritePitches());
     }
 
-    public function testIsPitchFavourite() {
+    public function testIsPitchFavourite()
+    {
         $favPitch = 2;
         $notFavPitch = 4;
-        $favs = array(1, 2);
+        $favs = [1, 2];
         $this->assertFalse($this->user->isPitchFavourite($favPitch));
         $this->user->write('user.faves', $favs);
         $this->assertFalse($this->user->isPitchFavourite($notFavPitch));
         $this->assertTrue($this->user->isPitchFavourite($favPitch));
     }
 
-    public function testGetCurrentPitches() {
-        $pitches = array(1, 2, 3);
+    public function testGetCurrentPitches()
+    {
+        $pitches = [1, 2, 3];
         $this->assertFalse($this->user->getCurrentPitches());
         $this->user->write('user.id', 1);
         $this->assertFalse($this->user->getCurrentPitches());
@@ -265,17 +291,19 @@ class UserTest extends AppUnit {
         $this->assertEqual($pitches, $this->user->getCurrentPitches());
     }
 
-    public function testGetCountOfCurrentPitches() {
-        $pitches = array(1, 2, 3);
+    public function testGetCountOfCurrentPitches()
+    {
+        $pitches = [1, 2, 3];
         $this->assertIdentical(0, $this->user->getCountOfCurrentPitches());
         $this->user->write('user.id', 1);
         $this->assertIdentical(0, $this->user->getCountOfCurrentPitches());
         $this->user->write('user.currentpitches', $pitches);
-        $this->assertIdentical(3 , $this->user->getCountOfCurrentPitches());
+        $this->assertIdentical(3, $this->user->getCountOfCurrentPitches());
     }
 
-    public function testGetCurrentDesignersPitches() {
-        $pitches = array(1, 2, 3);
+    public function testGetCurrentDesignersPitches()
+    {
+        $pitches = [1, 2, 3];
         $this->assertFalse($this->user->getCurrentDesignersPitches());
         $this->user->write('user.id', 1);
         $this->assertFalse($this->user->getCurrentDesignersPitches());
@@ -283,35 +311,40 @@ class UserTest extends AppUnit {
         $this->assertEqual($pitches, $this->user->getCurrentDesignersPitches());
     }
 
-    public function testGetCountOfCurrentDesignersPitches() {
-        $pitches = array(1, 2, 3, 4);
+    public function testGetCountOfCurrentDesignersPitches()
+    {
+        $pitches = [1, 2, 3, 4];
         $this->assertIdentical(0, $this->user->getCountOfCurrentDesignersPitches());
         $this->user->write('user.id', 1);
         $this->assertIdentical(0, $this->user->getCountOfCurrentDesignersPitches());
         $this->user->write('user.currentdesignpitches', $pitches);
-        $this->assertIdentical(4 , $this->user->getCountOfCurrentDesignersPitches());
+        $this->assertIdentical(4, $this->user->getCountOfCurrentDesignersPitches());
     }
 
-    public function testGetNewBlogpostCount() {
+    public function testGetNewBlogpostCount()
+    {
         $this->assertIdentical(0, $this->user->getNewBlogpostCount());
         $this->user->write('user.blogpost.count', 3);
         $this->assertIdentical(3, $this->user->getNewBlogpostCount());
     }
 
-    public function testGetNewEventsCount() {
+    public function testGetNewEventsCount()
+    {
         $this->assertIdentical(0, $this->user->getNewEventsCount());
         $this->user->write('user.events.count', 3);
         $this->assertIdentical(3, $this->user->getNewEventsCount());
     }
 
-    public function testGetAvatarUrl() {
+    public function testGetAvatarUrl()
+    {
         $this->assertEqual('/img/default_small_avatar.png', $this->user->getAvatarUrl());
         $this->user->write('user.images.avatar_small.weburl', '/img/custom_avatar.png');
         $this->assertEqual('/img/custom_avatar.png', $this->user->getAvatarUrl());
     }
 
-    public function testIsFeedWriter() {
-        UserModel::$feedAuthors = array('1');
+    public function testIsFeedWriter()
+    {
+        UserModel::$feedAuthors = ['1'];
         $this->assertFalse($this->user->isFeedWriter());
         $this->user->write('user.id', 4);
         $this->assertFalse($this->user->isFeedWriter());
@@ -319,7 +352,8 @@ class UserTest extends AppUnit {
         $this->assertTrue($this->user->isFeedWriter());
     }
 
-    public function testNeedToChangeEmail() {
+    public function testNeedToChangeEmail()
+    {
         $this->user->write('user.email', 'nyudmitriy@gmail.com');
         $this->assertFalse($this->user->needToChangeEmail());
         $this->user->write('user.email', 'nyudmitriy@mail.ru');
@@ -334,105 +368,112 @@ class UserTest extends AppUnit {
         $this->assertFalse($this->user->needToChangeEmail());
     }
 
-    public function testGetMaskedEmail() {
+    public function testGetMaskedEmail()
+    {
         $this->user->write('user.email', 'nyudmitriy@gmail.com');
         $this->assertEqual('n*********@gmail.com', $this->user->getMaskedEmail());
         $this->user->write('user.email', 'fake@address.ru');
         $this->assertEqual('f***@address.ru', $this->user->getMaskedEmail());
     }
 
-    public function testGetBalance() {
+    public function testGetBalance()
+    {
         $this->assertEqual(false, $this->user->getBalance());
-        $this->user = new User(array(
+        $this->user = new User([
             'userModel' => $this->_real_user_model,
             'expertModel' => $this->_expert_model,
             'inflector' => $this->_inflector
-        ));
+        ]);
         $userId = 3;
         $user = UserModel::first($userId);
         $this->user->write('user', $user->data());
         $this->assertEqual(23500, $user->balance);
         $this->assertEqual(23500, $this->user->getBalance());
         $user->balance = 3000;
-        $user->save(null, array('validate' => false));
+        $user->save(null, ['validate' => false]);
         $user = UserModel::first($userId);
         $this->assertEqual(3000, $user->balance);
         $this->assertEqual(3000, $this->user->getBalance());
     }
 
-    public function testGetShortCompanyName() {
+    public function testGetShortCompanyName()
+    {
         $this->assertEqual(false, $this->user->getShortCompanyName());
-        $this->user = new User(array(
+        $this->user = new User([
             'userModel' => $this->_real_user_model,
             'expertModel' => $this->_expert_model,
             'inflector' => $this->_inflector
-        ));
+        ]);
         $user = UserModel::first(3);
         $this->user->write('user', $user->data());
         $this->assertEqual('ООО Проверка', $this->user->getShortCompanyName());
     }
 
-    public function testGetFullCompanyName() {
+    public function testGetFullCompanyName()
+    {
         $this->assertEqual(false, $this->user->getFullCompanyName());
-        $this->user = new User(array(
+        $this->user = new User([
             'userModel' => $this->_real_user_model,
             'expertModel' => $this->_expert_model,
             'inflector' => $this->_inflector
-        ));
+        ]);
         $user = UserModel::first(3);
-        $user->companydata = serialize(array('company_name' => 'Реальная проверка'));
-        $user->save(null, array('validate' => false));
+        $user->companydata = serialize(['company_name' => 'Реальная проверка']);
+        $user->save(null, ['validate' => false]);
 
         $this->user->write('user', $user->data());
         $this->assertEqual('Реальная проверка', $this->user->getFullCompanyName());
     }
 
-    public function testIsSubscriptionActive() {
+    public function testIsSubscriptionActive()
+    {
         $this->assertFalse($this->user->isSubscriptionActive());
-        $this->user = new User(array(
+        $this->user = new User([
             'userModel' => $this->_real_user_model,
             'expertModel' => $this->_expert_model,
             'inflector' => $this->_inflector
-        ));
+        ]);
         $user = UserModel::first(3);
         $this->user->write('user', $user->data());
         $this->assertEqual(0, $user->subscription_status);
         $this->assertFalse($this->user->isSubscriptionActive());
-        $plan =  array(
+        $plan =  [
             'id' => 2,
             'price' => 69000,
             'title' => 'Фирменный',
             'duration' => YEAR
-        );
+        ];
         UserModel::activateSubscription(3, $plan);
         $this->assertTrue($this->user->isSubscriptionActive());
     }
 
-    public function testGetSubscriptionExpireDate() {
+    public function testGetSubscriptionExpireDate()
+    {
         $this->assertEqual(false, $this->user->getSubscriptionExpireDate());
-        $this->user = new User(array(
+        $this->user = new User([
             'userModel' => $this->_real_user_model,
             'expertModel' => $this->_expert_model,
             'inflector' => $this->_inflector
-        ));
+        ]);
         $user = UserModel::first(3);
         $this->user->write('user', $user->data());
-        $plan =  array(
+        $plan =  [
             'id' => 2,
             'price' => 69000,
             'title' => 'Фирменный',
             'duration' => MONTH
-        );
+        ];
         UserModel::activateSubscription($user->id, $plan);
         $this->assertEqual(date('d.m.Y H:i:s', time() + MONTH), $this->user->getSubscriptionExpireDate());
     }
 
-    public function testHasActiveSubscriptionDiscount() {
-        $this->user = new User(array(
+    public function testHasActiveSubscriptionDiscount()
+    {
+        $this->user = new User([
             'userModel' => $this->_real_user_model,
             'expertModel' => $this->_expert_model,
             'inflector' => $this->_inflector
-        ));
+        ]);
         UserModel::setSubscriptionDiscount(2, 40, date('Y-m-d H:i:s', time() + MONTH));
         $result = UserModel::getSubscriptionDiscount(2);
         $this->assertEqual(40, $result);
@@ -440,7 +481,8 @@ class UserTest extends AppUnit {
         $this->assertEqual(40, $result);
     }
 
-    public function testGetGender() {
+    public function testGetGender()
+    {
         $this->assertEqual(0, $this->user->getGender());
         $this->user->write('user.gender', 0);
         $this->assertEqual(0, $this->user->getGender());
@@ -450,16 +492,17 @@ class UserTest extends AppUnit {
         $this->assertEqual(2, $this->user->getGender());
     }
 
-    public function testGetGenderTxt() {
+    public function testGetGenderTxt()
+    {
         $this->assertEqual('принял', $this->user->getGenderTxt('принял', 0));
         $this->assertEqual('принял', $this->user->getGenderTxt('принял', 1));
         $this->assertEqual('приняла', $this->user->getGenderTxt('принял', 2));
     }
 
-    public function testGetCreatedDate() {
+    public function testGetCreatedDate()
+    {
         $this->assertFalse($this->user->getCreatedDate());
         $this->user->write('user.created', '2015-01-01 00:00:00');
         $this->assertEqual('2015-01-01 00:00:00', $this->user->getCreatedDate());
     }
-
 }

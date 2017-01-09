@@ -1,7 +1,7 @@
 <?php
 $name='DejaVuSansCondensed-Bold';
 $type='TTF';
-$desc=array (
+$desc= [
   'Ascent' => 928,
   'Descent' => -236,
   'CapHeight' => 928,
@@ -10,7 +10,7 @@ $desc=array (
   'ItalicAngle' => 0,
   'StemV' => 165,
   'MissingWidth' => 540,
-);
+];
 $up=-63;
 $ut=44;
 $ttffile='C:/server/www/godesigner/app/libraries/MPDF54/MPDF54/ttfonts/DejaVuSansCondensed-Bold.ttf';
@@ -23,4 +23,3 @@ $fontkey='dejavusanscondensedB';
 $panose=' 0 0 2 b 8 6 3 6 4 2 2 4';
 $haskerninfo=false;
 $unAGlyphs=false;
-?>

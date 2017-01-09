@@ -18,10 +18,10 @@
 require '../src/facebook.php';
 
 // Create our Application instance (replace this with your appId and secret).
-$facebook = new Facebook(array(
+$facebook = new Facebook([
   'appId'  => '344617158898614',
   'secret' => '6dc8ac871858b34798bc2488200e503d',
-));
+]);
 
 // Get User ID
 $user = $facebook->getUser();
@@ -33,20 +33,20 @@ $user = $facebook->getUser();
 // token is invalid if the user logged out of Facebook.
 
 if ($user) {
-  try {
-    // Proceed knowing you have a logged in user who's authenticated.
+    try {
+        // Proceed knowing you have a logged in user who's authenticated.
     $user_profile = $facebook->api('/me');
-  } catch (FacebookApiException $e) {
-    error_log($e);
-    $user = null;
-  }
+    } catch (FacebookApiException $e) {
+        error_log($e);
+        $user = null;
+    }
 }
 
 // Login or logout url will be needed depending on current user state.
 if ($user) {
-  $logoutUrl = $facebook->getLogoutUrl();
+    $logoutUrl = $facebook->getLogoutUrl();
 } else {
-  $loginUrl = $facebook->getLoginUrl();
+    $loginUrl = $facebook->getLoginUrl();
 }
 
 // This call will always work since we are fetching public data.

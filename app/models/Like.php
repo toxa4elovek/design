@@ -8,8 +8,6 @@ use \lithium\util\String;
 */
 
 
-class Like extends \app\models\AppModel {
-	
-
-
+class Like extends \app\models\AppModel
+{
 }

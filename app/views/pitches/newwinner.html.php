@@ -1,13 +1,13 @@
 <div class="wrapper">
-    <?= $this->view()->render(array('element' => 'header'), array('header' => 'header2')) ?>
+    <?= $this->view()->render(['element' => 'header'], ['header' => 'header2']) ?>
     <input type="hidden" value="<?= $pitch->id ?>" id="pitch_id"/>
     <input type="hidden" value="" id="addon_id"/>
     <input type="hidden" value="<?= $pitch->billed ?>" id="billed"/>
     <input type="hidden" value="<?= $pitch->published ?>" id="published"/>
     <?php
     $sum = 0;
-    foreach($receipt as $option):
-        if($option->value > 0):
+    foreach ($receipt as $option):
+        if ($option->value > 0):
             $sum += $option->value;
         endif;
     endforeach?>
@@ -19,7 +19,7 @@
         <p class="summary"><strong id="total-tag"><?= $sum ?>.-</strong></p><!-- .summary -->
         <ul id="check-tag">
             <?php foreach ($receipt as $v): ?>
-                <?php if($v->value > 0):?>
+                <?php if ($v->value > 0):?>
                 <li><span><?= $v->name ?></span><small><?= $v->value ?>.-</small></li>
                 <?php endif?>
             <?php endforeach; ?>
@@ -140,7 +140,7 @@
                         </tr>
                         <tr id="paymaster-select" class="paymaster-section" style="display: none;">
                             <td colspan="4">
-                                <?php echo $this->html->script(array('jquery-1.8.3.min.js')); ?>
+                                <?php echo $this->html->script(['jquery-1.8.3.min.js']); ?>
                                 <script type='text/javascript' src='https://paymaster.ru/widget/BasicFP/1?LMI_MERCHANT_ID=d5d2e177-6ed1-4e5f-aac6-dd7ea1c16f60&LMI_PAYMENT_AMOUNT=<?= $sum ?>&LMI_PAYMENT_DESC=<?php echo urlencode('Оплата проекта') ?>&LMI_CURRENCY=RUB&LMI_PAYMENT_NO=<?= $pitch->id ?>'></script>
                             </td>
                         </tr-->
@@ -153,7 +153,7 @@
             </div>
         </div><!-- .main -->
     </div><!-- .middle -->
-    <?= $this->html->script(array(
+    <?= $this->html->script([
         'jquery-ui-1.11.4.min.js',
         'jquery-plugins/jquery.scrollto.min.js',
         'pitches/newwinner.js?' . mt_rand(100, 999),
@@ -164,9 +164,9 @@
         'jquery.tooltip.js',
         'popup.js',
         'jquery.damnUploader.js'
-    ), array('inline' => false)) ?>
+    ], ['inline' => false]) ?>
     <?=
-    $this->html->style(array(
+    $this->html->style([
         '/css/common/receipt.css',
         '/brief',
-        '/step3'), array('inline' => false))?>
+        '/step3'], ['inline' => false])?>

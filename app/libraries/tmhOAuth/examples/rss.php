@@ -22,20 +22,18 @@
 
 require '../tmhOAuth.php';
 require '../tmhUtilities.php';
-$tmhOAuth = new tmhOAuth(array(
+$tmhOAuth = new tmhOAuth([
   'consumer_key'    => 'YOUR_CONSUMER_KEY',
   'consumer_secret' => 'YOUR_CONSUMER_SECRET',
   'user_token'      => 'A_USER_TOKEN',
   'user_secret'     => 'A_USER_SECRET',
-));
+]);
 
 $code = $tmhOAuth->request('GET', $tmhOAuth->url('1/statuses/home_timeline', 'rss'));
 
 if ($code == 200) {
-  header('Content-Type: application/rss+xml; charset=utf-8');
-  echo $tmhOAuth->response['response'];
+    header('Content-Type: application/rss+xml; charset=utf-8');
+    echo $tmhOAuth->response['response'];
 } else {
-  tmhUtilities::pr(htmlentities($tmhOAuth->response['response']));
+    tmhUtilities::pr(htmlentities($tmhOAuth->response['response']));
 }
-
-?>

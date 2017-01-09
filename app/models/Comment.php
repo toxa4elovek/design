@@ -21,7 +21,7 @@ class Comment extends AppModel
     public static $result = '';
     public static $level = 0;
 
-    public $belongsTo = array('Pitch', 'User');
+    public $belongsTo = ['Pitch', 'User'];
 
     public static function __init()
     {
@@ -35,11 +35,11 @@ class Comment extends AppModel
                     $comment = $params['entity'];
                     $historyArchive = $comment->history;
                     if ($historyArchive == '') {
-                        $history = array();
+                        $history = [];
                     } else {
                         $history = unserialize($historyArchive);
                     }
-                    $history[] = array('date' => date('Y-m-d H:i:s'), 'text' => $original->text);
+                    $history[] = ['date' => date('Y-m-d H:i:s'), 'text' => $original->text];
                     $params['entity']->history = serialize($history);
                 }
             }
@@ -47,7 +47,7 @@ class Comment extends AppModel
         });
         self::applyFilter('createComment', function ($self, $params, $chain) {
             $params['solution_id'] = 0;
-            $change = array(4, 5);
+            $change = [4, 5];
             $admin = 108;
             if (in_array($params['user_id'], $change)) {
                 $params['user_id'] = $admin;
@@ -88,7 +88,7 @@ class Comment extends AppModel
                 Rcache::delete($cacheKey);
             }
             preg_match_all('@(#\d*)@', $params['text'], $matches);
-            $nums = array();
+            $nums = [];
             foreach ($matches[1] as $hashtag) {
                 $nums[] = substr($hashtag, 1);
             }
@@ -97,10 +97,10 @@ class Comment extends AppModel
             $pitch = Pitch::first($params['pitch_id']);
             // Expert writing
             if ($pitch->status > 0 && in_array($params['user_id'], Expert::getExpertUserIds($experts))) {
-                $data = array(
+                $data = [
                     'pitch' => $pitch,
                     'text' => $params['text'],
-                );
+                ];
                 User::sendSpamExpertSpeaking($data);
             }
             if ($pitch->status > 0 && $params['user_id'] != $admin) {
@@ -111,15 +111,15 @@ class Comment extends AppModel
                     $client = User::first($pitch->user_id);
                     $nameInflector = new nameInflector();
                     $message = 'Дизайнеры больше не могут предлагать решения и оставлять комментарии!';
-                    $data = array('pitch_id' => $params['pitch_id'], 'reply_to' => $client->id, 'user_id' => $admin, 'text' => $message, 'public' => (int) $params['public'], 'question_id' => $params['id']);
+                    $data = ['pitch_id' => $params['pitch_id'], 'reply_to' => $client->id, 'user_id' => $admin, 'text' => $message, 'public' => (int) $params['public'], 'question_id' => $params['id']];
                     Comment::createComment($data);
                 }
                 return $params;
             }
             // Если упоминаются номера решения, отправляем комментарии их владельцам
             if (!empty($num) && $pitch->status == 0) {
-                $solutions = Solution::all(array('with' => array('User'), 'conditions' => array('pitch_id' => $params['pitch_id'], 'num' => $nums)));
-                $emails = array();
+                $solutions = Solution::all(['with' => ['User'], 'conditions' => ['pitch_id' => $params['pitch_id'], 'num' => $nums]]);
+                $emails = [];
                 foreach ($solutions as $solution) {
                     $emails[$solution->user->email] = $solution;
                 }
@@ -149,10 +149,10 @@ class Comment extends AppModel
         self::applyFilter('delete', function ($self, $params, $chain) {
             if ($result = $chain->next($self, $params, $chain)) {
                 $record = $params['entity'];
-                if ($event = Event::first(array('conditions' => array('comment_id' => $record->id)))) {
+                if ($event = Event::first(['conditions' => ['comment_id' => $record->id]])) {
                     $event->delete();
                 }
-                if ($childComment = Comment::first(array('conditions' => array('question_id' => $record->id)))) {
+                if ($childComment = Comment::first(['conditions' => ['question_id' => $record->id]])) {
                     $childComment->delete();
                 }
             }
@@ -177,7 +177,7 @@ class Comment extends AppModel
                             });
                             foreach ($solutionsHere as $solutionNum) {
                                 $num = substr($solutionNum, 1);
-                                $solution = Solution::first(array('conditions' => array('pitch_id' => $pitchId, 'num' => $num), 'with' => array('Pitch')));
+                                $solution = Solution::first(['conditions' => ['pitch_id' => $pitchId, 'num' => $num], 'with' => ['Pitch']]);
                                 if (isset($solution)) {
                                     $solutionHelper = new SolutionHelper;
                                     $record->text = preg_replace("/($solutionNum\D)([\W]*)/", '<a href="https://godesigner.ru/pitches/viewsolution/' . $solution->id . '" target="_blank" class="solution-link hoverimage" data-comment-to="$1" data-thumbnail="' . $solutionHelper->renderImageUrlRights($solution, 'solution_galleryLargeSize', $solution->pitch) . '">$1</a>$2', $record->text);
@@ -306,7 +306,7 @@ class Comment extends AppModel
             foreach ($commentsFiltered as $comment) {
                 $designer = false;
                 $comment->needAnswer = '';
-                if (($comment->solution_id != 0) && ($solution = Solution::first(array('fields' => array('user_id'), 'conditions' => array( 'id' => $comment->solution_id))))) {
+                if (($comment->solution_id != 0) && ($solution = Solution::first(['fields' => ['user_id'], 'conditions' => [ 'id' => $comment->solution_id]]))) {
                     $designer = $solution->user_id;
                 }
                 if (($comment->user_id != $currentUser['id']) && (($designer === $currentUser['id']) || ($comment->reply_to === $currentUser['id']))) {
@@ -353,13 +353,13 @@ class Comment extends AppModel
             if (self::$level > 1) {
                 $comment->isChild = 1;
             }
-            $children = Comment::all(array(
-                'conditions' => array(
+            $children = Comment::all([
+                'conditions' => [
                     'question_id' => $comment->id,
-                ),
-                'with' => array('User'),
-                'order' => array('id' => 'desc'),
-            ));
+                ],
+                'with' => ['User'],
+                'order' => ['id' => 'desc'],
+            ]);
             if (count($children) > 0) {
                 $comment->hasChild = 1;
                 self::$result->append($comment);
@@ -430,32 +430,32 @@ class Comment extends AppModel
      */
     public static function checkComment($text)
     {
-        $patterns = array(
+        $patterns = [
             '/#\d+,/', // #15,
             '/#\d+ ,/', // #15 ,
             '/#\d+/', // #15
             '/@[\p{L}]+ [\p{L}]{1}\.,/', // @Дмитрий Н.,
             '/@[\p{L}]+ [\p{L}]{1}\. ,/', // @Дмитрий Н. ,
             '/@[\p{L}]+ [\p{L}]{1}/', // @Дмитрий Н
-        );
+        ];
         $text = preg_replace($patterns, '', $text);
         return (bool) mb_strlen(trim($text), 'UTF-8');
     }
 
     public static function isCommentRepeat($user_id, $pitch_id, $currentText)
     {
-        if (User::first(array('conditions' => array('id' => $user_id, 'isAdmin' => 1)))) {
+        if (User::first(['conditions' => ['id' => $user_id, 'isAdmin' => 1]])) {
             return true;
         }
-        $previousComment = Comment::first(array(
-            'conditions' => array(
+        $previousComment = Comment::first([
+            'conditions' => [
                 'user_id' => $user_id,
                 'pitch_id' => $pitch_id,
-            ),
-            'order' => array(
+            ],
+            'order' => [
                 'created' => 'DESC',
-            ),
-        ));
+            ],
+        ]);
         if ($previousComment && $previousComment->originalText == $currentText) {
             return false;
         }
@@ -481,7 +481,7 @@ class Comment extends AppModel
             ]
         ]);
         $template = '@%s, срок проекта подошел к концу! Дизайнеры больше не могут предлагать решения и оставлять комментарии! Настал момент анонсировать победителя. У вас есть %d %s на выбор лучшего решения. Выбрав лучшее, вы получите возможность внесения поправок и время на получение исходников.';
-        if(Pitch::isCopyrighting($project)) {
+        if (Pitch::isCopyrighting($project)) {
             $template = '@%s, срок проекта подошел к концу! Дизайнеры больше не могут предлагать решения и оставлять комментарии! Настал момент анонсировать победителя. У вас есть %d %s на выбор лучшего решения. Выбрав лучшее, вы получите возможность внесения поправок и время на получение исходников. Перед выбором победителя убедитесь, что домен свободен с помощью сервиса проверки занятости доменных имен, например http://www.whois-service.ru/';
         }
         return sprintf($template, (string) $name, $days, $dayWord);

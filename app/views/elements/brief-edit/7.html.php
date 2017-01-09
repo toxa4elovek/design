@@ -2,7 +2,9 @@
 
     <p>
         <label>Какие три качества должно отражать название/слоган?<a href="#" class="visibility-eye-tooltip tooltip private" title="Эта информация будет доступна вам и участникам, которые подписали соглашение о неразглашении"><img src="/img/private-comment-eye.png" alt="Информация скрыта"></a></label>
-        <input type="text" name="qualities" placeholder="Мужественность, уверенность в себе, традиционность" class="<?php if(empty($specifics['copy-difference'])) echo 'placeholder'?> specific-prop" value="<?=$specifics['qualities']?>">
+        <input type="text" name="qualities" placeholder="Мужественность, уверенность в себе, традиционность" class="<?php if (empty($specifics['copy-difference'])) {
+    echo 'placeholder';
+}?> specific-prop" value="<?=$specifics['qualities']?>">
     </p>
 
 </div>
@@ -61,11 +63,15 @@
     <?php endif; ?>
 
     <p>
-        <label style="font:14px/20px 'Arial',sans-serif;text-shadow:-1px 0 0 #FFFFFF;color:#666666;"><input type="checkbox" style="vertical-align: middle; margin-right: 5px;" name="copy-trademark" class="specific-prop" <?php if(isset($specifics['copy-trademark']) && $specifics['copy-trademark'] == 'on') echo "checked";?>> я буду регистрировать название как уникальную торговую марку</label>
+        <label style="font:14px/20px 'Arial',sans-serif;text-shadow:-1px 0 0 #FFFFFF;color:#666666;"><input type="checkbox" style="vertical-align: middle; margin-right: 5px;" name="copy-trademark" class="specific-prop" <?php if (isset($specifics['copy-trademark']) && $specifics['copy-trademark'] == 'on') {
+    echo "checked";
+}?>> я буду регистрировать название как уникальную торговую марку</label>
     </p>
 
     <p>
-        <label style="font:14px/20px 'Arial',sans-serif;text-shadow:-1px 0 0 #FFFFFF;color:#666666;"><input type="checkbox" style="vertical-align: middle; margin-right: 5px;" name="copy-website" class="specific-prop" <?php if(isset($specifics['copy-website']) && $specifics['copy-website'] == 'on') echo "checked";?>> я буду регистрировать сайт</label>
+        <label style="font:14px/20px 'Arial',sans-serif;text-shadow:-1px 0 0 #FFFFFF;color:#666666;"><input type="checkbox" style="vertical-align: middle; margin-right: 5px;" name="copy-website" class="specific-prop" <?php if (isset($specifics['copy-website']) && $specifics['copy-website'] == 'on') {
+    echo "checked";
+}?>> я буду регистрировать сайт</label>
     </p>
 
 </div>

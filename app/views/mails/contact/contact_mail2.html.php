@@ -21,10 +21,10 @@ Resolution: <?=$info['screen']?><br>
 <br>
 <?php
     $noProjects = true;
-    if($user['pitches'] != null) {
+    if ($user['pitches'] != null) {
         $noProjects = false;
     }
-        if(!$noProjects):
+        if (!$noProjects):
     foreach ($user['pitches'] as $pitch):?>
         <a href="https://godesigner.ru/pitches/view/<?=$pitch['id']; ?>"><?=(empty($pitch['title'])) ? '— ' : $pitch['title'];?></a> (<a href="http://cp.godesigner.ru/pitches/edit/<?=$pitch['id']; ?>">просмотреть в админке</a>)<br>
     <?php endforeach;?>

@@ -11,35 +11,37 @@ use \app\models\Answer;
  *
  * @package app\controllers
  */
-class AnswersController extends AppController {
+class AnswersController extends AppController
+{
 
     /**
      * @var array Публичные методы
      */
-    public $publicActions = array('index', 'view');
+    public $publicActions = ['index', 'view'];
 
     /**
      * Метод для вывода списка вопросов/результатов поиска
      *
      * @return array|void
      */
-    public function index() {
+    public function index()
+    {
         $search = '';
-        if(isset($this->request->query['search'])) {
+        if (isset($this->request->query['search'])) {
             require_once LITHIUM_APP_PATH . '/libraries/sphinxapi.php';
             $client = new \SphinxClient();
             $client->open();
             error_reporting(0);
-            $client->SetMatchMode( SPH_MATCH_EXTENDED2  );
+            $client->SetMatchMode(SPH_MATCH_EXTENDED2);
             $client->SetSortMode(SPH_SORT_RELEVANCE);
-            $client->SetFieldWeights(array (
+            $client->SetFieldWeights( [
                 'title' => 10000,
                 'text' => 1,
-            ));
+            ]);
             $searchCondition = urldecode(filter_var($this->request->query['search'], FILTER_SANITIZE_STRING));
             $words = explode(' ', $searchCondition);
-            foreach($words as $index => &$searchWord) {
-                if($searchWord == '') {
+            foreach ($words as $index => &$searchWord) {
+                if ($searchWord == '') {
                     unset($words[$index]);
                     continue;
                 }
@@ -48,10 +50,10 @@ class AnswersController extends AppController {
             }
             $search = implode(' ', $words);
             $originalSearch = $search;
-            $answers = array();
-            foreach($words as $word) {
+            $answers = [];
+            foreach ($words as $word) {
                 $searchQuery = $client->Query($word, 'help');
-                foreach($searchQuery['words'] as $sphinxWord => $data) {
+                foreach ($searchQuery['words'] as $sphinxWord => $data) {
                     $cleanedWord = preg_replace("/[^[:alnum:][:space:]]/u", '', $sphinxWord);
                     $search .= ' ' . $cleanedWord;
                 }
@@ -61,16 +63,16 @@ class AnswersController extends AppController {
                     $answers[] = $answer->data();
                 }
             }
-        }else {
+        } else {
             $category = null;
-            if((isset($this->request->query['category'])) && (in_array($this->request->query['category'], array_keys(Answer::$questioncategory_id)))) {
+            if ((isset($this->request->query['category'])) && (in_array($this->request->query['category'], array_keys(Answer::$questioncategory_id)))) {
                 $category = $this->request->query['category'];
             }
             $answers = Answer::getPopularQuesions(1000, $category);
             $answers = $answers->data();
         }
-        if((isset($this->request->query['ajax'])) && ($this->request->query['ajax'] == 'true')) {
-            if($search != '') {
+        if ((isset($this->request->query['ajax'])) && ($this->request->query['ajax'] == 'true')) {
+            if ($search != '') {
                 return $this->render(
                     [
                         'layout' => false,
@@ -78,7 +80,7 @@ class AnswersController extends AppController {
                         'data' => compact('answers', 'search', 'category', 'originalSearch')
                     ]
                 );
-            }else{
+            } else {
                 return $this->render(
                     [
                         'layout' => false,
@@ -86,15 +88,15 @@ class AnswersController extends AppController {
                     ]
                 );
             }
-        }else {
-            if($search != '') {
+        } else {
+            if ($search != '') {
                 return $this->render(
                     [
                         'template' => '../answers/search_results',
                         'data' => compact('answers', 'search', 'category', 'originalSearch')
                     ]
                 );
-            }else{
+            } else {
                 return compact('answers', 'search', 'category', 'originalSearch');
             }
         }
@@ -105,8 +107,9 @@ class AnswersController extends AppController {
      *
      * @return array|object
      */
-    public function view() {
-        if(($this->request->id != null) && ($answer = Answer::first((int) $this->request->id))) {
+    public function view()
+    {
+        if (($this->request->id != null) && ($answer = Answer::first((int) $this->request->id))) {
             $answer->increaseCounterForRecord();
             $similar = $answer->getSimilarQuesions(10);
             $answer->category = Answer::$questioncategory_id[$answer->questioncategory_id];
@@ -114,5 +117,4 @@ class AnswersController extends AppController {
         }
         return $this->redirect('Answers::index');
     }
-
 }

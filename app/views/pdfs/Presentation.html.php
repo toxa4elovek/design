@@ -19,29 +19,29 @@
         <pagebreak>
         <?php
         $i = 1;
-        foreach($solutions as $solution):?>
+        foreach ($solutions as $solution):?>
         <table>
             <?php
-            if(isset($solution->images['solution_pdfSummary']['filename'])) {
+            if (isset($solution->images['solution_pdfSummary']['filename'])) {
                 $images = [$solution->images['solution_pdfSummary']];
-            }else if(isset($solution->images['solution_pdfSummary']['0'])) {
+            } elseif (isset($solution->images['solution_pdfSummary']['0'])) {
                 $images = $solution->images['solution_pdfSummary'];
-            }else {
-                if(isset($solution->images['solution_leftFeed']['filename'])) {
+            } else {
+                if (isset($solution->images['solution_leftFeed']['filename'])) {
                     $images = [$solution->images['solution_leftFeed']];
-                }else if(isset($solution->images['solution_leftFeed']['0'])) {
+                } elseif (isset($solution->images['solution_leftFeed']['0'])) {
                     $images = $solution->images['solution_leftFeed'];
-                }else{
+                } else {
                     $images = [];
                     continue;
                 }
             }
-            foreach($images as $index => $image):?>
+            foreach ($images as $index => $image):?>
             <tr>
-                <td width="470" <?php if($index > 0):?>colspan="2"<?php endif ?>>
+                <td width="470" <?php if ($index > 0):?>colspan="2"<?php endif ?>>
                     <img width="464" alt="image" src="<?= $image['filename'] ?>"/>
                 </td>
-                <?php if($index === 0):?>
+                <?php if ($index === 0):?>
                 <td style="vertical-align: top; padding-left: 10px">
                     <h1 style="padding-top: 1pt;text-indent: 0pt;text-align: right;">#<?= $i?></h1>
                     <p style="padding-top: 4pt;padding-left: 368pt;text-indent: 0pt;line-height: 109%;text-align: left;"><?= $pitch->title?></p>
@@ -58,23 +58,23 @@
             $count = count($solutions);
             $i = 1;
             $k = 1;
-            foreach($solutions as $solution):
-                if(isset($solution->images['solution_pdfSummary']['filename'])) {
+            foreach ($solutions as $solution):
+                if (isset($solution->images['solution_pdfSummary']['filename'])) {
                     $imageFileName = $solution->images['solution_pdfSummary']['filename'];
-                }else if(isset($solution->images['solution_pdfSummary']['0']['filename'])) {
+                } elseif (isset($solution->images['solution_pdfSummary']['0']['filename'])) {
                     $imageFileName = $solution->images['solution_pdfSummary'][0]['filename'];
-                }else {
-                    if(isset($solution->images['solution_leftFeed']['filename'])) {
+                } else {
+                    if (isset($solution->images['solution_leftFeed']['filename'])) {
                         $imageFileName = $solution->images['solution_leftFeed']['filename'];
-                    }else if(isset($solution->images['solution_leftFeed']['0']['filename'])) {
+                    } elseif (isset($solution->images['solution_leftFeed']['0']['filename'])) {
                         $imageFileName = $solution->images['solution_leftFeed'][0]['filename'];
-                    }else{
+                    } else {
                         continue;
                     }
                 }
                 $images[$k] = $imageFileName;
                 $counter[$k] = $i;
-                if(($i === $count) && ($k % 2) !== 0):
+                if (($i === $count) && ($k % 2) !== 0):
                     ?>
                     <tr>
                         <td>
@@ -87,7 +87,7 @@
                     <tr><td colspan="3" height="20"></td></tr>
                 <?php
                 endif;
-                if(($k % 2) === 0):
+                if (($k % 2) === 0):
                 ?>
             <tr>
                 <td>

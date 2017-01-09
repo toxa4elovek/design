@@ -3,9 +3,9 @@ $details = unserialize($pitch->specifics);
 ?>
 <input type="hidden" id="logo_properties" data-props="<?php echo urlencode(json_encode($details["audience"])); ?>">
 
-<?php if(isset($details['site-sub'])):?>
+<?php if (isset($details['site-sub'])):?>
 <h2 class="blueheading">Сколько макетов необходимо создать?</h2>
-<p class="regular"><?php echo nl2br($details['site-sub'])?> <?=$this->numInflector->formatString($details['site-sub'], array('first' => 'макет', 'second' => 'макета', 'third' => 'макетов'))?></p>
+<p class="regular"><?php echo nl2br($details['site-sub'])?> <?=$this->numInflector->formatString($details['site-sub'], ['first' => 'макет', 'second' => 'макета', 'third' => 'макетов'])?></p>
 <?php endif?>
 
 <div class="groupc">
@@ -40,12 +40,12 @@ $details = unserialize($pitch->specifics);
         </li>
     </ul><!-- .logo-properties -->
 
-    <?php if(!empty($details['qualities'])):?>
+    <?php if (!empty($details['qualities'])):?>
     <h2 class="blueheading">Какие 3 основных качества нужно донести до аудитории?</h2>
     <p class="regular"><?=$this->brief->deleteHtmlTagsAndInsertHtmlLinkInText($details['qualities'])?></p>
     <?php endif;?>
 
-    <?php if(!empty($details['site-inspiration'])):?>
+    <?php if (!empty($details['site-inspiration'])):?>
     <h2 class="blueheading">Предпочтения</h2>
     <p class="regular"><?=$this->brief->deleteHtmlTagsAndInsertHtmlLinkInText($details['site-inspiration'])?></p>
     <?php endif;?>

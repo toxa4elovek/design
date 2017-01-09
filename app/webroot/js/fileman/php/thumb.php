@@ -39,8 +39,8 @@ $w = intval(empty($_GET['width'])?'100':$_GET['width']);
 $h = intval(empty($_GET['height'])?'0':$_GET['height']);
 
 header('Content-type: '.RoxyFile::GetMIMEType(basename($path)));
-if($w && $h)
-  RoxyImage::CropCenter(fixPath($path), null, $w, $h);
-else 
-  RoxyImage::Resize(fixPath($path), null, $w, $h);
-?>
+if ($w && $h) {
+    RoxyImage::CropCenter(fixPath($path), null, $w, $h);
+} else {
+    RoxyImage::Resize(fixPath($path), null, $w, $h);
+}

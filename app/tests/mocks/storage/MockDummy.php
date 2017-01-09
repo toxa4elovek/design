@@ -2,13 +2,14 @@
 
 namespace app\tests\mocks\storage;
 
-Class MockDummy extends \lithium\core\Object {
+class MockDummy extends \lithium\core\Object
+{
 
     public $a = 1;
     public $b = 2;
 
-    public function calc() {
+    public function calc()
+    {
         return $this->a + $this->b;
     }
-
 }

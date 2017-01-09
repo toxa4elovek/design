@@ -2,6 +2,6 @@
 
 namespace app\models;
 
-class Tweet extends \app\models\AppModel {
-
+class Tweet extends \app\models\AppModel
+{
 }

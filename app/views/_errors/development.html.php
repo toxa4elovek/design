@@ -10,7 +10,7 @@ use lithium\analysis\Debugger;
 use lithium\analysis\Inspector;
 
 $exception = $info['exception'];
-$replace = array('&lt;?php', '?&gt;', '<code>', '</code>', "\n");
+$replace = ['&lt;?php', '?&gt;', '<code>', '</code>', "\n"];
 $context = 5;
 
 /**
@@ -22,13 +22,13 @@ ini_set('highlight.keyword', '#D42AAE');
 ini_set('highlight.default', '#3C96FF');
 ini_set('highlight.htm', '#FFFFFF');
 
-$stack = Debugger::trace(array('format' => 'array', 'trace' => $exception->getTrace()));
+$stack = Debugger::trace(['format' => 'array', 'trace' => $exception->getTrace()]);
 
-array_unshift($stack, array(
-	'functionRef' => '[exception]',
-	'file' => $exception->getFile(),
-	'line' => $exception->getLine()
-));
+array_unshift($stack, [
+    'functionRef' => '[exception]',
+    'file' => $exception->getFile(),
+    'line' => $exception->getLine()
+]);
 
 ?>
 <h3>Exception</h3>
@@ -55,10 +55,10 @@ array_unshift($stack, array(
 	<ol>
 		<?php foreach ($stack as $id => $frame): ?>
 			<?php
-				$location = "{$frame['file']}: {$frame['line']}";
-				$lines = range($frame['line'] - $context, $frame['line'] + $context);
-				$code = Inspector::lines($frame['file'], $lines);
-			?>
+                $location = "{$frame['file']}: {$frame['line']}";
+                $lines = range($frame['line'] - $context, $frame['line'] + $context);
+                $code = Inspector::lines($frame['file'], $lines);
+            ?>
 			<li>
 				<tt><a href="#source" id="<?=$id; ?>" class="display-source-excerpt">
 					<?=$frame['functionRef']; ?>
@@ -71,21 +71,21 @@ array_unshift($stack, array(
 
 					<div class="lithium-code-dump">
 						<pre><code><?php
-							foreach ($code as $num => $content):
-								$numPad = str_pad($num, 3, ' ');
-								$content = str_ireplace(array('<?php', '?>'), '', $content);
-								$content = highlight_string("<?php {$numPad}{$content} ?>", true);
-								$content = str_replace($replace, '', $content);
+                            foreach ($code as $num => $content):
+                                $numPad = str_pad($num, 3, ' ');
+                                $content = str_ireplace(['<?php', '?>'], '', $content);
+                                $content = highlight_string("<?php {$numPad}{$content} ?>", true);
+                                $content = str_replace($replace, '', $content);
 
-								if ($frame['line'] === $num):
-									?><span class="code-highlight"><?php
-								endif;?><?php echo "{$content}\n"; ?><?php
-								if ($frame['line'] === $num):
-									?></span><?php
-								endif;
+                                if ($frame['line'] === $num):
+                                    ?><span class="code-highlight"><?php
+                                endif;?><?php echo "{$content}\n"; ?><?php
+                                if ($frame['line'] === $num):
+                                    ?></span><?php
+                                endif;
 
-							endforeach;
-						?></code></pre>
+                            endforeach;
+                        ?></code></pre>
 					</div>
 				</div>
 			</li>

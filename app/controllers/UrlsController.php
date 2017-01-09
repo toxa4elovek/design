@@ -11,12 +11,13 @@ use \app\models\Url;
  *
  * @package app\controllers
  */
-class UrlsController extends AppController {
+class UrlsController extends AppController
+{
 
     /**
      * @var array публичные методы контроллера
      */
-    public $publicActions = array('view');
+    public $publicActions = ['view'];
 
     /**
      * Метод перенаправляет пользователя на страницу соответствующую
@@ -24,11 +25,11 @@ class UrlsController extends AppController {
      * код не действителен
      *
      */
-    public function view() {
-        if(!$url = Url::get($this->request->params['short'])) {
+    public function view()
+    {
+        if (!$url = Url::get($this->request->params['short'])) {
             $url = '/';
         }
         return $this->redirect($url);
     }
-
 }

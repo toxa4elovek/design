@@ -1,6 +1,6 @@
 <div class="wrapper">
 
-    <?=$this->view()->render(array('element' => 'header'), array('header' => 'header2'))?>
+    <?=$this->view()->render(['element' => 'header'], ['header' => 'header2'])?>
 
     <script>
         var currentUserId = <?= (int) $this->user->getId(); ?>;
@@ -10,27 +10,27 @@
     <div class="conteiner">
         <section>
             <div class="menu">
-                <?=$this->view()->render(array('element' => 'step-menu'))?>
+                <?=$this->view()->render(['element' => 'step-menu'])?>
             </div>
         </section>
         <section>
             <div style="margin-left: 50px;">
-                <?=$this->view()->render(array('element' => 'complete-process/filtersmenu'), array('link' => ($solution->step == 4) ? 2 : 3))?>
+                <?=$this->view()->render(['element' => 'complete-process/filtersmenu'], ['link' => ($solution->step == 4) ? 2 : 3])?>
             </div>
-            <?=$this->view()->render(array('element' => '/complete-process/stepmenu-designer'), array('solution' => $solution, 'step' => $step, 'type' => $type))?>
+            <?=$this->view()->render(['element' => '/complete-process/stepmenu-designer'], ['solution' => $solution, 'step' => $step, 'type' => $type])?>
         </section>
         <section>
             <div class="center_block messages_gallery"  style="margin:35px 0 0 63px !important">
-                <?php if($type == 'designer'):?>
+                <?php if ($type == 'designer'):?>
                 <span class="regular">Поздравляем, заказчик утвердил окончательные макеты! Осталось предоставить исходные файлы в форматах, запрошенных в брифе. Если у вас несколько документов, заархивируйте их в один ZIP файл. У заказчика есть право на проверку окончательных файлов. Если для корректировки понадобится более 24 часов, пожалуйста, сообщите об этом заказчику в комментариях.</span>
-                <?php elseif($type == 'client') :?>
+                <?php elseif ($type == 'client') :?>
                 <span class="regular">На этой стадии вы должны получить и проверить запрашиваемые в брифе файлы. Если вы удовлетворены макетами, завершите проект, нажав кнопку &laquo;Одобрить исходники&raquo;</span>
                 <?php endif;?>
 
                 <div class="comment" style="margin-left:0px;">
                     <h4>Комментарии</h4>
                     <?php //if(($solution->step == 3) && ($solution->pitch->status < 2)):?>
-                    <?php if($solution->step >= 3):?>
+                    <?php if ($solution->step >= 3):?>
                     <form id="wincomment" method="post" action="/users/step3/<?=$solution->id?>.json" enctype="multipart/form-data">
                         <textarea id="newComment" data-user-autosuggest="true" name="text" style="margin:10px 0 0 0;">@<?=$this->user->getFormattedName($messageTo->first_name, $messageTo->last_name); ?>,</textarea>
                         <div></div>
@@ -48,12 +48,12 @@
                 <div class="separator" style="margin-top: 10px;"></div>
                 <section class="comments-container">
                 <?php
-                if((isset($comments)) && ($comments)):
-                foreach($comments as $comment):
-                    if(($type == 'designer') && (preg_match('/хотим продолжить наше партнерство/', $comment->originalText))):
+                if ((isset($comments)) && ($comments)):
+                foreach ($comments as $comment):
+                    if (($type == 'designer') && (preg_match('/хотим продолжить наше партнерство/', $comment->originalText))):
                         continue;
                     endif;
-                if($comment->type == 'designer'):
+                if ($comment->type == 'designer'):
                     $class ="message_info1";
                 elseif ($comment->user->isAdmin) :
                     $class = 'message_info4';
@@ -72,7 +72,7 @@
                             </a>
                             <?php endif;?>
                             <a href="#" data-comment-id="<?=$comment->id?>" data-comment-to="<?=$this->user->getFormattedName($comment->user->first_name, $comment->user->last_name)?>" class="replyto">
-                                <?php if(!$comment->user->isAdmin):?>
+                                <?php if (!$comment->user->isAdmin):?>
                                 <span><?=$this->user->getFormattedName($comment->user->first_name, $comment->user->last_name)?></span><br/>
                                 <?php else:?>
                                 <span>GoDesigner</span><br/>
@@ -86,11 +86,11 @@
                             <?php
                             $hiddenComment = false;
                             $commentText = $this->brief->linkEmail($this->brief->deleteHtmlTagsAndInsertHtmlLinkInTextAndMentions($comment->originalText));
-                            if($this->user->isAdmin() && (preg_match('/хотим продолжить наше партнерство/', $comment->originalText))):
+                            if ($this->user->isAdmin() && (preg_match('/хотим продолжить наше партнерство/', $comment->originalText))):
                                 $commentText = $this->brief->linkEmail($this->brief->showRawComment($comment->originalText));
                                 $hiddenComment = true;
                             endif;
-                            if($hiddenComment):
+                            if ($hiddenComment):
                             ?>
                                 <img src="/img/private-comment-eye.png" alt="Этот комментарий приватный" style="
     position: absolute;
@@ -103,9 +103,9 @@
                     </div>
 
                     <?php
-                    if(!empty($comment->images)):
-                        if(isset($comment->images['file'][0])) :
-                            foreach($comment->images['file'] as $file):?>
+                    if (!empty($comment->images)):
+                        if (isset($comment->images['file'][0])) :
+                            foreach ($comment->images['file'] as $file):?>
                                 <div class="file_link">
                                 <?php if (empty($file['originalbasename'])):?>
                                     <a class="file-link-attach" href="<?=$file['weburl']?>"><?=$file['basename']?></a>
@@ -150,12 +150,12 @@
                             <a href="#" style="float:right;" class="edit-link-in-comment" data-id="<?=$comment->id?>" data-text="<?=$originalText?>">Редактировать</a>
                         <?php else: ?>
                             <?php if (($solution->step == 3) && ($solution->pitch->status < 2)):?>
-                                <?php if($this->user->isCommentAuthor($comment->user_id)): ?>
+                                <?php if ($this->user->isCommentAuthor($comment->user_id)): ?>
                                     <a class="delete-link-in-comment" style="float:right;" href="/wincomments/delete/<?=$comment->id?>?step=3">Удалить</a>
                                     <a href="#" style="float:right;" class="edit-link-in-comment" data-id="<?=$comment->id?>" data-text="<?=$originalText?>">Редактировать</a>
                                 <?php endif; ?>
 
-                                <?php if(($this->user->isLoggedIn()) && (!$this->user->isCommentAuthor($comment->user_id))):?>
+                                <?php if (($this->user->isLoggedIn()) && (!$this->user->isCommentAuthor($comment->user_id))):?>
                                     <a href="#" data-comment-id="<?=$comment->id?>" data-comment-to="<?=$this->user->getFormattedName($comment->user->first_name, $comment->user->last_name)?>" class="replyto reply-link-in-comment" style="float:right;">Ответить</a>
                                 <?php endif;?>
                             <?php endif?>
@@ -181,34 +181,34 @@
                 endif;?>
                 </section><!-- /comments-container -->
                 <div class="clr"></div>
- <?php if($type == 'designer'):?>
+ <?php if ($type == 'designer'):?>
                 <div class="buttons">
                     <div class="back spanned" style="margin-bottom:10px;">
                         <?=$this->html->link('<img src="/img/back.png" /><br />
-                            <span>Назад</span>', array('controller' => 'users', 'action' => 'step2', 'id' => $solution->id), array('escape' => false))?>
+                            <span>Назад</span>', ['controller' => 'users', 'action' => 'step2', 'id' => $solution->id], ['escape' => false])?>
                     </div>
-                    <div class="continue <?php if($solution->step >= 4):?>spanned<?php endif?>" style="margin-bottom:10px;">
-                        <?php if($solution->step < 4):?>
+                    <div class="continue <?php if ($solution->step >= 4):?>spanned<?php endif?>" style="margin-bottom:10px;">
+                        <?php if ($solution->step < 4):?>
                         <p><img src="/img/continue.png" /><br />
                             <span style="font: normal 18px/21px 'RodeoC',sans-serif;
     margin: 10px 0 0;
     display: inline-block;color:#BABABA;text-transform:uppercase;">Продолжить</span></p>
                         <?php else:?>
                         <?=$this->html->link('<img src="/img/proceed.png" /><br />
-                            <span>Продолжить</span>', array('controller' => 'users', 'action' => 'step4', 'id' => $solution->id), array('escape' => false))?>
+                            <span>Продолжить</span>', ['controller' => 'users', 'action' => 'step4', 'id' => $solution->id], ['escape' => false])?>
                         <?php endif?>
                     </div>
                 </div>
                 <?php //elseif(($type == 'client') &&  ($solution->step < 4)):
-                elseif(($solution->step < 4)):?>
+                elseif (($solution->step < 4)):?>
                 <div class="buttons">
                     <div class="verify spanned" style="margin-right: 0px;">
                         <?php
                             // временно разрешаем одобрять макеты без самих макетов
                             $nofiles = false;
-                            if($nofiles == false):?>
+                            if ($nofiles == false):?>
                             <?=$this->html->link('<img src="/img/proceed.png" /><br />
-                                <span>' . ($this->user->isAdmin() ? 'Закрыть проект' : 'Одобрить исходники') . '</span>', array('controller' => 'users', 'action' => 'step4', 'id' => $solution->id, 'confirm' => 'confirm'), array('escape' => false, 'id' => 'confirm'))?>
+                                <span>' . ($this->user->isAdmin() ? 'Закрыть проект' : 'Одобрить исходники') . '</span>', ['controller' => 'users', 'action' => 'step4', 'id' => $solution->id, 'confirm' => 'confirm'], ['escape' => false, 'id' => 'confirm'])?>
                         <?php else:?>
                             <a href="#" id="nofile"><img src="/img/proceed.png"><br>
                             <span>Одобрить исходники</span></a>
@@ -217,7 +217,7 @@
                 </div>
                 <?php endif;?>
             </div>
-            <?=$this->view()->render(array('element' => '/complete-process/rightblock'), array('solution' => $solution, 'type' => $type))?>
+            <?=$this->view()->render(['element' => '/complete-process/rightblock'], ['solution' => $solution, 'type' => $type])?>
             <div class="clr"></div>
         </section>
     </div>
@@ -253,5 +253,5 @@
     var autosuggestUsers = <?php echo json_encode($autosuggestUsers)?>;
 </script>
 
-<?=$this->html->script(array('flux/flux.min.js', 'jquery-ui-1.11.4.min.js', 'jquery.iframe-transport.js', 'jquery.fileupload.js', '/js/common/comments/UserAutosuggest.js', '/js/common/comments/actions/CommentsActions.js', 'users/step2', 'users/step3'), array('inline' => false))?>
-<?=$this->html->style(array('/view', '/messages12', '/pitches12', '/pitches2', '/win_steps1.css', '/win_steps2_final3.css', '/portfolio.css',), array('inline' => false))?>
+<?=$this->html->script(['flux/flux.min.js', 'jquery-ui-1.11.4.min.js', 'jquery.iframe-transport.js', 'jquery.fileupload.js', '/js/common/comments/UserAutosuggest.js', '/js/common/comments/actions/CommentsActions.js', 'users/step2', 'users/step3'], ['inline' => false])?>
+<?=$this->html->style(['/view', '/messages12', '/pitches12', '/pitches2', '/win_steps1.css', '/win_steps2_final3.css', '/portfolio.css', ], ['inline' => false])?>

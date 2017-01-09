@@ -11,7 +11,7 @@ class SetPermissionHandler extends \app\models\behaviors\handlers\StaticHandler
             if (isset($params['uploadedFile']['data'])) {
                 if (!isset($params['uploadedFile']['data'][0])) {
                     if (!isset($params['uploadedFile']['attachInfo']['setPermission'])) {
-                        $useroptions = array();
+                        $useroptions = [];
                     } else {
                         $useroptions = $params['uploadedFile']['attachInfo']['setPermission'];
                     }
@@ -22,7 +22,7 @@ class SetPermissionHandler extends \app\models\behaviors\handlers\StaticHandler
                 } else {
                     foreach ($params['uploadedFile']['data'] as &$file) {
                         if (!isset($params['uploadedFile']['attachInfo']['setPermission'])) {
-                            $useroptions = array();
+                            $useroptions = [];
                         } else {
                             $useroptions = $params['uploadedFile']['attachInfo']['setPermission'];
                         }

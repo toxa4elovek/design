@@ -586,10 +586,10 @@ http://godesigner.ru/answers/view/73'];
     public static function addBlankPitchForLogosale($user_id, $solution_id)
     {
         $result = [];
-        if(User::isSubscriptionActive($user_id)) {
+        if (User::isSubscriptionActive($user_id)) {
             $fee = 1500;
             $award = 6000;
-        }else {
+        } else {
             $fee = 2500;
             $award = 6000;
         }

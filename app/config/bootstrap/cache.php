@@ -14,12 +14,12 @@ use lithium\storage\Cache;
 use lithium\core\Libraries;
 use app\extensions\storage\Rcache;
 
-if(Rcache::enabled()) {
-	Rcache::init();
+if (Rcache::enabled()) {
+    Rcache::init();
 }
 
 if (PHP_SAPI === 'cli') {
-	return;
+    return;
 }
 
 /**
@@ -33,55 +33,55 @@ $cachePath = Libraries::get(true, 'resources') . '/tmp/cache';
  * not, file caching will be used. Most of this code is for getting you up and running only, and
  * should be replaced with a hard-coded configuration, based on the cache(s) you plan to use.
  */
-$default = array('adapter' => 'File', 'strategies' => array('Serializer'));
+$default = ['adapter' => 'File', 'strategies' => ['Serializer']];
 
 Cache::config(compact('default'));
 
-Cache::config(array(
-    'files' => array('adapter' => 'File', 'strategies' => array('Serializer')),
-    'default' => array('adapter' => 'File', 'strategies' => array('Serializer')),
-));
+Cache::config([
+    'files' => ['adapter' => 'File', 'strategies' => ['Serializer']],
+    'default' => ['adapter' => 'File', 'strategies' => ['Serializer']],
+]);
 
 /**
  * Caches paths for auto-loaded and service-located classes.
  */
 /*
 Dispatcher::applyFilter('run', function($self, $params, $chain) {
-	if (!Environment::get('production')) {
-		return $chain->next($self, $params, $chain);
-	}
-	$key = md5(LITHIUM_APP_PATH) . '.core.libraries';
+    if (!Environment::get('production')) {
+        return $chain->next($self, $params, $chain);
+    }
+    $key = md5(LITHIUM_APP_PATH) . '.core.libraries';
 
-	if ($cache = Cache::read('default', $key)) {
-		$cache = (array) $cache + Libraries::cache();
-		Libraries::cache($cache);
-	}
-	$result = $chain->next($self, $params, $chain);
+    if ($cache = Cache::read('default', $key)) {
+        $cache = (array) $cache + Libraries::cache();
+        Libraries::cache($cache);
+    }
+    $result = $chain->next($self, $params, $chain);
 
-	if ($cache != Libraries::cache()) {
-		Cache::write('default', $key, Libraries::cache(), '+1 day');
-	}
-	return $result;
+    if ($cache != Libraries::cache()) {
+        Cache::write('default', $key, Libraries::cache(), '+1 day');
+    }
+    return $result;
 });
 
 Dispatcher::applyFilter('run', function($self, $params, $chain) {
-	$connections = array('default', 'tutdesign');
+    $connections = array('default', 'tutdesign');
 
-	foreach ($connections as $name) {
-		if (!(($connection = Connections::get($name)) instanceof Database)) {
-			continue;
-		}
-		$connection->applyFilter('describe', function($self, $params, $chain) use ($name) {
-			if (isset($params['fields'])) {
-				return $chain->next($self, $params, $chain);
-			}
-			$cacheKey = "data.connections.{$name}.sources.{$params['entity']}.schema";
-			if(!$fields = Rcache::read($cacheKey)) {
-				$fields = $chain->next($self, $params, $chain);
-				Rcache::write($cacheKey, $fields, array(), '+1 day');
-			}
-			return $fields;
-		});
-	}
-	return $chain->next($self, $params, $chain);
+    foreach ($connections as $name) {
+        if (!(($connection = Connections::get($name)) instanceof Database)) {
+            continue;
+        }
+        $connection->applyFilter('describe', function($self, $params, $chain) use ($name) {
+            if (isset($params['fields'])) {
+                return $chain->next($self, $params, $chain);
+            }
+            $cacheKey = "data.connections.{$name}.sources.{$params['entity']}.schema";
+            if(!$fields = Rcache::read($cacheKey)) {
+                $fields = $chain->next($self, $params, $chain);
+                Rcache::write($cacheKey, $fields, array(), '+1 day');
+            }
+            return $fields;
+        });
+    }
+    return $chain->next($self, $params, $chain);
 });*/

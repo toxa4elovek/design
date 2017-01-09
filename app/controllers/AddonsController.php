@@ -2,21 +2,25 @@
 
 namespace app\controllers;
 
-use \app\models\Addon;
-use \app\models\Pitch;
-use \app\extensions\helper\MoneyFormatter;
+use app\models\Addon;
+use app\models\Expert;
+use app\models\Pitch;
+use app\extensions\helper\MoneyFormatter;
 use app\models\User;
 
 class AddonsController extends AppController
 {
 
-
+    /**
+     * Метод добавления записи новой опции
+     * @return array|bool|mixed
+     */
     public function add()
     {
         if (isset($this->request->data) && ($pitch = Pitch::first($this->request->data['commonPitchData']['id']))) {
             $featuresData = $this->request->data['features'];
             $total = 0;
-            if ($pitch->category_id == 20) {
+            if ((int) $pitch->category_id === 20) {
                 $subscriber = true;
                 $prolongCoeff = 1000;
                 $pinnedPrice = 500;
@@ -31,7 +35,7 @@ class AddonsController extends AppController
             } else {
                 $expert = 1;
                 $expertId = serialize($featuresData['experts']);
-                $expertsAll = \app\models\Expert::all();
+                $expertsAll = Expert::all();
                 foreach ($expertsAll as $v) {
                     if (in_array($v->id, $featuresData['experts'])) {
                         $total += $v->price + 500;
@@ -46,23 +50,23 @@ class AddonsController extends AppController
             }
             $brief = 0;
             $phonebrief = '';
-            if (($featuresData['brief'] > 0) && $pitch->brief == 0) {
+            if ((int) $pitch->brief === 0 && ($featuresData['brief'] > 0)) {
                 $brief = 1;
                 $phonebrief = $this->request->data['commonPitchData']['phone-brief'];
                 $total += 3200;
             }
             $guaranteed = 0;
-            if (($featuresData['guaranteed'] > 0) && $pitch->guaranteed == 0) {
+            if ((int) $pitch->guaranteed === 0 && ($featuresData['guaranteed'] > 0)) {
                 $guaranteed = 1;
                 $total += 1400;
             }
             $pinned = 0;
-            if (($featuresData['pinned'] > 0) && $pitch->pinned == 0) {
+            if ((int) $pitch->pinned === 0 && ($featuresData['pinned'] > 0)) {
                 $pinned = 1;
                 $total += $pinnedPrice;
             }
             $private = 0;
-            if (($featuresData['private'] > 0) && $pitch->private == 0) {
+            if ((int) $pitch->private === 0 && ($featuresData['private'] > 0)) {
                 $private = 1;
                 $total += 3500;
             }
@@ -93,7 +97,6 @@ class AddonsController extends AppController
             $addon->save();
             if ($subscriber) {
                 $paymentResult = User::reduceBalance($this->userHelper->getId(), (int) $total);
-                //$paymentResult = true;
                 if (!$paymentResult) {
                     $status = 'no_money';
                     $needToFillAmount = ($total - User::getBalance($addon->user_id));
@@ -113,6 +116,10 @@ class AddonsController extends AppController
     }
 
 
+    /**
+     * Метод для скачивания счёта оплаты доп. опции
+     * @todo Вынести шаблон в отдельный файл
+     */
     public function getpdf()
     {
         error_reporting(E_ALL);

@@ -1,10 +1,10 @@
 <?php
 
 namespace app\extensions\command;
+
 use app\models\Post;
 use OneSignal\Config;
 use OneSignal\OneSignal;
-
 
 /**
  * Class PushNotificationsBlogPost
@@ -26,17 +26,17 @@ class PushNotificationsBlogPost extends CronJob
         $config->setUserAuthKey('YmFjYWI1MTQtYjgzOS00NDFhLTg2YjAtY2IzZjc4OWFjNGVm');
         $api = new OneSignal($config);
         $this->_renderHeader();
-        $posts = Post::all(array(
-            'conditions' => array(
+        $posts = Post::all([
+            'conditions' => [
                 'published' => 1,
-                'created' => array(
+                'created' => [
                     '>=' => date('Y-m-d H:i:s', time() - 5 * MINUTE),
                     '<=' => date('Y-m-d H:i:s', time()),
-                ),
-            ),
-        ));
+                ],
+            ],
+        ]);
         $count = 0;
-        foreach($posts as $post) {
+        foreach ($posts as $post) {
             $count++;
             $url = "https://godesigner.ru/posts/view/$post->id";
             $api->notifications->add([

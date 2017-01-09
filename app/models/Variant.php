@@ -2,8 +2,8 @@
 
 namespace app\models;
 
-class Variant extends \app\models\AppModel {
+class Variant extends \app\models\AppModel
+{
 
-    public $belongsTo = array('Question');
-
+    public $belongsTo = ['Question'];
 }

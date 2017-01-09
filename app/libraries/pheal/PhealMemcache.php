@@ -40,20 +40,21 @@ class PhealMemcache implements PhealCacheInterface
      * memcache options (connection)
      * @var array
      */
-    protected $options = array(
+    protected $options = [
         'host' => 'localhost',
         'port' => 11211,
-    );
+    ];
 
     /**
      * construct PhealMemcache,
      * @param array $options optional config array, valid keys are: host, port
      */
-    public function __construct($options = array())
+    public function __construct($options = [])
     {
         // add options
-        if(is_array($options) && count($options))
+        if (is_array($options) && count($options)) {
             $this->options = array_merge($this->options, $options);
+        }
 
         $this->memcache = new Memcache();
         $this->memcache->connect($this->options['host'], $this->options['port']);
@@ -68,12 +69,13 @@ class PhealMemcache implements PhealCacheInterface
      * @param array $args
      * @return string
      */
-    protected function getKey($userid, $apikey, $scope, $name, $args) 
+    protected function getKey($userid, $apikey, $scope, $name, $args)
     {
         $key = "$userid|$apikey|$scope|$name";
-        foreach($args as $k=>$v) {
-            if(!in_array(strtolower($key), array('userid','apikey','keyid','vcode')))
+        foreach ($args as $k=>$v) {
+            if (!in_array(strtolower($key), ['userid', 'apikey', 'keyid', 'vcode'])) {
                 $key  .= "|$k|$v";
+            }
         }
         return "Pheal_" . md5($key);
     }
@@ -118,7 +120,7 @@ class PhealMemcache implements PhealCacheInterface
      * @param array $args
      * @param string $xml
      */
-    public function save($userid,$apikey,$scope,$name,$args,$xml)
+    public function save($userid, $apikey, $scope, $name, $args, $xml)
     {
         $key = $this->getKey($userid, $apikey, $scope, $name, $args);
         $timeout = $this->getTimeout($xml);

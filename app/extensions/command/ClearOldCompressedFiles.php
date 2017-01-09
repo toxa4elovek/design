@@ -11,15 +11,16 @@ use DirectoryIterator;
  * Команда для очистки удаления устаревших сжатых файлов
  *
  */
-class ClearOldCompressedFiles extends CronJob {
+class ClearOldCompressedFiles extends CronJob
+{
 
     /**
      * @var array массив списков директорий для проверки
      */
-    public $paths = array(
+    public $paths = [
         '/var/godesigner/webroot/js/minified/',
         '/var/godesigner/webroot/css/minified/',
-    );
+    ];
 
     /**
      * @var int количество дней, после которых файл будет считаться устаревших
@@ -29,30 +30,33 @@ class ClearOldCompressedFiles extends CronJob {
     /**
      * @var array список файловых расширений, которые можно удалять
      */
-    public $extensionsAllowedForDeleteion = array(
+    public $extensionsAllowedForDeleteion = [
         'js',
         'css'
-    );
+    ];
 
     /**
      * Запуск команды
      */
-    public function run() {
+    public function run()
+    {
         $this->header('Команда очистки старых минифицированных файлов стилей и скриптов!');
         $currentTimeStamp = time();
         $totalCount = 0;
         $totalDeleted = 0;
-        foreach($this->paths as $directory) {
+        foreach ($this->paths as $directory) {
             $this->out('Смотрим директорию ' . $directory . "\n\n");
             foreach (new DirectoryIterator($this->paths[0]) as $fileInfo) {
-                if($fileInfo->isDot()) continue;
-                if((in_array($fileInfo->getExtension(), $this->extensionsAllowedForDeleteion)) && ($fileInfo->getMTime() <  $currentTimeStamp - ($this->oldThreshold * DAY))) {
+                if ($fileInfo->isDot()) {
+                    continue;
+                }
+                if ((in_array($fileInfo->getExtension(), $this->extensionsAllowedForDeleteion)) && ($fileInfo->getMTime() <  $currentTimeStamp - ($this->oldThreshold * DAY))) {
                     $totalCount++;
                     $this->out('Файл на удаление - ' . $fileInfo->getFilename() . ' (' . date('Y-m-d', $fileInfo->getMTime()) . ')');
-                    if(unlink($fileInfo->getRealPath())) {
+                    if (unlink($fileInfo->getRealPath())) {
                         $this->out('Файл удалён');
                         $totalDeleted++;
-                    }else {
+                    } else {
                         $this->out('Файл не удалён, возникла ошибка');
                     }
                 }

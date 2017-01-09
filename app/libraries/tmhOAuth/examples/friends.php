@@ -26,70 +26,69 @@ define('LOOKUP_SIZE', 100);
 
 require '../tmhOAuth.php';
 require '../tmhUtilities.php';
-$tmhOAuth = new tmhOAuth(array(
+$tmhOAuth = new tmhOAuth([
   'consumer_key'    => 'YOUR_CONSUMER_KEY',
   'consumer_secret' => 'YOUR_CONSUMER_SECRET',
   'user_token'      => 'A_USER_TOKEN',
   'user_secret'     => 'A_USER_SECRET',
-));
+]);
 
-function check_rate_limit($response) {
-  $headers = $response['headers'];
-  if ($headers['x_ratelimit_remaining'] == 0) :
+function check_rate_limit($response)
+{
+    $headers = $response['headers'];
+    if ($headers['x_ratelimit_remaining'] == 0) :
     $reset = $headers['x_ratelimit_reset'];
     $sleep = time() - $reset;
     echo 'rate limited. reset time is ' . $reset . PHP_EOL;
     echo 'sleeping for ' . $sleep . ' seconds';
     sleep($sleep);
-  endif;
+    endif;
 }
 
 $cursor = '-1';
-$ids = array();
+$ids = [];
 while (true) :
-  if ($cursor == '0')
-    break;
+  if ($cursor == '0') {
+      break;
+  }
 
-  $tmhOAuth->request('GET', $tmhOAuth->url('1/friends/ids'), array(
+  $tmhOAuth->request('GET', $tmhOAuth->url('1/friends/ids'), [
     'cursor' => $cursor
-  ));
+  ]);
 
   // check the rate limit
   check_rate_limit($tmhOAuth->response);
 
   if ($tmhOAuth->response['code'] == 200) {
-    $data = json_decode($tmhOAuth->response['response'], true);
-    $ids = array_merge($ids, $data['ids']);
-    $cursor = $data['next_cursor_str'];
+      $data = json_decode($tmhOAuth->response['response'], true);
+      $ids = array_merge($ids, $data['ids']);
+      $cursor = $data['next_cursor_str'];
   } else {
-    echo $tmhOAuth->response['response'];
-    break;
+      echo $tmhOAuth->response['response'];
+      break;
   }
   usleep(500000);
 endwhile;
 
 // lookup users
 $paging = ceil(count($ids) / LOOKUP_SIZE);
-$users = array();
+$users = [];
 for ($i=0; $i < $paging ; $i++) {
-  $set = array_slice($ids, $i*LOOKUP_SIZE, LOOKUP_SIZE);
+    $set = array_slice($ids, $i*LOOKUP_SIZE, LOOKUP_SIZE);
 
-  $tmhOAuth->request('GET', $tmhOAuth->url('1/users/lookup'), array(
+    $tmhOAuth->request('GET', $tmhOAuth->url('1/users/lookup'), [
     'user_id' => implode(',', $set)
-  ));
+  ]);
 
   // check the rate limit
   check_rate_limit($tmhOAuth->response);
 
-  if ($tmhOAuth->response['code'] == 200) {
-    $data = json_decode($tmhOAuth->response['response'], true);
-    $users = array_merge($users, $data);
-  } else {
-    echo $tmhOAuth->response['response'];
-    break;
-  }
-
+    if ($tmhOAuth->response['code'] == 200) {
+        $data = json_decode($tmhOAuth->response['response'], true);
+        $users = array_merge($users, $data);
+    } else {
+        echo $tmhOAuth->response['response'];
+        break;
+    }
 }
 var_dump($users);
-
-?>

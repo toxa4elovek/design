@@ -54,26 +54,26 @@
         ];
         $chatraIntegration = [];
         $isDesigner = 0;
-        if($this->user->isLoggedIn()):
+        if ($this->user->isLoggedIn()):
             $chatraIntegration['name'] = $this->user->getFullname();
             $chatraIntegration['email'] = $this->user->getEmail();
             $chatraIntegration['phone'] = $this->user->getPhone();
 
             $companyName = $this->user->getFullCompanyName();
-            if(!empty($companyName)):
+            if (!empty($companyName)):
                 $chatraIntegration['Название компании'] = $companyName;
             endif;
 
             $projectsArray = [];
-            if($this->user->getCurrentPitches()):
-                foreach($this->user->getCurrentPitches() as $project):
-                    if(($project->type == 'plan-payment') && ($project->billed == 1)):
+            if ($this->user->getCurrentPitches()):
+                foreach ($this->user->getCurrentPitches() as $project):
+                    if (($project->type == 'plan-payment') && ($project->billed == 1)):
                         continue;
                     endif;
-                    if(($project->blank == 1) && ($project->billed == 0)):
+                    if (($project->blank == 1) && ($project->billed == 0)):
                         continue;
                     endif;
-                    if(($project->type == 'penalty') or ($project->type == 'fund-balance')):
+                    if (($project->type == 'penalty') or ($project->type == 'fund-balance')):
                         continue;
                     endif;
                     $projectsArray[] = "$project->title ($project->id)\n\r";
@@ -81,10 +81,10 @@
             endif;
             $projectsString = implode(' ', $projectsArray);
             $chatraIntegration['Проекты'] = $projectsString;
-            if(($this->user->isLoggedIn()) && ($this->user->read('user.isDesigner') || ($this->user->read('user.isCopy')))) {
+            if (($this->user->isLoggedIn()) && ($this->user->read('user.isDesigner') || ($this->user->read('user.isCopy')))) {
                 $isDesigner = 1;
             }
-            if($this->user->isAdmin()) {
+            if ($this->user->isAdmin()) {
                 $isDesigner = 1;
             }
         ?>

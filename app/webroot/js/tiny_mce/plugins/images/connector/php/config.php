@@ -1,11 +1,11 @@
 <?php
 
 //Корневая директория сайта
-define('DIR_ROOT',		$_SERVER['DOCUMENT_ROOT']);
+define('DIR_ROOT',        $_SERVER['DOCUMENT_ROOT']);
 //Директория с изображениями (относительно корневой)
-define('DIR_IMAGES',	'/blog');
+define('DIR_IMAGES',    '/blog');
 //Директория с файлами (относительно корневой)
-define('DIR_FILES',		'/blog/files');
+define('DIR_FILES',        '/blog/files');
 
 
 //Высота и ширина картинки до которой будет сжато исходное изображение и создана ссылка на полную версию
@@ -19,5 +19,3 @@ define('CLASS_LINK', '');
 define('REL_LINK', '');
 
 date_default_timezone_set('Europe/Moscow');
-
-?>

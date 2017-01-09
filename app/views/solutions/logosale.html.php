@@ -1,11 +1,11 @@
 <script type="text/javascript">
-    var isCurrentAdmin = <?php echo ($this->user->isAdmin() ? 1 : 0 ); ?>;
+    var isCurrentAdmin = <?php echo($this->user->isAdmin() ? 1 : 0); ?>;
     var allowComments = false;
     var currentUserId = <?= ($this->user->getId()) ? $this->user->getId() : 0 ?>;
     var isClient = false;
 </script>
 <div class="wrapper pitchpanel login">
-    <?= $this->view()->render(array('element' => 'header'), array('logo' => 'logo', 'header' => 'header2')) ?>
+    <?= $this->view()->render(['element' => 'header'], ['logo' => 'logo', 'header' => 'header2']) ?>
     <div class="middle">
         <div class="middle_inner_gallery" style="padding-top:25px">
             <input type="hidden" value="<?= isset($data['pitch_id']) ? $data['pitch_id'] : 0 ?>" id="pitch_id"/>
@@ -56,7 +56,9 @@
                     <ul class="activityType twoCollumn filterlist" style="margin-left: 48px;">
                         <li class="first">Популярные теги</li>
                         <?php foreach ($sort_tags as $k => $v):
-                            if($k == '') continue;
+                            if ($k == '') {
+                                continue;
+                            }
                             ?>
                             <li><a class="prepTag" href="#"><?= $k ?></a></li>
                         <?php endforeach; ?>
@@ -64,7 +66,7 @@
                     <ul class="filterlist" style="margin-left: 0;">
                         <li class="first">Популярные запросы</li>
                         <?php foreach ($search_tags as $v):
-                            if(preg_match('/\s/', $v->name)) {
+                            if (preg_match('/\s/', $v->name)) {
                                 continue;
                             }
                             ?>
@@ -78,10 +80,10 @@
                 <a id="adv_search" href="#">Расширенный поиск</a>
             </div>
             <div id="logosaleAjaxLoader" style="text-align: center; display: none; margin-top: 10px;"><img src="/img/blog-ajax-loader.gif"></div>
-            <?= $this->view()->render(array('element' => 'solution/logo_1')) ?>
+            <?= $this->view()->render(['element' => 'solution/logo_1']) ?>
             <ul class="marsh">
                 <li>
-                    <h2 class="greyboldheader"><?=$total_count?> логотипов по цене <?php if($this->user->isSubscriptionActive()):?>
+                    <h2 class="greyboldheader"><?=$total_count?> логотипов по цене <?php if ($this->user->isSubscriptionActive()):?>
                             7500
                         <?php else: ?>
                             8500
@@ -154,9 +156,9 @@
                                             <li class="like-hoverbox" style="float: left; margin-top: 0px; padding-top: 0px; height: 15px; padding-right: 0px; margin-right: 0px; width: 38px;">
                                                 <a href="#" style="float:left" class="like-small-icon" data-id="<?=$solution['id']?>"><img src="/img/like.png" alt="количество лайков" /></a>
                                                 <span class="underlying-likes" style="color: rgb(205, 204, 204); font-size: 10px; vertical-align: middle; display: block; float: left; height: 16px; padding-top: 5px; margin-left: 2px;" data-id="<?=$solution['id']?>" rel="https://godesigner.ru/pitches/viewsolution/<?=$solution['id']?>"><?=$solution['likes']?></span>
-                                                <?php if((($solution['pitch']['private'] != 1) && ($solution['pitch']['category_id'] != 7))):
+                                                <?php if ((($solution['pitch']['private'] != 1) && ($solution['pitch']['category_id'] != 7))):
                                                     $tweetLike = 'Этот логотип можно приобрести у автора за 8500 рублей на распродаже; адаптация названия и 2 правки включены»';
-                                                    if(!isset($solution['images']['solution_galleryLargeSize'][0])):
+                                                    if (!isset($solution['images']['solution_galleryLargeSize'][0])):
                                                         $url = 'https://godesigner.ru' . $solution['images']['solution_gallerySiteSize']['weburl'];
                                                     else:
                                                         $url = 'https://godesigner.ru' . $solution['images']['solution_gallerySiteSize'][0]['weburl'];
@@ -182,7 +184,7 @@
                                         </ul>
                                     </div>
                                 </div>
-                                <div class="selecting_numb"><span class="price"><?= round($solution['pitch']['total']) ?> р.</span><span class="new-price"><?php if($this->user->isSubscriptionActive()):?>
+                                <div class="selecting_numb"><span class="price"><?= round($solution['pitch']['total']) ?> р.</span><span class="new-price"><?php if ($this->user->isSubscriptionActive()):?>
                                             7500р.-
                                         <?php else: ?>
                                             8500р.-
@@ -205,9 +207,9 @@
         <div id="under_middle_inner"></div>
     </div>
 </div>
-<?= $this->view()->render(array('element' => 'popups/solution_sale'), array('data' => $data)) ?>
-<?= $this->view()->render(array('element' => 'popups/warning')) ?>
-<?= $this->html->script(array(
+<?= $this->view()->render(['element' => 'popups/solution_sale'], ['data' => $data]) ?>
+<?= $this->view()->render(['element' => 'popups/warning']) ?>
+<?= $this->html->script([
     'flux/flux.min.js',
     '/js/common/comments/actions/CommentsActions.js',
     'http://userapi.com/js/api/openapi.js',
@@ -227,8 +229,8 @@
     'solutions/logosale.js',
     'social-likes.min.js',
     'pitches/gallery.js'
-), array('inline' => false)) ?>
+], ['inline' => false]) ?>
 <?=
-$this->html->style(array(
+$this->html->style([
     '/css/common/receipt.css',
-    '/messages12', '/pitches12', '/view', '/pitch_overview', '/css/logosale.css', '/step3', '/css/social-likes_flat'), array('inline' => false))?>
+    '/messages12', '/pitches12', '/view', '/pitch_overview', '/css/logosale.css', '/step3', '/css/social-likes_flat'], ['inline' => false])?>

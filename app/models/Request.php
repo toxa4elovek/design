@@ -9,12 +9,12 @@ namespace app\models;
  *
  * @package app\models
  */
-class Request extends AppModel {
+class Request extends AppModel
+{
 
     /**
      * @var array Связи
      */
 
-    public $belongsTo = array('User');
-
+    public $belongsTo = ['User'];
 }

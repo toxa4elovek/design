@@ -59,11 +59,11 @@ class PitchfilesController extends AppController
         die();
     }
 
-    private function __getMimeType($filename) {
+    private function __getMimeType($filename)
+    {
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         $mime = finfo_file($finfo, $filename);
         finfo_close($finfo);
         return $mime;
     }
-
 }

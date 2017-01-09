@@ -1,9 +1,9 @@
 <div class="wrapper pitchpanel login">
 
-	<?=$this->view()->render(array('element' => 'header'), array('logo' => 'logo', 'header' => 'header2'))?>
+	<?=$this->view()->render(['element' => 'header'], ['logo' => 'logo', 'header' => 'header2'])?>
 
-    <?=$this->view()->render(array('element' => 'scripts/viewsolution_init'), array('pitch' => $pitch))?>
-	<?php if((($pitch->status > 0) && ($this->user->isAllowedToComment()) && (($this->user->isPitchOwner($pitch->user_id)) || $this->user->isManagerOfProject($pitch->id) || ($this->user->isExpert()) || ($this->user->isAdmin()) )) ||
+    <?=$this->view()->render(['element' => 'scripts/viewsolution_init'], ['pitch' => $pitch])?>
+	<?php if ((($pitch->status > 0) && ($this->user->isAllowedToComment()) && (($this->user->isPitchOwner($pitch->user_id)) || $this->user->isManagerOfProject($pitch->id) || ($this->user->isExpert()) || ($this->user->isAdmin()))) ||
         (($pitch->status == 0) && ($pitch->published == 1) && ($this->user->isAllowedToComment())) && ($this->user->isLoggedIn())):?>
         <script>allowComments = true;</script>
     <?php endif?>
@@ -11,7 +11,7 @@
         <!-- start: Solution Container -->
         <div class="solution-container page">
             <div style="padding: 25px 0 0 63px;">
-                <?=$this->view()->render(array('element' => 'pitch-info/infotable'), array('pitch' => $pitch))?>
+                <?=$this->view()->render(['element' => 'pitch-info/infotable'], ['pitch' => $pitch])?>
             </div>
             <!-- start: Solution Right Panel -->
             <div class="solution-right-panel page">
@@ -21,7 +21,7 @@
                         <aside style="position: relative; top: 0; left: 0; margin-left: 0;" class="summary-price expanded">
                             <h3>Итого:</h3>
                             <p class="summary"><strong id="total-tag">
-                                    <?php if($this->user->isSubscriptionActive()):?>
+                                    <?php if ($this->user->isSubscriptionActive()):?>
                                         7500р.-
                                     <?php else: ?>
                                         8500р.-
@@ -76,7 +76,7 @@
                     </table>
                 </div>
                 <div class="separator"></div>
-                <?php if(!$this->pitch->isReadyForLogosale($solution->pitch)):?>
+                <?php if (!$this->pitch->isReadyForLogosale($solution->pitch)):?>
                 <div class="solution-info solution-tags chapter">
                     <h2>ТЕГИ</h2>
                     <ul class="tags">
@@ -90,16 +90,16 @@
                 <?php endif ?>
                 <div class="solution-info solution-share chapter">
                     <h2>ПОДЕЛИТЬСЯ</h2>
-                    <?php if((($solution->pitch->private != 1) && ($solution->pitch->category_id != 7))):
+                    <?php if ((($solution->pitch->private != 1) && ($solution->pitch->category_id != 7))):
                         if (rand(1, 100) <= 50) {
                             $tweetLike = 'Мне нравится этот дизайн! А вам?';
                         } else {
                             $tweetLike = 'Из всех ' . $solution->pitch->ideas_count . ' мне нравится этот дизайн';
                         }
-                        if($this->pitch->isReadyForLogosale($solution->pitch)) {
+                        if ($this->pitch->isReadyForLogosale($solution->pitch)) {
                             $tweetLike = "Этот логотип можно приобрести у автора за 8500 рублей на распродаже; адаптация названия и 2 правки включены»";
                         }
-                        if(!isset($solution->solution->images['solution_galleryLargeSize'][0])):
+                        if (!isset($solution->solution->images['solution_galleryLargeSize'][0])):
                             $url = 'https://godesigner.ru' . $solution->images['solution_gallerySiteSize']['weburl'];
                         else:
                             $url = 'https://godesigner.ru' . $solution->images['solution_gallerySiteSize'][0]['weburl'];
@@ -158,8 +158,8 @@
             <!-- end: Solution Left Panel -->
             </div>
             <div class="clr"></div>
-            <?php if($this->pitch->isReadyForLogosale($pitch)):?>
-                <?= $this->view()->render(array('element' => 'logosalepay'), array('data' => $data)) ?>
+            <?php if ($this->pitch->isReadyForLogosale($pitch)):?>
+                <?= $this->view()->render(['element' => 'logosalepay'], ['data' => $data]) ?>
             <?php endif?>
         <!-- end: Solution Container -->
         </div>
@@ -167,30 +167,30 @@
 	</div><!-- /middle -->
 </div><!-- .wrapper -->
 
-<?=$this->view()->render(array('element' => 'popups/warning'), array('freePitch' => $freePitch, 'pitchesCount' => $pitchesCount, 'pitch' => $pitch))?>
+<?=$this->view()->render(['element' => 'popups/warning'], ['freePitch' => $freePitch, 'pitchesCount' => $pitchesCount, 'pitch' => $pitch])?>
 
 <!-- Start: Tooltips -->
 <div style="display:none;">
-<?php if((count($solutions) > 0) && ($pitch->published == 1)):?>
-    <?php foreach($solutions as $solution):	?>
-        <?php if($pitch->private != 1):
-            if($pitch->category_id == 7):
+<?php if ((count($solutions) > 0) && ($pitch->published == 1)):?>
+    <?php foreach ($solutions as $solution):    ?>
+        <?php if ($pitch->private != 1):
+            if ($pitch->category_id == 7):
                 //
             ?>
             <?php else:?>
-                <?php if(!isset($solution->images['solution_galleryLargeSize'][0])):?>
+                <?php if (!isset($solution->images['solution_galleryLargeSize'][0])):?>
                     <input type="hidden" rel="#<?=$solution->num?>" src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'])?>">
                 <?php else:?>
                     <input type="hidden" rel="#<?=$solution->num?>" src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'][0])?>">
                 <?php endif?>
             <?php endif?>
         <?php else:?>
-            <?php if($pitch->category_id == 7):
+            <?php if ($pitch->category_id == 7):
                 //
             ?>
             <?php else:?>
-                <?php if(($this->user->isPitchOwner($pitch->user_id)) || ($this->user->isManagerOfProject($pitch->id)) || ($this->user->isExpert()) || ($this->user->isAdmin()) || ($this->user->isSolutionAuthor($solution->user_id))):?>
-                    <?php if(!isset($solution->images['solution_galleryLargeSize'][0])):?>
+                <?php if (($this->user->isPitchOwner($pitch->user_id)) || ($this->user->isManagerOfProject($pitch->id)) || ($this->user->isExpert()) || ($this->user->isAdmin()) || ($this->user->isSolutionAuthor($solution->user_id))):?>
+                    <?php if (!isset($solution->images['solution_galleryLargeSize'][0])):?>
                         <input type="hidden" rel="#<?=$solution->num?>" src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'])?>">
                     <?php else:?>
                         <input type="hidden" rel="#<?=$solution->num?>" src="<?=$this->solution->renderImageUrl($solution->images['solution_galleryLargeSize'][0])?>">
@@ -210,8 +210,8 @@
     var autosuggestUsers = <?php echo json_encode($autosuggestUsers)?>;
 </script>
 
-<?=$this->html->script(array('flux/flux.min.js', 'http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), '//assets.pinterest.com/js/pinit.js', 'jquery.simplemodal-1.4.2.js', 'fancybox/jquery.mousewheel-3.0.4.pack.js', 'fancybox/jquery.fancybox-1.3.4.pack.js', 'jquery.raty.js', 'jquery-plugins/jquery.scrollto.min.js', 'jquery.damnUploader.js', 'jquery.hover.js', 'socialite.js', 'social-likes.min.js',     '/js/common/comments/UserAutosuggest.js',
-    '/js/common/comments/actions/CommentsActions.js', 'pitches/viewsolution.js?' . mt_rand(100, 999)), array('inline' => false))?>
-<?=$this->html->style(array(
+<?=$this->html->script(['flux/flux.min.js', 'http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), '//assets.pinterest.com/js/pinit.js', 'jquery.simplemodal-1.4.2.js', 'fancybox/jquery.mousewheel-3.0.4.pack.js', 'fancybox/jquery.fancybox-1.3.4.pack.js', 'jquery.raty.js', 'jquery-plugins/jquery.scrollto.min.js', 'jquery.damnUploader.js', 'jquery.hover.js', 'socialite.js', 'social-likes.min.js',     '/js/common/comments/UserAutosuggest.js',
+    '/js/common/comments/actions/CommentsActions.js', 'pitches/viewsolution.js?' . mt_rand(100, 999)], ['inline' => false])?>
+<?=$this->html->style([
     '/css/common/receipt.css',
-    '/view', '/messages12', '/pitches12', '/pitch_overview', '/css/viewsolution', '/jquery.fancybox-1.3.4.css', '/css/social-likes_flat'), array('inline' => false))?>
+    '/view', '/messages12', '/pitches12', '/pitch_overview', '/css/viewsolution', '/jquery.fancybox-1.3.4.css', '/css/social-likes_flat'], ['inline' => false])?>

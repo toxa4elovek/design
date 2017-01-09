@@ -3,7 +3,8 @@ namespace app\extensions\social;
 
 use \tmhOAuth\tmhOAuth;
 
-class TwitterAPI extends AbstractAPI {
+class TwitterAPI extends AbstractAPI
+{
 
     /**
      * Свойство для хранения внешнего апи объекта
@@ -15,15 +16,16 @@ class TwitterAPI extends AbstractAPI {
     /**
      * Конструктор, где инициализируется внешний объект
      */
-    public function __construct($keys = array()) {
+    public function __construct($keys = [])
+    {
         require_once LITHIUM_APP_PATH . '/libraries/tmhOAuth/tmhOAuth.php';
-        if(empty($keys)) {
-            $keys = array(
+        if (empty($keys)) {
+            $keys = [
                 'consumer_key' => '8KowPOOLHqbLQPKt8JpwnLpTn',
                 'consumer_secret' => 'Guna29r1BY8gEofz2amAIfPo1XcHJWNGI8Nzn6wiEwNlykAHhy',
                 'user_token' => '513074899-XF4hfFeVZNBQgX7QQU0brLzbd3AxIOk1HcEQFsGl',
                 'user_secret' => 'qJUuvweF3ennscQKvWPpHdxhhiDo4VRCvunpVm51SziQV'
-            );
+            ];
         }
         $this->apiObject = new tmhOAuth($keys);
     }
@@ -31,7 +33,9 @@ class TwitterAPI extends AbstractAPI {
     /**
      *  Пустышка
      */
-    public function getAccessToken() {}
+    public function getAccessToken()
+    {
+    }
 
     /**
      * Метод для публикации твита
@@ -39,25 +43,26 @@ class TwitterAPI extends AbstractAPI {
      * @param array $data
      * @return bool
      */
-    public function postMessageToPage(Array $data) {
+    public function postMessageToPage(array $data)
+    {
         $tweet = $data['message'];
 
         if (!empty($data['picture'])) {
             $img = $data['picture'];
             $name = basename($img);
             $extension = image_type_to_mime_type(exif_imagetype($img));
-            $this->apiObject->request('POST', 'https://upload.twitter.com/1.1/media/upload.json', array(
+            $this->apiObject->request('POST', 'https://upload.twitter.com/1.1/media/upload.json', [
                 'media' => "@{$img};type={$extension};filename={$name}"
-            ), true, true);
+            ], true, true);
             $data = json_decode($this->apiObject->response['response'], true);
-            $code = $this->apiObject->request('POST', $this->apiObject->url('1.1/statuses/update'), array(
+            $code = $this->apiObject->request('POST', $this->apiObject->url('1.1/statuses/update'), [
                 'status' => $tweet,
                 'media_ids' => $data['media_id_string']
-            ));
+            ]);
         } else {
-            $code = $this->apiObject->request('POST', $this->apiObject->url('1.1/statuses/update'), array(
+            $code = $this->apiObject->request('POST', $this->apiObject->url('1.1/statuses/update'), [
                 'status' => $tweet
-            ));
+            ]);
         }
         if ($code == 200) {
             $data = json_decode($this->apiObject->response['response'], true);
@@ -78,13 +83,14 @@ class TwitterAPI extends AbstractAPI {
      * @param $function
      * @return mixed
      */
-    public function search($text = 'Какой ты дизайнер на самом деле', $function) {
-        $params = array('rpp' => 20, 'q' => urlencode($text), 'include_entities' => true);
-        $this->apiObject->user_request(array(
+    public function search($text = 'Какой ты дизайнер на самом деле', $function)
+    {
+        $params = ['rpp' => 20, 'q' => urlencode($text), 'include_entities' => true];
+        $this->apiObject->user_request([
             'method' => 'GET',
             'url' => $this->apiObject->url("1.1/search/tweets.json"),
             'params' => $params,
-        ));
+        ]);
         return $function($this->apiObject, $this);
     }
 
@@ -92,13 +98,14 @@ class TwitterAPI extends AbstractAPI {
      * Метод ретвитиь твит с $id
      * @param $id
      */
-    public function retweet($id) {
-        $params = array('id' => $id);
-        $this->apiObject->user_request(array(
+    public function retweet($id)
+    {
+        $params = ['id' => $id];
+        $this->apiObject->user_request([
             'method' => 'POST',
             'url' => $this->apiObject->url('1.1/statuses/retweet/' . $id . '.json'),
             'params' => $params,
-        ));
+        ]);
     }
 
     /**
@@ -114,15 +121,16 @@ class TwitterAPI extends AbstractAPI {
         ));
     }*/
 
-    public function access_token() {
-        $result = $this->apiObject->apponly_request(array(
+    public function access_token()
+    {
+        $result = $this->apiObject->apponly_request([
             'method' => 'POST',
             'url' => 'https://api.twitter.com/oauth/access_token',
-            'params' => array(
+            'params' => [
                 'oauth_verifier' => '5WWaxQtyWl8q0Rdbh8zzzRhPAjXMGXUK',
                 'oauth_token' => 'XJOlGgAAAAAAHfhHAAABTyjfe8o'
-            )
-        ));
+            ]
+        ]);
         echo '<pre>';
         var_dump($result);
         var_dump($this->apiObject);
@@ -130,19 +138,19 @@ class TwitterAPI extends AbstractAPI {
         die();
     }
 
-    public function request_token() {
-        $result = $this->apiObject->user_request(array(
+    public function request_token()
+    {
+        $result = $this->apiObject->user_request([
             'method' => 'POST',
             'url' => 'https://api.twitter.com/oauth/request_token',
-            'params' => array(
+            'params' => [
                 'oauth_callback' => 'https://godesigner.ru/twitter',
-            )
-        ));
+            ]
+        ]);
         echo '<pre>';
         var_dump($result);
         var_dump($this->apiObject);
         var_dump($this->apiObject->response['response']);
         die();
     }
-
 }

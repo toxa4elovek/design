@@ -46,14 +46,14 @@ class PhealElement implements PhealArrayInterface
      * container containing information that the EVE API stored in XML attributes
      * @var array
      */
-    public $_attribs = array();
+    public $_attribs = [];
 
     /**
      * create new PhealElement
      * @param string $name
      * @param mixed $value
      */
-    protected function  __construct($name, $value)
+    protected function __construct($name, $value)
     {
         $this->_name = $name;
         $this->_value = $value;
@@ -66,7 +66,7 @@ class PhealElement implements PhealArrayInterface
      */
     public function add_attrib($key, $val)
     {
-        $this->_attribs = array_merge(array($key => $val), $this->_attribs);
+        $this->_attribs = array_merge([$key => $val], $this->_attribs);
     }
 
     /**
@@ -77,8 +77,9 @@ class PhealElement implements PhealArrayInterface
      */
     public function __get($name)
     {
-        if(isset($this->_attribs[$name]))
+        if (isset($this->_attribs[$name])) {
             return $this->_attribs[$name];
+        }
         return $this->_value->$name;
     }
 
@@ -88,14 +89,16 @@ class PhealElement implements PhealArrayInterface
      */
     public function toArray()
     {
-        $return = array();
-        foreach($this->_attribs AS $key => $value)
+        $return = [];
+        foreach ($this->_attribs as $key => $value) {
             $return[$key] = $value;
+        }
 
-        if($this->_value instanceof PhealArrayInterface)
+        if ($this->_value instanceof PhealArrayInterface) {
             $return = array_merge($return, $this->_value->toArray());
-        else
+        } else {
             $return[$this->_name] = $this->_value;
+        }
 
         return $return;
     }
@@ -107,44 +110,38 @@ class PhealElement implements PhealArrayInterface
      */
     public static function parse_element($element)
     {
-        if($element->getName() =="rowset")
-        {
+        if ($element->getName() =="rowset") {
             $re = new PhealRowSet($element);
         }
         // corp/MemberSecurity workaround
-        elseif($element->getName() == "result" && $element->member)
-        {
+        elseif ($element->getName() == "result" && $element->member) {
             $container = new PhealContainer();
-            $container->add_element('members',new PhealRowSet($element,'members','member'));
-            $re = new PhealElement('result',$container);
-        }
-        else
-        {
+            $container->add_element('members', new PhealRowSet($element, 'members', 'member'));
+            $re = new PhealElement('result', $container);
+        } else {
             $key = $element->getName();
             $echilds = $element->children();
-            if(count($echilds) > 0)
-            {
+            if (count($echilds) > 0) {
                 $container = new PhealContainer();
-                foreach($echilds as $celement)
-                {
+                foreach ($echilds as $celement) {
                     $cel = PhealElement::parse_element($celement);
-                    if(count($celement->attributes()) > 0)
+                    if (count($celement->attributes()) > 0) {
                         $container->add_element($cel->_name, $cel);
-                    else
+                    } else {
                         $container->add_element($cel->_name, $cel->_value);
+                    }
                 }
                 $value = $container;
-            } else $value = (String) $element;
+            } else {
+                $value = (String) $element;
+            }
 
             $re = new PhealElement($key, $value);
-            if(count($element->attributes()) > 0)
-            {
-                foreach($element->attributes() as $attelem)
-                {
+            if (count($element->attributes()) > 0) {
+                foreach ($element->attributes() as $attelem) {
                     $re->add_attrib($attelem->getName(), (String) $attelem);
                 }
             }
-
         }
         return $re;
     }

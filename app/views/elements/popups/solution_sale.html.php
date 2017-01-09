@@ -17,7 +17,7 @@
                     <aside class="summary-price expanded" style="position: relative; top: 0; left: 0; margin-left: 0;">
                         <h3>Итого:</h3>
                         <p class="summary"><strong id="total-tag">
-                                <?php if($this->user->isSubscriptionActive()):?>
+                                <?php if ($this->user->isSubscriptionActive()):?>
                                 7500р.-
                                 <?php else: ?>
                                 8500р.-
@@ -114,7 +114,7 @@
             <!-- end: Solution Container -->
         </div>
 
-        <?= $this->view()->render(array('element' => 'logosalepay'), array('data' => $data)) ?>
+        <?= $this->view()->render(['element' => 'logosalepay'], ['data' => $data]) ?>
 
     </div><!-- .main -->  
     <!-- end: Solution overlay -->

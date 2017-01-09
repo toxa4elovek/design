@@ -5,7 +5,7 @@
 <input type="hidden" name="project_awarded" value="<?=$pitch->awarded?>" />
 <?php
 $finishSoon = 0;
-if(strtotime($pitch->finishDate) - (2 * DAY) < time()):
+if (strtotime($pitch->finishDate) - (2 * DAY) < time()):
     $diff = abs((strtotime($pitch->finishDate) - time()) / DAY);
     $finishSoon = ceil($diff);
 endif;
@@ -21,7 +21,7 @@ endif;
             <span class="regular">Инструменты заказчика:</span>
             <a class="order-button" href="/answers/view/78" target="_blank">Просмотреть</a>
         </td>
-        <?php if($pitch->billed == 1): ?>
+        <?php if ($pitch->billed == 1): ?>
             <td width="15"></td>
             <?php if (($pitch->status == 0) || ($pitch->status == 1 && $pitch->awarded == 0)):?>
             <td width="255" height="25" class="helpexpert" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;">
@@ -31,7 +31,7 @@ endif;
             </td>
             <?php else: ?>
             <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;">
-                <span class="regular">Заказчик:</span>&nbsp;&nbsp;<?=$this->html->link($this->user->getFormattedName($pitch->user->first_name, $pitch->user->last_name), array('users::view', 'id' => $pitch->user->id), array('class' => 'client-linknew'))?>
+                <span class="regular">Заказчик:</span>&nbsp;&nbsp;<?=$this->html->link($this->user->getFormattedName($pitch->user->first_name, $pitch->user->last_name), ['users::view', 'id' => $pitch->user->id], ['class' => 'client-linknew'])?>
             </td>
             <?php endif; ?>
         <?php endif; ?>
@@ -48,19 +48,19 @@ endif;
         </td>
         <?php else: ?>
             <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;">
-                <?php if($pitch->pinned == 1): ?>
+                <?php if ($pitch->pinned == 1): ?>
                     <span class="regular">Бриф прокачен</span>
                 <?php else: ?>
                     <span class="regular">Бриф не прокачен</span>
                 <?php endif;?>
             </td>
         <?php endif; ?>
-        <?php if($pitch->billed == 1): ?>
+        <?php if ($pitch->billed == 1): ?>
             <td width="15"></td>
             <?php if ($pitch->status == 0):?>
             <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;" class="helpbrief">
                 <?php if ($pitch->brief == 1):?>
-                    <span class="regular">Бриф заполнен:</span>&nbsp;&nbsp;&nbsp;&nbsp;<?= $this->html->link($this->user->getFormattedName($pitch->user->first_name, $pitch->user->last_name), array('users::view', 'id' => $pitch->user->id), array('class' => 'client-linknew'));?>
+                    <span class="regular">Бриф заполнен:</span>&nbsp;&nbsp;&nbsp;&nbsp;<?= $this->html->link($this->user->getFormattedName($pitch->user->first_name, $pitch->user->last_name), ['users::view', 'id' => $pitch->user->id], ['class' => 'client-linknew']);?>
                 <?php else:?>
                     <span class="regular"><a href="https://godesigner.ru/answers/view/68" target="_blank">Заполнить бриф</a> <a href="https://godesigner.ru/answers/view/68" target="_blank" class="tooltip_hints" title="Наши специалисты правильно сформулируют ожидания и напишут профессиональное ТЗ на основе интервью по тел.">(?)</a></span>
                     <a class="order-button" href="/pitches/addon/<?= $pitch->id?>?click=phonebrief">Заказать</a>
@@ -85,7 +85,7 @@ endif;
 Спасибо за ответ!%0D%0A%0D%0A
 ' . $pitch->user->first_name . ' ' . $pitch->user->last_name .'.'?>" style="width: 178px; top: -3px;">Совет друга (бесплатно)</a>
         </td>
-        <?php if($pitch->billed == 1): ?>
+        <?php if ($pitch->billed == 1): ?>
             <td width="15"></td>
             <?php if ($pitch->status == 0):?>
             <td width="255" height="25" class="helpprolong" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;">
@@ -95,22 +95,22 @@ endif;
             <?php else: ?>
             <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;">
                 <span class="regular">Бриф заполнен:</span>&nbsp;
-                <?php echo ($pitch->brief == 1) ? '<a class="client-linknew" href="/answers/view/68" target="_blank">GoDesigner</a>' : $this->html->link($this->user->getFormattedName($pitch->user->first_name, $pitch->user->last_name), array('users::view', 'id' => $pitch->user->id), array('class' => 'client-linknew')); ?>
+                <?php echo ($pitch->brief == 1) ? '<a class="client-linknew" href="/answers/view/68" target="_blank">GoDesigner</a>' : $this->html->link($this->user->getFormattedName($pitch->user->first_name, $pitch->user->last_name), ['users::view', 'id' => $pitch->user->id], ['class' => 'client-linknew']); ?>
             </td>
             <?php endif; ?>
         <?php endif; ?>
     </tr>
     <tr>
         <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;">
-            <span class="regular">Гонорар:</span>&nbsp;&nbsp;&nbsp;&nbsp;<?php if($this->pitch->isReadyForLogosale($pitch)):?>
-                <span class="pitch-info-text" style="color: #999; text-decoration: line-through; "><?=$this->moneyFormatter->formatMoney($pitch->price, array('suffix' => 'р.-'))?></span>&nbsp;&nbsp;<span class="pitch-info-text" style="color: #ff585d">
-                    <?php if($this->user->isSubscriptionActive()):?>
+            <span class="regular">Гонорар:</span>&nbsp;&nbsp;&nbsp;&nbsp;<?php if ($this->pitch->isReadyForLogosale($pitch)):?>
+                <span class="pitch-info-text" style="color: #999; text-decoration: line-through; "><?=$this->moneyFormatter->formatMoney($pitch->price, ['suffix' => 'р.-'])?></span>&nbsp;&nbsp;<span class="pitch-info-text" style="color: #ff585d">
+                    <?php if ($this->user->isSubscriptionActive()):?>
                         7 500р.-
                     <?php else: ?>
                         8 500р.-
                     <?php endif ?></span>
             <?php else: ?>
-                <span class="pitch-info-text"><?=$this->moneyFormatter->formatMoney($pitch->price, array('suffix' => 'р.-'))?><?php echo ($pitch->guaranteed == 1) ? ' гарантированы' : ''; ?></span>
+                <span class="pitch-info-text"><?=$this->moneyFormatter->formatMoney($pitch->price, ['suffix' => 'р.-'])?><?php echo ($pitch->guaranteed == 1) ? ' гарантированы' : ''; ?></span>
             <?php endif?></td>
         <td width="15"></td>
         <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;">
@@ -119,10 +119,10 @@ endif;
             <?php elseif ($pitch->published == 0 && $pitch->billed == 0 && $pitch->brief == 0): ?>
                 <span class="regular">Ожидание оплаты</span>
             <?php else: ?>
-                <?=$this->view()->render(array('element' => 'pitch-info/timer'), array('pitch' => $pitch))?>
+                <?=$this->view()->render(['element' => 'pitch-info/timer'], ['pitch' => $pitch])?>
             <?php endif; ?>
         </td>
-        <?php if($pitch->billed == 1): ?>
+        <?php if ($pitch->billed == 1): ?>
             <td width="15"></td>
             <?php if (($pitch->guaranteed == 0) && ($pitch->status == 0) && ($pitch->type != 'company_project')):?>
                 <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;">
@@ -131,13 +131,13 @@ endif;
                 </td>
             <?php else: ?>
                 <td width="255" height="25" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;">
-                    <?php if(($pitch->type == 'company_project') && ($pitch->status == 1) && (!$pitch->awarded)):?>
+                    <?php if (($pitch->type == 'company_project') && ($pitch->status == 1) && (!$pitch->awarded)):?>
                         <a class="order-button" id="refund" style="width: 252px; top: -3px; float: left;" href="/pitches/refund_subscription/<?= $pitch->id ?>">Отказаться от всех решений</a>
                     <?php else :?>
-                        <?php if($pitch->guaranteed == 1):?>
+                        <?php if ($pitch->guaranteed == 1):?>
                         <span class="regular">Проект гарантирован</span>
                         <?php else:
-                            if((int) $this->user->read('user.subscription_status') === 4):?>
+                            if ((int) $this->user->read('user.subscription_status') === 4):?>
                                 <a class="order-button" style="width: 254px; left:4px; top: -2px; float: left;" href="/solutions/getPdfPresentation/<?= $pitch->id ?>">Презентация PDF</a>
                             <?php else:?>
                                 <span class="regular">Проект не гарантирован</span>

@@ -2,8 +2,8 @@
 
 namespace app\models;
 
-class Historysolution extends \app\models\AppModel {
+class Historysolution extends \app\models\AppModel
+{
 
-    public $belongsTo = array('Pitch', 'User');
-
+    public $belongsTo = ['Pitch', 'User'];
 }

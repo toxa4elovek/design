@@ -25,26 +25,26 @@
  * @author themattharris
  */
 
-function my_streaming_callback($data, $length, $metrics) {
-  echo $data .PHP_EOL;
-  return file_exists(dirname(__FILE__) . '/STOP');
+function my_streaming_callback($data, $length, $metrics)
+{
+    echo $data .PHP_EOL;
+    return file_exists(dirname(__FILE__) . '/STOP');
 }
 
 require '../tmhOAuth.php';
 require '../tmhUtilities.php';
-$tmhOAuth = new tmhOAuth(array(
+$tmhOAuth = new tmhOAuth([
   'consumer_key'    => 'YOUR_CONSUMER_KEY',
   'consumer_secret' => 'YOUR_CONSUMER_SECRET',
   'user_token'      => 'A_USER_TOKEN',
   'user_secret'     => 'A_USER_SECRET',
-));
+]);
 
 $method = "https://userstream.twitter.com/2/user.json";
-$params = array(
+$params = [
   // parameters go here
-);
+];
 $tmhOAuth->streaming_request('POST', $method, $params, 'my_streaming_callback', false);
 
 // output any response we get back AFTER the Stream has stopped -- or errors
 tmhUtilities::pr($tmhOAuth);
-?>

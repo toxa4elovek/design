@@ -4,11 +4,13 @@ namespace app\extensions\command;
 
 use app\extensions\social\TwitterAPI;
 
-class FavTweets extends CronJob {
+class FavTweets extends CronJob
+{
 
-    public function run() {
+    public function run()
+    {
         $twitterApi = new TwitterAPI;
-        $twitterApi->search('Какой ты дизайнер на самом деле', function($object) {
+        $twitterApi->search('Какой ты дизайнер на самом деле', function ($object) {
             var_dump($object);
         });
 
@@ -45,5 +47,4 @@ class FavTweets extends CronJob {
         }
         $this->out($result . ' твитов было отретвичено');*/
     }
-
 }

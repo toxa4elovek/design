@@ -12,7 +12,7 @@
             <td width="5"></td><td width="30"></td>
             <td>
                 <a style="color: #ff5360; line-height: 23px; font-size: 20px; font-weight: bold; font-family: Arial, sans-serif;text-decoration: none;" href="https://godesigner.ru/pitches/view/<?=$pitch->id?>"><?=$pitch->title?></a><br/>
-                <span style="color: #CCCCCC; line-height: 23px; font-size: 12px; font-family: Arial, sans-serif;"><?=$this->view()->render(array('template' => 'pitch-info'), array('pitch' => $pitch));?></span><br/>
+                <span style="color: #CCCCCC; line-height: 23px; font-size: 12px; font-family: Arial, sans-serif;"><?=$this->view()->render(['template' => 'pitch-info'], ['pitch' => $pitch]);?></span><br/>
             </td>
         </tr>
         <tr>

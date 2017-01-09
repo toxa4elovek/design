@@ -12,18 +12,20 @@ use \app\models\Solutionfile;
  *
  *
  */
-class UploadableSolutionNonce extends \app\models\behaviors\UploadableImage{
+class UploadableSolutionNonce extends \app\models\behaviors\UploadableImage
+{
 
-    public static $defaults = array(
-        'validate' => array('uploadedOnly' => true),
-        'moveFile' => array('preserveFileName' => false, 'path' => '/resources/tmp/'),
-        'setPermission' => array('mode' => 0644),
-        'processImage' => array(),
-    );
+    public static $defaults = [
+        'validate' => ['uploadedOnly' => true],
+        'moveFile' => ['preserveFileName' => false, 'path' => '/resources/tmp/'],
+        'setPermission' => ['mode' => 0644],
+        'processImage' => [],
+    ];
 
     public static $fileModel = 'app\models\Solutionfile';
 
-    protected function _init(){
+    protected function _init()
+    {
         parent::_init();
         static::$name = __CLASS__;
         static::$defaults['processImage'] = Solutionfile::getParams();

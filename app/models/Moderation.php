@@ -9,23 +9,25 @@ use app\extensions\storage\Rcache;
 use app\extensions\mailers\UserMailer;
 use lithium\analysis\Logger;
 
-class Moderation extends AppModel {
+class Moderation extends AppModel
+{
 
-    public static function __init() {
+    public static function __init()
+    {
         parent::__init();
-        self::applyFilter('save', function($self, $params, $chain){
+        self::applyFilter('save', function ($self, $params, $chain) {
             $result = $chain->next($self, $params, $chain);
             if ($result) {
                 $penalty = $params['entity']->penalty;
                 $modelData = unserialize($params['entity']->model_data);
                 $user = $self::fetchModelUser($params['entity']->model_user);
-                $dataInfo = array(
+                $dataInfo = [
                     'user' => $user->data(),
                     'reason' => $params['entity']->reason,
                     'explanation' => $params['entity']->explanation,
-                );
+                ];
                 if ($params['entity']->model == '\app\models\Comment') {
-                    $comment = Comment::first(array('conditions' => array('Comment.id' => $params['entity']->model_id), 'with' => array('Pitch')));
+                    $comment = Comment::first(['conditions' => ['Comment.id' => $params['entity']->model_id], 'with' => ['Pitch']]);
                     $dataInfo['pitch'] = $comment->pitch;
                     $dataInfo['text'] = $self::fetchModelText($modelData);
                     $dataInfo['image'] = null;
@@ -34,23 +36,23 @@ class Moderation extends AppModel {
                     Rcache::delete($cacheKey);
                     $mailerTemplate = 'removecomment';
                 } else {
-                    $solution = Solution::first(array('conditions' => array('Solution.id' => $params['entity']->model_id), 'with' => array('Pitch')));
+                    $solution = Solution::first(['conditions' => ['Solution.id' => $params['entity']->model_id], 'with' => ['Pitch']]);
                     $dataInfo['pitch'] = $solution->pitch;
                     $dataInfo['solution_num'] = $solution->num;
                     $dataInfo['text'] = null;
                     $dataInfo['image'] = $self::fetchModelImage($modelData);
                     $mailerTemplate = 'removesolution';
                     $userHelper = new \app\extensions\helper\User();
-                    $data = array(
+                    $data = [
                         'id' => $solution->id,
                         'num' => $solution->num,
                         'user_who_deletes' => $userHelper->getId(),
                         'user_id' => $solution->user_id,
                         'date' => date('Y-m-d H:i:s'),
                         'isAdmin' => $userHelper->isAdmin()
-                    );
-                    Logger::write('info', serialize($data), array('name' => 'deleted_solutions'));
-                    if($solution) {
+                    ];
+                    Logger::write('info', serialize($data), ['name' => 'deleted_solutions']);
+                    if ($solution) {
                         $solution->delete();
                     }
                 }
@@ -72,7 +74,7 @@ class Moderation extends AppModel {
                             break;
                         case 3:
                             // Block User for project
-                            if($solution) {
+                            if ($solution) {
                                 $solutions = Solution::all([
                                     'conditions' => [
                                         'Solution.pitch_id' => $solution->pitch_id,
@@ -90,7 +92,7 @@ class Moderation extends AppModel {
                             $term = ((int) $penalty) * DAY;
                             $user->silenceUntil = date('Y-m-d H:i:s', time() + $term);
                             $user->silenceCount += 1;
-                            $user->save(null, array('validate' => false));
+                            $user->save(null, ['validate' => false]);
                             $dataInfo['term'] = (int) $penalty;
                             break;
                     }
@@ -104,7 +106,8 @@ class Moderation extends AppModel {
     /**
      * Get User from Deleted Comment or Solution
      */
-    public static function fetchModelUser($user_id) {
+    public static function fetchModelUser($user_id)
+    {
         if (!$user = User::first($user_id)) {
             return false;
         }
@@ -114,14 +117,16 @@ class Moderation extends AppModel {
     /**
      * Get Comment Text from Deleted Comment
      */
-    public static function fetchModelText($data) {
+    public static function fetchModelText($data)
+    {
         return (!empty($data['text'])) ? $data['text'] : null;
     }
 
     /**
      * Get Image from Deleted Solution
      */
-    public static function fetchModelImage($data) {
+    public static function fetchModelImage($data)
+    {
         $file = null;
         if (!empty($data['image']) && file_exists($data['image'])) {
             $fileName = pathinfo($data['image'], PATHINFO_BASENAME);

@@ -66,10 +66,10 @@ define('LITHIUM_LIBRARY_PATH', dirname(LITHIUM_APP_PATH) . '/libraries');
  * If your Lithium core directory is named something other than `lithium`, change the string below.
  */
 if (!include LITHIUM_LIBRARY_PATH . '/lithium/core/Libraries.php') {
-	$message  = "Lithium core could not be found.  Check the value of LITHIUM_LIBRARY_PATH in ";
-	$message .= __FILE__ . ".  It should point to the directory containing your ";
-	$message .= "/libraries directory.";
-	throw new ErrorException($message);
+    $message  = "Lithium core could not be found.  Check the value of LITHIUM_LIBRARY_PATH in ";
+    $message .= __FILE__ . ".  It should point to the directory containing your ";
+    $message .= "/libraries directory.";
+    throw new ErrorException($message);
 }
 
 use lithium\core\Libraries;
@@ -121,7 +121,7 @@ Libraries::add('lithium');
  * Add the application.  You can pass a `'path'` key here if this bootstrap file is outside of
  * your main application, but generally you should not need to change any settings.
  */
-Libraries::add('app', array('default' => true));
+Libraries::add('app', ['default' => true]);
 
 /**
  * Add some plugins:
@@ -130,24 +130,24 @@ Libraries::add('li3_fixtures');
 Libraries::add('li3_mailer');
 Libraries::add('li3_oauth');
 Libraries::add('tmhOAuth');
-Libraries::add('li3_assets', array(
-    'config' => array(
-        'js' => array(
+Libraries::add('li3_assets', [
+    'config' => [
+        'js' => [
             'compression' => 'link', // possible values: 'jsmin', 'packer', false (true uses jsmin), 'link' - just link
             'output_directory' => 'minified', // directory is from webroot/css if full path is not defined
             'packer_encoding' => 'Normal', // level of encoding (only used for packer), possible values: 0,10,62,95 or 'None', 'Numeric', 'Normal', 'High ASCII'
             'packer_fast_decode' => true, // default: true
             'packer_special_chars' => false // default: false
-        ),
-        'css' => array(
+        ],
+        'css' => [
             'compression' => true, // possible values: true, 'tidy', false
             'tidy_template' => 'highest_compression',
             'less_debug' => false, // debugs lessphp writing messages to a log file, possible values: true, false
             'output_directory' => '/minified/' // directory is from webroot/css if full path is not defined
-        ),
-        'image' => array(
+        ],
+        'image' => [
             'compression' => false, // uses base64/data uri, possible values: true, false
-            'allowed_formats' => array('jpeg', 'jpg', 'jpe', 'png', 'gif') // which images to base64 encode
-        ),
-    ),
-));
+            'allowed_formats' => ['jpeg', 'jpg', 'jpe', 'png', 'gif'] // which images to base64 encode
+        ],
+    ],
+]);

@@ -1,16 +1,16 @@
 <?php
 $details = unserialize($pitch->specifics);
-if(isset($details['logo-properties'])) {
+if (isset($details['logo-properties'])) {
     $sliders = $details['logo-properties'];
-}else if($details['audience']) {
+} elseif ($details['audience']) {
     $sliders = $details["audience"];
 }
 ?>
 <script type="text/javascript">var logoProperties = <?php echo json_encode($sliders)?>;</script>
 
-<?php if(isset($details['site-sub'])):?>
+<?php if (isset($details['site-sub'])):?>
 <h2 class="blueheading">Сколько иллюстраций необходимо создать?</h2>
-<p class="regular"><?=$details['site-sub']?> <?=$this->numInflector->formatString($details['site-sub'], array('first' => 'иллюстрация', 'second' => 'иллюстрации', 'third' => 'иллюстраций'))?></p>
+<p class="regular"><?=$details['site-sub']?> <?=$this->numInflector->formatString($details['site-sub'], ['first' => 'иллюстрация', 'second' => 'иллюстрации', 'third' => 'иллюстраций'])?></p>
 <?php endif?>
 
 <div class="groupc">
@@ -44,7 +44,7 @@ if(isset($details['logo-properties'])) {
         </li>
     </ul><!-- .logo-properties -->
 
-    <?php if(!empty($details['site-inspiration'])):?>
+    <?php if (!empty($details['site-inspiration'])):?>
     <h2 class="blueheading">Предпочтения</h2>
     <p class="regular"><?=$this->brief->deleteHtmlTagsAndInsertHtmlLinkInText($details['site-inspiration'])?></p>
     <?php endif;?>

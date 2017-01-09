@@ -36,16 +36,16 @@ class ExpertSmsReminder extends CronJob
                         $expertRecord = Expert::first(['conditions' => ['Expert.id' => $expert], 'with' => ['User']]);
                         if (($expertRecord->user->phone != '') && ($expertRecord->user->phone_valid)) {
                             $smsService = new SmsUslugi();
-                            $params = array(
+                            $params = [
                                 "text" => $message
-                            );
-                            $phones = array($expertRecord->user->phone);
+                            ];
+                            $phones = [$expertRecord->user->phone];
                             //$response = SmsFeedback::send($expertRecord->user->phone, $message);
                             //list($smsStatus, $smsId) = explode(';', $response);
                             $respond = $smsService->send($params, $phones);
-                            if(!isset($respond['smsid'])) {
+                            if (!isset($respond['smsid'])) {
                                 $smsId = 0;
-                            }else {
+                            } else {
                                 $smsId = $respond['smsid'];
                             }
                             $data = [

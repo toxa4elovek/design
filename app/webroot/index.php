@@ -38,5 +38,3 @@ require dirname(__DIR__) . '/config/bootstrap.php';
  * @see lithium\action\Controller
  */
 echo lithium\action\Dispatcher::run(new lithium\action\Request());
-
-?>

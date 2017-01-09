@@ -1,13 +1,13 @@
 <div class="wrapper">
 
-    <?=$this->view()->render(array('element' => 'header'), array('logo' => 'logo'))?>
+    <?=$this->view()->render(['element' => 'header'], ['logo' => 'logo'])?>
     <?php
     $userdata = unserialize($user->userdata);
     ?>
     <div class="middle">
         <div class="main">
             <nav class="main_nav clear" style="width:832px;margin-left:2px;">
-                <?=$this->view()->render(array('element' => 'office/nav'));?>
+                <?=$this->view()->render(['element' => 'office/nav']);?>
             </nav>
 
             <div class="sideblock">
@@ -36,5 +36,5 @@
     </div><!-- .middle -->
 </div><!-- .wrapper -->
 
-<?=$this->html->script(array(    '/js/users/office/PushNotificationsStatus.js', 'jcarousellite_1.0.1.js', 'jquery.timers.js', 'jquery.simplemodal-1.4.2.js', 'tableloader.js', 'jquery.timeago.js', 'fileuploader', 'jquery.tooltip.js', 'clipboard.min.js', 'users/office.js'), array('inline' => false))?>
-<?=$this->html->style(array('/main2.css', '/pitches2.css', '/edit','/view', '/messages12', '/pitches12', '/win_steps1.css', '/win_steps2_final3.css', '/portfolio.css', '/css/users/subscribers_referal.css'), array('inline' => false))?>
+<?=$this->html->script([    '/js/users/office/PushNotificationsStatus.js', 'jcarousellite_1.0.1.js', 'jquery.timers.js', 'jquery.simplemodal-1.4.2.js', 'tableloader.js', 'jquery.timeago.js', 'fileuploader', 'jquery.tooltip.js', 'clipboard.min.js', 'users/office.js'], ['inline' => false])?>
+<?=$this->html->style(['/main2.css', '/pitches2.css', '/edit', '/view', '/messages12', '/pitches12', '/win_steps1.css', '/win_steps2_final3.css', '/portfolio.css', '/css/users/subscribers_referal.css'], ['inline' => false])?>

@@ -389,8 +389,9 @@ class SolutionsController extends AppController
     /**
      * Метод выбирает лучшие решения из проекта, генерирует PDF презентацию и скачивает их
      */
-    public function getPdfPresentation() {
-        if($this->request->id && ($pitch = Pitch::first((int) $this->request->id))) {
+    public function getPdfPresentation()
+    {
+        if ($this->request->id && ($pitch = Pitch::first((int) $this->request->id))) {
             $solutions = Solution::all(['conditions' => [
                 'Solution.pitch_id' => $pitch->id,
                 'Solution.rating' => ['>' => 3],
@@ -405,8 +406,8 @@ class SolutionsController extends AppController
             $pdfWriter->WriteHTML(PdfGetter::get('Presentation', $options));
             $pdfWriter->Output('Presentation.pdf', 'd');
             die();
-        }else {
-            throw new \UnexpectedValueException ('Public:Такого проекта не существует.', 404);
+        } else {
+            throw new \UnexpectedValueException('Public:Такого проекта не существует.', 404);
         }
     }
 }

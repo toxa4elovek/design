@@ -1,5 +1,5 @@
 <div class="wrapper">
-    <?=$this->view()->render(array('element' => 'header'), array('header' => 'header2'))?>
+    <?=$this->view()->render(['element' => 'header'], ['header' => 'header2'])?>
 
 
     <div class="middle" id="login-section">

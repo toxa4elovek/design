@@ -9,8 +9,7 @@
 
 namespace app\extensions\helper;
 
-if(!function_exists('mb_ucfirst'))
-{
+if (!function_exists('mb_ucfirst')) {
     function mb_ucfirst($string, $enc = 'UTF-8')
     {
         return mb_strtoupper(mb_substr($string, 0, 1, $enc), $enc) .
@@ -18,13 +17,15 @@ if(!function_exists('mb_ucfirst'))
     }
 }
 
-class PitchTitleFormatter extends \lithium\template\Helper {
+class PitchTitleFormatter extends \lithium\template\Helper
+{
 
-    function renderTitle($title, $length = 0) {
+    public function renderTitle($title, $length = 0)
+    {
         $title = mb_ucfirst($title);
         $title = preg_replace('@"(.+?)"@', '«$1»', $title);
         preg_match('@«(.+?)»@', $title, $matches);
-        if($matches) {
+        if ($matches) {
             $title = preg_replace('@' . $matches[1] . '@', mb_ucfirst($matches[1]), $title);
         }
         if ($length > 0 && mb_strlen($title, 'UTF-8') > $length) {
@@ -32,5 +33,4 @@ class PitchTitleFormatter extends \lithium\template\Helper {
         }
         return $title;
     }
-
 }

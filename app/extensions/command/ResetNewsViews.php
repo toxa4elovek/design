@@ -6,25 +6,27 @@ use \app\models\News;
 use \app\models\Event;
 use app\extensions\storage\Rcache;
 
-class ResetNewsViews extends \app\extensions\command\CronJob {
+class ResetNewsViews extends \app\extensions\command\CronJob
+{
 
-    public function run() {
+    public function run()
+    {
         Rcache::init();
         $news = News::all();
         $post = News::getPost();
         if ($post) {
-            $event = Event::first(array('conditions' => array('Event.type' => 'newsAdded', 'news_id' => $post->id, 'created' => $post->created)));
+            $event = Event::first(['conditions' => ['Event.type' => 'newsAdded', 'news_id' => $post->id, 'created' => $post->created]]);
             if ($event) {
                 $this->out('Event for this news exists');
                 $event->created = $post->created;
                 $event->save();
             } else {
                 $this->out('Event for this news not exists yet');
-                Event::create(array(
+                Event::create([
                     'created' => date('Y-m-d H:i:s'),
                     'type' => 'newsAdded',
                     'news_id' => $post->id
-                ))->save();
+                ])->save();
             }
         }
         foreach ($news as $n) {
@@ -33,5 +35,4 @@ class ResetNewsViews extends \app\extensions\command\CronJob {
         $news->save();
         Rcache::delete('middle-post');
     }
-
 }

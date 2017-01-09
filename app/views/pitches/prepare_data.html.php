@@ -13,7 +13,7 @@
             <td>длительность проекта</td>
         </tr>
     </thead>
-    <?php foreach($projects as $project):?>
+    <?php foreach ($projects as $project):?>
     <tr>
         <td><?= $project->id?></td>
         <td><?= $project->category_id?></td>

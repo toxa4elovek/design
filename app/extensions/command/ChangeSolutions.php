@@ -38,7 +38,7 @@ class ChangeSolutions extends CronJob
             return 0;
         };
         $count = 0;
-        for($i = 1; $i < 21; $i++) {
+        for ($i = 1; $i < 21; $i++) {
             $solutions = Solution::all([
                 'page' => $i,
                 'limit' => 10000,

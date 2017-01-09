@@ -69,7 +69,7 @@
                                                             ?>  
                                                             <td width="230" valign="top" sty>
                                                                 <div style="line-height: 0;"><a href="http://godesigner.ru/posts/view/<?= $post->id ?>" target="_blank" style="border: none; text-decoration: none;"><img src="<?= $post->imageurl ?>" alt="<?= $post->title ?>" valign="top" border="0" width="250" /></a></div>
-                                                                <a href="http://godesigner.ru/posts/view/<?= $post->id ?>" target="_blank" style="color:#658fa5;text-decoration:none;font-weight:bold;line-height: 2;"><?=mb_strtoupper($post->title,'UTF-8') ?></a><br />
+                                                                <a href="http://godesigner.ru/posts/view/<?= $post->id ?>" target="_blank" style="color:#658fa5;text-decoration:none;font-weight:bold;line-height: 2;"><?=mb_strtoupper($post->title, 'UTF-8') ?></a><br />
                                                                 <span style="line-height:1.5;"><?php echo $post->short ?></span>
                                                             </td>
                                                             <?php if ($count == 1) : ?>

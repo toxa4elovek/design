@@ -1,6 +1,6 @@
 <div class="wrapper">
 
-    <?=$this->view()->render(array('element' => 'header'), array('logo' => 'logo', 'header' => 'header2'))?>
+    <?=$this->view()->render(['element' => 'header'], ['logo' => 'logo', 'header' => 'header2'])?>
 
     <main class="lp-subscribe">
         <section class="lp-header">
@@ -161,12 +161,12 @@
         </section>
     </main>
 </div><!-- .wrapper -->
-<?=$this->html->style(array(
+<?=$this->html->style([
     '/css/common/buttons.css',
     '/css/common/backgrounds.css',
     '/css/pages/subscribe.css'
-), array('inline' => false))?>
-<?=$this->html->script(array(
+], ['inline' => false])?>
+<?=$this->html->script([
     'jquery-plugins/jquery.scrollto.min.js',
     'pages/subscribe.js'
-), array('inline' => false))?>
+], ['inline' => false])?>

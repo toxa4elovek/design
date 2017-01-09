@@ -17,23 +17,23 @@ class News extends AppModel
 {
 
     private static $news;
-    public $hasMany = array('Like');
-    protected static $processImage = array(
-        'middleFeed' => array(
+    public $hasMany = ['Like'];
+    protected static $processImage = [
+        'middleFeed' => [
             'image_resize' => true,
             'image_x' => 600,
             'image_y' => 500,
             'image_ratio' => true,
             'file_overwrite' => true
-        ),
-    );
+        ],
+    ];
 
     public static function getPost($newsDate = 0)
     {
         $post = 0;
         if ($newsDate < 1) {
             $post = Rcache::read('middle-post');
-            self::$news = self::all(array('conditions' => array('created' => array('>' => $newsDate), 'isBanner' => 0, 'toggle' => 0), 'order' => array('created' => 'desc')));
+            self::$news = self::all(['conditions' => ['created' => ['>' => $newsDate], 'isBanner' => 0, 'toggle' => 0], 'order' => ['created' => 'desc']]);
             if (self::$news && !$post) {
                 $all_views = 0;
                 foreach (self::$news as $n) {
@@ -74,12 +74,12 @@ class News extends AppModel
 
     public static function getNews($newsDate = 0, $page = 1)
     {
-        return self::all(array('conditions' => array('created' => array('>' => $newsDate), 'toggle' => 0, 'isBanner' => 0, 'hidden' => 0, 'link' => array('NOT LIKE' => array('%http://tutdesign.ru/%', '%https://godesigner.ru/%'))), 'limit' => 25, 'page' => $page, 'order' => array('created' => 'desc')));
+        return self::all(['conditions' => ['created' => ['>' => $newsDate], 'toggle' => 0, 'isBanner' => 0, 'hidden' => 0, 'link' => ['NOT LIKE' => ['%http://tutdesign.ru/%', '%https://godesigner.ru/%']]], 'limit' => 25, 'page' => $page, 'order' => ['created' => 'desc']]);
     }
 
     public static function getBanner()
     {
-        return self::first(array('conditions' => array('isBanner' => 1, 'hidden' => 0), 'order' => array('created' => 'desc')));
+        return self::first(['conditions' => ['isBanner' => 1, 'hidden' => 0], 'order' => ['created' => 'desc']]);
     }
 
     public static function resize($file)
@@ -114,16 +114,16 @@ class News extends AppModel
         $result = false;
         $news = self::first($newsId);
         $userId = (int) $userId;
-        if (($like = Like::first(array('conditions' => array('news_id' => $newsId, 'user_id' => $userId)))) && ($newsId)) {
+        if (($like = Like::first(['conditions' => ['news_id' => $newsId, 'user_id' => $userId]])) && ($newsId)) {
             $news->liked -= 1;
             $news->save();
             if ($result = $like->delete()) {
-                if ($event = Event::first(array('conditions' => array('user_id' => $userId, 'news_id' => $newsId, 'Event.type' => 'LikeAdded')))) {
+                if ($event = Event::first(['conditions' => ['user_id' => $userId, 'news_id' => $newsId, 'Event.type' => 'LikeAdded']])) {
                     $event->delete();
                 }
             }
         }
-        return array('result' => $result, 'likes' => $news->likes);
+        return ['result' => $result, 'likes' => $news->likes];
     }
 
     public static function increaseLike($newsId, $userId = 0)
@@ -135,22 +135,22 @@ class News extends AppModel
         }
         $userId = (int) $userId;
         $allowUser = false;
-        if ($userId && (!$like = Like::find('first', array('conditions' => array('news_id' => $newsId, 'user_id' => $userId))))) {
+        if ($userId && (!$like = Like::find('first', ['conditions' => ['news_id' => $newsId, 'user_id' => $userId]]))) {
             $allowUser = true;
         }
         if ($allowUser) {
             $news->liked += 1;
             $news->save();
-            $result = Like::create(array(
+            $result = Like::create([
                         'news_id' => $newsId,
                         'user_id' => $userId,
                         'created' => date('Y-m-d H:i:s')
-                    ))->save();
+                    ])->save();
             if ($result) {
                 Event::createEvent(0, 'LikeAdded', $userId, 0, 0, $newsId);
             }
         }
-        return array('result' => $result, 'likes' => $news->liked);
+        return ['result' => $result, 'likes' => $news->liked];
     }
 
     public static function hideNews($newsId)
@@ -159,11 +159,11 @@ class News extends AppModel
         if ($news = self::first($newsId)) {
             $news->hidden = 1;
             $news->save();
-            if ($event = Event::first(array('conditions' => array('news_id' => $news->id)))) {
+            if ($event = Event::first(['conditions' => ['news_id' => $news->id]])) {
                 $event->delete();
             }
             $result = true;
-        } elseif ($event = Event::first(array('conditions' => array('news_id' => $newsId)))) {
+        } elseif ($event = Event::first(['conditions' => ['news_id' => $newsId]])) {
             $event->delete();
             $result = true;
         }
@@ -263,7 +263,7 @@ class News extends AppModel
         if ($result = $news->save()) {
             if ((!$news->isBanner) and ($createEvent)) {
                 Event::createEventNewsAdded($news->id, 0, $news->created);
-                $result = Event::first(array('conditions' => array('news_id' => $news->id)));
+                $result = Event::first(['conditions' => ['news_id' => $news->id]]);
                 if ($news->tags == 'Goворит Designer') {
                     Task::createNewTask($result->id, 'postNewsToSocial', 10 * MINUTE);
                     Task::createNewTask($result->id, 'postNewsToSocialDelayed', HOUR);

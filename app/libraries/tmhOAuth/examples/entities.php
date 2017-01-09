@@ -29,49 +29,48 @@ date_default_timezone_set('UTC');
 
 require '../tmhOAuth.php';
 require '../tmhUtilities.php';
-$tmhOAuth = new tmhOAuth(array(
+$tmhOAuth = new tmhOAuth([
   'consumer_key'    => 'YOUR_CONSUMER_KEY',
   'consumer_secret' => 'YOUR_CONSUMER_SECRET',
   'user_token'      => 'A_USER_TOKEN',
   'user_secret'     => 'A_USER_SECRET',
-));
+]);
 
-$code = $tmhOAuth->request('GET', $tmhOAuth->url('1/statuses/user_timeline'), array(
+$code = $tmhOAuth->request('GET', $tmhOAuth->url('1/statuses/user_timeline'), [
   'include_entities' => '1',
   'include_rts'      => '1',
   'screen_name'      => 'themattharris',
   'count'            => 100,
-));
+]);
 
 if ($code == 200) {
-  $timeline = json_decode($tmhOAuth->response['response'], true);
-  foreach ($timeline as $tweet) :
+    $timeline = json_decode($tmhOAuth->response['response'], true);
+    foreach ($timeline as $tweet) :
     $entified_tweet = tmhUtilities::entify_with_options($tweet);
     $is_retweet = isset($tweet['retweeted_status']);
 
     $diff = time() - strtotime($tweet['created_at']);
-    if ($diff < 60*60)
-      $created_at = floor($diff/60) . ' minutes ago';
-    elseif ($diff < 60*60*24)
-      $created_at = floor($diff/(60*60)) . ' hours ago';
-    else
-      $created_at = date('d M', strtotime($tweet['created_at']));
+    if ($diff < 60*60) {
+        $created_at = floor($diff/60) . ' minutes ago';
+    } elseif ($diff < 60*60*24) {
+        $created_at = floor($diff/(60*60)) . ' hours ago';
+    } else {
+        $created_at = date('d M', strtotime($tweet['created_at']));
+    }
 
     $permalink  = str_replace(
-      array(
+      [
         '%screen_name%',
         '%id%',
         '%created_at%'
-      ),
-      array(
+      ],
+      [
         $tweet['user']['screen_name'],
         $tweet['id_str'],
         $created_at,
-      ),
+      ],
       '<a href="https://twitter.com/%screen_name%/%id%">%created_at%</a>'
-    );
-
-  ?>
+    ); ?>
   <div id="<?php echo $tweet['id_str']; ?>" style="margin-bottom: 1em">
     <span>ID: <?php echo $tweet['id_str']; ?></span><br>
     <span>Orig: <?php echo $tweet['text']; ?></span><br>
@@ -82,7 +81,7 @@ if ($code == 200) {
 <?php
   endforeach;
 } else {
-  tmhUtilities::pr($tmhOAuth->response);
+    tmhUtilities::pr($tmhOAuth->response);
 }
 ?>
 </body>

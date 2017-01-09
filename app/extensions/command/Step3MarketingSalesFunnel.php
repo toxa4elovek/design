@@ -51,13 +51,13 @@ class Step3MarketingSalesFunnel extends CronJob
             if (User::isSubscriptionActive($project->user->id)) {
                 return false;
             }
-            if(!$grade = Grade::first(['conditions' => [
+            if (!$grade = Grade::first(['conditions' => [
                 'Grade.type' => 'client',
                 'Grade.pitch_id' => $project->id
             ]])) {
-               return false;
+                return false;
             }
-            if((int) $grade->site_rating < 4) {
+            if ((int) $grade->site_rating < 4) {
                 return false;
             }
             return true;

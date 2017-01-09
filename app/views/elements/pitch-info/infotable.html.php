@@ -6,12 +6,12 @@
 </div>
 <div class="clr" style="width: 840px; margin-bottom: 30px;">
 <?php if (!$this->user->isLoggedIn()): ?>
-    <?=$this->view()->render(array('element' => 'pitch-info/anonyms_infotable'), array('pitch' => $pitch))?>
+    <?=$this->view()->render(['element' => 'pitch-info/anonyms_infotable'], ['pitch' => $pitch])?>
 <?php else: ?>
-    <?php if(!$this->user->isPitchOwner($pitch->user_id)): ?>
-        <?=$this->view()->render(array('element' => 'pitch-info/designers_infotable'), array('pitch' => $pitch))?>
+    <?php if (!$this->user->isPitchOwner($pitch->user_id)): ?>
+        <?=$this->view()->render(['element' => 'pitch-info/designers_infotable'], ['pitch' => $pitch])?>
     <?php else: ?>
-        <?=$this->view()->render(array('element' => 'pitch-info/clients_infotable'), array('pitch' => $pitch))?>
+        <?=$this->view()->render(['element' => 'pitch-info/clients_infotable'], ['pitch' => $pitch])?>
     <?php endif ?>
 <?php endif; ?>
 </div>

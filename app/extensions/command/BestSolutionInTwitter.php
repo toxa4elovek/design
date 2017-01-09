@@ -21,33 +21,33 @@ class BestSolutionInTwitter extends CronJob
         $day = date('Y-m-d', $lastDay);
         $start = strtotime($day);
         $end = $start + DAY;
-        $solution = Solution::first(array(
-                    'conditions' => array(
+        $solution = Solution::first([
+                    'conditions' => [
                         'Pitch.status' => 0,
                         'Pitch.published' => 1,
                         'Pitch.private' => 0,
-                        'Pitch.category_id' => array('!=' => 20),
-                        'created' => array('>=' => date('Y-m-d H:i:s', $start), '<=' => date('Y-m-d H:i:s', $end))
-                    ),
-                    'order' => array('Solution.likes' => 'desc', 'Solution.views' => 'desc'),
-                    'with' => array('Pitch')
-        ));
+                        'Pitch.category_id' => ['!=' => 20],
+                        'created' => ['>=' => date('Y-m-d H:i:s', $start), '<=' => date('Y-m-d H:i:s', $end)]
+                    ],
+                    'order' => ['Solution.likes' => 'desc', 'Solution.views' => 'desc'],
+                    'with' => ['Pitch']
+        ]);
         if ($solution) {
             $mediaManager = new SocialMediaManager;
             $id = $mediaManager->postBestSolutionMessage($solution, $lastDay);
             if ($id) {
-                Event::create(array(
+                Event::create([
                     'type' => 'RetweetAdded',
                     'tweet_id' => $id,
                     'created' => date('Y-m-d H:i:s', time() - HOUR)
-                ))->save();
+                ])->save();
                 $twitterAPI = new TwitterAPI();
-                $params = array('rpp' => 1, 'id' => $id, 'maxwidth' => '550', 'include_entities' => false);
-                $code = $twitterAPI->apiObject->user_request(array(
+                $params = ['rpp' => 1, 'id' => $id, 'maxwidth' => '550', 'include_entities' => false];
+                $code = $twitterAPI->apiObject->user_request([
                     'method' => 'GET',
                     'url' => $twitterAPI->apiObject->url('1.1/statuses/oembed.json'),
                     'params' => $params
-                ));
+                ]);
                 if ($code == 200) {
                     $tweetsDump = Rcache::read('RetweetsFeed');
                     $this->out('Got the data, saving to cache');

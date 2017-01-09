@@ -1,6 +1,6 @@
 <div class="wrapper">
 
-	<?=$this->view()->render(array('element' => 'header'), array('logo' => 'logo', 'header' => 'header'))?>
+	<?=$this->view()->render(['element' => 'header'], ['logo' => 'logo', 'header' => 'header'])?>
 
 	<div class="middle" style="width: 100%;">
 	<div class="middle_inner">
@@ -142,7 +142,7 @@
 			</div>
 
 			<ul class="faq vp_one">
-				<?php foreach($answers as $answer): ?>
+				<?php foreach ($answers as $answer): ?>
 				<li>
 					<p class="regular" style=""><a href="/answers/view/<?=$answer->id ?>" target="_blank"><?= $answer->title ?></a></p>
 					<div style="background:url(/img/sep.png) repeat-x;height:4px;"></div>
@@ -158,5 +158,5 @@
 	</div><!-- /middle -->
 
 </div><!-- .wrapper -->
-<?=$this->html->style(array('/howitworks'), array('inline' => false))?>
-<?=$this->html->script(array('/js/pages/howitworks.js'), array('inline' => false))?>
+<?=$this->html->style(['/howitworks'], ['inline' => false])?>
+<?=$this->html->script(['/js/pages/howitworks.js'], ['inline' => false])?>

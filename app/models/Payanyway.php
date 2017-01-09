@@ -2,7 +2,6 @@
 
 namespace app\models;
 
-class Payanyway extends \app\models\AppModel {
-
-
+class Payanyway extends \app\models\AppModel
+{
 }

@@ -1,17 +1,20 @@
 <?php
 namespace li3_assets\extensions\helper;
+
 use \lithium\core\Libraries;
 use \lithium\net\http\Media;
 
-class Optimize extends \lithium\template\Helper {
+class Optimize extends \lithium\template\Helper
+{
 
     /**
      * Outputs the compressed and combined JavaScript on the page.
      *
     */
-    public function scripts() {
+    public function scripts()
+    {
         $webroot = Media::webroot(true);
-        $output_hash = array();
+        $output_hash = [];
         // Before any compression and combination is done, order the scripts.
         // Sort them all by a "weight" key set like: $this->html->script('myscript.js', array('weight' => 1))
         $ordered_scripts = $this->_context->scripts;
@@ -27,9 +30,9 @@ class Optimize extends \lithium\template\Helper {
             if (!preg_match('/weight="([0-9].*)"/', $value, $matches)) {
                 $value .= ' weight="' . $fileWeight . '"';
             }
-            if(preg_match('/src="([^"]*)"/', $value, $matches)) {
+            if (preg_match('/src="([^"]*)"/', $value, $matches)) {
                 $script = $webroot . Media::asset($matches[1], 'js');
-                if(file_exists($script)) {
+                if (file_exists($script)) {
                     $output_hash[] = $script . filemtime($script);
                 }
             }
@@ -37,7 +40,7 @@ class Optimize extends \lithium\template\Helper {
             $fileWeight++;
         }
 
-        usort($ordered_scripts, function($a, $b) {
+        usort($ordered_scripts, function ($a, $b) {
             $a = (preg_match('/weight="([0-9].*)"/', $a, $matches)) ? $matches[1]:999;
             $b = (preg_match('/weight="([0-9].*)"/', $b, $matches)) ? $matches[1]:999;
             return ($a < $b) ? -1 : 1;
@@ -48,74 +51,74 @@ class Optimize extends \lithium\template\Helper {
 
         $library = Libraries::get('li3_assets');
         // Set Defaults
-        $library += array('config' => array());
-        $library['config'] += array('js' => array());
+        $library += ['config' => []];
+        $library['config'] += ['js' => []];
 
-        $library['config']['js'] += array(
+        $library['config']['js'] += [
             'compression' => 'jsmin',
             'output_directory' => 'optimized',
             'packer_encoding' => 'Normal',
             'packer_fast_decode' => true,
             'packer_special_chars' => false
-        );
+        ];
 
         // Ensure output directory is formatted properly, first remove any beginning slashes
-        if($library['config']['js']['output_directory'][0] == DIRECTORY_SEPARATOR) {
+        if ($library['config']['js']['output_directory'][0] == DIRECTORY_SEPARATOR) {
             $library['config']['js']['output_directory'] = substr($library['config']['js']['output_directory'], 1);
         }
         // ...then any trailing slashes
-        if(substr($library['config']['js']['output_directory'], -1, 1) == DIRECTORY_SEPARATOR) {
+        if (substr($library['config']['js']['output_directory'], -1, 1) == DIRECTORY_SEPARATOR) {
             $library['config']['js']['output_directory'] = substr($library['config']['js']['output_directory'], 0, -1);
         }
 
         // Set the output path
         $output_hash = md5(serialize($output_hash));
         $output_file = Media::asset($library['config']['js']['output_directory'] . DIRECTORY_SEPARATOR . $output_hash, 'js');
-		$output_file = str_replace("\\", "/", $output_file);
+        $output_file = str_replace("\\", "/", $output_file);
         $output_folder = $webroot . strstr($output_file, $output_hash, true);
 
         // If the output directory doesn't exist, return the scripts like normal... TODO: also ensure permissions to write here?
-        if(!file_exists($output_folder)) {
+        if (!file_exists($output_folder)) {
             // If it doesn't exist, try to create it
             if (!mkdir($output_folder, 0777, true)) {
                 die('Failed to create folders...');
             }
             // If it still doesn't exist, return the scripts
-            if(!file_exists($output_folder)) {
+            if (!file_exists($output_folder)) {
                 return $this->_context->scripts();
             }
         }
 
-        if(!empty($library['config']['js']['compression'])) {
-            if(!file_exists($webroot . $output_file)) {
+        if (!empty($library['config']['js']['compression'])) {
+            if (!file_exists($webroot . $output_file)) {
                 $js = '';
                 // JSMin
-                if(($library['config']['js']['compression'] === true) || ($library['config']['js']['compression'] == 'jsmin')) {
-                    foreach($this->_context->scripts as $file) {
-                        if(preg_match('/"(http:\/\/.+?)"/', $file, $matches)) {
+                if (($library['config']['js']['compression'] === true) || ($library['config']['js']['compression'] == 'jsmin')) {
+                    foreach ($this->_context->scripts as $file) {
+                        if (preg_match('/"(http:\/\/.+?)"/', $file, $matches)) {
                             $js .= \li3_assets\jsminphp\JSMin::minify(file_get_contents($matches[1]));
                             continue;
                         }
-                        if(preg_match('/src="([^"]*)"/', $file, $matches)) {
+                        if (preg_match('/src="([^"]*)"/', $file, $matches)) {
                             $script = $webroot . Media::asset($matches[1], 'js');
                             // It is possible that a reference to a file that does not exist was passed
-                            if(file_exists($script)) {
+                            if (file_exists($script)) {
                                 $js .= \li3_assets\jsminphp\JSMin::minify(file_get_contents($script));
                             }
                         }
                     }
                 // Dean Edwards Packer
-                } elseif($library['config']['js']['compression'] == 'packer') {
-                    foreach($this->_context->scripts as $file) {
-                        if(preg_match('/"(http:\/\/.+?)"/', $file, $matches)) {
+                } elseif ($library['config']['js']['compression'] == 'packer') {
+                    foreach ($this->_context->scripts as $file) {
+                        if (preg_match('/"(http:\/\/.+?)"/', $file, $matches)) {
                             $packer = new \li3_assets\packer\JavaScriptPacker(file_get_contents($matches[1]), $library['config']['js']['packer_encoding'], $script, $library['config']['js']['packer_fast_decode'], $script, $library['config']['js']['packer_special_chars']);
                             $js .= $packer->pack();
                             continue;
                         }
-                        if(preg_match('/src="([^"]*)"/', $file, $matches)) {
+                        if (preg_match('/src="([^"]*)"/', $file, $matches)) {
                             $script = $webroot . Media::asset($matches[1], 'js');
                             // It is possible that a reference to a file that does not exist was passed
-                            if(file_exists($script)) {
+                            if (file_exists($script)) {
                                 $script_contents = file_get_contents($script);
                                 $packer = new \li3_assets\packer\JavaScriptPacker($script_contents, $library['config']['js']['packer_encoding'], $script, $library['config']['js']['packer_fast_decode'], $script, $library['config']['js']['packer_special_chars']);
                                 $js .= $packer->pack();
@@ -123,24 +126,24 @@ class Optimize extends \lithium\template\Helper {
                         }
                     }
                 // Just link files
-                } elseif($library['config']['js']['compression'] == 'link') {
-                    foreach($this->_context->scripts as $file) {
-                        if(preg_match('/"(http:\/\/.+?)"/', $file, $matches)) {
-                            $context = stream_context_create(array(
-                                'http' => array(
+                } elseif ($library['config']['js']['compression'] == 'link') {
+                    foreach ($this->_context->scripts as $file) {
+                        if (preg_match('/"(http:\/\/.+?)"/', $file, $matches)) {
+                            $context = stream_context_create([
+                                'http' => [
                                     'method' => 'GET',
-                                    'header' => implode("\r\n", array(
+                                    'header' => implode("\r\n", [
                                         'Accept-Charset: utf-8',
-                                    )),
-                                )
-                            ));
+                                    ]),
+                                ]
+                            ]);
                             $js .= file_get_contents($matches[1], false, $context);
                             continue;
                         }
-                        if(preg_match('/src="([^"]*)"/', $file, $matches)) {
+                        if (preg_match('/src="([^"]*)"/', $file, $matches)) {
                             $script = $webroot . Media::asset($matches[1], 'js');
                             // It is possible that a reference to a file that does not exist was passed
-                            if(file_exists($script)) {
+                            if (file_exists($script)) {
                                 $js .= file_get_contents($script);
                             }
                         }
@@ -149,7 +152,7 @@ class Optimize extends \lithium\template\Helper {
                 file_put_contents($webroot . $output_file, $js);
             }
             // One last safety check to ensure the file is there (reasons why it may not be: primarily, write permissions)
-            if(file_exists($webroot . $output_file)) {
+            if (file_exists($webroot . $output_file)) {
                 return '<script type="text/javascript" src="' . Media::asset($output_file, 'js') . '"></script>';
             } else {
                 return $this->_context_scripts();
@@ -157,29 +160,29 @@ class Optimize extends \lithium\template\Helper {
         } else {
             return $this->_context->scripts();
         }
-
     }
 
     /**
      * Outputs the compressed and combined CSS on the page.
      *
     */
-    public function styles() {
+    public function styles()
+    {
         $webroot = Media::webroot(true);
-        $output_hash = array();
+        $output_hash = [];
         // Before any compression and combination is done, order the styles.
         // Sort them all by a "weight" key set like: $this->html->style('mystyle.css', array('weight' => 1))
         $ordered_styles = $this->_context->styles;
         foreach ($ordered_styles as $key => $value) {
-            if(preg_match('/href="(\/.*)\.css"/', $value, $matches)) {
+            if (preg_match('/href="(\/.*)\.css"/', $value, $matches)) {
                 $sheet = $webroot . Media::asset($matches[1], 'css');
-                if(file_exists($sheet)) {
+                if (file_exists($sheet)) {
                     $output_hash[] = $sheet . filemtime($sheet);
                 }
             }
         }
 
-        usort($ordered_styles, function($a, $b) {
+        usort($ordered_styles, function ($a, $b) {
             $a = (preg_match('/weight="([0-9].*)"/', $a, $matches)) ? $matches[1]:999;
             $b = (preg_match('/weight="([0-9].*)"/', $b, $matches)) ? $matches[1]:999;
             return ($a < $b) ? -1 : 1;
@@ -190,46 +193,46 @@ class Optimize extends \lithium\template\Helper {
 
         $library = Libraries::get('li3_assets');
         // Set Defaults
-        $library += array('config' => array());
-        $library['config'] += array('css' => array());
+        $library += ['config' => []];
+        $library['config'] += ['css' => []];
 
-        $library['config']['css'] += array(
+        $library['config']['css'] += [
             'compression' => true, // possible values: "tidy", true, false
             'tidy_template' => 'highest_compression', // possible values: "high_compression", "highest_compression", "low_compression", or "default"
             'less_debug' => false, // sends lessphp error message to a log file, possible values: true, false
             'output_directory' => 'optimized' // directory is from webroot/css if full path is not defined
-        );
+        ];
 
         // Ensure output directory is formatted properly, first remove any beginning slashes
-        if($library['config']['css']['output_directory'][0] == DIRECTORY_SEPARATOR) {
+        if ($library['config']['css']['output_directory'][0] == DIRECTORY_SEPARATOR) {
             $library['config']['css']['output_directory'] = substr($library['config']['css']['output_directory'], 1);
         }
         // ...then any trailing slashes
-        if(substr($library['config']['css']['output_directory'], -1, 1) == DIRECTORY_SEPARATOR) {
+        if (substr($library['config']['css']['output_directory'], -1, 1) == DIRECTORY_SEPARATOR) {
             $library['config']['css']['output_directory'] = substr($library['config']['css']['output_directory'], 0, -1);
         }
 
         // Set the output path
         $output_hash = md5(serialize($output_hash));
         $output_file = Media::asset($library['config']['css']['output_directory'] . DIRECTORY_SEPARATOR . $output_hash, 'css');
-		$output_file = str_replace("\\", "", $output_file);
+        $output_file = str_replace("\\", "", $output_file);
         $output_folder = $webroot . strstr($output_file, $output_hash, true);
 
         // If the output directory doesn't exist, return the scripts like normal...
-        if(!file_exists($output_folder)) {
+        if (!file_exists($output_folder)) {
             // If it doesn't exist, try to create it
             if (!mkdir($output_folder, 0777, true)) {
                 die('Failed to create folders...');
             }
             // If it still doesn't exist, return the scripts
-            if(!file_exists($output_folder)) {
+            if (!file_exists($output_folder)) {
                 return $this->_context->styles();
             }
         }
 
         // Run any referenced .less files through lessphp first
-        foreach($this->_context->styles as $file) {
-            if(preg_match('/\/css\/(.*.less).css"/', $file, $matches)) {
+        foreach ($this->_context->styles as $file) {
+            if (preg_match('/\/css\/(.*.less).css"/', $file, $matches)) {
                 $sheet = $webroot . substr(Media::asset($matches[1], 'css'), 0, -4);
                 try {
                     include(LITHIUM_APP_PATH . DIRECTORY_SEPARATOR . 'libraries' . DIRECTORY_SEPARATOR . 'li3_assets' . DIRECTORY_SEPARATOR . 'lessphp' . DIRECTORY_SEPARATOR . 'lessc.php');
@@ -237,7 +240,7 @@ class Optimize extends \lithium\template\Helper {
                     // fortunately, the Html::script() helper will automatically append .css, so the output file can just have .css appended too and match.
                     $less::ccompile($sheet, $sheet . '.css');
                 } catch (\exception $ex) {
-                    if($library['config']['css']['less_debug'] === true) {
+                    if ($library['config']['css']['less_debug'] === true) {
                         $fp = fopen($output_folder . DIRECTORY_SEPARATOR .'less_errors', 'a');
                         fwrite($fp, '[' . date("D M j G:i:s Y") . '] [file ' . $file . '] ' . $ex->getMessage() . "\n");
                         fclose($fp);
@@ -246,14 +249,14 @@ class Optimize extends \lithium\template\Helper {
             }
         }
         // Check compression type and compress/combine
-        if(!empty($library['config']['css']['compression'])) {
+        if (!empty($library['config']['css']['compression'])) {
             $css = '';
-            if(!file_exists($webroot . $output_file)) {
-                $sheets = array();
+            if (!file_exists($webroot . $output_file)) {
+                $sheets = [];
                 // true is just basic compression and combination. Basically remove white spaces and line breaks where possible.
-                if($library['config']['css']['compression'] === true) {
-                    foreach($this->_context->styles as $file) {
-                        if(preg_match('/"(http:\/\/.+?)"/', $file, $matches)) {
+                if ($library['config']['css']['compression'] === true) {
+                    foreach ($this->_context->styles as $file) {
+                        if (preg_match('/"(http:\/\/.+?)"/', $file, $matches)) {
                             $css .= file_get_contents($matches[1]);
                             continue;
                         }
@@ -268,12 +271,12 @@ class Optimize extends \lithium\template\Helper {
                                 }
                             }
                         }*/
-                        if(preg_match('/href="(\/.*)\.css"/', $file, $matches)) {
+                        if (preg_match('/href="(\/.*)\.css"/', $file, $matches)) {
                             $sheet = $webroot . Media::asset($matches[1], 'css');
-                            if(!in_array($sheet, $sheets)) {
+                            if (!in_array($sheet, $sheets)) {
                                 $sheets[] = $sheet;
                                 // It is possible that a reference to a file that does not exist was passed
-                                if(file_exists($sheet)) {
+                                if (file_exists($sheet)) {
                                     $css .= file_get_contents($sheet);
                                 }
                             }
@@ -282,45 +285,44 @@ class Optimize extends \lithium\template\Helper {
                     // remove comments
                     $css = preg_replace('!/\*[^*]*\*+([^/][^*]*\*+)*/!', '', $css);
                     // remove tabs, spaces, newlines, etc.
-                    $css = str_replace(array("\r\n", "\r", "\n", "\t", '  ', '    ', '    '), '', $css);
+                    $css = str_replace(["\r\n", "\r", "\n", "\t", '  ', '    ', '    '], '', $css);
                     // remove single spaces next to braces (can't remove single spaces everywhere, but we can in a few places)
-                    $css = str_replace(array('{ ', ' {', '; }'), array('{', '{', ';}'), $css);
+                    $css = str_replace(['{ ', ' {', '; }'], ['{', '{', ';}'], $css);
                 // 'tidy' setting will run the css files through csstidy which not only removes white spaces and line breaks, but also shortens things like #000000 to #000, etc. where possible.
-                } elseif($library['config']['css']['compression'] == 'tidy') {
+                } elseif ($library['config']['css']['compression'] == 'tidy') {
                     include(LITHIUM_APP_PATH . DIRECTORY_SEPARATOR . 'libraries' . DIRECTORY_SEPARATOR . 'li3_assets' . DIRECTORY_SEPARATOR . 'csstidy' . DIRECTORY_SEPARATOR . 'CssTidy.php');
                     $tidy = new \CssTidy();
-                    $tidy->set_cfg('remove_last_;',TRUE);
+                    $tidy->set_cfg('remove_last_;', true);
                     $tidy->load_template($library['config']['css']['tidy_template']);
                     // Loop through all the css files, run them through tidy, and combine into one css file
-                    foreach($this->_context->styles as $file) {
-                        if(preg_match('/"(http:\/\/.+?)"/', $file, $matches)) {
+                    foreach ($this->_context->styles as $file) {
+                        if (preg_match('/"(http:\/\/.+?)"/', $file, $matches)) {
                             $tidy->parse(file_get_contents($matches[1]));
                             $css .= $tidy->print->plain();
                             continue;
                         }
-                        if(preg_match('/\/css\/(.*)"/', $file, $matches)) {
-                           $sheet = $webroot . Media::asset($matches[1], 'css');
+                        if (preg_match('/\/css\/(.*)"/', $file, $matches)) {
+                            $sheet = $webroot . Media::asset($matches[1], 'css');
                             // It is possible that a reference to a file that does not exist was passed
-                            if(file_exists($sheet)) {
+                            if (file_exists($sheet)) {
                                 $tidy->parse(file_get_contents($sheet));
                                 $css .= $tidy->print->plain();
                             }
                         }
-                        if(preg_match('/href="(\/.*)\.css"/', $file, $matches)) {
+                        if (preg_match('/href="(\/.*)\.css"/', $file, $matches)) {
                             $sheet = $webroot . Media::asset($matches[1], 'css');
                             // It is possible that a reference to a file that does not exist was passed
-                            if(file_exists($sheet)) {
+                            if (file_exists($sheet)) {
                                 $tidy->parse(file_get_contents($sheet));
                                 $css .= $tidy->print->plain();
                             }
                         }
                     }
-
                 }
                 file_put_contents($webroot . $output_file, $css);
             }
             // One last safety check to ensure the file is there (reasons why it may not be: primarily, write permissions)
-            if(file_exists($webroot . $output_file)) {
+            if (file_exists($webroot . $output_file)) {
                 return '<link rel="stylesheet" type="text/css" href="' . Media::asset($output_file, 'css') . '" />';
             } else {
                 return $this->_context->styles();
@@ -329,7 +331,6 @@ class Optimize extends \lithium\template\Helper {
             // If compression wasn't set, just return the style sheets like normal
             return $this->_context->styles();
         }
-
     }
 
     /*
@@ -337,25 +338,26 @@ class Optimize extends \lithium\template\Helper {
      * in that template as base64 data URIs. Note: IE6 & 7 do not support data URIs.
      *
     */
-    public function images() {
-        $this->_context->Html->applyFilter('image', function($self, $params, $chain) {
+    public function images()
+    {
+        $this->_context->Html->applyFilter('image', function ($self, $params, $chain) {
             $library = Libraries::get('li3_assets');
             // Set defaults
-            $library += array('config' => array());
-            $library['config'] += array('image' => array());
-            $library['config']['image'] += array(
+            $library += ['config' => []];
+            $library['config'] += ['image' => []];
+            $library['config']['image'] += [
                                                 'compression' => true,
-                                                'allowed_formats' => array('jpeg', 'jpg', 'jpe', 'png', 'gif')
-                                            );
+                                                'allowed_formats' => ['jpeg', 'jpg', 'jpe', 'png', 'gif']
+                                            ];
 
             // If the image is not in the list of allowed formats or compression is false, don't encode it, just display it as normal
             $format = substr($params['path'], strrpos($params['path'], '.') + 1);
             if ((!in_array($format, $library['config']['image']['allowed_formats'])) || ($library['config']['image']['compression'] !== true)) {
-		return $chain->next($self, $params, $chain);
-	    }
+                return $chain->next($self, $params, $chain);
+            }
 
             // Encode the image data
-            if(substr($params['path'], 0, 4) == 'http') {
+            if (substr($params['path'], 0, 4) == 'http') {
                 $file = $params['path'];
             } else {
                 $file = Media::webroot(true) . Media::asset($params['path'], 'image');
@@ -364,7 +366,7 @@ class Optimize extends \lithium\template\Helper {
 
             // Set the html options that go within the img tag
             $html_options = '';
-            foreach($params['options'] as $k => $v) {
+            foreach ($params['options'] as $k => $v) {
                 $html_options .= $k . '="' . htmlspecialchars($v, ENT_QUOTES, 'UTF-8') . '" ';
             }
 
@@ -372,6 +374,4 @@ class Optimize extends \lithium\template\Helper {
             return '<img src="data:image/'.$format.';base64,'.$data.'" ' . $html_options . '/>';
         });
     }
-
 }
-?>

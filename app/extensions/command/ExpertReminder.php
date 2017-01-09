@@ -4,9 +4,11 @@ namespace app\extensions\command;
 
 use \app\models\Pitch;
 
-class ExpertReminder extends \app\extensions\command\CronJob {
+class ExpertReminder extends \app\extensions\command\CronJob
+{
 
-    public function run() {
+    public function run()
+    {
         $this->header('Welcome to the ExpertReminder command!');
         $res = Pitch::ExpertReminder();
         $messages = ($res == 1) ? ' message' : ' messages';

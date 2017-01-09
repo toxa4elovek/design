@@ -1,32 +1,32 @@
 <?php
 function mb_basename($file)
 {
-    return end(explode('/',$file));
+    return end(explode('/', $file));
 }?>
 
 <div class="wrapper pitchpanel login">
 
-    <?=$this->view()->render(array('element' => 'header'), array('logo' => 'logo', 'header' => 'header2'))?>
+    <?=$this->view()->render(['element' => 'header'], ['logo' => 'logo', 'header' => 'header2'])?>
 
     <div class="middle">
         <div class="middle_inner_gallery" style="padding-top:25px">
-            <?=$this->view()->render(array('element' => 'pitch-info/infotable'), array('pitch' => $pitch))?>
+            <?=$this->view()->render(['element' => 'pitch-info/infotable'], ['pitch' => $pitch])?>
 
             <ul class="tabs-curve group">
                 <li style="z-index: 3;">
-                    <?=$this->html->link('Решения', array('controller' => 'pitches', 'action' => 'view', 'id' => $pitch->id), array('class' => 'menu-toggle ajaxgallery', 'data-page' => 'gallery'))?>
+                    <?=$this->html->link('Решения', ['controller' => 'pitches', 'action' => 'view', 'id' => $pitch->id], ['class' => 'menu-toggle ajaxgallery', 'data-page' => 'gallery'])?>
                 </li>
                 <li class="active" style="z-index: 2;">
-                    <?=$this->html->link('Бриф', array('controller' => 'pitches', 'action' => 'details', 'id' => $pitch->id), array('class' => 'menu-toggle ajaxgallery', 'data-page' => 'brief'))?>
+                    <?=$this->html->link('Бриф', ['controller' => 'pitches', 'action' => 'details', 'id' => $pitch->id], ['class' => 'menu-toggle ajaxgallery', 'data-page' => 'brief'])?>
                 </li>
                 <li style="z-index: 1;">
-                    <?=$this->html->link('Участники', array('controller' => 'pitches', 'action' => 'designers', 'id' => $pitch->id), array('class' => 'menu-toggle ajaxgallery', 'data-page' => 'designers'))?>
+                    <?=$this->html->link('Участники', ['controller' => 'pitches', 'action' => 'designers', 'id' => $pitch->id], ['class' => 'menu-toggle ajaxgallery', 'data-page' => 'designers'])?>
                 </li>
             </ul>
             <div class="gallery_container">
                 <nav class="other_nav_gallery clear">
                     <?php
-                    if(
+                    if (
                         (((int) $pitch->premium === 0) && (!$this->user->isPitchOwner($pitch->user_id)) && ($pitch->status < 1) && ($pitch->published == 1) && $disableUpload === false)
                         ||
                         (((int) $pitch->premium === 1) &&
@@ -37,12 +37,14 @@ function mb_basename($file)
                             ($this->user->isAdmin() === true) ||
                             ($this->user->getAwardedSolutionNum() > 0)))
                     ):?>
-                        <a href="/pitches/upload/<?=$pitch->id?>" class="button add_solution <?php if($this->session->read('user.confirmed_email') == '0') {echo 'needConfirm';}?> <?php echo ($this->user->designerTimeRemain($pitch)) ? ' needWait' : '';?>">предложить решение</a>
-                        <?php elseif(($pitch->status == 1) && ($pitch->awarded == 0)):?>
+                        <a href="/pitches/upload/<?=$pitch->id?>" class="button add_solution <?php if ($this->session->read('user.confirmed_email') == '0') {
+    echo 'needConfirm';
+}?> <?php echo ($this->user->designerTimeRemain($pitch)) ? ' needWait' : '';?>">предложить решение</a>
+                        <?php elseif (($pitch->status == 1) && ($pitch->awarded == 0)):?>
                         <!-- <img src="/img/status1.jpg" class="other-nav-right active" style="position:relative;top:-40px;margin-right: 40px;" alt="Идет выбор победителя"/> -->
-                        <?php elseif(($pitch->status == 1) && ($pitch->awarded != 0)):?>
+                        <?php elseif (($pitch->status == 1) && ($pitch->awarded != 0)):?>
                         <!-- <img src="/img/winner-selected.jpg" class="other-nav-right active" style="position:relative;top:-40px;margin-right: 40px;" alt="Победитель выбран"/> -->
-                        <?php elseif($pitch->status == 2):?>
+                        <?php elseif ($pitch->status == 2):?>
                         <!-- <img src="/img/status2.jpg" class="other-nav-right active" style="position:relative;top:-40px;margin-right: 40px;" alt="Питч завершен"/> -->
                     <?php endif;?>
                 </nav>
@@ -50,7 +52,7 @@ function mb_basename($file)
                 <div class="Center clr">
                     <div class="details">
                         <?php
-                        if(
+                        if (
                             ((int) $pitch->premium === 1) &&
                             ((int) $pitch->status < 1) &&
                             ((int) $pitch->published === 1) &&
@@ -72,9 +74,9 @@ function mb_basename($file)
                         <h2 class="blueheading">Название</h2>
                         <p class="regular"><?=$pitch->title?></p>
 
-                        <?php if((!empty($pitch->industry)) && ($pitch->industry != 'N;')):
-                            if($unserialized = unserialize($pitch->industry)):
-                                $job_types = array(
+                        <?php if ((!empty($pitch->industry)) && ($pitch->industry != 'N;')):
+                            if ($unserialized = unserialize($pitch->industry)):
+                                $job_types = [
                                     'realty' => 'Недвижимость / Строительство',
                                     'auto' => 'Автомобили / Транспорт',
                                     'finances' => 'Финансы / Бизнес',
@@ -90,10 +92,10 @@ function mb_basename($file)
                                     'children' => 'Дети',
                                     'security' => 'Охрана / Безопасность',
                                     'health' => 'Медицина / Здоровье',
-                                    'it' => 'Компьютеры / IT');
-                                $selected = array();
+                                    'it' => 'Компьютеры / IT'];
+                                $selected = [];
                                 foreach ($job_types as $k => $v):
-                                    if(in_array($k, $unserialized)):
+                                    if (in_array($k, $unserialized)):
                                         $selected[] = $v;
                                     endif;
                                 endforeach;
@@ -104,7 +106,7 @@ function mb_basename($file)
                         <p class="regular"><?php echo $pitch->industry?></p>
                         <?php endif;?>
 
-                        <?php if(!empty($pitch->{'business-description'})):?>
+                        <?php if (!empty($pitch->{'business-description'})):?>
                         <h2 class="blueheading">Описание бизнеса/деятельности</h2>
                         <div class="editor_content"><?=$this->brief->briefDetails($pitch, 'business-description')?></div>
                         <?php endif;?>
@@ -114,20 +116,20 @@ function mb_basename($file)
 
                         <div class="separator" style="width:620px; margin:0;"></div>
 
-                        <?=$this->view()->render(array('element' => 'pitch-details/' . $pitch->category_id), array('pitch' => $pitch))?>
+                        <?=$this->view()->render(['element' => 'pitch-details/' . $pitch->category_id], ['pitch' => $pitch])?>
 
                         <div class="separator" style="width:620px; margin:0;"></div>
 
-                        <?php if(($pitch->category_id != 7) && ($pitch->category_id != 1)):?>
+                        <?php if (($pitch->category_id != 7) && ($pitch->category_id != 1)):?>
                             <h2 class="blueheading">Можно ли дополнительно использовать материал из банков с изображениями или шрифтами?</h2>
-                            <?php if($pitch->materials):?>
+                            <?php if ($pitch->materials):?>
                             <p class="regular">да, допустимая стоимость одного изображения — <?=$pitch->{'materials-limit'}?> Р.-</p>
                             <?php else:?>
                             <p class="regular">нет</p>
                             <?php endif;?>
-                        <?php elseif($pitch->category_id == 1):?>
+                        <?php elseif ($pitch->category_id == 1):?>
                             <h2 class="blueheading">Можно ли дополнительно использовать платные шрифты?</h2>
-                            <?php if($pitch->materials):?>
+                            <?php if ($pitch->materials):?>
                             <p class="regular">да, допустимая стоимость — <?=$pitch->{'materials-limit'}?> Р.-</p>
                             <?php else:?>
                             <p class="regular">нет</p>
@@ -135,25 +137,25 @@ function mb_basename($file)
                         <?php endif;?>
 
                         <h2 class="blueheading">Формат файла:</h2>
-                        <?php if(!empty($pitch->fileFormats)):?>
+                        <?php if (!empty($pitch->fileFormats)):?>
                         <p class="regular">
                             <?= implode(', ', unserialize($pitch->fileFormats))?>
                         </p>
                         <?php endif;?>
                         <p class="regular"><?=$this->brief->deleteHtmlTagsAndInsertHtmlLinkInText($pitch->fileFormatDesc)?></p>
-                        <?php if((!empty($files)) && (count($files) > 0)):?>
+                        <?php if ((!empty($files)) && (count($files) > 0)):?>
                         <div class="separator" style="width:620px; margin:0;"></div>
                         <h2 class="blueheading">Прикрепленные документы:</h2>
 
                         <ul>
-                            <?php foreach($files as $file):?>
+                            <?php foreach ($files as $file):?>
                             <li class="regular">
                             <?php if (empty($file->originalbasename)):?>
                                 <a style="font-size:15px;text-decoration: none;" href="<?=$file->weburl?>"><?=mb_basename($file->filename)?></a><br>
                             <?php else:?>
                                 <a style="font-size:15px;text-decoration: none;" href="/pitchfiles/1<?=mb_basename($file->filename);?>"><?=$file->originalbasename;?></a><br>
                             <?php endif;?>
-                            <?php if(!empty($file->{'file-description'})):?>
+                            <?php if (!empty($file->{'file-description'})):?>
                             <p style="font-size:15px;text-decoration: none;"><?=$file->{'file-description'}?></p>
                             <?php endif;?>
                             </li>
@@ -161,7 +163,7 @@ function mb_basename($file)
                         </ul>
                         <?php endif?>
                         <?php endif?>
-                      <?php if($this->user->isLoggedIn()):?>
+                      <?php if ($this->user->isLoggedIn()):?>
                       <div class="separator" style="width: 620px; margin:30px 0 15px;"></div>
                       <div style="height:20px;margin-top:22px;"><span id="rating_brief">Оцените бриф:</span>
                         <div style="position:relative;left:100px;bottom:20px;" id="pitch_rating" data-pitchid="<?=$pitch->id?>" data-read="<?php echo $this->session->read('user.id') ? 'false' : 'true' ?>" data-rating="<?=$rating?>"></div>
@@ -177,16 +179,16 @@ function mb_basename($file)
                         <?php echo $this->stream->renderStream(3);?>
                     </div>
                 </div>
-                <?php if(($pitch->status == 0) && ($pitch->published == 1)):?>
+                <?php if (($pitch->status == 0) && ($pitch->published == 1)):?>
                 <!--div class="gogo">
-                    <p style="font: italic 17px georgia;margin-bottom: 0px; height: 30px;"><?=$this->html->link('Есть идеи?', array('controller' => 'pitches', 'action' => 'upload', 'id' => $pitch->id), array('class' => 'idea', 'style' => 'display: block; width: 424px; height: 30px;','escape' => false))?></p>
+                    <p style="font: italic 17px georgia;margin-bottom: 0px; height: 30px;"><?=$this->html->link('Есть идеи?', ['controller' => 'pitches', 'action' => 'upload', 'id' => $pitch->id], ['class' => 'idea', 'style' => 'display: block; width: 424px; height: 30px;', 'escape' => false])?></p>
 
-                    <p><?=$this->html->link('УЧАСТВУЙ!', array('controller' => 'pitches', 'action' => 'upload', 'id' => $pitch->id), array('class' => 'go', 'style' => 'display:block;width:424px;', 'escape' => false))?></p>
+                    <p><?=$this->html->link('УЧАСТВУЙ!', ['controller' => 'pitches', 'action' => 'upload', 'id' => $pitch->id], ['class' => 'go', 'style' => 'display:block;width:424px;', 'escape' => false])?></p>
 
                 </div-->
                 <?php endif;?>
 
-                <?php if($pitch->private == 0):?>
+                <?php if ($pitch->private == 0):?>
                 <div class="separator" style="width: 620px; margin: 30px 0 15px 0;"></div>
                 <div style="">
                     <div class="social-likes" data-counters="no" data-url="https://godesigner.ru/pitches/details/<?=$pitch->id?>">
@@ -201,13 +203,13 @@ function mb_basename($file)
                 <div class="separator" style="width: 620px; margin: 30px 0 15px 0;"></div>
 
                 <a data-fav="<?= $this->user->hasFavouritePitches() ?>" href="/pitches" class="all-pitches-link"></a>
-                <?php if(($this->user->isLoggedIn()) && ($this->user->hasFavouritePitches()) && ($this->user->isPitchFavourite($pitch->id))):?>
+                <?php if (($this->user->isLoggedIn()) && ($this->user->hasFavouritePitches()) && ($this->user->isPitchFavourite($pitch->id))):?>
                     <a href="#" class="fav-minus" data-pitchid="<?=$pitch->id?>" id="fav" data-type="remove"></a>
-                <?php elseif($this->user->isLoggedIn()):?>
+                <?php elseif ($this->user->isLoggedIn()):?>
                     <a href="#" class="fav-plus" data-pitchid="<?=$pitch->id?>" id="fav" data-type="add"></a>
                 <?php endif?>
                 <?php
-                if(
+                if (
                     ((int) $pitch->premium === 0) ||
                     (((int) $pitch->premium === 1) &&
                         (($this->user->isPitchOwner($pitch->id) === true) ||
@@ -221,7 +223,7 @@ function mb_basename($file)
 
                 <div style="margin-top:15px;">
                     <section class="white" style="margin: 0 -34px">
-                        <?=$this->view()->render(array('element' => 'pitchcommentform'), array('pitch' => $pitch))?>
+                        <?=$this->view()->render(['element' => 'pitchcommentform'], ['pitch' => $pitch])?>
                     </section>
                 </div>
             </div><!-- /gallery_container -->
@@ -234,9 +236,9 @@ function mb_basename($file)
     var autosuggestUsers = <?php echo json_encode($autosuggestUsers)?>;
 </script>
 
-<?=$this->view()->render(array('element' => 'popups/warning'), array('freePitch' => $freePitch, 'pitchesCount' => $pitchesCount, 'pitch' => $pitch))?>
+<?=$this->view()->render(['element' => 'popups/warning'], ['freePitch' => $freePitch, 'pitchesCount' => $pitchesCount, 'pitch' => $pitch])?>
 
-<?=$this->html->script(array(
+<?=$this->html->script([
     'flux/flux.min.js',
     '/js/enjoyhint.js',
     'http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999),
@@ -256,5 +258,5 @@ function mb_basename($file)
     'pitches/view.js',
     'pitches/gallery.js',
     'pitches/details.js'
-), array('inline' => false))?>
-<?=$this->html->style(array('/css/enjoyhint.css', '/messages12', '/pitches12', '/view', '/pitch_overview', '/css/social-likes_flat'), array('inline' => false))?>
+], ['inline' => false])?>
+<?=$this->html->style(['/css/enjoyhint.css', '/messages12', '/pitches12', '/view', '/pitch_overview', '/css/social-likes_flat'], ['inline' => false])?>

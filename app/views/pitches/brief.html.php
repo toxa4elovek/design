@@ -305,7 +305,7 @@ endif;
                 foreach ($experts as $expert): if ($expert->enabled == 0) {
      continue;
  }
-                    if(((int) $category->id === 7) && ((int) $expert->id === 1)) {
+                    if (((int) $category->id === 7) && ((int) $expert->id === 1)) {
                         continue;
                     }
                     ?>

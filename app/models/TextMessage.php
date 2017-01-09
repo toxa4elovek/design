@@ -12,11 +12,11 @@ use lithium\data\entity\Record;
  * @method int count(array $conditions) static
  * @method RecordSet|null all(array $conditions = []) static
  */
-class TextMessage extends AppModel {
+class TextMessage extends AppModel
+{
 
     /**
      * @var array связи
      */
     public $belongsTo = ['User'];
-
 }

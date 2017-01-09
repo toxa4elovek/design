@@ -1,6 +1,6 @@
 <div class="wrapper">
 
-    <?=$this->view()->render(array('element' => 'header'), array('logo' => 'logo'))?>
+    <?=$this->view()->render(['element' => 'header'], ['logo' => 'logo'])?>
 
     <div class="middle">
         <div class="middle_inner">
@@ -20,7 +20,7 @@
                         <li>
                             <h3><?=$data['text']?></h3>
                             <div class="bar">
-                                <?php if($data['percent'] > 100):
+                                <?php if ($data['percent'] > 100):
                                     $data['percent'] = 100;
                                 endif ?>
                                 <div class="line<?php echo ($data['percent'] > 98) ? ' all-round' : '';?><?php echo ($data['percent'] < 2) ? ' zero-people' : '' ;?>" style="width: <?=$data['percent']?>%"></div>
@@ -64,7 +64,7 @@
                             <?php endforeach; ?>
                         </li>
                     <?php
-                        if($i >= $limit):
+                        if ($i >= $limit):
                             break;
                         endif;
                         $i++;
@@ -84,5 +84,5 @@
 
 </div><!-- .wrapper -->
 <div class="onTop">&nbsp;</div>
-<?=$this->html->script(array('jquery-plugins/jquery.scrollto.min.js', 'questions/index', 'social-likes.min.js'), array('inline' => false))?>
-<?=$this->html->style(array('/questions', '/css/social-likes_flat'), array('inline' => false))?>
+<?=$this->html->script(['jquery-plugins/jquery.scrollto.min.js', 'questions/index', 'social-likes.min.js'], ['inline' => false])?>
+<?=$this->html->style(['/questions', '/css/social-likes_flat'], ['inline' => false])?>

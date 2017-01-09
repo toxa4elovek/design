@@ -1,5 +1,5 @@
 <div style="padding: 5px 0;">
-    <?php switch($moderation->reason) {
+    <?php switch ($moderation->reason) {
         case 'plagiat':
             $reason = 'плагиат';
             break;
@@ -19,7 +19,7 @@
             $reason = 'просто так';
             break;
     }
-    switch($moderation->penalty) {
+    switch ($moderation->penalty) {
         case 0:
             $penalty = 'без штрафа';
             break;
@@ -42,10 +42,10 @@
         $postDate = date('d.m.y H:i', strtotime($modelData['created']));
         $messageInfo = 'message_info1';
         $user = \app\models\User::first($moderation->model_user);
-        $commentAuthor = $this->user->getFormattedName($user->first_name, $user->last_name );
+        $commentAuthor = $this->user->getFormattedName($user->first_name, $user->last_name);
         $panel = '<div class="' . $messageInfo . '" style="margin: 20px 40px 20px 0;">
                     <a href="/users/view/' . $moderation->model_user . '">' .
-                    $this->avatar->show(array('id' => $moderation->model_user)) .
+                    $this->avatar->show(['id' => $moderation->model_user]) .
                     '</a>
                     <a href="/users/view/' . $moderation->model_user . '" data-comment-to="' . $commentAuthor . '" class="replyto">
                         <span>' . $commentAuthor . '</span><br />
@@ -53,7 +53,6 @@
                     </a>
                 </div>';
         $text = '<p class="regular">' . $modelData['text'] . '</p>';
-
     } else {
         $model = 'Удаление решения';
         $file = '/img/copy-inv.png';

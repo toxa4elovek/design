@@ -12,13 +12,13 @@ class PromoMailer extends \li3_mailer\extensions\Mailer
      */
     public static function sendPromoCodeFollowUp($data)
     {
-        return self::_mail(array(
+        return self::_mail([
             'use-smtp' => true,
             'to' => $data['user']->email,
             'subject' => '1000 руб. от GoDesigner!',
             'data' => $data,
             'reply-to' => 'm.elenevskaya@godesigner.ru',
-        ));
+        ]);
     }
 
     /**
@@ -29,16 +29,17 @@ class PromoMailer extends \li3_mailer\extensions\Mailer
      */
     public static function sendGoodProfitFollowUp($data)
     {
-        return self::_mail(array(
+        return self::_mail([
             'use-smtp' => true,
             'to' => 'm.elenevskaya@godesigner.ru',
             'subject' => 'Неоплаченный проект',
             'data' => $data,
-        ));
+        ]);
     }
 
-    public static function sendStep3MarketingSalesFunnelEmail($data) {
-        return self::_mail(array(
+    public static function sendStep3MarketingSalesFunnelEmail($data)
+    {
+        return self::_mail([
             'use-smtp' => true,
             'to' => $data['email'],
             'subject' => '20% скидка!',
@@ -51,6 +52,6 @@ class PromoMailer extends \li3_mailer\extensions\Mailer
                 ]),
             ],
             'data' => $data,
-        ));
+        ]);
     }
 }

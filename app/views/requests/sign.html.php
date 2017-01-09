@@ -1,10 +1,10 @@
 <div class="wrapper pitchpanel login">
 
-<?=$this->view()->render(array('element' => 'header'), array('logo' => 'logo', 'header' => 'header2'))?>
+<?=$this->view()->render(['element' => 'header'], ['logo' => 'logo', 'header' => 'header2'])?>
 
 <div class="middle">
 <div class="middle_inner_gallery" style="padding-top:25px">
-    <?=$this->view()->render(array('element' => 'pitch-info/infotable'), array('pitch' => $pitch))?>
+    <?=$this->view()->render(['element' => 'pitch-info/infotable'], ['pitch' => $pitch])?>
 
     <div style="float:left; width: 627px;padding-bottom: 40px;">
         <h2 class="largest-header" style="text-align: center; margin-bottom: 30px;">ЭТО <a target="_blank" href="https://godesigner.ru/answers/view/64">ЗАКРЫТЫЙ ПРОЕКТ</a><br/> И ВАМ НУЖНО ПОДПИСАТЬ<br/> СОГЛАШЕНИЕ О НЕРАЗГЛАШЕНИИ!<h2>
@@ -70,12 +70,12 @@
         <a style="display: none;" id="shrink">свернуть</a>
         </div>
         <div style="height:2px;clear:both;width:580px;background: url(/img/obnovleniya_line.jpg) repeat-x scroll 0 100% transparent; margin-bottom: 15px;margin-top:15px;"></div>
-        <h3 class="greyboldheader" style="margin-bottom:10px;">Оставьте свои настоящие имя и фамилию <?= $this->view()->render(array('element' => 'newbrief/required_star'), array('tooltipClass' => "tooltip3")) ?>
+        <h3 class="greyboldheader" style="margin-bottom:10px;">Оставьте свои настоящие имя и фамилию <?= $this->view()->render(['element' => 'newbrief/required_star'], ['tooltipClass' => "tooltip3"]) ?>
         </h3>
         <form action="/requests/create" method="post">
             <input type="hidden" name="pitch_id" value="<?=$pitch->id?>">
-            <input class="sign-input" <?php if($errors): echo 'class="wrong-input"'; endif;?> style="color: #b6b6b6; font-size: 18px; font-family: OfficinaSansC Book, serif; width: 580px; margin-bottom: 15px;" type="text" name="first_name" placeholder="Имя"/>
-            <input class="sign-input" <?php if($errors): echo 'class="wrong-input"'; endif;?> style="color: #b6b6b6; font-size: 18px; font-family: OfficinaSansC Book, serif; width: 580px; margin-bottom: 15px;" type="text" name="last_name" placeholder="Фамилия"/>
+            <input class="sign-input" <?php if ($errors): echo 'class="wrong-input"'; endif;?> style="color: #b6b6b6; font-size: 18px; font-family: OfficinaSansC Book, serif; width: 580px; margin-bottom: 15px;" type="text" name="first_name" placeholder="Имя"/>
+            <input class="sign-input" <?php if ($errors): echo 'class="wrong-input"'; endif;?> style="color: #b6b6b6; font-size: 18px; font-family: OfficinaSansC Book, serif; width: 580px; margin-bottom: 15px;" type="text" name="last_name" placeholder="Фамилия"/>
             <div class="tos-container supplement" style="margin-bottom: 20px;">
                 <label><input type="checkbox" name="tos" style="vertical-align: middle; margin-right: 5px;"/>Подписывая соглашение о неразглашении, я соглашаюсь со всеми условиями, описанными в договоре о неразглашении.</label>
             </div>
@@ -102,8 +102,8 @@
 
 </div><!-- .wrapper -->
 
-<?= $this->view()->render(array('element' => 'popups/request_sign')); ?>
+<?= $this->view()->render(['element' => 'popups/request_sign']); ?>
 
 <div id="bridge" style="display:none;"></div>
-<?=$this->html->script(array('jcarousellite_1.0.1.js', 'jquery.simplemodal-1.4.2.js', 'jquery-plugins/jquery.scrollto.min.js', 'jquery.tooltip.js', 'requests/sign.js?' . mt_rand(100, 999)), array('inline' => false))?>
-<?=$this->html->style(array('/view', '/messages12', '/pitches12', '/pitch_overview'), array('inline' => false))?>
+<?=$this->html->script(['jcarousellite_1.0.1.js', 'jquery.simplemodal-1.4.2.js', 'jquery-plugins/jquery.scrollto.min.js', 'jquery.tooltip.js', 'requests/sign.js?' . mt_rand(100, 999)], ['inline' => false])?>
+<?=$this->html->style(['/view', '/messages12', '/pitches12', '/pitch_overview'], ['inline' => false])?>

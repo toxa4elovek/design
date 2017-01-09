@@ -45,7 +45,7 @@ interface PhealLogInterface
      * @param string $name
      * @param array $opts
      */
-    public function log($scope,$name,$opts);
+    public function log($scope, $name, $opts);
 
     /**
      * logs failed request api call including options and error message
@@ -54,5 +54,5 @@ interface PhealLogInterface
      * @param array $opts
      * @param string $message
      */
-    public function errorLog($scope,$name,$opts,$message);
+    public function errorLog($scope, $name, $opts, $message);
 }

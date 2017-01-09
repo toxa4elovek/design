@@ -15,132 +15,132 @@ use lithium\data\entity\Record;
 class Solutionfile extends AppModel
 {
 
-    public static $processImage = array(
-        'solutionView' => array(
+    public static $processImage = [
+        'solutionView' => [
             'image_resize' => true,
             'image_x' => 600,
             'image_ratio_y' => true,
             'convert_animation' => true
-        ),
-        'galleryLargeSize' => array(
+        ],
+        'galleryLargeSize' => [
             'image_resize' => true,
             'image_ratio_fill' => true,
             'image_x' => 180,
             'image_background_color' => '#ffffff',
             'image_y' => 135,
             'file_overwrite' => true,
-        ),
-        'gallerySiteSize' => array(
+        ],
+        'gallerySiteSize' => [
             'image_resize' => true,
             'image_x' => 800,
             'image_ratio_y' => true,
-        ),
-        'leftFeed' => array(
+        ],
+        'leftFeed' => [
             'image_resize' => true,
             'image_x' => 310,
             'image_y' => 240,
             'image_ratio_crop' => 'T',
             'file_overwrite' => true
-        ),
-        'pdfSummary' => array(
+        ],
+        'pdfSummary' => [
             'image_resize' => true,
             'image_x' => 333,
             'image_y' => 224,
             'image_ratio_crop' => 'T',
             'file_overwrite' => true
-        ),
-        'middleFeed' => array(
+        ],
+        'middleFeed' => [
             'image_resize' => true,
             'image_x' => 600,
             'image_y' => 500,
             'image_ratio_crop' => 'T',
             'file_overwrite' => true
-        ),
-        'tutdesign' => array(
+        ],
+        'tutdesign' => [
             'image_resize' => true,
             'image_ratio_fill' => true,
             'image_x' => 267,
             'image_background_color' => '#dddddd',
             'image_y' => 200,
             'file_overwrite' => true
-        ),
-        'mobile' => array(
+        ],
+        'mobile' => [
             'image_resize' => true,
             'image_ratio_fill' => true,
             'image_x' => 590,
             'image_background_color' => '#ffffff',
             'image_y' => 448,
             'file_overwrite' => true
-        ),
-    );
-    protected static $processImageWatermark = array(
-        'solutionView' => array(
+        ],
+    ];
+    protected static $processImageWatermark = [
+        'solutionView' => [
             'image_resize' => true,
             'image_x' => 600,
             'image_ratio_y' => true,
             'image_watermark' => 'img/closed_pitch_watermark.png',
             'image_watermark_position' => 'TR',
-        ),
-        'galleryLargeSize' => array(
+        ],
+        'galleryLargeSize' => [
             'image_resize' => true,
             'image_ratio_fill' => true,
             'image_x' => 180,
             'image_background_color' => '#ffffff',
             'image_y' => 135,
             'file_overwrite' => true,
-        ),
-        'gallerySiteSize' => array(
+        ],
+        'gallerySiteSize' => [
             'image_resize' => true,
             'image_x' => 800,
             'image_ratio_y' => true,
             'image_watermark' => 'img/closed_pitch_watermark.png',
             'image_watermark_position' => 'TR',
-        ),
-    );
-    protected static $tallImageModifier = array(
-        'galleryLargeSize' => array(
+        ],
+    ];
+    protected static $tallImageModifier = [
+        'galleryLargeSize' => [
             'image_resize' => true,
             'image_x' => 180,
             'image_y' => 135,
             'image_ratio_crop' => 'T',
             'file_overwrite' => true,
-        ),
-        'tutdesign' => array(
+        ],
+        'tutdesign' => [
             'image_resize' => true,
             'image_x' => 267,
             'image_y' => 200,
             'image_ratio_crop' => 'T',
             'file_overwrite' => true
-        ),
-        'leftFeed' => array(
+        ],
+        'leftFeed' => [
             'image_resize' => true,
             'image_x' => 310,
             'image_y' => 240,
             'image_ratio_crop' => 'T',
             'file_overwrite' => true
-        ),
-        'pdfSummary' => array(
+        ],
+        'pdfSummary' => [
             'image_resize' => true,
             'image_x' => 333,
             'image_y' => 224,
             'image_ratio_crop' => 'T',
             'file_overwrite' => true
-        ),
-        'middleFeed' => array(
+        ],
+        'middleFeed' => [
             'image_resize' => true,
             'image_x' => 600,
             'image_y' => 500,
             'image_ratio_crop' => 'T',
             'file_overwrite' => true
-        ),
-        'mobile' => array(
+        ],
+        'mobile' => [
             'image_resize' => true,
             'image_x' => 590,
             'image_y' => 448,
             'image_ratio_crop' => 'T',
             'file_overwrite' => true
-        ),
-    );
+        ],
+    ];
 
     public static function resize($params)
     {
@@ -149,13 +149,13 @@ class Solutionfile extends AppModel
             $options = self::$processImageWatermark;
         }
         foreach ($options as $option => $imageParams) {
-            $newname = self::first(array(
+            $newname = self::first([
                         'fields' => 'filename',
-                        'conditions' => array(
+                        'conditions' => [
                             'model_id' => $params['solution']->id,
                             'originalbasename' => $params['name'],
-                        ),
-            ));
+                        ],
+            ]);
             $newfiledata = pathinfo($newname->filename);
             $newfilename = $newfiledata['dirname'] . '/' . $newfiledata['filename'] . '_' . $option . '.' . $newfiledata['extension'];
             $imageProcessor = new \upload($newname->filename);
@@ -171,9 +171,9 @@ class Solutionfile extends AppModel
             }
 
             $imageProcessor->process($newfiledata['dirname']);
-            $conditions = array('model' => '\app\models\Solution', 'model_id' => $params['solution']->id, 'filekey' => 'solution' . '_' . $option, 'filename' => $newfilename);
-            $data = array('filename' => $newfilename) + $conditions;
-            if ($existingRow = self::first(array('conditions' => $conditions))) {
+            $conditions = ['model' => '\app\models\Solution', 'model_id' => $params['solution']->id, 'filekey' => 'solution' . '_' . $option, 'filename' => $newfilename];
+            $data = ['filename' => $newfilename] + $conditions;
+            if ($existingRow = self::first(['conditions' => $conditions])) {
                 $existingRow->set($data);
                 $existingRow->save();
             } else {
@@ -205,7 +205,7 @@ class Solutionfile extends AppModel
 
     public static function copy($model_id, $new_model)
     {
-        $files = self::all(array('conditions' => array('model_id' => $model_id, 'originalbasename' => array('!=' => ''))));
+        $files = self::all(['conditions' => ['model_id' => $model_id, 'originalbasename' => ['!=' => '']]]);
         $options = self::$processImage;
         if (count($files) > 0) {
             foreach ($files as $file) {
@@ -227,9 +227,9 @@ class Solutionfile extends AppModel
                     }
 
                     $imageProcessor->process($newfiledata['dirname']);
-                    $conditions = array('model' => '\app\models\Solution', 'model_id' => $new_model, 'filekey' => 'solution' . '_' . $option, 'filename' => $newfilename);
-                    $data = array('filename' => $newfilename) + $conditions;
-                    if ($existingRow = self::first(array('conditions' => $conditions))) {
+                    $conditions = ['model' => '\app\models\Solution', 'model_id' => $new_model, 'filekey' => 'solution' . '_' . $option, 'filename' => $newfilename];
+                    $data = ['filename' => $newfilename] + $conditions;
+                    if ($existingRow = self::first(['conditions' => $conditions])) {
                         $existingRow->set($data);
                         $existingRow->save();
                     } else {

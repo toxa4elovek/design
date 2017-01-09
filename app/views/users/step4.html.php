@@ -1,41 +1,41 @@
 <div class="wrapper">
 
-    <?=$this->view()->render(array('element' => 'header'), array('header' => 'header2'))?>
+    <?=$this->view()->render(['element' => 'header'], ['header' => 'header2'])?>
 
 
     <div class="conteiner">
         <section>
             <div class="menu">
 
-                <?=$this->view()->render(array('element' => 'step-menu'))?>
+                <?=$this->view()->render(['element' => 'step-menu'])?>
 
             </div>
         </section>
         <section>
             <div style="margin-left: 50px;">
-                <?=$this->view()->render(array('element' => 'complete-process/filtersmenu'), array('link' => ($solution->step == 4) ? 2 : 3))?>
+                <?=$this->view()->render(['element' => 'complete-process/filtersmenu'], ['link' => ($solution->step == 4) ? 2 : 3])?>
             </div>
             <?php
-            if(($solution->pitch->category_id == 7) && ($type == 'client')):?>
-                <?=$this->view()->render(array('element' => '/complete-process/stepmenu-designer'), array('solution' => $solution, 'step' => $step, 'type' => $type))?>
+            if (($solution->pitch->category_id == 7) && ($type == 'client')):?>
+                <?=$this->view()->render(['element' => '/complete-process/stepmenu-designer'], ['solution' => $solution, 'step' => $step, 'type' => $type])?>
             <?php else:?>
-                <?=$this->view()->render(array('element' => '/complete-process/stepmenu-designer'), array('solution' => $solution, 'step' => $step, 'type' => $type))?>
+                <?=$this->view()->render(['element' => '/complete-process/stepmenu-designer'], ['solution' => $solution, 'step' => $step, 'type' => $type])?>
             <?php endif?>
         </section>
         <section>
             <div class="center_block"  style="margin:35px 0 0 63px !important">
-                <?php if($grade):?>
+                <?php if ($grade):?>
                 <p style="font: normal 28px/1 RodeoC,sans-serif; text-transform:uppercase;text-align:center;color: #666666;text-shadow:-1px 0 0 #FFFFFF;margin-bottom:10px;margin-top:10px">та-дам!</p>
                 <p style="font: normal 28px/1 RodeoC,sans-serif; text-transform:uppercase;text-align:center;color: #FF584D;text-shadow:-1px 0 0 #FFFFFF;margin-bottom:10px">поздравляем, проект завершен!</p>
                 <p style="font: normal 28px/1 RodeoC,sans-serif; text-transform:uppercase;text-align:center;color: #666666;text-shadow:-1px 0 0 #FFFFFF;margin-bottom:10px">и мы будем рады видеть вас</p>
                 <p style="font: normal 28px/1 RodeoC,sans-serif; text-transform:uppercase;text-align:center;color: #666666;text-shadow:-1px 0 0 #FFFFFF;margin-bottom:10px">снова</p>
-                    <?php if($type == 'designer'):?>
+                    <?php if ($type == 'designer'):?>
                         <p style="margin-top: 40px; padding-top: 0; font: 16px/20px 'Arial', sans-serif;  display: block; margin-left: 0; text-align: center;" class="regular">Деньги поступят вам на счет<br> в течение 10 рабочих дней.</p>
                     <?php endif?>
                 <?php else:?>
-                <?php if($type == 'designer'):?>
+                <?php if ($type == 'designer'):?>
                 <span class="regular">Ура! Проект завершен. Мы поздравляем вас с отличной работой! Деньги поступят вам на счет в течение 10 рабочих дней. Пожалуйста, оцените работу заказчика и нашего сервиса. Мы будем рады видеть вас снова!</span>
-                <?php elseif($type == 'client') :?>
+                <?php elseif ($type == 'client') :?>
                 <span class="regular">Ура! Проект завершен. Мы поздравляем вас с отличной работой! Пожалуйста, оцените работу дизайнера и нашего сервиса. Мы будем рады видеть вас снова!</span>
                 <?php endif;?>
                 <div class="clr"></div>
@@ -43,10 +43,10 @@
 
                 <ul class="logo-properties sliderul" data-name="logo-properties" style="margin-top:40px;">
                     <li style="height:80px; width:600px;float:left;">
-                        <?php if($type == 'designer'):?>
+                        <?php if ($type == 'designer'):?>
                         <p class="steptitle">Общее впечатление от заказчика</p>
-                        <?php elseif($type == 'client') :?>
-                            <?php if($solution->pitch->category_id != 7):?>
+                        <?php elseif ($type == 'client') :?>
+                            <?php if ($solution->pitch->category_id != 7):?>
                                 <p class="steptitle">Общее впечатление от дизайнера</p>
                             <?php else:?>
                                 <p class="steptitle">Общее впечатление от копирайтера</p>
@@ -105,7 +105,7 @@
 
                     <div class="buttons">
                         <?php //if($this->user->isAdmin()):
-                        if(1 == 1):
+                        if (1 == 1):
                         ?>
                         <div class="continue spanned" style="margin-bottom:10px;">
                             <a href="">
@@ -124,11 +124,11 @@
                 </form>
                 <?php endif;?>
             </div>
-            <?=$this->view()->render(array('element' => '/complete-process/rightblock'), array('solution' => $solution, 'type' => $type))?>
+            <?=$this->view()->render(['element' => '/complete-process/rightblock'], ['solution' => $solution, 'type' => $type])?>
             <div class="clr"></div>
         </section>
     </div>
     <div class="conteiner-bottom"></div>
 </div><!-- .wrapper -->
-<?=$this->html->script(array('jquery-ui-1.11.4.min.js', 'users/step4'), array('inline' => false))?>
-<?=$this->html->style(array('/view', '/messages12', '/pitches12', '/pitches2', '/win_steps1.css', '/win_steps2_final3.css', '/portfolio.css',), array('inline' => false))?>
+<?=$this->html->script(['jquery-ui-1.11.4.min.js', 'users/step4'], ['inline' => false])?>
+<?=$this->html->style(['/view', '/messages12', '/pitches12', '/pitches2', '/win_steps1.css', '/win_steps2_final3.css', '/portfolio.css', ], ['inline' => false])?>

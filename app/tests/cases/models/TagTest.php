@@ -6,19 +6,21 @@ use app\extensions\tests\AppUnit;
 use app\models\Tag;
 use app\models\Solutiontag;
 
-class TagTest extends AppUnit {
+class TagTest extends AppUnit
+{
 
     public function setUp()
     {
-        $this->rollUp(array('Tag', 'Solutiontag', 'Solution'));
+        $this->rollUp(['Tag', 'Solutiontag', 'Solution']);
     }
 
     public function tearDown()
     {
-        $this->rollDown(array('Tag', 'Solutiontag', 'Solution'));
+        $this->rollDown(['Tag', 'Solutiontag', 'Solution']);
     }
 
-    public function testIsTagExists() {
+    public function testIsTagExists()
+    {
         // точное совпадение
         $this->assertTrue(Tag::isTagExists('Тег'));
 
@@ -32,32 +34,34 @@ class TagTest extends AppUnit {
         $this->assertFalse(Tag::isTagExists('абракадбра'));
     }
 
-    public function testSaveTag() {
+    public function testSaveTag()
+    {
         // Новый тег
         $tag = Tag::saveTag('Новый');
-        $latestTag = Tag::first(array('order' => array('id' => 'desc')));
+        $latestTag = Tag::first(['order' => ['id' => 'desc']]);
         $this->assertEqual($tag->id, $latestTag->id);
 
         // Уже существующий тег
         $tag = Tag::saveTag("godesigner.ru");
-        $existingTag = Tag::first(array('conditions' => array('name' => "godesigner.ru")));
+        $existingTag = Tag::first(['conditions' => ['name' => "godesigner.ru"]]);
         $this->assertEqual($tag->id, $existingTag->id);
 
         // Уже существующий тег, но неточное написание
         $tag = Tag::saveTag(" тег ");
-        $existingTag = Tag::first(array('conditions' => array('name' => "Тег")));
+        $existingTag = Tag::first(['conditions' => ['name' => "Тег"]]);
         $this->assertEqual($tag->id, $existingTag->id);
     }
 
-    public function testGetTagId() {
+    public function testGetTagId()
+    {
         // тег существует
         $id = Tag::getTagId('Тег');
-        $existingTag = Tag::first(array('conditions' => array('name' => "Тег")));
+        $existingTag = Tag::first(['conditions' => ['name' => "Тег"]]);
         $this->assertEqual($existingTag->id, $id);
 
         // тег существует, не точное написание
         $id = Tag::getTagId(" тег ");
-        $existingTag = Tag::first(array('conditions' => array('name' => "Тег")));
+        $existingTag = Tag::first(['conditions' => ['name' => "Тег"]]);
         $this->assertEqual($existingTag->id, $id);
 
         // тег не существует
@@ -65,13 +69,14 @@ class TagTest extends AppUnit {
         $this->assertFalse($id);
     }
 
-    public function testSaveSolutionTag() {
+    public function testSaveSolutionTag()
+    {
         // не существует
         $solutionId = 100;
         $result = Tag::saveSolutionTag('Проверка', $solutionId);
         $idOfSampleTag = Tag::getTagId('Проверка');
 
-        $solutionTag = Solutiontag::first(array('order' => array('id' => 'desc')));
+        $solutionTag = Solutiontag::first(['order' => ['id' => 'desc']]);
         $this->assertTrue(Tag::isTagExists('Проверка'));
         $this->assertEqual($result->id, $solutionTag->id);
         $this->assertEqual($idOfSampleTag, $solutionTag->tag_id);
@@ -80,7 +85,7 @@ class TagTest extends AppUnit {
         // тег уже существует
         $solutionId = 1000;
         $result = Tag::saveSolutionTag('Проверка', $solutionId);
-        $solutionTag2 = Solutiontag::first(array('order' => array('id' => 'desc')));
+        $solutionTag2 = Solutiontag::first(['order' => ['id' => 'desc']]);
         $this->assertTrue(Tag::isTagExists('Проверка'));
         $this->assertNotEqual($solutionTag->id, $solutionTag2->id);
         $this->assertEqual($result->id, $solutionTag2->id);
@@ -88,7 +93,8 @@ class TagTest extends AppUnit {
         $this->assertEqual($solutionId, $solutionTag2->solution_id);
     }
 
-    public function testGetags() {
+    public function testGetags()
+    {
         $result = Tag::getSuggest('Тег', true);
         $data = $result;
         $this->assertEqual(2, count($data));
@@ -109,14 +115,15 @@ class TagTest extends AppUnit {
         $this->assertEqual('Теги', $data[5]['name']);
     }
 
-    public function testRemoveTag() {
+    public function testRemoveTag()
+    {
         $solutionId = 100;
         Tag::saveSolutionTag('Проверка', $solutionId);
         $this->assertTrue(Tag::isTagExists('Проверка'));
-        $solutionTag = Solutiontag::first(array('conditions' => array('tag_id' => 5, 'solution_id' => $solutionId)));
+        $solutionTag = Solutiontag::first(['conditions' => ['tag_id' => 5, 'solution_id' => $solutionId]]);
         $this->assertTrue(is_object($solutionTag));
         $removeResult = Tag::removeTag('Проверка', $solutionId);
-        $solutionTag = Solutiontag::first(array('conditions' => array('tag_id' => 5, 'solution_id' => $solutionId)));
+        $solutionTag = Solutiontag::first(['conditions' => ['tag_id' => 5, 'solution_id' => $solutionId]]);
         $this->assertFalse($solutionTag);
         $all = Solutiontag::all();
         $this->assertTrue(count($all->data()) > 0);
@@ -129,7 +136,8 @@ class TagTest extends AppUnit {
         $this->assertTrue(Tag::isTagExists('Новая проверка'));
     }
 
-    public function testGetPopularTags() {
+    public function testGetPopularTags()
+    {
         Tag::saveSolutionTag('Проверка', 1);
         Tag::saveSolutionTag('Проверка', 2);
         Tag::saveSolutionTag('Проверка', 3);
@@ -143,36 +151,36 @@ class TagTest extends AppUnit {
         Tag::saveSolutionTag('Проверка3', 1);
         Tag::saveSolutionTag('Проверка3', 2);
         $result = Tag::getPopularTags(2);
-        $expected = array(
+        $expected = [
             'Проверка' => 6,
             'Проверка2' => 4
-        );
+        ];
         $this->assertEqual($expected, $result);
     }
 
-    public function testAdd() {
+    public function testAdd()
+    {
         $this->assertFalse(Tag::isTagExists('Проверка2'));
-        $array = array('tags' => array('Проверка2'));
+        $array = ['tags' => ['Проверка2']];
         Tag::add($array, 100);
         $this->assertTrue(Tag::isTagExists('Проверка2'));
         $id = Tag::getTagId('Проверка2');
-        $count = Solutiontag::count(array('conditions' => array('tag_id' => $id, 'solution_id' => 100)));
+        $count = Solutiontag::count(['conditions' => ['tag_id' => $id, 'solution_id' => 100]]);
         $this->assertEqual(1, $count);
 
-        $array = array('job-type' => array('finances'));
+        $array = ['job-type' => ['finances']];
         Tag::add($array, 101);
         $id = Tag::getTagId('Финансы');
         $id2 = Tag::getTagId('Бизнес');
-        $count = Solutiontag::count(array('conditions' => array('tag_id' => $id, 'solution_id' => 101)));
+        $count = Solutiontag::count(['conditions' => ['tag_id' => $id, 'solution_id' => 101]]);
         $this->assertEqual(1, $count);
-        $count = Solutiontag::count(array('conditions' => array('tag_id' => $id2, 'solution_id' => 101)));
+        $count = Solutiontag::count(['conditions' => ['tag_id' => $id2, 'solution_id' => 101]]);
         $this->assertEqual(1, $count);
 
-        $array = array('job-type' => array('sport'));
+        $array = ['job-type' => ['sport']];
         Tag::add($array, 102);
         $id = Tag::getTagId('Спорт');
-        $count = Solutiontag::count(array('conditions' => array('tag_id' => $id, 'solution_id' => 102)));
+        $count = Solutiontag::count(['conditions' => ['tag_id' => $id, 'solution_id' => 102]]);
         $this->assertEqual(1, $count);
     }
-
 }

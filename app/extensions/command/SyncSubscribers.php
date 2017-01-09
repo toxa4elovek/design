@@ -18,7 +18,7 @@ class SyncSubscribers extends CronJob
         $this->out(sprintf('Current total is %s, need to add %s', $currentTotal, $diff));
         $i = 1;
         $limit = $diff;
-        while($currentTotal < $maxLimit) {
+        while ($currentTotal < $maxLimit) {
             $projects = Pitch::all([
                 'conditions' => [
                     'Pitch.billed' => 1,
@@ -33,9 +33,9 @@ class SyncSubscribers extends CronJob
                 'with' => ['User']
             ]);
             foreach ($projects as $project) {
-                if($project->user->subscription_status > 0) {
+                if ($project->user->subscription_status > 0) {
                     $role = 'Абонент';
-                }else {
+                } else {
                     $role = 'Клиент';
                 }
                 $mailChimp->post("lists/055991fc8a/members", [
@@ -57,7 +57,8 @@ class SyncSubscribers extends CronJob
         $this->out('List has been updated.');
     }
 
-    public function getCurrentSubscribers($mailChimp) {
+    public function getCurrentSubscribers($mailChimp)
+    {
         $result = $mailChimp->get('lists/055991fc8a/members');
         $unsubscribed = $mailChimp->get('lists/055991fc8a/members', ['status' => 'unsubscribed']);
         $cleaned = $mailChimp->get('lists/055991fc8a/members', ['status' => 'cleaned']);

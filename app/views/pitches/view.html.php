@@ -1,27 +1,27 @@
 <div class="wrapper pitchpanel login">
 
-	<?=$this->view()->render(array('element' => 'header'), array('logo' => 'logo', 'header' => 'header2'))?>
+	<?=$this->view()->render(['element' => 'header'], ['logo' => 'logo', 'header' => 'header2'])?>
 
 	<div class="middle">
 	   <div class="middle_inner_gallery" style="padding-top:25px">
            <input type="hidden" value="<?=$pitch->id?>" name="pitch_id">
            <input type="hidden" value="<?= serialize($order) ?>">
-           <?php if($pitch->status == 1): ?>
+           <?php if ($pitch->status == 1): ?>
            <?php $days = ($pitch->experts) ? 6 : 4;?>
                <input type="hidden" value="<?=(time() > strtotime($pitch->finishDate.' +'.$days.' days')) ? 1 : 0?>" name="notFinish">
            <?php else: ?>
                <input type="hidden" value="0" name="notFinish">
            <?php endif ?>
-            <?=$this->view()->render(array('element' => 'pitch-info/infotable'), array('pitch' => $pitch))?>
+            <?=$this->view()->render(['element' => 'pitch-info/infotable'], ['pitch' => $pitch])?>
             <ul class="tabs-curve group">
                 <li class="active" style="z-index: 3;">
-                    <?=$this->html->link('Решения', array('controller' => 'pitches', 'action' => 'view', 'id' => $pitch->id), array('class' => 'menu-toggle ajaxgallery', 'data-page' => 'gallery'))?>
+                    <?=$this->html->link('Решения', ['controller' => 'pitches', 'action' => 'view', 'id' => $pitch->id], ['class' => 'menu-toggle ajaxgallery', 'data-page' => 'gallery'])?>
                 </li>
                 <li style="z-index: 2;">
-                    <?=$this->html->link('Бриф', array('controller' => 'pitches', 'action' => 'details', 'id' => $pitch->id), array('class' => 'menu-toggle ajaxgallery', 'data-page' => 'brief'))?>
+                    <?=$this->html->link('Бриф', ['controller' => 'pitches', 'action' => 'details', 'id' => $pitch->id], ['class' => 'menu-toggle ajaxgallery', 'data-page' => 'brief'])?>
                 </li>
                 <li style="z-index: 1;">
-                    <?=$this->html->link('Участники', array('controller' => 'pitches', 'action' => 'designers', 'id' => $pitch->id), array('class' => 'menu-toggle ajaxgallery', 'data-page' => 'designers'))?>
+                    <?=$this->html->link('Участники', ['controller' => 'pitches', 'action' => 'designers', 'id' => $pitch->id], ['class' => 'menu-toggle ajaxgallery', 'data-page' => 'designers'])?>
                 </li>
             </ul>
             <div class="gallery_container">
@@ -34,7 +34,7 @@
                     </p>
 
                     <?php
-                    if(
+                    if (
                         (((int) $pitch->premium === 0) && (!$this->user->isPitchOwner($pitch->user_id)) && ($pitch->status < 1) && ($pitch->published == 1) && $disableUpload === false)
                         ||
                         (((int) $pitch->premium === 1) &&
@@ -44,7 +44,9 @@
                             ($this->user->isAdmin() === true) ||
                             ($this->user->getAwardedSolutionNum() > 0)))
                     ):?>
-                        <a href="/pitches/upload/<?=$pitch->id?>" class="button add_solution <?php if($this->session->read('user.confirmed_email') == '0') {echo 'needConfirm';}?> <?php echo ($this->user->designerTimeRemain($pitch)) ? ' needWait' : '';?>">предложить решение</a>
+                        <a href="/pitches/upload/<?=$pitch->id?>" class="button add_solution <?php if ($this->session->read('user.confirmed_email') == '0') {
+    echo 'needConfirm';
+}?> <?php echo ($this->user->designerTimeRemain($pitch)) ? ' needWait' : '';?>">предложить решение</a>
                     <?php endif;?>
 
                 </nav>
@@ -52,23 +54,23 @@
                 <div class="portfolio_gallery">
                     <div class="pht"></div>
                     <?php
-                    $mySolutionList = array();
-                    $mySolutionNumList = array();
-                    if(((!empty($solutions) > 0) && ($pitch->published == 1)) || ($pitch->multiwinner != 0) && (!empty($solutions) > 0)): ?>
+                    $mySolutionList = [];
+                    $mySolutionNumList = [];
+                    if (((!empty($solutions) > 0) && ($pitch->published == 1)) || ($pitch->multiwinner != 0) && (!empty($solutions) > 0)): ?>
                     <ul class="list_portfolio main_portfolio">
-                        <?=$this->view()->render(array('element' => 'gallery'), compact('solutions', 'pitch', 'selectedsolution', 'sort', 'canViewPrivate', 'solutionsCount', 'pitchesCount', 'winnersUserIds'))?>
+                        <?=$this->view()->render(['element' => 'gallery'], compact('solutions', 'pitch', 'selectedsolution', 'sort', 'canViewPrivate', 'solutionsCount', 'pitchesCount', 'winnersUserIds'))?>
                     </ul>
                     <?php else:?>
                     <div class="bigfont">
                         <h2 class="title">
-                            <?php if($pitch->billed == 1):?>
+                            <?php if ($pitch->billed == 1):?>
                             Ещё никто не выложил свои идеи.
                             <?php else: ?>
                             Проект будет запущен после <a href="https://godesigner.ru/pitches/edit/<?= $pitch->id?>#step3">оплаты.</a>
                             <?php endif;?>
                         </h2>
-                        <?php if(!$this->user->isPitchOwner($pitch->user_id)):?>
-                        <h2 class="title"><?=$this->html->link('предложи свое решение', array('controller' => 'pitches', 'action' => 'upload', 'id' => $pitch->id), array('escape' => false))?></h2>
+                        <?php if (!$this->user->isPitchOwner($pitch->user_id)):?>
+                        <h2 class="title"><?=$this->html->link('предложи свое решение', ['controller' => 'pitches', 'action' => 'upload', 'id' => $pitch->id], ['escape' => false])?></h2>
                         <h2 class="title">и стань первым!</h2>
                         <?php endif?>
                     </div>
@@ -87,10 +89,10 @@
                 <?php endif; ?>
 
                 <section class="white" style="margin: 0 -34px">
-                    <?=$this->view()->render(array('element' => 'pitchcommentform'), array('pitch' => $pitch, 'initialSeparator' => $initialSeparator))?>
+                    <?=$this->view()->render(['element' => 'pitchcommentform'], ['pitch' => $pitch, 'initialSeparator' => $initialSeparator])?>
                 </section>
 
-                <?php if(((strtotime($pitch->started) > strtotime('2013-01-31'))) && ($pitch->published == 1) && ($pitch->id != 103263)):?>
+                <?php if (((strtotime($pitch->started) > strtotime('2013-01-31'))) && ($pitch->published == 1) && ($pitch->id != 103263)):?>
                 <div id="placeholder" style="height:215px;width:958px;position:relative;left:-63px;background-image: url('/img/zaglushka.png')"></div>
                 <div style="display:none;" id="floatingblock" class="floatingblock">
                     <table style="width:500px;float:left">
@@ -130,10 +132,10 @@
                                 <h2 id="avgPointsString" style="color: rgb(102, 102, 102); text-align: center; text-shadow: -1px 0px 0px rgb(255, 255, 255); margin-left: 0px; margin-top: 4px; font-size: 9px; width: 44px;">БАЛЛА</h2>
                             </a>
                         </div>
-                        <?php if($pitch->guaranteed == 0):?>
+                        <?php if ($pitch->guaranteed == 0):?>
                         <div style="width:200px;float:left;height:190px;text-align;center">
                             <h2 style="margin-top: 80px; font-size: 15px; font-weight: bold; color: rgb(102, 102, 102); text-shadow: -1px 0px 0px rgb(255, 255, 255); margin-left: 12px; width: 163px; text-align: center;" id="refundLabel"></h2>
-                            <?php if($pitch->type == 'company_project'):?>
+                            <?php if ($pitch->type == 'company_project'):?>
                                 <p style="color: rgb(102, 102, 102); margin-left: 0; margin-top: 17px; font: 14px/15px arial;">
                                     <a target="_blank" id="whatIsIt" href="https://godesigner.ru/answers/view/102">Абонентское обслуживание</a>
                                     <br />
@@ -155,16 +157,16 @@
                     </div>
                 </div>
                 <?php endif?>
-                <?php if(!$this->pitch->isReadyForLogosale($pitch)):?>
+                <?php if (!$this->pitch->isReadyForLogosale($pitch)):?>
                     <input type="hidden" value="0" name="isReadyForLogoale">
-                <!-- Solution Popup Dummy --><?=$this->view()->render(array('element' => 'popups/solution'), array('pitch' => $pitch))?>
+                <!-- Solution Popup Dummy --><?=$this->view()->render(['element' => 'popups/solution'], ['pitch' => $pitch])?>
                 <?php else: ?>
                     <input type="hidden" value="1" name="isReadyForLogoale">
-                    <!-- Solution Popup Dummy --><?=$this->view()->render(array('element' => 'popups/solution_sale'), array('data' => $data))?>
+                    <!-- Solution Popup Dummy --><?=$this->view()->render(['element' => 'popups/solution_sale'], ['data' => $data])?>
                 <?php endif?>
-                <?php if(($this->user->isPitchOwner($pitch->user_id)) && ($pitch->id != 103263)):?>
-                    <?php if(($pitch->status == 1) && ($pitch->awarded == 0)):
-                        if(($pitch->expert == 0) || (($pitch->expert == 1) && ($allowSelect = $this->pitch->expertOpinion($pitch->id)) && ($allowSelect != strtotime($pitch->finishDate)))):
+                <?php if (($this->user->isPitchOwner($pitch->user_id)) && ($pitch->id != 103263)):?>
+                    <?php if (($pitch->status == 1) && ($pitch->awarded == 0)):
+                        if (($pitch->expert == 0) || (($pitch->expert == 1) && ($allowSelect = $this->pitch->expertOpinion($pitch->id)) && ($allowSelect != strtotime($pitch->finishDate)))):
                         ?>
                     <div id="timer" data-expert="<?= ($this->pitch->expertOpinion($pitch->id) + 4 * DAY)?>" data-deadline="<?= $this->pitch->getChooseWinnerTime($pitch) ?>" data-currenttime="<?= time();?>">
                         <a href="/answers/view/70" target="_blank" class="lcd"></a>
@@ -198,21 +200,21 @@
 </div><!-- .wrapper -->
 
 <script>
-var needConfirmation = <?php if(($this->user->isPitchOwner($pitch->user_id)) && (($pitch->user->phone === '') || ($pitch->user->phone_valid == 0))): echo 'true'; else: echo 'false'; endif?>;
+var needConfirmation = <?php if (($this->user->isPitchOwner($pitch->user_id)) && (($pitch->user->phone === '') || ($pitch->user->phone_valid == 0))): echo 'true'; else: echo 'false'; endif?>;
 var autosuggestUsers = <?php echo json_encode($autosuggestUsers)?>;
 </script>
 
-<?=$this->view()->render(array('element' => 'popups/warning'), array('freePitch' => $freePitch, 'pitchesCount' => $pitchesCount, 'pitch' => $pitch))?>
-<?=$this->view()->render(array('element' => 'popups/phone_confirm'))?>
+<?=$this->view()->render(['element' => 'popups/warning'], ['freePitch' => $freePitch, 'pitchesCount' => $pitchesCount, 'pitch' => $pitch])?>
+<?=$this->view()->render(['element' => 'popups/phone_confirm'])?>
     <div id="bridge" style="display:none;"></div>
-<?php if((strtotime($pitch->started) > strtotime('2013-01-31'))):?>
-<?=$this->html->script(array('flux/flux.min.js', '/js/enjoyhint.js','http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), '//assets.pinterest.com/js/pinit.js', 'jquery.simplemodal-1.4.2.js', 'jquery-plugins/jquery.scrollto.min.js', 'socialite.js', 'jquery.hover.js', 'jquery.raty.min.js', 'jquery-ui-1.11.4.min.js', 'jquery.timeago.js', 'social-likes.min.js' ,'konva.0.9.5.min.js', 'jquery.tooltip.js', '/js/common/comments/UserAutosuggest.js', '/js/common/comments/actions/CommentsActions.js', 'pitches/plot.js', 'pitches/view.js', 'pitches/gallery.js'), array('inline' => false))?>
+<?php if ((strtotime($pitch->started) > strtotime('2013-01-31'))):?>
+<?=$this->html->script(['flux/flux.min.js', '/js/enjoyhint.js', 'http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), '//assets.pinterest.com/js/pinit.js', 'jquery.simplemodal-1.4.2.js', 'jquery-plugins/jquery.scrollto.min.js', 'socialite.js', 'jquery.hover.js', 'jquery.raty.min.js', 'jquery-ui-1.11.4.min.js', 'jquery.timeago.js', 'social-likes.min.js', 'konva.0.9.5.min.js', 'jquery.tooltip.js', '/js/common/comments/UserAutosuggest.js', '/js/common/comments/actions/CommentsActions.js', 'pitches/plot.js', 'pitches/view.js', 'pitches/gallery.js'], ['inline' => false])?>
     <?php else:?>
-    <?=$this->html->script(array('http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), '//assets.pinterest.com/js/pinit.js', 'jquery.simplemodal-1.4.2.js', 'jquery-plugins/jquery.scrollto.min.js', 'socialite.js', 'jquery.hover.js', 'jquery.raty.min.js', 'jquery-ui-1.11.4.min.js', 'jquery.timeago.js', 'konva.0.9.5.min.js', 'social-likes.min.js', 'jquery.tooltip.js',  'pitches/view.js', 'pitches/gallery.js'), array('inline' => false))?>
+    <?=$this->html->script(['http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999), '//assets.pinterest.com/js/pinit.js', 'jquery.simplemodal-1.4.2.js', 'jquery-plugins/jquery.scrollto.min.js', 'socialite.js', 'jquery.hover.js', 'jquery.raty.min.js', 'jquery-ui-1.11.4.min.js', 'jquery.timeago.js', 'konva.0.9.5.min.js', 'social-likes.min.js', 'jquery.tooltip.js',  'pitches/view.js', 'pitches/gallery.js'], ['inline' => false])?>
     <?php endif?>
-<?=$this->html->style(array(
+<?=$this->html->style([
     '/css/common/receipt.css',
     '/css/common/buttons.css',
     '/css/common/clear.css',
     '/css/enjoyhint.css',
-    '/messages12', '/pitches12', '/view', '/pitch_overview', '/css/viewsolution', '/css/social-likes_flat'), array('inline' => false))?>
+    '/messages12', '/pitches12', '/view', '/pitch_overview', '/css/viewsolution', '/css/social-likes_flat'], ['inline' => false])?>

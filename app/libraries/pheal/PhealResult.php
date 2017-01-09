@@ -67,7 +67,7 @@ class PhealResult implements PhealArrayInterface
     public function __construct($xml)
     {
         // switch to UTC
-        $oldtz	= date_default_timezone_get();
+        $oldtz    = date_default_timezone_get();
         date_default_timezone_set('UTC');
         
         $this->request_time = (string) $xml->currentTime;
@@ -75,19 +75,19 @@ class PhealResult implements PhealArrayInterface
         $this->request_time_unixtime = (int) strtotime($xml->currentTime);
         $this->cached_until_unixtime = (int) strtotime($xml->cachedUntil);
         
-	// workaround if cachedUntil is missing in API response (request + 1 hour)
-        if(!$this->cached_until)
-        {
+    // workaround if cachedUntil is missing in API response (request + 1 hour)
+        if (!$this->cached_until) {
             $this->cached_until_unixtime = $this->request_time_unixtime + 60*60;
-            $this->cached_until = date('Y-m-d H:i:s',$this->cached_until_unixtime);
+            $this->cached_until = date('Y-m-d H:i:s', $this->cached_until_unixtime);
         }
              
         // switch back to normal time
         date_default_timezone_set($oldtz);
 
         // error detection
-        if($xml->error)
+        if ($xml->error) {
             throw new PhealAPIException($xml->error["code"], (String) $xml->error, $xml);
+        }
         $this->_element = PhealElement::parse_element($xml->result);
     }
 
@@ -96,7 +96,7 @@ class PhealResult implements PhealArrayInterface
      * @param string $name
      * @return mixed
      */
-    public function  __get($name)
+    public function __get($name)
     {
         return $this->_element->$name;
     }
@@ -107,13 +107,14 @@ class PhealResult implements PhealArrayInterface
      */
     public function toArray()
     {
-        if($this->_element instanceof PhealArrayInterface)
-            return array(
+        if ($this->_element instanceof PhealArrayInterface) {
+            return [
                 'currentTime' => $this->request_time,
                 'cachedUntil' => $this->cached_until,
                 'result' => $this->_element->toArray()
-            );
-        else
-            return array();
+            ];
+        } else {
+            return [];
+        }
     }
 }

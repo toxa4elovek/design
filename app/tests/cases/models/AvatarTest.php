@@ -13,7 +13,7 @@ class AvatarTest extends AppUnit
     public function setUp()
     {
         Rcache::init();
-        $this->rollUp(array('Avatar', 'User'));
+        $this->rollUp(['Avatar', 'User']);
         copy(
             '/Users/dima/www/godesigner/app/resources/tmp/tests/avatar.png',
             '/Users/dima/www/godesigner/app/resources/tmp/avatar.png'
@@ -31,7 +31,7 @@ class AvatarTest extends AppUnit
     public function tearDown()
     {
         Rcache::flushdb();
-        $this->rollDown(array('Avatar', 'User'));
+        $this->rollDown(['Avatar', 'User']);
         if (file_exists('/Users/dima/www/godesigner/app/resources/tmp/avatar.png')) {
             unlink('/Users/dima/www/godesigner/app/resources/tmp/avatar.png');
         }

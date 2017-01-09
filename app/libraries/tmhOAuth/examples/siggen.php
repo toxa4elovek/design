@@ -23,8 +23,9 @@
 require '../tmhOAuth.php';
 require '../tmhUtilities.php';
 
-function welcome() {
-  echo <<<EOM
+function welcome()
+{
+    echo <<<EOM
 tmhOAuth PHP Signature Generator.
 This script generates an OAuth signature from adhoc values.
 No requests are made to the Twitter API.
@@ -42,13 +43,13 @@ $nonce           = tmhUtilities::read_input(PHP_EOL . 'Nonce' . PHP_EOL . '(leav
 $url             = tmhUtilities::read_input(PHP_EOL . 'URL' . PHP_EOL . '(e.g. https://api.twitter.com/1/account/verify_credentials.json)' . PHP_EOL);
 $action          = tmhUtilities::read_input(PHP_EOL . 'HTTP Action' . PHP_EOL . '(leave blank for GET)' . PHP_EOL);
 
-$tmhOAuth = new tmhOAuth(array(
+$tmhOAuth = new tmhOAuth([
   'consumer_key'    => $consumer_key,
   'consumer_secret' => $consumer_secret,
   'user_token'      => $user_token,
   'user_secret'     => $user_secret,
   'prevent_request' => true,
-));
+]);
 
 if (strlen($nonce) > 0) :
   $tmhOAuth->config['force_nonce'] = true;
@@ -81,4 +82,3 @@ echo 'Signing Key:' . $tmhOAuth->signing_key;
 echo PHP_EOL;
 echo 'Auth Header:' . $tmhOAuth->auth_header;
 echo PHP_EOL;
-?>

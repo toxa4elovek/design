@@ -22,21 +22,19 @@
 
 require '../tmhOAuth.php';
 require '../tmhUtilities.php';
-$tmhOAuth = new tmhOAuth(array(
+$tmhOAuth = new tmhOAuth([
   'consumer_key'    => 'YOUR_CONSUMER_KEY',
   'consumer_secret' => 'YOUR_CONSUMER_SECRET',
   'user_token'      => 'A_USER_TOKEN',
   'user_secret'     => 'A_USER_SECRET',
-));
+]);
 
-$code = $tmhOAuth->request('POST', $tmhOAuth->url('1/statuses/update'), array(
+$code = $tmhOAuth->request('POST', $tmhOAuth->url('1/statuses/update'), [
   'status' => 'My Twitter Message'
-));
+]);
 
 if ($code == 200) {
-  tmhUtilities::pr(json_decode($tmhOAuth->response['response']));
+    tmhUtilities::pr(json_decode($tmhOAuth->response['response']));
 } else {
-  tmhUtilities::pr($tmhOAuth->response['response']);
+    tmhUtilities::pr($tmhOAuth->response['response']);
 }
-
-?>

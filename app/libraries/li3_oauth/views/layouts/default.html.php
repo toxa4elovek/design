@@ -13,7 +13,7 @@
 	<title><?=$this->title(); ?></title>
 	<?php echo $this->html->style('base'); ?>
 	<?php echo $this->scripts(); ?>
-	<?php echo $this->html->link('Icon', null, array('type' => 'icon')); ?>
+	<?php echo $this->html->link('Icon', null, ['type' => 'icon']); ?>
 </head>
 <body>
 	<div id="container">

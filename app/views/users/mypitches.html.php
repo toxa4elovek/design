@@ -1,6 +1,6 @@
 <div class="wrapper login">
 
-    <?= $this->view()->render(array('element' => 'header'), array('header' => 'header2', 'logo' => 'logo')) ?>
+    <?= $this->view()->render(['element' => 'header'], ['header' => 'header2', 'logo' => 'logo']) ?>
 
     <div class="middle">
         <div class="middle_inner conteiners" style="margin-top: 0px;padding-left: 0px;">
@@ -8,7 +8,7 @@
             <section>
                 <div class="menu" style="background:none;border:none;width:857px;margin-left:63px;margin-top:0;">
                     <nav class="main_nav clear" style="width:832px;">
-                        <?= $this->view()->render(array('element' => 'office/nav')); ?>
+                        <?= $this->view()->render(['element' => 'office/nav']); ?>
                     </nav>
                 </div>
             </section>
@@ -99,8 +99,8 @@
     </div><!-- /middle -->
 
 </div><!-- .wrapper -->
-<?= $this->view()->render(array('element' => 'popups/mypitches_popup')); ?>
-<?= $this->html->script(array(
+<?= $this->view()->render(['element' => 'popups/mypitches_popup']); ?>
+<?= $this->html->script([
     '/js/users/office/PushNotificationsStatus.js',
     'jcarousellite_1.0.1.js',
     'jquery.timers.js',
@@ -115,6 +115,6 @@
     'jquery.keyboard.js',
     'users/mypitches_loader.js',
     'pitches/index.js'
-), array('inline' => false)) ?>
+], ['inline' => false]) ?>
 <?=
-$this->html->style(array('/main2.css', '/pitches2.css', '/edit', '/view', '/messages12', '/pitches12', '/win_steps1.css', '/win_steps2_final3.css', '/portfolio.css'), array('inline' => false))?>
+$this->html->style(['/main2.css', '/pitches2.css', '/edit', '/view', '/messages12', '/pitches12', '/win_steps1.css', '/win_steps2_final3.css', '/portfolio.css'], ['inline' => false])?>

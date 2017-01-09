@@ -1,15 +1,15 @@
 <div class="wrapper">
 
-    <?=$this->view()->render(array('element' => 'header'), array(
+    <?=$this->view()->render(['element' => 'header'], [
         'logo' => 'logo',
-        'header' => 'header2'))
+        'header' => 'header2'])
     ?>
 
     <div class="middle">
         <div class="main" id="subscribe-main-container">
 
             <nav class="main_nav subscribe-menu clear">
-                <?=$this->view()->render(array('element' => 'office/nav'));?>
+                <?=$this->view()->render(['element' => 'office/nav']);?>
             </nav>
 
             <script>
@@ -41,7 +41,7 @@
     </div><!-- .middle -->
 
 </div><!-- .wrapper -->
-<?=$this->html->script(array(
+<?=$this->html->script([
     'jcarousellite_1.0.1.js',
     'jquery.timers.js',
     'jquery.simplemodal-1.4.2.js',
@@ -70,8 +70,8 @@
     '/js/users/subscriber/ProjectSearchResultsTableHeader.js',
     '/js/users/subscriber/ProjectSearchSubscriberFilters.js',
     '/js/users/subscriber.js',
-    'users/office.js'), array('inline' => false))?>
-<?=$this->html->style(array(
+    'users/office.js'], ['inline' => false])?>
+<?=$this->html->style([
     '/edit',
     '/css/common/buttons.css',
     '/css/common/project-search-results.css',
@@ -80,4 +80,4 @@
     '/css/bootstrap/bootstrap-datetimepicker.min.css',
     '/css/bootstrap/bootstrap-datetimepicker-standalone.css',
     '/css/users/subscriber.css'
-), array('inline' => false))?>
+], ['inline' => false])?>

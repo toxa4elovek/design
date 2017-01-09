@@ -1,20 +1,20 @@
 <?php
 $details = unserialize($pitch->specifics);
-$subValues = array('Имя / название', 'Адрес сайта', 'Слоган / лозунг');
+$subValues = ['Имя / название', 'Адрес сайта', 'Слоган / лозунг'];
 ?>
 <script type="text/javascript">var logoProperties = <?php echo json_encode($details["audience"])?>;</script>
 <h2 class="blueheading">Вид копирайтинга</h2>
-<?php if(isset($details['first-option'])):?>
+<?php if (isset($details['first-option'])):?>
 <p class="regular"><?=$subValues[0]?></p>
 <?php endif;
-if(isset($details['second-option'])):?>
+if (isset($details['second-option'])):?>
 <p class="regular"><?=$subValues[1]?></p>
 <?php endif;
-if(isset($details['third-option'])):?>
+if (isset($details['third-option'])):?>
 <p class="regular"><?=$subValues[2]?></p>
 <?php endif;?>
 
-<?php if(!empty($details['qualities'])):?>
+<?php if (!empty($details['qualities'])):?>
 <h2 class="blueheading">Какие три качества должно отражать название/слоган?</h2>
 <p class="regular"><?=$details['qualities']?></p>
 <?php endif?>
@@ -51,12 +51,12 @@ if(isset($details['third-option'])):?>
     </ul><!-- .logo-properties -->
 </div>
 
-<?php if(!empty($details['copy-extra'])):?>
+<?php if (!empty($details['copy-extra'])):?>
 <h2 class="blueheading">Есть что добавить?</h2>
 <p class="regular"><?=$this->brief->deleteHtmlTagsAndInsertHtmlLinkInText($details['copy-extra'])?></p>
 <?php endif;?>
     
-<?php if(!empty($details['copy-ref'])):?>
+<?php if (!empty($details['copy-ref'])):?>
 <h2 class="blueheading">Референсы</h2>
 <p class="regular"><?=$this->brief->deleteHtmlTagsAndInsertHtmlLinkInText($details['copy-ref'])?></p>
 <?php endif;?>

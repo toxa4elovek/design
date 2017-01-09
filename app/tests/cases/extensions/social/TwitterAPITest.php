@@ -6,15 +6,18 @@ use app\extensions\social\TwitterAPI;
 use app\extensions\tests\AppUnit;
 use app\tests\mocks\social\TwitterServerMock;
 
-class TwitterAPITest extends AppUnit {
+class TwitterAPITest extends AppUnit
+{
 
     public $api = null;
 
-    public function setUp() {
+    public function setUp()
+    {
         $this->api = new TwitterAPI('app\tests\mocks\social\TwitterServerMock');
     }
 
-    public function tearDown() {
+    public function tearDown()
+    {
         $this->api = new null();
     }
 
@@ -89,5 +92,4 @@ class TwitterAPITest extends AppUnit {
         }
     }
 */
-
 }

@@ -8,7 +8,7 @@
 
         <div class="groupc">
 
-    <?php if($pitch->billed == 1):?>
+    <?php if ($pitch->billed == 1):?>
         <?php if ($this->user->isAdmin()):?>
             <p><label>Ведите количество макетов/страниц</label>
             <input type="text" class="specific-prop" value="<?=$specifics['site-sub']?>" name="site-sub" />
@@ -25,7 +25,9 @@
 
     <p>
         <label>Какие сайты вам нравятся? Откуда дизайнерам черпать вдохновение?</label>
-        <textarea placeholder="" rows="5" cols="30" name="site-inspiration" class="<?php if(empty($specifics['site-inspiration'])) echo 'placeholder'?> specific-prop"><?=$specifics['site-inspiration']?></textarea>
+        <textarea placeholder="" rows="5" cols="30" name="site-inspiration" class="<?php if (empty($specifics['site-inspiration'])) {
+    echo 'placeholder';
+}?> specific-prop"><?=$specifics['site-inspiration']?></textarea>
     </p>
         </div>
         <div class="groupc">

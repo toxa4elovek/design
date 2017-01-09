@@ -33,7 +33,7 @@ class PhealHTTPException extends PhealException
      * http response code to string conversation
      * @var array list of httpcode > description
      */
-    static private $codes = array(
+    private static $codes = [
 
         // Informational 1xx
         100 => "Continue",
@@ -85,7 +85,7 @@ class PhealHTTPException extends PhealException
         503 => "Service Unavailable",
         504 => "Gateway Timeout",
         505 => "HTTP Version Not Supported"
-    );
+    ];
 
     /**
      * requested url
@@ -98,10 +98,10 @@ class PhealHTTPException extends PhealException
      * @param int $code
      * @param string $url
      */
-    public function  __construct($code, $url)
+    public function __construct($code, $url)
     {
         // safe url and strip apikey for security reasons
-        $this->url = preg_replace("/(apikey=)[a-z0-9]*/i","\\1...",$url);
+        $this->url = preg_replace("/(apikey=)[a-z0-9]*/i", "\\1...", $url);
 
         // build error message
         $message = self::$codes[$code] ? self::$codes[$code] : 'Unknown HTTP Code';

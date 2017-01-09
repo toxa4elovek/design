@@ -1,19 +1,19 @@
 <div class="wrapper pitchpanel login">
 
-    <?=$this->view()->render(array('element' => 'header'), array('logo' => 'logo', 'header' => 'header2'))?>
+    <?=$this->view()->render(['element' => 'header'], ['logo' => 'logo', 'header' => 'header2'])?>
 
     <div class="middle">
         <div class="middle_inner_gallery" style="padding-top:25px">
-            <?=$this->view()->render(array('element' => 'pitch-info/infotable'), array('pitch' => $pitch))?>
+            <?=$this->view()->render(['element' => 'pitch-info/infotable'], ['pitch' => $pitch])?>
             <ul class="tabs-curve group">
                 <li style="z-index: 3;">
-                    <?=$this->html->link('Решения', array('controller' => 'pitches', 'action' => 'view', 'id' => $pitch->id), array('class' => 'menu-toggle ajaxgallery', 'data-page' => 'gallery'))?>
+                    <?=$this->html->link('Решения', ['controller' => 'pitches', 'action' => 'view', 'id' => $pitch->id], ['class' => 'menu-toggle ajaxgallery', 'data-page' => 'gallery'])?>
                 </li>
                 <li style="z-index: 2;">
-                    <?=$this->html->link('Бриф', array('controller' => 'pitches', 'action' => 'details', 'id' => $pitch->id), array('class' => 'menu-toggle ajaxgallery', 'data-page' => 'brief'))?>
+                    <?=$this->html->link('Бриф', ['controller' => 'pitches', 'action' => 'details', 'id' => $pitch->id], ['class' => 'menu-toggle ajaxgallery', 'data-page' => 'brief'])?>
                 </li>
                 <li class="active" style="z-index: 1;">
-                    <?=$this->html->link('Участники', array('controller' => 'pitches', 'action' => 'designers', 'id' => $pitch->id), array('class' => 'menu-toggle ajaxgallery', 'data-page' => 'designers'))?>
+                    <?=$this->html->link('Участники', ['controller' => 'pitches', 'action' => 'designers', 'id' => $pitch->id], ['class' => 'menu-toggle ajaxgallery', 'data-page' => 'designers'])?>
                 </li>
             </ul>
             <div class="gallery_container">
@@ -29,7 +29,7 @@
                         <a class="sort-by-rating<?php if ($sort == 'rating'):?> active<?php endif;?>" href="/pitches/designers/<?=$pitch->id?>?sorting=rating"><span title="сортировать по рейтингу"></span></a>
                     </p>
                     <?php
-                    if(
+                    if (
                         (((int) $pitch->premium === 0) && (!$this->user->isPitchOwner($pitch->user_id)) && ($pitch->status < 1) && ($pitch->published == 1) && $disableUpload === false)
                         ||
                         (((int) $pitch->premium === 1) &&
@@ -39,25 +39,27 @@
                             ($this->user->isAdmin() === true) ||
                             ($this->user->getAwardedSolutionNum() > 0)))
                     ):?>
-                        <a href="/pitches/upload/<?=$pitch->id?>" class="button add_solution <?php if($this->session->read('user.confirmed_email') == '0') {echo 'needConfirm';}?> <?php echo ($this->user->designerTimeRemain($pitch)) ? ' needWait' : '';?>">предложить решение</a>
-                        <?php elseif(($pitch->status == 1) && ($pitch->awarded == 0)):?>
+                        <a href="/pitches/upload/<?=$pitch->id?>" class="button add_solution <?php if ($this->session->read('user.confirmed_email') == '0') {
+    echo 'needConfirm';
+}?> <?php echo ($this->user->designerTimeRemain($pitch)) ? ' needWait' : '';?>">предложить решение</a>
+                        <?php elseif (($pitch->status == 1) && ($pitch->awarded == 0)):?>
                         <!-- <img src="/img/status1.jpg" class="other-nav-right active" style="position:relative;top:-40px;margin-right: 40px;" alt="Идет выбор победителя"/> -->
-                        <?php elseif(($pitch->status == 1) && ($pitch->awarded != 0)):?>
+                        <?php elseif (($pitch->status == 1) && ($pitch->awarded != 0)):?>
                         <!-- <img src="/img/winner-selected.jpg" class="other-nav-right active" style="position:relative;top:-40px;margin-right: 40px;" alt="Победитель выбран"/> -->
-                        <?php elseif($pitch->status == 2):?>
+                        <?php elseif ($pitch->status == 2):?>
                         <!-- <img src="/img/status2.jpg" class="other-nav-right active" style="position:relative;top:-40px;margin-right: 40px;" alt="Питч завершен"/> -->
                     <?php endif;?>
                 </nav>
 
-                <?php if(($designersCount > 0) && ($pitch->published == 1)): ?>
+                <?php if (($designersCount > 0) && ($pitch->published == 1)): ?>
                 <ul class="portfolio_gallery designers_tab">
-                    <?=$this->view()->render(array('element' => 'designers'), compact('designers', 'pitch', 'sort', 'canViewPrivate', 'fromDesignersTab', 'designersCount', 'winnersUserIds'))?>
+                    <?=$this->view()->render(['element' => 'designers'], compact('designers', 'pitch', 'sort', 'canViewPrivate', 'fromDesignersTab', 'designersCount', 'winnersUserIds'))?>
                 </ul>
                 <?php else: ?>
                 <div class="bigfont clr" style="margin-bottom: 76px; padding-top: 80px;">
                     <h2 class="title clr">Ещё никто не выложил свои идеи.</h2>
-                    <?php if(!$this->user->isPitchOwner($pitch->user_id)):?>
-                    <h2 class="title"><?=$this->html->link('предложи свое решение', array('controller' => 'pitches', 'action' => 'upload', 'id' => $pitch->id), array('escape' => false))?></h2>
+                    <?php if (!$this->user->isPitchOwner($pitch->user_id)):?>
+                    <h2 class="title"><?=$this->html->link('предложи свое решение', ['controller' => 'pitches', 'action' => 'upload', 'id' => $pitch->id], ['escape' => false])?></h2>
                     <h2 class="title">и стань первым!</h2>
                     <?php endif?>
                 </div>
@@ -75,7 +77,7 @@
                 </div>
                 <?php endif; ?>
                 <section class="white" style="margin: 0 -34px">
-                <?=$this->view()->render(array('element' => 'pitchcommentform'), compact('pitch', 'initialSeparator', 'fromDesignersTab'))?>
+                <?=$this->view()->render(['element' => 'pitchcommentform'], compact('pitch', 'initialSeparator', 'fromDesignersTab'))?>
                 </section>
             </div><!-- /gallery_container -->
         </div><!-- /middle_inner -->
@@ -87,9 +89,9 @@
     var autosuggestUsers = <?php echo json_encode($autosuggestUsers)?>;
 </script>
 
-<?=$this->view()->render(array('element' => 'popups/warning'), array('freePitch' => $freePitch, 'pitchesCount' => $pitchesCount, 'pitch' => $pitch))?>
+<?=$this->view()->render(['element' => 'popups/warning'], ['freePitch' => $freePitch, 'pitchesCount' => $pitchesCount, 'pitch' => $pitch])?>
 
-<?=$this->html->script(array(
+<?=$this->html->script([
     'flux/flux.min.js',
     '/js/enjoyhint.js',
     'http://userapi.com/js/api/openapi.js?' . mt_rand(100, 999),
@@ -107,5 +109,5 @@
     'pitches/plot.js',
     'pitches/view.js',
     'pitches/gallery.js'
-), array('inline' => false))?>
-<?=$this->html->style(array('/css/enjoyhint.css', '/messages12', '/pitches12', '/view', '/pitch_overview'), array('inline' => false))?>
+], ['inline' => false])?>
+<?=$this->html->style(['/css/enjoyhint.css', '/messages12', '/pitches12', '/view', '/pitch_overview'], ['inline' => false])?>

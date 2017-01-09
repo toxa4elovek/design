@@ -5,7 +5,8 @@ use app\models\Solution;
 use app\models\Pitch;
 use app\models\User;
 
-class SolutionsMailer extends \li3_mailer\extensions\Mailer {
+class SolutionsMailer extends \li3_mailer\extensions\Mailer
+{
 
     /**
      * Метод отправки уведомления о новом решения для заказчика
@@ -13,18 +14,19 @@ class SolutionsMailer extends \li3_mailer\extensions\Mailer {
      * @param $solutionId
      * @return bool
      */
-    public static function sendNewSolutionNotification($solutionId) {
-        if($solution = Solution::first($solutionId)) {
+    public static function sendNewSolutionNotification($solutionId)
+    {
+        if ($solution = Solution::first($solutionId)) {
             $pitch = Pitch::first($solution->pitch_id);
             $owner = Pitch::getOwnerOfPitch($pitch->id);
-            if($owner->email_newsol == 1){
-                $data = array('user' => $owner, 'pitch' => $pitch, 'solution' => $solution);
-                return self::_mail(array(
+            if ($owner->email_newsol == 1) {
+                $data = ['user' => $owner, 'pitch' => $pitch, 'solution' => $solution];
+                return self::_mail([
                     'to' => $owner->email,
                     'subject' => 'Добавлено новое решение!',
                     'data' => $data
-                ));
-        }
+                ]);
+            }
         }
         return false;
     }
@@ -35,17 +37,18 @@ class SolutionsMailer extends \li3_mailer\extensions\Mailer {
      * @param $solutionId
      * @return bool
      */
-    public static function sendVictoryNotification($solutionId) {
+    public static function sendVictoryNotification($solutionId)
+    {
         $solution = Solution::first($solutionId);
         $pitch = Pitch::first($solution->pitch_id);
         $designer = User::first($solution->user_id);
-        $data = array('user' => $designer, 'solution' => $solution, 'pitch' => $pitch);
-        return self::_mail(array(
+        $data = ['user' => $designer, 'solution' => $solution, 'pitch' => $pitch];
+        return self::_mail([
             'use-smtp' => true,
             'to' => $designer->email,
             'subject' => 'Ваше решение стало победителем!',
             'data' => $data
-        ));
+        ]);
     }
 
     /**
@@ -54,17 +57,17 @@ class SolutionsMailer extends \li3_mailer\extensions\Mailer {
      * @param $solutionId
      * @return bool
      */
-    public static function sendSolutionBoughtNotification($solutionId) {
+    public static function sendSolutionBoughtNotification($solutionId)
+    {
         $solution = Solution::first($solutionId);
         $pitch = Pitch::first($solution->pitch_id);
         $designer = User::first($solution->user_id);
-        $data = array('user' => $designer, 'solution' => $solution, 'pitch' => $pitch);
-        return self::_mail(array(
+        $data = ['user' => $designer, 'solution' => $solution, 'pitch' => $pitch];
+        return self::_mail([
             'use-smtp' => true,
             'to' => $designer->email,
             'subject' => 'Ваше решение хотят выкупить!',
             'data' => $data
-        ));
+        ]);
     }
-
 }

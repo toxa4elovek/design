@@ -1,7 +1,8 @@
 <?php
 namespace app\extensions\helper;
 
-class Feed extends \lithium\template\Helper {
+class Feed extends \lithium\template\Helper
+{
 
     /**
      * Метод определяет, является ли $url ссылкой на видео с ютуба или вимео
@@ -9,8 +10,9 @@ class Feed extends \lithium\template\Helper {
      * @param $url
      * @return bool
      */
-    public function isEmbeddedLink($url) {
-        if(preg_match('@(vimeo.com/\d+|youtube.com\/watch\?v=)@', $url)) {
+    public function isEmbeddedLink($url)
+    {
+        if (preg_match('@(vimeo.com/\d+|youtube.com\/watch\?v=)@', $url)) {
             return true;
         }
         return false;
@@ -22,14 +24,15 @@ class Feed extends \lithium\template\Helper {
      * @param $url
      * @return string
      */
-    public function generateEmbeddedIframe($url) {
-        if($this->__isYoutubeLink($url)) {
+    public function generateEmbeddedIframe($url)
+    {
+        if ($this->__isYoutubeLink($url)) {
             $videoId = $this->__getYoutubeVideoId($url);
             return '<iframe width="600" height="337" src="https://www.youtube.com/embed/' . $videoId . '" frameborder="0" allowfullscreen></iframe>';
-        }elseif($this->__isVimeoLink($url)) {
+        } elseif ($this->__isVimeoLink($url)) {
             $videoId = $this->__getVimeoVideoId($url);
             return '<iframe src="https://player.vimeo.com/video/' . $videoId . '" width="600" height="337" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
-        }elseif($this->__isCoubIframe($url)) {
+        } elseif ($this->__isCoubIframe($url)) {
             preg_match('@width="(\d+)" height="(\d+)"@', $url, $matches);
             $width = $matches[1];
             $height = $matches[2];
@@ -48,7 +51,8 @@ class Feed extends \lithium\template\Helper {
      * @param $url
      * @return mixed
      */
-    private function __getYoutubeVideoId($url) {
+    private function __getYoutubeVideoId($url)
+    {
         preg_match('@watch\?v=(.*)$@', $url, $matches);
         return $matches[1];
     }
@@ -59,7 +63,8 @@ class Feed extends \lithium\template\Helper {
      * @param $url
      * @return mixed
      */
-    private function __getVimeoVideoId($url) {
+    private function __getVimeoVideoId($url)
+    {
         preg_match('@vimeo.com\/(\d+)$@', $url, $matches);
         return $matches[1];
     }
@@ -70,8 +75,9 @@ class Feed extends \lithium\template\Helper {
      * @param $url
      * @return mixed
      */
-    private function __isYoutubeLink($url) {
-        if(preg_match('@youtube.com\/watch\?v=@', $url)) {
+    private function __isYoutubeLink($url)
+    {
+        if (preg_match('@youtube.com\/watch\?v=@', $url)) {
             return true;
         }
         return false;
@@ -83,8 +89,9 @@ class Feed extends \lithium\template\Helper {
      * @param $url
      * @return mixed
      */
-    private function __isVimeoLink($url) {
-        if(preg_match('@vimeo.com/\d+@', $url)) {
+    private function __isVimeoLink($url)
+    {
+        if (preg_match('@vimeo.com/\d+@', $url)) {
             return true;
         }
         return false;
@@ -96,11 +103,11 @@ class Feed extends \lithium\template\Helper {
      * @param $url
      * @return mixed
      */
-    private function __isCoubIframe($url) {
-        if(preg_match('@<iframe src="//coub.com/embed@', $url)) {
+    private function __isCoubIframe($url)
+    {
+        if (preg_match('@<iframe src="//coub.com/embed@', $url)) {
             return true;
         }
         return false;
     }
-
 }

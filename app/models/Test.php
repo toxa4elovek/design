@@ -2,9 +2,10 @@
 
 namespace app\models;
 
-class Test extends \app\models\AppModel {
+class Test extends \app\models\AppModel
+{
 
-    public $belongsTo = array('User');
+    public $belongsTo = ['User'];
 
     /**
      * Метод помечает запись теста, как актвированную
@@ -12,12 +13,12 @@ class Test extends \app\models\AppModel {
      * @param $testId
      * @return bool
      */
-    public static function activate($testId) {
-        if($test = self::first($testId)) {
+    public static function activate($testId)
+    {
+        if ($test = self::first($testId)) {
             $test->active = 1;
             $test->save();
         }
         return (bool) $test;
     }
-
 }

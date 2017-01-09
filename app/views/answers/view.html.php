@@ -1,7 +1,7 @@
 <div class="wrapper">
 
 
-    <?=$this->view()->render(array('element' => 'header'), array('logo' => 'logo'))?>
+    <?=$this->view()->render(['element' => 'header'], ['logo' => 'logo'])?>
     <div class="middle">
         <div class="middle_inner">
             <div class="content group">
@@ -11,7 +11,7 @@
 
                         <h2>Возникли вопросы?</h2>
                         Если вы&nbsp;не&nbsp;можете найти ответ на&nbsp;свой вопрос&nbsp;&mdash; напишите нам. Мы&nbsp;постараемся ответить вам в&nbsp;течении 24&nbsp;часов по&nbsp;рабочим дням.
-                        <?=$this->html->link('<img src="/img/otp_em.jpg">', 'Pages::contacts', array('escape' => false))?>
+                        <?=$this->html->link('<img src="/img/otp_em.jpg">', 'Pages::contacts', ['escape' => false])?>
                     </div>
 
                 </div><!-- /right_sidebar_help -->
@@ -24,7 +24,7 @@
                             <div style="margin-top:20px; margin-bottom:0px; width: 611px; background: url(/img/sep.png) repeat-x scroll 0 0 transparent" class="separator"></div>
                         </nav>
                         <?php echo $answer->text;?>
-                        <?=$this->html->link('все вопросы', 'Answers::index', array('class' => 'back', 'style' => 'margin-left:5px;margin-top:20px;display: block;'))?>
+                        <?=$this->html->link('все вопросы', 'Answers::index', ['class' => 'back', 'style' => 'margin-left:5px;margin-top:20px;display: block;'])?>
 
                     </div>
 
@@ -40,7 +40,7 @@
             </div>
 
             <ul class="faq vp_one" style="margin-bottom: 40px;">
-                <?php foreach($similar as $answer): ?>
+                <?php foreach ($similar as $answer): ?>
                     <li>
                         <p class="regular" style=""><a href="/answers/view/<?=$answer->id ?>" target="_blank"><?= $answer->title ?></a></p>
                         <div style="background:url(/img/sep.png) repeat-x;height:4px;"></div>
@@ -53,5 +53,5 @@
     </div><!-- /middle -->
 
 </div><!-- .wrapper -->
-<?=$this->html->script(array('help/view'), array('inline' => false))?>
-<?=$this->html->style(array('/help', '/howitworks', '/answer'), array('inline' => false))?>
+<?=$this->html->script(['help/view'], ['inline' => false])?>
+<?=$this->html->style(['/help', '/howitworks', '/answer'], ['inline' => false])?>

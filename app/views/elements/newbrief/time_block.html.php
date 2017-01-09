@@ -17,11 +17,11 @@
         <td style="width: 107px; font-size: 18px; font-family: OfficinaSansC Book, serif; color: #666666"><span style="position: relative; left: 55px; top: -3px;"><?= $category->largeIncreaseTimelimit ?> дней</span></td>
     </tr>
     <tr>
-        <td><input style="position: relative; left: 8px;" type="radio" class="short-time-limit" name="short-time-limit" data-option-period="2" <?php if(($pitch) && ($pitch->timelimit == 2)): echo 'checked'; endif;?> data-option-title="Установлен срок" data-option-value="1450" ></td>
-        <td><input style="position: relative; left: 40px;" type="radio" class="short-time-limit" name="short-time-limit" data-option-period="1" <?php if(($pitch) && ($pitch->timelimit == 1)): echo 'checked'; endif;?> data-option-title="Установлен срок" data-option-value="950" ></td>
-        <td><input style="position: relative; left: 74px;" type="radio" class="short-time-limit" name="short-time-limit" data-option-period="0" <?php if(($pitch) && ($pitch->timelimit == 0)): echo 'checked'; endif;?> data-option-title="Установлен срок" data-option-value="0"></td>
-        <td><input style="position: relative; left: 58px;" type="radio" class="short-time-limit" name="short-time-limit" data-option-period="3" <?php if(($pitch) && ($pitch->timelimit == 3)): echo 'checked'; endif;?> data-option-title="Установлен срок" data-option-value="950" ></td>
-        <td><input style="position: relative; left: 81px;" type="radio" class="short-time-limit" name="short-time-limit" data-option-period="4" <?php if(($pitch) && ($pitch->timelimit == 4)): echo 'checked'; endif;?> data-option-title="Установлен срок" data-option-value="1450" ></td>
+        <td><input style="position: relative; left: 8px;" type="radio" class="short-time-limit" name="short-time-limit" data-option-period="2" <?php if (($pitch) && ($pitch->timelimit == 2)): echo 'checked'; endif;?> data-option-title="Установлен срок" data-option-value="1450" ></td>
+        <td><input style="position: relative; left: 40px;" type="radio" class="short-time-limit" name="short-time-limit" data-option-period="1" <?php if (($pitch) && ($pitch->timelimit == 1)): echo 'checked'; endif;?> data-option-title="Установлен срок" data-option-value="950" ></td>
+        <td><input style="position: relative; left: 74px;" type="radio" class="short-time-limit" name="short-time-limit" data-option-period="0" <?php if (($pitch) && ($pitch->timelimit == 0)): echo 'checked'; endif;?> data-option-title="Установлен срок" data-option-value="0"></td>
+        <td><input style="position: relative; left: 58px;" type="radio" class="short-time-limit" name="short-time-limit" data-option-period="3" <?php if (($pitch) && ($pitch->timelimit == 3)): echo 'checked'; endif;?> data-option-title="Установлен срок" data-option-value="950" ></td>
+        <td><input style="position: relative; left: 81px;" type="radio" class="short-time-limit" name="short-time-limit" data-option-period="4" <?php if (($pitch) && ($pitch->timelimit == 4)): echo 'checked'; endif;?> data-option-title="Установлен срок" data-option-value="1450" ></td>
     </tr>
     <tr><td colspan="5"><img style="padding-top: 7px; padding-bottom: 7px;" src="/img/brief/timeline.png" alt="шкала сроков"/></td></tr>
     <tr>

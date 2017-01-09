@@ -1,6 +1,6 @@
 <div class="wrapper">
 
-    <?=$this->view()->render(array('element' => 'header'), array('logo' => 'logo'))?>
+    <?=$this->view()->render(['element' => 'header'], ['logo' => 'logo'])?>
     <div class="middle">
         <div class="main">
             <div class="sideblock">
@@ -9,7 +9,7 @@
 
                         <h2>Возникли вопросы?</h2>
                         Если вы&nbsp;не&nbsp;можете найти ответ на&nbsp;свой <span style="white-space: nowrap;">вопрос — напишите</span> нам. Мы&nbsp;постараемся ответить вам в&nbsp;течении 24&nbsp;часов по&nbsp;рабочим дням.
-                        <?=$this->html->link('<img src="/img/otp_em.jpg" alt="Контакты">', 'Pages::contacts', array('escape' => false))?>
+                        <?=$this->html->link('<img src="/img/otp_em.jpg" alt="Контакты">', 'Pages::contacts', ['escape' => false])?>
                     </div>
 
             </div>
@@ -40,4 +40,4 @@
     </div><!-- /middle -->
 
 </div><!-- .wrapper -->
-<?=$this->html->style(array('/help', '/howitworks', '/answer', '/edit', '/css/pages/referal.css'), array('inline' => false))?>
+<?=$this->html->style(['/help', '/howitworks', '/answer', '/edit', '/css/pages/referal.css'], ['inline' => false])?>

@@ -7,7 +7,7 @@
     <section class="user-mobile-section">
         <form method="post" id="mobile-form" action="/users/update" style="margin-top: 0;">
             <p class="confirm-message" style="margin-top: 0;"></p>
-            <div class="phone-input-container" <?php if(!empty($user->phone) && $user->phone_valid == 1):?>style="display:none;"<?php endif?> <?php if(!empty($user->phone) && $user->phone_valid == 0):?>style="display:none;"<?php endif?>>
+            <div class="phone-input-container" <?php if (!empty($user->phone) && $user->phone_valid == 1):?>style="display:none;"<?php endif?> <?php if (!empty($user->phone) && $user->phone_valid == 0):?>style="display:none;"<?php endif?>>
                 <span class="plus">+</span>
                 <input type="text" name="phone" placeholder="79121234567" style="height: 51px; width: 310px; display: block;">
             </div>

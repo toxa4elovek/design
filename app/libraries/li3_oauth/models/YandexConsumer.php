@@ -8,30 +8,30 @@
 
 namespace li3_oauth\models;
 
-class YandexConsumer extends \lithium\core\StaticObject {
+class YandexConsumer extends \lithium\core\StaticObject
+{
 
-	/**
-	 * Magic method to pass through HTTP methods. i.e.`Consumer::post()`
-	 *
-	 * @param string $method
-	 * @param string $params
-	 * @return mixed
-	 */
-	public static function __callStatic($method, $params) {
-		return static::$_service->invokeMethod($method, $params);
-	}
+    /**
+     * Magic method to pass through HTTP methods. i.e.`Consumer::post()`
+     *
+     * @param string $method
+     * @param string $params
+     * @return mixed
+     */
+    public static function __callStatic($method, $params)
+    {
+        return static::$_service->invokeMethod($method, $params);
+    }
 
-	public static function getUsername($ljAddress) {
-		preg_match('#http://(.*).ya.ru#', $ljAddress, $match);
-		$username = $match[1];
-		return $username;
-	}
-	
-	public static function getYaAddress($username) {
-		return 'http://' . $username . '.ya.ru';
-	}
-
-
+    public static function getUsername($ljAddress)
+    {
+        preg_match('#http://(.*).ya.ru#', $ljAddress, $match);
+        $username = $match[1];
+        return $username;
+    }
+    
+    public static function getYaAddress($username)
+    {
+        return 'http://' . $username . '.ya.ru';
+    }
 }
-
-?>

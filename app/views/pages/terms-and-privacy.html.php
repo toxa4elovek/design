@@ -1,6 +1,6 @@
 <div class="wrapper">
 
-    <?=$this->view()->render(array('element' => 'header'), array('logo' => 'logo', 'header' => 'header'))?>
+    <?=$this->view()->render(['element' => 'header'], ['logo' => 'logo', 'header' => 'header'])?>
 
     <div class="middle">
         <div class="middle_inner">
@@ -116,4 +116,4 @@
     </div><!-- /middle -->
 
 </div><!-- .wrapper -->
-<?=$this->html->style(array('/howitworks', '/about_project'), array('inline' => false))?>
+<?=$this->html->style(['/howitworks', '/about_project'], ['inline' => false])?>

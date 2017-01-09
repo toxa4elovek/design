@@ -7,9 +7,10 @@ use lithium\data\entity\Record;
  * Класс заметки, которая прилагается к проекту
  * @package app\models
  */
-class Note extends AppModel {
+class Note extends AppModel
+{
 
-    public $belongsTo = array('Pitch');
+    public $belongsTo = ['Pitch'];
 
     /**
      * Метод помечает проект, для которого оформлен возврат
@@ -17,18 +18,19 @@ class Note extends AppModel {
      * @param Record $project объект проекта
      * @return bool
      */
-    public static function addRefundNote(Record $project) {
-        if (!$note = self::first(array('conditions' => array('pitch_id' => $project->id)))) {
+    public static function addRefundNote(Record $project)
+    {
+        if (!$note = self::first(['conditions' => ['pitch_id' => $project->id]])) {
             $note = self::create();
         }
-        if($note->status != 2) {
-            $note->set(array(
+        if ($note->status != 2) {
+            $note->set([
                 'pitch_id' => $project->id,
                 'status' => 2
-            ));
+            ]);
             $note->save();
         }
-        if($project->status != 2) {
+        if ($project->status != 2) {
             $project->status = 2;
             $project->save();
         }
@@ -41,12 +43,12 @@ class Note extends AppModel {
      * @param $project_id
      * @return bool
      */
-    public static function revertNoteToDefault($project_id) {
-        if (($note = self::first(array('conditions' => array('pitch_id' => $project_id)))) && ($note->status != 0)) {
+    public static function revertNoteToDefault($project_id)
+    {
+        if (($note = self::first(['conditions' => ['pitch_id' => $project_id]])) && ($note->status != 0)) {
             $note->status = 0;
             return $note->save();
         }
         return false;
     }
-
 }

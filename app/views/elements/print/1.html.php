@@ -1,6 +1,6 @@
 <?php
 $details = unserialize($pitch->specifics);
-$types = array(
+$types = [
     '1' => 'Типографика',
     '2' => 'Знак + название',
     '3' => 'Абстрактный знак',
@@ -8,18 +8,18 @@ $types = array(
     '5' => 'Персонаж',
     '6' => 'Буква',
     '7' => 'Вэб-кнопка'
-);
+];
 ?>
 <script type="text/javascript">var logoProperties = <?php echo json_encode($details["logo-properties"])?>;</script>
 
-<?php if(!empty($details['logoType'])):?>
+<?php if (!empty($details['logoType'])):?>
 <h2 class="blueheading">Предпочтительный вид логотипа</h2>
 
 
 <div class="group">
     <ul class="look-variants">
         <?php
-        foreach($details['logoType'] as $id):?>
+        foreach ($details['logoType'] as $id):?>
             <li>
                 <span class="photo"><img src="/img/logo-looks/logo-looks-0<?=$id?>.jpg" alt="<?=$types[$id]?>"></span>
                 <label class="supplement"><?=$types[$id]?></label>
@@ -29,7 +29,7 @@ $types = array(
 </div><!-- .group -->
 <?php endif;?>
 
-<?php if(!empty($details['qualities'])):?>
+<?php if (!empty($details['qualities'])):?>
 <h2 class="blueheading">Какие 3 качества нужно донести через логотип?</h2>
 <p class="regular"><?=$details['qualities']?></p>
 <?php endif?>

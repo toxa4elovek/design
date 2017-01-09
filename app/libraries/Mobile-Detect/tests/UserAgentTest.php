@@ -29,7 +29,7 @@
  */
 class UserAgentTest extends PHPUnit_Framework_TestCase
 {
-    protected static $ualist = array();
+    protected static $ualist = [];
     protected static $json;
 
     public static function generateJson()
@@ -71,20 +71,20 @@ class UserAgentTest extends PHPUnit_Framework_TestCase
         //currently stored as a PHP array
         $list = include $phpFile;
 
-        $json = array();
+        $json = [];
 
         foreach ($list as $vendor => $vendorList) {
             foreach ($vendorList as $userAgent => $props) {
                 if (is_int($userAgent)) {
                     //this means that the user agent is the props
                     $userAgent = $props;
-                    $props = array();
+                    $props = [];
                 }
 
-                $tmp = array(
+                $tmp = [
                     'vendor' => $vendor,
                     'user_agent' => $userAgent
-                );
+                ];
 
                 if (isset($props['isMobile'])) {
                     $tmp['mobile'] = $props['isMobile'];
@@ -108,10 +108,10 @@ class UserAgentTest extends PHPUnit_Framework_TestCase
 
         //save the hash
         $hash = sha1_file($phpFile);
-        $json = array(
+        $json = [
             'hash' => $hash,
             'user_agents' => $json
-        );
+        ];
 
         if (defined('JSON_PRETTY_PRINT')) {
             $jsonString = json_encode($json, JSON_PRETTY_PRINT);
@@ -135,7 +135,7 @@ class UserAgentTest extends PHPUnit_Framework_TestCase
 
         //make a list that is usable by functions (THE ORDER OF THE KEYS MATTERS!)
         foreach ($json as $userAgent) {
-            $tmp = array();
+            $tmp = [];
             $tmp[] = isset($userAgent['user_agent']) ? $userAgent['user_agent'] : null;
             $tmp[] = isset($userAgent['mobile']) ? $userAgent['mobile'] : null;
             $tmp[] = isset($userAgent['tablet']) ? $userAgent['tablet'] : null;
@@ -149,8 +149,9 @@ class UserAgentTest extends PHPUnit_Framework_TestCase
 
     public function userAgentData()
     {
-        if (!count(self::$ualist))
+        if (!count(self::$ualist)) {
             self::setUpBeforeClass();
+        }
 
         return self::$ualist;
     }

@@ -58,7 +58,7 @@
 </div>
 <!-- Moderation Popups -->
 <?php if ($this->user->isAdmin()): ?>
-    <?= $this->view()->render(array('element' => 'moderation')) ?>
+    <?= $this->view()->render(['element' => 'moderation']) ?>
 <?php endif; ?>
 
 <div id="popup-warning-thanks" class="popup-warn generic-window" style="display:none">

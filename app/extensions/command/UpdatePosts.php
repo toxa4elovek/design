@@ -24,7 +24,7 @@ class UpdatePosts extends CronJob
                 $project->full = preg_replace('@http://(godesigner.ru)@', 'https://$1', $project->full);
                 $fix = true;
             }
-            if($fix) {
+            if ($fix) {
                 $project->save();
                 $count++;
             }

@@ -6,20 +6,24 @@ use app\extensions\tests\AppUnit;
 use app\models\Url;
 use app\extensions\storage\Rcache;
 
-class UrlTest extends AppUnit {
+class UrlTest extends AppUnit
+{
 
-    public function setUp() {
+    public function setUp()
+    {
         $this->Url = new Url();
         Rcache::init();
-        $this->rollUp(array('Url'));
+        $this->rollUp(['Url']);
     }
 
-    public function tearDown() {
+    public function tearDown()
+    {
         Rcache::flushdb();
-        $this->rollDown(array('Url'));
+        $this->rollDown(['Url']);
     }
 
-    public function testCheck() {
+    public function testCheck()
+    {
         $result = $this->Url->check('http://www.yandex.ru');
         $this->assertFalse($result);
 
@@ -27,7 +31,8 @@ class UrlTest extends AppUnit {
         $this->assertTrue($result);
     }
 
-    public function testGet() {
+    public function testGet()
+    {
         $result = $this->Url->get('aS1fd3');
         $this->assertEqual('http://www.google.com', $result);
 
@@ -35,15 +40,16 @@ class UrlTest extends AppUnit {
         $this->assertIdentical(null, $result);
     }
 
-    public function testCreateNew() {
+    public function testCreateNew()
+    {
         $result = Url::createNew('http://www.google.com');
         $this->assertEqual('', $result);
     }
 
-    public function testGenerateUrl () {
+    public function testGenerateUrl()
+    {
         $result = $this->Url->generateUrl();
         $this->assertTrue(is_string($result));
         $this->assertTrue(mb_strlen($result, 'UTF-8'));
     }
-
 }

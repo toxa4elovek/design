@@ -54,7 +54,7 @@ class PhealFileLog implements PhealLogInterface
      * both logfiles are getting passed to strftime() in the case you want to crate a simple logrotate
      * @var array
      */
-    protected $options = array(
+    protected $options = [
         'access_log' => 'pheal_access.log',
         'error_log' => 'pheal_error.log',
         'access_format' => "%s [%s] %2.4fs %s\n",
@@ -62,22 +62,24 @@ class PhealFileLog implements PhealLogInterface
         'truncate_apikey' => true,
         'umask' => 0666,
         'umask_directory' => 0777,
-    );
+    ];
 
     /**
      * construct PhealFileCache,
      * @param string $basepath optional string on where to store files, defaults to the current/users/home/.pheal/cache/
      * @param array $options optional config array, valid keys are: delimiter, umask, umask_directory
      */
-    public function __construct($basepath = false, $options = array())
+    public function __construct($basepath = false, $options = [])
     {
-        if(!$basepath)
+        if (!$basepath) {
             $basepath = getenv('HOME'). "/.pheal/log/";
+        }
         $this->basepath = $basepath;
 
         // add options
-        if(is_array($options) && count($options))
+        if (is_array($options) && count($options)) {
             $this->options = array_merge($this->options, $options);
+        }
     }
 
     /**
@@ -88,11 +90,12 @@ class PhealFileLog implements PhealLogInterface
     protected function filename($type)
     {
         // get filename
-        if(!($filename = $this->options[$type]))
+        if (!($filename = $this->options[$type])) {
             return false;
+        }
         
         // check for directory
-        if(!file_exists($this->basepath)) {
+        if (!file_exists($this->basepath)) {
             $oldUmask = umask(0);
             mkdir($this->basepath, $this->options['umask_directory'], true);
             umask($oldUmask);
@@ -102,7 +105,7 @@ class PhealFileLog implements PhealLogInterface
         $fullFilename = $this->basepath . strftime($filename);
 
         // create the logfile of not existing
-        if(!file_exists($fullFilename)) {
+        if (!file_exists($fullFilename)) {
             file_put_contents($fullFilename, '');
             chmod($fullFilename, $this->options['umask']);
         }
@@ -115,24 +118,30 @@ class PhealFileLog implements PhealLogInterface
      * @param string $name
      * @param array $opts
      */
-    protected function formatUrl($scope,$name,$opts)
+    protected function formatUrl($scope, $name, $opts)
     {
         // create url
         $url = PhealConfig::getInstance()->api_base . $scope . '/' . $name . ".xml.aspx";
 
          // truncacte apikey for log safety
-        if($this->options['truncate_apikey'] && count($opts)) {
-            if(isset($opts['apikey'])) $opts['apikey'] = substr($opts['apikey'],0,16)."...";
-            if(isset($opts['vCode'])) $opts['vCode'] = substr($opts['vCode'],0,16)."...";
+        if ($this->options['truncate_apikey'] && count($opts)) {
+            if (isset($opts['apikey'])) {
+                $opts['apikey'] = substr($opts['apikey'], 0, 16)."...";
+            }
+            if (isset($opts['vCode'])) {
+                $opts['vCode'] = substr($opts['vCode'], 0, 16)."...";
+            }
         }
 
         // add post data
-        if(PhealConfig::getInstance()->http_post)
-            $url .= " DATA: ".http_build_query($opts,'', '&');
+        if (PhealConfig::getInstance()->http_post) {
+            $url .= " DATA: ".http_build_query($opts, '', '&');
+        }
 
         // add data to url
-        elseif(count($opts))
+        elseif (count($opts)) {
             $url .= '?' . http_build_query($opts, '', '&');
+        }
 
         return $url;
     }
@@ -142,7 +151,7 @@ class PhealFileLog implements PhealLogInterface
      */
     protected function getmicrotime()
     {
-        list($usec, $sec) = explode(" ",microtime());
+        list($usec, $sec) = explode(" ", microtime());
         return ((float)$usec + (float)$sec);
     }
 
@@ -160,8 +169,9 @@ class PhealFileLog implements PhealLogInterface
      */
     public function stop()
     {
-        if(!$this->startTime)
+        if (!$this->startTime) {
             return false;
+        }
         
         // calc responseTime
         $this->responseTime = $this->getmicrotime() - $this->startTime;
@@ -174,22 +184,23 @@ class PhealFileLog implements PhealLogInterface
      * @param string $name
      * @param array $opts
      */
-    public function log($scope,$name,$opts)
+    public function log($scope, $name, $opts)
     {
         // stop measure the response time
         $this->stop();
 
         // get filename, return if disabled
-        if(!($filename = $this->filename('access_log')))
+        if (!($filename = $this->filename('access_log'))) {
             return false;
+        }
 
         // log
         file_put_contents($filename,
             sprintf($this->options['access_format'],
-                date('r'),                
+                date('r'),
                 (PhealConfig::getInstance()->http_post?'POST':'GET'),
                 $this->responseTime,
-                $this->formatUrl($scope,$name,$opts)
+                $this->formatUrl($scope, $name, $opts)
             ),
             FILE_APPEND
         );
@@ -202,17 +213,18 @@ class PhealFileLog implements PhealLogInterface
      * @param array $opts
      * @param string $message
      */
-    public function errorLog($scope,$name,$opts,$message)
+    public function errorLog($scope, $name, $opts, $message)
     {
         // stop measure the response time
         $this->stop();
 
         // get filename, return if disabled
-        if(!($filename = $this->filename('error_log')))
+        if (!($filename = $this->filename('error_log'))) {
             return false;
+        }
 
         // remove htmltags, newlines, and coherent blanks
-        $message = preg_replace("/(\s\s+|[\n\r])/",' ',strip_tags($message));
+        $message = preg_replace("/(\s\s+|[\n\r])/", ' ', strip_tags($message));
 
         // log
         file_put_contents($filename,
@@ -220,7 +232,7 @@ class PhealFileLog implements PhealLogInterface
                 date('r'),
                 (PhealConfig::getInstance()->http_post?'POST':'GET'),
                 $this->responseTime,
-                $this->formatUrl($scope,$name,$opts),
+                $this->formatUrl($scope, $name, $opts),
                 $message
             ),
             FILE_APPEND

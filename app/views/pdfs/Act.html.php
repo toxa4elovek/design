@@ -1,26 +1,26 @@
 <?php
-    if($pitch->moneyback) {
+    if ($pitch->moneyback) {
         $moneyInAct = $pitch->total - $pitch->price;
-    }else {
+    } else {
         $moneyInAct = $pitch->total;
     }
-if($pitch->category_id == 20) {
+if ($pitch->category_id == 20) {
     $initialActs = 0;
-    foreach($receipt as $item):
-        if($item->name === 'Награда Дизайнеру'):
+    foreach ($receipt as $item):
+        if ($item->name === 'Награда Дизайнеру'):
             continue;
-        endif;
-        $initialActs += $item->value;
+    endif;
+    $initialActs += $item->value;
     endforeach;
     $moneyInAct = $initialActs;
 }
 $addonData = $addons->data();
-$tableAddonData = array();
+$tableAddonData = [];
 $finalSum = $moneyInAct;
-if($addonData) {
-    foreach($addonData as $addon) {
+if ($addonData) {
+    foreach ($addonData as $addon) {
         $finalSum += $addon['total'];
-        $tableAddonData[] = array('prolong-days' => $addon['prolong-days'], 'total' => $addon['total']);
+        $tableAddonData[] = ['prolong-days' => $addon['prolong-days'], 'total' => $addon['total']];
     }
 }
 
@@ -28,7 +28,7 @@ if($addonData) {
 ?>
 <img src="<?php echo LITHIUM_APP_PATH;?>/webroot/img/logo-01.png" width="180" style="margin-bottom:40px;" />
 <table style="" width="550" cellspacing="0" border="0" cellpadding="0">
-<tr><td colspan="2" style="border-bottom:1px solid;"><h2 style="margin:0">Акт № <?=$pitch->id?> от <?php if($pitch->totalFinishDate != '0000-00-00 00:00:00'):?>
+<tr><td colspan="2" style="border-bottom:1px solid;"><h2 style="margin:0">Акт № <?=$pitch->id?> от <?php if ($pitch->totalFinishDate != '0000-00-00 00:00:00'):?>
                 <?=date('d.m.Y', strtotime($pitch->totalFinishDate));?>
             <?php else: ?>
                 <?=date('d.m.Y', strtotime($pitch->finishDate));?>
@@ -37,7 +37,7 @@ if($addonData) {
 <tr><td valign="top" style="padding-right:1em;"><b>Исполнитель:</b></td><td valign="top">ООО "КРАУД&nbsp;МЕДИА", 199397, г.&nbsp;Санкт-Петербург, ул.&nbsp;Беринга, д.&nbsp;27, ИНН&nbsp;7801563047, КПП&nbsp;780101001</td></tr>
 <tr><td height="30"></td></tr>
 <tr><td valign="top" style="padding-right:1em;"><b>Заказчик:</b></td>
-    <?php if($bill->individual == 0) :?>
+    <?php if ($bill->individual == 0) :?>
         <td valign="top"><?=$bill->name?>, <?=$bill->address?>, ИНН:&nbsp;<?=$bill->inn?>, КПП:&nbsp;<?=$bill->kpp?></td>
     <?php else: ?>
         <td valign="top"><?=$bill->name?></td>
@@ -60,31 +60,31 @@ if($addonData) {
 <tr  valign="top">
 <td style="border-left:1px solid;border-top:1px solid;border-bottom:1px solid; text-align:center;">1</td>
 <td style="border-left:1px solid;border-top:1px solid;border-bottom:1px solid; text-align:center;">
-    <?php if($pitch->moneyback == false):?>Оказание услуг на условиях агентского соглашения, размещённого на сайте
+    <?php if ($pitch->moneyback == false):?>Оказание услуг на условиях агентского соглашения, размещённого на сайте
 godesigner.ru, за проект № <?=$pitch->id?>. НДС не предусмотрен.<?php else:?>Агентское вознаграждение на условиях агентского соглашения, размещённого на сайте godesigner.ru, за проект (конкурс) № <?=$pitch->id?> . НДС не предусмотрен.
     <?php endif?></td>
 <td style="border-left:1px solid;border-top:1px solid;border-bottom:1px solid; text-align:center;">шт.</td>
 <td style="border-left:1px solid;border-top:1px solid;border-bottom:1px solid; text-align:center;">1</td>
 <td style="border-left:1px solid;border-top:1px solid;border-bottom:1px solid; text-align:center;">
-    <?=$money->formatMoney($moneyInAct, array('suffix' => '.00р', 'dropspaces' => true))?>
+    <?=$money->formatMoney($moneyInAct, ['suffix' => '.00р', 'dropspaces' => true])?>
 </td>
 <td style="border-left:1px solid;border-top:1px solid;border-bottom:1px solid;border-right:1px solid; text-align:center;">
-    <?=$money->formatMoney($moneyInAct, array('suffix' => '.00р', 'dropspaces' => true))?>
+    <?=$money->formatMoney($moneyInAct, ['suffix' => '.00р', 'dropspaces' => true])?>
 </td>
 </tr>
-<?php if(!empty($tableAddonData)):
+<?php if (!empty($tableAddonData)):
     $num = 2;
-    foreach($tableAddonData as $row):?>
+    foreach ($tableAddonData as $row):?>
         <tr  valign="top">
             <td style="border-left:1px solid;border-bottom:1px solid; text-align:center;"><?= $num ?></td>
             <td style="border-left:1px solid;border-bottom:1px solid; text-align:center;">Продление срока проведения проекта</td>
             <td style="border-left:1px solid;border-bottom:1px solid; text-align:center;">дни.</td>
             <td style="border-left:1px solid;border-bottom:1px solid; text-align:center;"><?= $row['prolong-days'] ?></td>
             <td style="border-left:1px solid;border-bottom:1px solid; text-align:center;">
-                <?=$money->formatMoney('1950', array('suffix' => '.00р', 'dropspaces' => true))?>
+                <?=$money->formatMoney('1950', ['suffix' => '.00р', 'dropspaces' => true])?>
             </td>
             <td style="border-left:1px solid;border-bottom:1px solid;border-right:1px solid; text-align:center;">
-                <?=$money->formatMoney($row['total'], array('suffix' => '.00р', 'dropspaces' => true))?>
+                <?=$money->formatMoney($row['total'], ['suffix' => '.00р', 'dropspaces' => true])?>
             </td>
         </tr>
     <?php
@@ -94,7 +94,7 @@ endif;?>
 <tr height="25">
 <td height="25" colspan="5" style="text-align:right;"><b>Итого:&nbsp;&nbsp;</b></td>
 <td height="25" style="border-left:1px solid;border-bottom:1px solid;border-right:1px solid; text-align:center;">
-    <?=$money->formatMoney($finalSum, array('suffix' => '.00р', 'dropspaces' => true))?>
+    <?=$money->formatMoney($finalSum, ['suffix' => '.00р', 'dropspaces' => true])?>
 </td>
 </tr>
 <tr height="25">
@@ -104,7 +104,7 @@ endif;?>
 <tr height="25">
 <td height="25" colspan="5" style="text-align:right;"><b>Всего:&nbsp;&nbsp;</b></td>
 <td height="25" style="border-left:1px solid;border-bottom:1px solid;border-right:1px solid; text-align:center;">
-    <b><?=$money->formatMoney($finalSum, array('suffix' => '.00р', 'dropspaces' => true))?></b>
+    <b><?=$money->formatMoney($finalSum, ['suffix' => '.00р', 'dropspaces' => true])?></b>
 </td>
 </tr>
 </table>

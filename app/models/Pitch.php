@@ -2268,7 +2268,8 @@ class Pitch extends AppModel
      * @param $projectId
      * @return false|string
      */
-    public static function getPlannedDateToComplete($projectId) {
+    public static function getPlannedDateToComplete($projectId)
+    {
         $project = Pitch::first(['conditions' => ['Pitch.id' => $projectId], 'with' => ['Category']]);
         $planDaysDefault = $project->category->default_timelimit;
         if (in_array($project->category_id, [3, 4])) {

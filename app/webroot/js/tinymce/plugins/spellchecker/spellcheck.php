@@ -6,7 +6,7 @@ require 'YandexSpell.php';
 $transObject = new YandexSpell();
 
 $data = '';
-switch($_SERVER['REQUEST_METHOD']) {
+switch ($_SERVER['REQUEST_METHOD']) {
     case 'GET':
         $data = $_GET;
         break;

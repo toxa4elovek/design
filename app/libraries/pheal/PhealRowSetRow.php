@@ -35,12 +35,12 @@ class PhealRowSetRow extends ArrayObject implements PhealArrayInterface
     * @var string if the element has a specific string value, 
     * it can be stored here;
     */
-    private $_stringValue = null; 
+    private $_stringValue = null;
 
     /**
     * set string value of row
     * @param string $string 
-    */ 
+    */
     public function setStringValue($string)
     {
         $this->_stringValue = $string;
@@ -48,7 +48,7 @@ class PhealRowSetRow extends ArrayObject implements PhealArrayInterface
 
     /**
     * Magic __toString method, will return stringvalue of row
-    */ 
+    */
     public function __toString()
     {
         return $this->_stringValue;
@@ -70,12 +70,14 @@ class PhealRowSetRow extends ArrayObject implements PhealArrayInterface
      */
     public function toArray()
     {
-        $return = array();
-        foreach($this AS $key => $value)
+        $return = [];
+        foreach ($this as $key => $value) {
             $return[$key] = ($value instanceof PhealArrayInterface) ? $value->toArray() : $value;
+        }
         
-        if($this->_stringValue)
+        if ($this->_stringValue) {
             $return['_stringValue'] = $this->_stringValue;
+        }
         
         return $return;
     }

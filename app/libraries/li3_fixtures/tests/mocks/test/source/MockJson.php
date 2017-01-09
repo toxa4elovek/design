@@ -11,35 +11,34 @@ namespace li3_fixtures\tests\mocks\test\source;
 /**
  * Mocks the Json Fixture Source.
  */
-class MockJson extends \lithium\core\StaticObject {
+class MockJson extends \lithium\core\StaticObject
+{
 
-	/**
-	 * MockJson::parse returns an associative array of
-	 * sample data for the FixtureTest-Class. Correct
-	 * Json-File parsing is tested in the JsonTest.
-	 *
-	 * @param string $file Filepath to the json file.
-	 * @return array Fixtures as an associative array.
-	 * @link http://php.net/manual/en/function.json-decode.php
-	 */
-	public static function parse($file) {
-		$data = array(
-			'post1' => array(
-				'title' => 'My First Post',
-				'content' => 'First Content...'
-			),
-			'post2' => array(
-				'title' => 'My Second Post',
-				'content' => 'Also some foobar text'
-			),
-			'post3' => array(
-				'title' => 'My Third Post',
-				'content' => 'I like to write some foobar foo too'
-			)
-		);
-		return $data;
-	}
-
+    /**
+     * MockJson::parse returns an associative array of
+     * sample data for the FixtureTest-Class. Correct
+     * Json-File parsing is tested in the JsonTest.
+     *
+     * @param string $file Filepath to the json file.
+     * @return array Fixtures as an associative array.
+     * @link http://php.net/manual/en/function.json-decode.php
+     */
+    public static function parse($file)
+    {
+        $data = [
+            'post1' => [
+                'title' => 'My First Post',
+                'content' => 'First Content...'
+            ],
+            'post2' => [
+                'title' => 'My Second Post',
+                'content' => 'Also some foobar text'
+            ],
+            'post3' => [
+                'title' => 'My Third Post',
+                'content' => 'I like to write some foobar foo too'
+            ]
+        ];
+        return $data;
+    }
 }
-
-?>

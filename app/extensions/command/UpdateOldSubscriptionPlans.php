@@ -37,16 +37,16 @@ class UpdateOldSubscriptionPlans extends CronJob
                 $currentTotal = Receipt::getTotalForProject($planRecord->id);
                 $plan = SubscriptionPlan::getPlan($planId);
                 $addedBalance = $planRecord->getFundBalanceForPaymentForRecord();
-                $receipt = array(
-                    array(
+                $receipt = [
+                    [
                         'name' => 'Оплата тарифа «' . $plan['title'] . '»',
                         'value' => $plan['price']
-                    ),
-                    array(
+                    ],
+                    [
                         'name' => 'Пополнение счёта',
                         'value' => $addedBalance
-                    )
-                );
+                    ]
+                ];
                 $discount = (int) $userRecord->getSubscriptionDiscountForRecord();
                 if ($discount > 0) {
                     $moneyHelper = new MoneyFormatter();

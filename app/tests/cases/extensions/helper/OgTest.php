@@ -20,18 +20,21 @@ class OgTest extends \lithium\test\Unit
      * Это может быть полезно, например если надо подготовить данные в базе
      * В данном слычае мы просто создаем наш хелпер для последующего образения внутри теста
      */
-    public function setUp() {
+    public function setUp()
+    {
         $this->og = new Og();
     }
 
     /**
     * Ну а этот метод вызывает в конце каждого теста, тут можно почистить базу, сбросить состояния и тп.
     */
-    public function tearDown() {
+    public function tearDown()
+    {
         // ничего пока не делаем тут
     }
 
-    public function testGetOgImage() {
+    public function testGetOgImage()
+    {
         $expected = '<meta property="og:image" content="https://godesigner.ru/img/fb_icon.jpg"/>';
         $result = $this->og->getOgImage('');
         $this->assertEqual($expected, $result);
@@ -49,7 +52,8 @@ class OgTest extends \lithium\test\Unit
         $this->assertEqual($expected, $result);
     }
 
-    public function testGetOgTitle() {
+    public function testGetOgTitle()
+    {
         $expected = '<meta property="og:title" content="Логотип, сайт и дизайн: выбирай из идей, а не портфолио"/>';
         $result = $this->og->getOgTitle('');
         $this->assertEqual($expected, $result);
@@ -59,7 +63,8 @@ class OgTest extends \lithium\test\Unit
         $this->assertEqual($expected, $result);
     }
 
-    public function testGetOgDescription() {
+    public function testGetOgDescription()
+    {
         $expected = '<meta property="og:description" content="Логотип, сайт и дизайн от всего креативного интернет сообщества"/>';
         $result = $this->og->getOgDescription('');
         $this->assertEqual($expected, $result);
@@ -71,10 +76,10 @@ class OgTest extends \lithium\test\Unit
         $this->assertEqual($expected, $result);
     }
 
-    public function testGetOgUrl() {
+    public function testGetOgUrl()
+    {
         $expected = '<meta property="og:url" content="http://godesigner.ru' . $_SERVER['REQUEST_URI'] . '"/>';
         $result = $this->og->getOgUrl();
         $this->assertEqual($expected, $result);
     }
-
 }

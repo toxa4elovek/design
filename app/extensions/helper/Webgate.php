@@ -1,11 +1,13 @@
 <?php
 namespace app\extensions\helper;
 
-class Webgate extends \app\extensions\paymentgateways\Webgate {
+class Webgate extends \app\extensions\paymentgateways\Webgate
+{
 
-    public function renderHiddenInputs($pitchId) {
+    public function renderHiddenInputs($pitchId)
+    {
         //$pitchData = $this->getOrderData($pitchId);
-        $pitchData = array('total' => 3500, 'id' => $pitchId);
+        $pitchData = ['total' => 3500, 'id' => $pitchId];
         $timestamp = gmdate("YmdHis", time());
         $string = '<input type="HIDDEN" value="' . $pitchId .'" name="ORDER">
 			<input type="HIDDEN" value="' . $pitchData['total'] . '" name="AMOUNT">
@@ -17,11 +19,4 @@ class Webgate extends \app\extensions\paymentgateways\Webgate {
 
         return $string;
     }
-
-
-
-
-
-
-
 }

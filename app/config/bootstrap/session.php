@@ -12,11 +12,11 @@
  */
 use lithium\storage\Session;
 
-Session::config(array(
-	
-	'default' => array('adapter' => 'Php'),
-	/*'cookie' => array('adapter' => 'Cookie', 'expire' => '+1 month'),*/
-));
+Session::config([
+    
+    'default' => ['adapter' => 'Php'],
+    /*'cookie' => array('adapter' => 'Cookie', 'expire' => '+1 month'),*/
+]);
 
 /**
  * Uncomment the lines below to enable forms-based authentication. This configuration will attempt
@@ -38,18 +38,18 @@ Session::config(array(
  */
 use lithium\security\Auth;
 
-Auth::config(array(
-	'user' => array(
- 		'adapter' => 'Form',
- 		'model' => 'User',
- 		'fields' => array('email', 'password'),
-        'scope' => array(
-        	'User.password' => array('!=' => 'cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e'),
-        	'User.active' => 1
-        )
- 	)
-));
+Auth::config([
+    'user' => [
+        'adapter' => 'Form',
+        'model' => 'User',
+        'fields' => ['email', 'password'],
+        'scope' => [
+            'User.password' => ['!=' => 'cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e'],
+            'User.active' => 1
+        ]
+    ]
+]);
 
 if (session_status() == PHP_SESSION_NONE) {
-	session_start();
+    session_start();
 }

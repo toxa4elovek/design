@@ -8,7 +8,8 @@ namespace app\extensions\helper;
  *
  * @package app\extensions\helper
  */
-class Brief extends \lithium\template\Helper {
+class Brief extends \lithium\template\Helper
+{
 
     /**
      * @var string паттерн для матчинга адреса имейла
@@ -26,7 +27,8 @@ class Brief extends \lithium\template\Helper {
      * @param $projectRecord
      * @return bool
      */
-    public function isUsingPlainText($projectRecord) {
+    public function isUsingPlainText($projectRecord)
+    {
         return strtotime(($projectRecord->started) < strtotime('2013-07-25 16:30:00') && ($projectRecord->published == 1));
     }
 
@@ -37,10 +39,11 @@ class Brief extends \lithium\template\Helper {
      * @param string $textField
      * @return string
      */
-    public function briefDetails($pitch, $textField = 'description') {
-        if($this->isUsingPlainText($pitch)){
+    public function briefDetails($pitch, $textField = 'description')
+    {
+        if ($this->isUsingPlainText($pitch)) {
             return $this->deleteHtmlTagsAndInsertHtmlLinkInText($pitch->{$textField});
-        }else {
+        } else {
             $string = strip_tags($pitch->{$textField}, '<p><ul><ol><li><a><br><span>');
             return $this->insertHtmlLinkInText($string);
         }
@@ -52,7 +55,8 @@ class Brief extends \lithium\template\Helper {
      * @param $text
      * @return string
      */
-    public function insertHtmlLinkInText($text) {
+    public function insertHtmlLinkInText($text)
+    {
         $text= $this->__autoReplaceHtmlLinks($text);
         return $this->stripEmail($text);
     }
@@ -63,7 +67,8 @@ class Brief extends \lithium\template\Helper {
      * @param $text
      * @return string
      */
-    public function deleteHtmlTagsAndInsertHtmlLinkInText($text) {
+    public function deleteHtmlTagsAndInsertHtmlLinkInText($text)
+    {
         $text = strip_tags(nl2br($text), '<br/><br>');
         $text = $this->__autoReplaceHtmlLinks($text);
         return $this->stripEmail($text);
@@ -75,7 +80,8 @@ class Brief extends \lithium\template\Helper {
      * @param string $text Original text
      * @return string
      */
-    public function deleteHtmlTagsAndInsertHtmlLinkInTextAndMentions($text) {
+    public function deleteHtmlTagsAndInsertHtmlLinkInTextAndMentions($text)
+    {
         $text = $this->__autoReplaceHtmlLinks($text);
         //@([a-zA-Zа-яА-Я]*)(\s[a-zA-Zа-яА-Я])?(\.\,)?
         //'/@([^@]*? [^@]\.)(,?)/u'
@@ -85,7 +91,8 @@ class Brief extends \lithium\template\Helper {
         return $text;
     }
 
-    public function showRawComment($text) {
+    public function showRawComment($text)
+    {
         return $text;
     }
 
@@ -95,56 +102,61 @@ class Brief extends \lithium\template\Helper {
      * @param $text
      * @return mixed
      */
-    private function __autoReplaceHtmlLinks($text) {
+    private function __autoReplaceHtmlLinks($text)
+    {
         $checkRegExp = '^[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/*[-a-zA-Z0-9\(\)@:;|%_\+.~#?&//=]*)?^';
         $replacementRegExp = '!(^|\s|\(|>)([-a-zA-Z0-9:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/*[-a-zA-Z0-9\(\)@:;|%_\+.~#?&//=]*)?)!';
-        if(preg_match($checkRegExp, $text)) {
+        if (preg_match($checkRegExp, $text)) {
             $text = preg_replace($replacementRegExp, '$1<a href="$2" target="_blank">$2</a>', $text);
         }
-        while(preg_match('#href="(?!(http|https)://)(.*)"#', $text, $match)) {
+        while (preg_match('#href="(?!(http|https)://)(.*)"#', $text, $match)) {
             $text = preg_replace('#href="(?!(http|https)://)(.*)"#', 'href="http://$2"', $text, -1);
         }
         return $text;
     }
-	
-	/**
+    
+    /**
      * Метод производит замену email на ссылку с вопросом помощи
      *
      * @param $string
      * @return string
      */
-    public function stripEmail($string){
+    public function stripEmail($string)
+    {
         return preg_replace('#' . $this->emailPattern . '#',
             '<a target="_blank" href="https://godesigner.ru/answers/view/47">[Адрес скрыт]</a>', $string);
     }
 
-	/**
+    /**
      * Метод удаляет email адрес из строки
      *
      * @param $string
      * @return string
      */
-    public function removeEmailClean($string) {
+    public function removeEmailClean($string)
+    {
         return preg_replace('#' . $this->emailPattern . '#', '', $string);
     }
 
-	/**
+    /**
      * Метод удаляет url из строки
      *
      * @param $string
      * @return string
      */
-    public function stripUrl($string) {
+    public function stripUrl($string)
+    {
         return preg_replace($this->urlPattern, '', $string);
     }
 
-	/**
+    /**
      * Метод создает mailto ссылку из email адреса
      *
      * @param $string
      * @return string
      */
-    public function linkEmail($string) {
+    public function linkEmail($string)
+    {
         return preg_replace('#(' . $this->emailPattern . ')#',
             '<a href="mailto://$1">$1</a>', $string);
     }
@@ -157,11 +169,11 @@ class Brief extends \lithium\template\Helper {
      * @param string $replacement
      * @return string
      */
-    public function trimAllInvisibleCharacter($string, $specialChars = null, $replacement = ' ') {
+    public function trimAllInvisibleCharacter($string, $specialChars = null, $replacement = ' ')
+    {
         if ($specialChars === null) {
             $specialChars   = "\\x00-\\x20";
         }
         return trim(preg_replace("/[".$specialChars."]+/", $replacement, $string), $specialChars);
     }
-
 }

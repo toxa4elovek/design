@@ -1,6 +1,7 @@
 <?php
 
 namespace app\models;
+
 use lithium\storage\Session;
 
 /**
@@ -9,16 +10,18 @@ use lithium\storage\Session;
  * Класс для работы с СМС сообщениями
  * @package app\models
  */
-class Post extends AppModel {
+class Post extends AppModel
+{
 
-    public $belongsTo = array('User');
+    public $belongsTo = ['User'];
 
-    private static function __replaceNbspWithNonBreakingSpace($result) {
+    private static function __replaceNbspWithNonBreakingSpace($result)
+    {
         if (get_class($result) === 'lithium\data\entity\Record') {
             $result->title = str_replace('&nbsp;', ' ', $result->title);
             return $result;
         }
-        foreach($result as $item) {
+        foreach ($result as $item) {
             $item->title = str_replace('&nbsp;', ' ', $item->title);
         }
         return $result;
@@ -29,7 +32,7 @@ class Post extends AppModel {
      *
      * @var array
      */
-    private static $commonTags = array(
+    private static $commonTags = [
         'заказчикам',
         'дизайнерам',
         'фриланс',
@@ -39,13 +42,14 @@ class Post extends AppModel {
         'cовет в обед',
         'топ 10',
         'фриланс под пальмами',
-    );
+    ];
 
-    public static function __init() {
+    public static function __init()
+    {
         parent::__init();
         self::applyFilter('find', function ($self, $params, $chain) {
             $result = $chain->next($self, $params, $chain);
-            if(($params['type'] === 'all') || ($params['type'] === 'first')) {
+            if (($params['type'] === 'all') || ($params['type'] === 'first')) {
                 $result = $self::__replaceNbspWithNonBreakingSpace($result);
             }
             return $result;
@@ -58,7 +62,8 @@ class Post extends AppModel {
      * @param $id
      * @return int
      */
-    public static function increaseCounter($id) {
+    public static function increaseCounter($id)
+    {
         $answer = self::first($id);
         $answer->views += 1;
         $answer->save();
@@ -70,8 +75,9 @@ class Post extends AppModel {
      *
      * @return array
      */
-    public static function getCommonTags() {
-        $res = array();
+    public static function getCommonTags()
+    {
+        $res = [];
         if (count(self::$commonTags) > 0) {
             foreach (self::$commonTags as $tag) {
                 $res[] = '"' . $tag . '"';
@@ -87,11 +93,12 @@ class Post extends AppModel {
      * @param string $tags
      * @return boolean|multitype:string
      */
-    public static function parseExistingTags($tags = null) {
+    public static function parseExistingTags($tags = null)
+    {
         if (empty($tags)) {
             return false;
         }
-        $res = array();
+        $res = [];
         foreach (explode('|', $tags) as $tag) {
             $res[] = '"' . $tag . '"';
         }
@@ -106,10 +113,11 @@ class Post extends AppModel {
      * @param $userId
      * @return bool
      */
-    public static function lock($postId, $userId) {
+    public static function lock($postId, $userId)
+    {
         $md5 = md5($postId . $userId);
-        if($post = self::first($postId)) {
-            if(empty($post->lock) || ($post->lock == $md5)) {
+        if ($post = self::first($postId)) {
+            if (empty($post->lock) || ($post->lock == $md5)) {
                 $post->lock = $md5;
                 $post->save();
                 return true;
@@ -124,11 +132,12 @@ class Post extends AppModel {
      * @param $postId
      * @return bool
      */
-    public static function unlock($postId) {
-        if($post = self::first($postId)) {
-            if(empty($post->lock)) {
+    public static function unlock($postId)
+    {
+        if ($post = self::first($postId)) {
+            if (empty($post->lock)) {
                 return false;
-            }else {
+            } else {
                 $post->lock = '';
                 $post->save();
                 return true;
@@ -143,8 +152,9 @@ class Post extends AppModel {
      * @param $postId
      * @return bool
      */
-    public static function updateLastEditTime($postId) {
-        if($post = self::first($postId)) {
+    public static function updateLastEditTime($postId)
+    {
+        if ($post = self::first($postId)) {
             $post->lastEditTime = date('Y-m-d H:i:s');
             return $post->save();
         }
@@ -158,19 +168,20 @@ class Post extends AppModel {
      * @param $userId
      * @return bool
      */
-    public static function isLockedByMe($postId, $userId) {
+    public static function isLockedByMe($postId, $userId)
+    {
         $md5 = md5($postId . $userId);
-        if($post = self::first($postId)) {
-            if(!empty($post->lock) && ($post->lock == $md5)) {
+        if ($post = self::first($postId)) {
+            if (!empty($post->lock) && ($post->lock == $md5)) {
                 return true;
             }
         }
         return false;
     }
 
-    public static function mb_ucfirst($string, $enc = 'UTF-8') {
+    public static function mb_ucfirst($string, $enc = 'UTF-8')
+    {
         return mb_strtoupper(mb_substr($string, 0, 1, $enc), $enc) .
         mb_substr($string, 1, mb_strlen($string, $enc), $enc);
     }
-
 }

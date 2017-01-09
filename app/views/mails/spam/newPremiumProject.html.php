@@ -17,8 +17,8 @@
         </td>
         <td>
             <a style="color: #ff585d; line-height: 17px; font-size: 20px; font-weight: bold; font-family: Arial, sans-serif;text-decoration: none;" href="https://godesigner.ru/pitches/details/<?=$pitch->id?>"><?=$pitch->title?></a><br/>
-            <span style="color: #C7C6C7; line-height: 17px; font-size: 9px; font-family: Arial, sans-serif;"><?=$this->view()->render(array('template' => 'pitch-info'), array('pitch' => $pitch));?></span><br/>
-            <?php if($pitch->private == 1):?>
+            <span style="color: #C7C6C7; line-height: 17px; font-size: 9px; font-family: Arial, sans-serif;"><?=$this->view()->render(['template' => 'pitch-info'], ['pitch' => $pitch]);?></span><br/>
+            <?php if ($pitch->private == 1):?>
                 <span style="color: #444444; line-height: 17px; font-size: 12px; font-family: Arial, sans-serif;">Это <a target="_blank" href="https://godesigner.ru/answers/view/64">закрытый проект</a> и вам нужно подписать соглашение о неразглашении!</span><br/>
             <?php else:?>
                 <span style="color: #444444; line-height: 17px; font-size: 12px; font-family: Arial, sans-serif;">

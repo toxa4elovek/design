@@ -56,9 +56,9 @@ class SubscriptionPlansController extends AppController
                 if (($savedValue = SubscriptionPlan::getFundBalanceForPayment($planRecordId)) && ($savedValue !== null)) {
                     $value = $savedValue;
                 }
-                if($plan['id'] === 4) {
+                if ($plan['id'] === 4) {
                     $wording = 'бизнес-плана';
-                }else {
+                } else {
                     $wording = 'тарифа';
                 }
                 $receipt = [

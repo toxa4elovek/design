@@ -23,20 +23,18 @@
 
 require '../tmhOAuth.php';
 require '../tmhUtilities.php';
-$tmhOAuth = new tmhOAuth(array(
+$tmhOAuth = new tmhOAuth([
   'consumer_key'    => 'YOUR_CONSUMER_KEY',
   'consumer_secret' => 'YOUR_CONSUMER_SECRET',
   'user_token'      => 'A_USER_TOKEN',
   'user_secret'     => 'A_USER_SECRET',
-));
+]);
 
 $code = $tmhOAuth->request('GET', $tmhOAuth->url('1/account/verify_credentials'));
 
 if ($code == 200) {
-  echo 'The access level of this token is: ' . $tmhOAuth->response['headers']['x_access_level'] . PHP_EOL;
-  tmhUtilities::pr($tmhOAuth->response);
+    echo 'The access level of this token is: ' . $tmhOAuth->response['headers']['x_access_level'] . PHP_EOL;
+    tmhUtilities::pr($tmhOAuth->response);
 } else {
-  tmhUtilities::pr(htmlentities($tmhOAuth->response['response']));
+    tmhUtilities::pr(htmlentities($tmhOAuth->response['response']));
 }
-
-?>

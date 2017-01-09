@@ -1,10 +1,10 @@
 <div class="wrapper">
 
-    <?=$this->view()->render(array('element' => 'header'), array('logo' => 'logo'))?>
+    <?=$this->view()->render(['element' => 'header'], ['logo' => 'logo'])?>
     <?php
     $userdata = unserialize($user->userdata);
     $company = unserialize($user->companydata);
-    if(!isset($userdata['accept_sms'])) {
+    if (!isset($userdata['accept_sms'])) {
         $userdata['accept_sms'] = false;
     }
     ?>
@@ -12,7 +12,7 @@
         <div class="main">
 
             <nav class="main_nav clear" style="width:832px;margin-left:2px;">
-                <?=$this->view()->render(array('element' => 'office/nav'));?>
+                <?=$this->view()->render(['element' => 'office/nav']);?>
             </nav>
 
             <div class="sideblock">
@@ -34,8 +34,8 @@
                             <div style="margin-bottom: 2px"><input type="text" name="first_name" placeholder="Имя" value="<?=$user->first_name?>" ></div>
                             <div style="margin-bottom: 7px"><input type="text" name="last_name" placeholder="Фамилия" value="<?=$user->last_name?>" ></div>
                             <div style="margin-top: 50px;">
-                                <label style="padding-left: 3px;"><input type="radio" name="gender" value="1" <?php if($user->gender == 1):?>checked<?php endif ?>>Мужчина</label>
-                                <label><input type="radio" name="gender" value="2" <?php if($user->gender == 2):?>checked<?php endif ?>>Женщина</label>
+                                <label style="padding-left: 3px;"><input type="radio" name="gender" value="1" <?php if ($user->gender == 1):?>checked<?php endif ?>>Мужчина</label>
+                                <label><input type="radio" name="gender" value="2" <?php if ($user->gender == 2):?>checked<?php endif ?>>Женщина</label>
 
                             </div>
                             <div class="g_line" style="margin-top: 92px; width: 384px; margin-left: 220px;"></div>
@@ -91,22 +91,22 @@
                     <div class="g_line"></div>
                     <h1 class="section-header">Сотовый</h1>
                     <form method="post" id="mobile-form" action="/users/update">
-                        <p class="confirm-message" <?php if(!empty($user->phone) && $user->phone_valid == 1):?>style="display:none;"<?php endif?> <?php if(!empty($user->phone) && $user->phone_valid == 0):?>style="display:block;"<?php endif?>>Для подтверждения номера +<?=$user->phone?> введите код, который пришел по смс.</p>
-                        <div class="phone-input-container" <?php if(!empty($user->phone) && $user->phone_valid == 1):?>style="display:none;"<?php endif?> <?php if(!empty($user->phone) && $user->phone_valid == 0):?>style="display:none;"<?php endif?>>
+                        <p class="confirm-message" <?php if (!empty($user->phone) && $user->phone_valid == 1):?>style="display:none;"<?php endif?> <?php if (!empty($user->phone) && $user->phone_valid == 0):?>style="display:block;"<?php endif?>>Для подтверждения номера +<?=$user->phone?> введите код, который пришел по смс.</p>
+                        <div class="phone-input-container" <?php if (!empty($user->phone) && $user->phone_valid == 1):?>style="display:none;"<?php endif?> <?php if (!empty($user->phone) && $user->phone_valid == 0):?>style="display:none;"<?php endif?>>
                             <span class="plus">+</span>
                             <input type="text" name="phone" placeholder="79811234567">
                         </div>
                         <div class="clear"></div>
-                        <ul <?php if(!empty($user->phone) && $user->phone_valid == 1):?>style="display:block;"<?php endif?> <?php if(!empty($user->phone) && $user->phone_valid == 0):?>style="display:block;"<?php endif?>>
-                            <li class="number" <?php if(!empty($user->phone) && $user->phone_valid == 1):?>style="display:block;"<?php endif?>>+ <?= $user->phone?></li>
-                            <li class="remove-number" <?php if(!empty($user->phone) && $user->phone_valid == 1):?>style="margin-right: 0 !important;"<?php endif?>><a href="#" class="remove-number-link"><?php if(!empty($user->phone) && $user->phone_valid == 1):?>Удалить/поменять номер<?php else:?>Удалить номер<?php endif?></a></li>
-                            <li class="resend-code" <?php if(!empty($user->phone) && $user->phone_valid == 1):?>style="display:none;"<?php endif?>><a href="#" class="resend-code-link">Выслать код повторно</a></li>
+                        <ul <?php if (!empty($user->phone) && $user->phone_valid == 1):?>style="display:block;"<?php endif?> <?php if (!empty($user->phone) && $user->phone_valid == 0):?>style="display:block;"<?php endif?>>
+                            <li class="number" <?php if (!empty($user->phone) && $user->phone_valid == 1):?>style="display:block;"<?php endif?>>+ <?= $user->phone?></li>
+                            <li class="remove-number" <?php if (!empty($user->phone) && $user->phone_valid == 1):?>style="margin-right: 0 !important;"<?php endif?>><a href="#" class="remove-number-link"><?php if (!empty($user->phone) && $user->phone_valid == 1):?>Удалить/поменять номер<?php else:?>Удалить номер<?php endif?></a></li>
+                            <li class="resend-code" <?php if (!empty($user->phone) && $user->phone_valid == 1):?>style="display:none;"<?php endif?>><a href="#" class="resend-code-link">Выслать код повторно</a></li>
                         </ul>
                         <div class="clear"></div>
-                        <input type="text" name="phone_code"  <?php if(!empty($user->phone) && $user->phone_valid == 0):?>style="display:block;"<?php endif?>>
-                        <input type="submit" id="confirm-mobile" class="button" value="Подтвердить код" <?php if(!empty($user->phone) && $user->phone_valid == 0):?>style="display:block;"<?php endif?>>
-                        <input type="submit" id="save-mobile" class="button" value="Подтвердить телефон" <?php if(!empty($user->phone) && $user->phone_valid == 1):?>style="display:none;"<?php endif?> <?php if(!empty($user->phone) && $user->phone_valid == 0):?>style="display:none;"<?php endif?>>
-                        <span class="note" <?php if(!empty($user->phone) && $user->phone_valid == 1):?>style="display:none;"<?php endif?> <?php if(!empty($user->phone) && $user->phone_valid == 0):?>style="display:none;"<?php endif?>>для смс оповещения в экстренных случаях</span>
+                        <input type="text" name="phone_code"  <?php if (!empty($user->phone) && $user->phone_valid == 0):?>style="display:block;"<?php endif?>>
+                        <input type="submit" id="confirm-mobile" class="button" value="Подтвердить код" <?php if (!empty($user->phone) && $user->phone_valid == 0):?>style="display:block;"<?php endif?>>
+                        <input type="submit" id="save-mobile" class="button" value="Подтвердить телефон" <?php if (!empty($user->phone) && $user->phone_valid == 1):?>style="display:none;"<?php endif?> <?php if (!empty($user->phone) && $user->phone_valid == 0):?>style="display:none;"<?php endif?>>
+                        <span class="note" <?php if (!empty($user->phone) && $user->phone_valid == 1):?>style="display:none;"<?php endif?> <?php if (!empty($user->phone) && $user->phone_valid == 0):?>style="display:none;"<?php endif?>>для смс оповещения в экстренных случаях</span>
                         <div class="clear"></div>
                     </form>
 
@@ -114,7 +114,7 @@
                         <div class="g_line"></div>
                         <h1 class="section-header">Email</h1>
                         <p>
-                            <?php if($emailInfo != false):?>
+                            <?php if ($emailInfo != false):?>
                                 <?=$emailInfo?><br>
                             <?php endif;?>
                             <a href="mailto:<?= $user->email ?>"><?= $user->email ?></a></p>
@@ -137,7 +137,7 @@
                     <div class="clear"></div>
 
                     <input type="submit" id="save-password" class="button" value="Изменить пароль">
-                    <?php if($this->user->getId() != '21376'): ?>
+                    <?php if ($this->user->getId() != '21376'): ?>
                     <a href="/users/deleteaccount" id="deleteaccount">Удалить аккаунт</a>
                     <?php endif?>
                 </section>
@@ -153,35 +153,35 @@
                         <form id="notifications-form" action="/users/update/" method="post">
                             <div id="fieldblock4">
                                 <?php
-                                    $labels = array(
-                                        'client' => array('email_newcomments' => 'комментарии к моим проектам'),
-                                        'other' => array('email_newcomments' => 'комментарии к моим решениям'),
-                                    );
-                                    if($user->isClient) {
+                                    $labels = [
+                                        'client' => ['email_newcomments' => 'комментарии к моим проектам'],
+                                        'other' => ['email_newcomments' => 'комментарии к моим решениям'],
+                                    ];
+                                    if ($user->isClient) {
                                         $email_newcomments = $labels['client']['email_newcomments'];
-                                    }else {
+                                    } else {
                                         $email_newcomments = $labels['other']['email_newcomments'];
                                     }
                                 ?>
                                 <ul>
                                     <li>
                                         <label class="regular" style="font-weight: normal">
-                                            <input style="margin-top:0; margin-bottom: 2px;" type="checkbox" name="email_newpitchonce" <?php if($user->email_newpitchonce): echo 'checked'; endif;?>>о новых проектах раз в день
+                                            <input style="margin-top:0; margin-bottom: 2px;" type="checkbox" name="email_newpitchonce" <?php if ($user->email_newpitchonce): echo 'checked'; endif;?>>о новых проектах раз в день
                                         </label>
                                     </li>
                                     <li>
                                         <label class="regular" style="font-weight: normal">
-                                            <input style="margin-top:0; margin-bottom: 2px;" type="checkbox" name="email_newpitch" <?php if($user->email_newpitch): echo 'checked'; endif;?>>о новых проектах сразу, как они публикуются на сайте
+                                            <input style="margin-top:0; margin-bottom: 2px;" type="checkbox" name="email_newpitch" <?php if ($user->email_newpitch): echo 'checked'; endif;?>>о новых проектах сразу, как они публикуются на сайте
                                         </label>
                                     </li>
                                     <li>
                                         <label class="regular" style="font-weight: normal">
-                                            <input style="margin-top:0; margin-bottom: 2px;" type="checkbox" name="email_onlycopy" <?php if($user->email_onlycopy): echo 'checked'; endif;?>>только о новых проектах на копирайтинг
+                                            <input style="margin-top:0; margin-bottom: 2px;" type="checkbox" name="email_onlycopy" <?php if ($user->email_onlycopy): echo 'checked'; endif;?>>только о новых проектах на копирайтинг
                                         </label>
                                     </li>
                                     <li>
                                         <label class="regular" style="font-weight: normal">
-                                            <input style="margin-top:0; margin-bottom: 2px;" type="checkbox" name="email_newcomments" <?php if($user->email_newcomments): echo 'checked'; endif;?>><?= $email_newcomments?>
+                                            <input style="margin-top:0; margin-bottom: 2px;" type="checkbox" name="email_newcomments" <?php if ($user->email_newcomments): echo 'checked'; endif;?>><?= $email_newcomments?>
                                         </label>
                                     </li>
                                     <li data-value="<?php echo $smsStatus = ($userdata['accept_sms']) ? 'true' : 'false'; ?>" id="sms-notifications-status"></li>
@@ -189,17 +189,17 @@
                                 <ul>
                                     <li>
                                         <label class="regular" style="font-weight: normal">
-                                            <input style="margin-top:0; margin-bottom: 2px;" type="checkbox" name="email_newsolonce" <?php if($user->email_newsolonce): echo 'checked'; endif;?>>о новых решениях к моим проектам раз в день
+                                            <input style="margin-top:0; margin-bottom: 2px;" type="checkbox" name="email_newsolonce" <?php if ($user->email_newsolonce): echo 'checked'; endif;?>>о новых решениях к моим проектам раз в день
                                         </label>
                                     </li>
                                     <li>
                                         <label class="regular" style="font-weight: normal">
-                                            <input style="margin-top:0; margin-bottom: 2px;" type="checkbox" name="email_newsol" <?php if($user->email_newsol): echo 'checked'; endif;?>>о новых решениях к моим проектам сразу, как их выкладывают на сайт
+                                            <input style="margin-top:0; margin-bottom: 2px;" type="checkbox" name="email_newsol" <?php if ($user->email_newsol): echo 'checked'; endif;?>>о новых решениях к моим проектам сразу, как их выкладывают на сайт
                                         </label>
                                     </li>
                                     <li>
                                         <label class="regular" style="font-weight: normal">
-                                            <input style="margin-top:0; margin-bottom: 2px;" type="checkbox" name="email_digest" <?php if($user->email_digest): echo 'checked'; endif;?>>новости GoDesigner.ru
+                                            <input style="margin-top:0; margin-bottom: 2px;" type="checkbox" name="email_digest" <?php if ($user->email_digest): echo 'checked'; endif;?>>новости GoDesigner.ru
                                         </label>
                                     </li>
                                     <li id="push-notifications-status"></li>
@@ -212,11 +212,11 @@
                     </section>
 
                     <?php
-                    if(unserialize($user->paymentOptions)) {
+                    if (unserialize($user->paymentOptions)) {
                         $paydata = unserialize($user->paymentOptions);
                         $paydata = $paydata[0];
-                    }else{
-                        $paydata = array(
+                    } else {
+                        $paydata = [
                             'cashintype' => 'none',
                             'phone' => '',
                             'fio' => '',
@@ -237,19 +237,21 @@
                             'passseriesyandex' => '',
                             'passnumyandex' => '',
                             'issuedbyyandex' => ''
-                        );
+                        ];
                     }
                     ?>
 
                 <div class="g_line"></div>
-                <section class="user-details-section" <?php if($user->is_company == 1):?>style="display: none;"<?php endif?>>
+                <section class="user-details-section" <?php if ($user->is_company == 1):?>style="display: none;"<?php endif?>>
                     <form id="worker-payment-data" action="/users/details" method="post">
                         <h1 class="section-header">Реквизиты: выберите способ получения денег</h1>
 
                         <table class="user-details-table">
                             <tbody><tr>
                                 <td width="28">
-                                    <input type="radio" data-pay="cards" class="rb1" name="cashintype" <?php if($paydata['cashintype'] == 'card') echo 'checked' ?> value="card">
+                                    <input type="radio" data-pay="cards" class="rb1" name="cashintype" <?php if ($paydata['cashintype'] == 'card') {
+    echo 'checked';
+} ?> value="card">
                                 </td>
                                 <td width="186" class="s3_h">
                                     <img alt="Банковские карты" src="/img/visa_mastercard.png">
@@ -260,7 +262,7 @@
                                 <td>
                                 </td>
                             </tr>
-                            <tr id="cards" <?php if($paydata['cashintype'] != 'card'):?> style="display:none;" <?php endif;?>>
+                            <tr id="cards" <?php if ($paydata['cashintype'] != 'card'):?> style="display:none;" <?php endif;?>>
                                 <td colspan="4">
                                     <table id="step1table">
                                         <tr style="height: 40px;">
@@ -286,7 +288,9 @@
                                             <td class="" style="padding-right:10px"><input style="width:262px;" type="text" value="<?=$paydata['bik']?>" name="bik" /></td>
                                         </tr>
                                         <tr><td class="tableheader" colspan="2">Примечание</td></tr>
-                                        <tr style="height: 80px;"><td class="" colspan="2"><input type="text" value="<?php if(isset($paydata['extradata'])) echo $paydata['extradata']?>" name="extradata" /></td></tr>
+                                        <tr style="height: 80px;"><td class="" colspan="2"><input type="text" value="<?php if (isset($paydata['extradata'])) {
+    echo $paydata['extradata'];
+}?>" name="extradata" /></td></tr>
                                     </table>
                                 </td>
                             </tr>
@@ -296,7 +300,9 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <input type="radio" data-pay="wmr" class="rb1" name="cashintype" <?php if($paydata['cashintype'] == 'wmr') echo 'checked' ?> value="wmr">
+                                    <input type="radio" data-pay="wmr" class="rb1" name="cashintype" <?php if ($paydata['cashintype'] == 'wmr') {
+    echo 'checked';
+} ?> value="wmr">
                                 </td>
                                 <td class="s3_h">
                                     <img alt="Webmoney WMR" src="/img/wmr.png">
@@ -306,7 +312,7 @@
                                 </td>
                                 <td></td>
                             </tr>
-                            <tr id="wmr" <?php if($paydata['cashintype'] != 'wmr'):?> style="display:none;"<?php endif;?> >
+                            <tr id="wmr" <?php if ($paydata['cashintype'] != 'wmr'):?> style="display:none;"<?php endif;?> >
                                 <td colspan="4">
                                     <table id="step2table">
                                         <tr style="height: 40px;">
@@ -327,7 +333,9 @@
                                             <td class="" style="padding-left:10px"><input style="width:272px" type="text" value="<?=$paydata['issuedby']?>" name="issuedby" /></td>
                                         </tr>
                                         <tr><td class="tableheader" colspan="3">Примечание</td></tr>
-                                        <tr style="height: 80px;"><td class="" colspan="3"><input type="text" value="<?php if(isset($paydata['extradatawmr'])) echo $paydata['extradatawmr']?>" name="extradatawmr" /></td></tr>
+                                        <tr style="height: 80px;"><td class="" colspan="3"><input type="text" value="<?php if (isset($paydata['extradatawmr'])) {
+    echo $paydata['extradatawmr'];
+}?>" name="extradatawmr" /></td></tr>
                                     </table>
                                 </td>
                             </tr>
@@ -337,7 +345,9 @@
                             </tr>
                             <!--tr>
                                 <td>
-                                    <input type="radio" disabled data-pay="yandex" class="rb1" name="cashintype" <?php if($paydata['cashintype'] == 'yandex') echo 'checked' ?> value="yandex">
+                                    <input type="radio" disabled data-pay="yandex" class="rb1" name="cashintype" <?php if ($paydata['cashintype'] == 'yandex') {
+    echo 'checked';
+} ?> value="yandex">
                                 </td>
                                 <td class="s3_h">
                                     <img alt="Yandex Деньги" style="width:120px; margin-left: 10px;" src="/img/yd.png">
@@ -347,7 +357,7 @@
                                 </td>
                                 <td></td>
                             </tr-->
-                            <!--tr id="yandex" <?php if($paydata['cashintype'] != 'yandex'):?> style="display:none;"<?php endif;?> >
+                            <!--tr id="yandex" <?php if ($paydata['cashintype'] != 'yandex'):?> style="display:none;"<?php endif;?> >
                                 <td colspan="4">
                                     <table id="step2table">
                                         <tr style="height: 40px;">
@@ -368,7 +378,9 @@
                                             <td class="" style="padding-left:10px"><input style="width:272px" type="text" value="<?=$paydata['issuedbyyandex']?>" name="issuedbyyandex" /></td>
                                         </tr>
                                         <tr><td class="tableheader" colspan="3">Примечание</td></tr>
-                                        <tr style="height: 80px;"><td class="" colspan="3"><input type="text" value="<?php if(isset($paydata['extradatayandex'])) echo $paydata['extradatayandex']?>" name="extradatayandex" /></td></tr>
+                                        <tr style="height: 80px;"><td class="" colspan="3"><input type="text" value="<?php if (isset($paydata['extradatayandex'])) {
+    echo $paydata['extradatayandex'];
+}?>" name="extradatayandex" /></td></tr>
                                     </table>
                                 </td>
                             </tr-->
@@ -385,7 +397,7 @@
 
                 </section>
 
-                <section class="user-company-section" <?php if($user->is_company == 0):?>style="display: none;"<?php endif?>>
+                <section class="user-company-section" <?php if ($user->is_company == 0):?>style="display: none;"<?php endif?>>
                     <h1 class="section-header">Реквизиты вашей компании</h1>
                     <form id="company-payment-data" action="/users/update" method="post">
                         <label>
@@ -422,7 +434,7 @@
 </div><!-- .wrapper -->
 
 
-<?=$this->html->script(array(
+<?=$this->html->script([
     '/js/jcarousellite_1.0.1.js',
     '/js/jquery.timers.js',
     '/js/jquery.simplemodal-1.4.2.js',
@@ -435,5 +447,5 @@
     '/js/users/office/SmsNotificationsStatus.js',
     '/js/users/office/ProfRadioList.js',
     '/js/users/office/ProfSelectBox.js',
-    'users/office.js'), array('inline' => false))?>
-<?=$this->html->style(array('/main2.css', '/pitches2.css', '/edit','/view', '/messages12', '/pitches12', '/win_steps1.css', '/win_steps2_final3.css', '/portfolio.css', '/css/profile.css'), array('inline' => false))?>
+    'users/office.js'], ['inline' => false])?>
+<?=$this->html->style(['/main2.css', '/pitches2.css', '/edit', '/view', '/messages12', '/pitches12', '/win_steps1.css', '/win_steps2_final3.css', '/portfolio.css', '/css/profile.css'], ['inline' => false])?>

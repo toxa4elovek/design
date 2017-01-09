@@ -27,11 +27,11 @@
 
 $count=0;
 $first_id=0;
-function my_streaming_callback($data, $length, $metrics) {
-  global $raw;
-  if ($raw) :
-    echo $data;
-  else :
+function my_streaming_callback($data, $length, $metrics)
+{
+    global $raw;
+    if ($raw) :
+    echo $data; else :
     $data = json_decode($data, true);
 
     $date = strtotime($data['created_at']);
@@ -43,25 +43,26 @@ function my_streaming_callback($data, $length, $metrics) {
     $count++;
 
     global $first_id;
-    if ($first_id==0)
-      $first_id = $data['id_str'];
-  endif;
+    if ($first_id==0) {
+        $first_id = $data['id_str'];
+    }
+    endif;
 
-  global $limit;
-  if ($count==$limit) :
+    global $limit;
+    if ($count==$limit) :
     return true;
-  endif;
-  return file_exists(dirname(__FILE__) . '/STOP');
+    endif;
+    return file_exists(dirname(__FILE__) . '/STOP');
 }
 
 require '../tmhOAuth.php';
 require '../tmhUtilities.php';
-$tmhOAuth = new tmhOAuth(array(
+$tmhOAuth = new tmhOAuth([
   'consumer_key'    => 'YOUR_CONSUMER_KEY',
   'consumer_secret' => 'YOUR_CONSUMER_SECRET',
   'user_token'      => 'A_USER_TOKEN',
   'user_secret'     => 'A_USER_SECRET',
-));
+]);
 
 $method = 'https://stream.twitter.com/1/statuses/filter.json';
 $track     = tmhUtilities::read_input('Track terms. For multiple terms separate with commas (leave blank for none): ');
@@ -72,24 +73,30 @@ $limit     = tmhUtilities::read_input('Stop after how many tweets? (leave blank 
 $debug     = tmhUtilities::read_input('Debug? (1,t,true): ');
 $raw       = tmhUtilities::read_input('Raw output? (1,t,true): ');
 
-$true = array('1','t','true');
+$true = ['1','t','true'];
 
-$params = array();
-if (strlen($track) > 0)
-  $params['track'] = $track;
-if (strlen($follow) > 0)
-  $params['follow'] = $follow;
-if (strlen($locations) > 0)
-  $params['locations'] = $locations;
-if (in_array($delimited, $true))
-  $params['delimited'] = 'length';
-if (strlen($limit) > 0)
-  $limit = intval($limit);
+$params = [];
+if (strlen($track) > 0) {
+    $params['track'] = $track;
+}
+if (strlen($follow) > 0) {
+    $params['follow'] = $follow;
+}
+if (strlen($locations) > 0) {
+    $params['locations'] = $locations;
+}
+if (in_array($delimited, $true)) {
+    $params['delimited'] = 'length';
+}
+if (strlen($limit) > 0) {
+    $limit = intval($limit);
+}
 $debug = in_array($debug, $true);
 $raw = in_array($raw, $true);
 
 $tmhOAuth->streaming_request('POST', $method, $params, 'my_streaming_callback');
-if ($debug)
-  var_dump($tmhOAuth);
+if ($debug) {
+    var_dump($tmhOAuth);
+}
 ?>
 

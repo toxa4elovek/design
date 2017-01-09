@@ -2,9 +2,10 @@
 
 namespace app\models;
 
-class Wp_term extends \app\models\AppModel {
+class Wp_term extends \app\models\AppModel
+{
 
-    public $_meta = array('connection' => 'tutdesign');
+    public $_meta = ['connection' => 'tutdesign'];
 
     /* public $hasMany = array(
         'Wp_term_relationship' => array(
@@ -14,27 +15,27 @@ class Wp_term extends \app\models\AppModel {
         ),
     ); */
 
-    protected $_schema = array(
-        'term_id' => array(
+    protected $_schema = [
+        'term_id' => [
             'type' => 'id',
-        ),
-        'name' => array(
+        ],
+        'name' => [
             'type' => 'string',
             'length' => 200,
             'null' => false,
             'default' => '',
-        ),
-        'slug' => array(
+        ],
+        'slug' => [
             'type' => 'string',
             'length' => 200,
             'null' => false,
             'default' => '',
-        ),
-        'term_group' => array(
+        ],
+        'term_group' => [
             'type' => 'integer',
             'length' => 10,
             'null' => false,
             'default' => '0',
-        ),
-    );
+        ],
+    ];
 }

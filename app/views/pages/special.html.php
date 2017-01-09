@@ -1,8 +1,8 @@
 <div class="wrapper">
-<?php if($this->user->getId()):?>
-<?=$this->view()->render(array('element' => 'header'), array('logo' => 'logo', 'header' => 'header'))?>
+<?php if ($this->user->getId()):?>
+<?=$this->view()->render(['element' => 'header'], ['logo' => 'logo', 'header' => 'header'])?>
 <?php else:?>
-    <?=$this->view()->render(array('element' => 'header'), array('logo' => 'logo'))?>
+    <?=$this->view()->render(['element' => 'header'], ['logo' => 'logo'])?>
 <?php endif?>
 	<div class="middle">
 		<div class="middle_inner" style="padding-top: 45px;">
@@ -31,7 +31,7 @@
                             	<div id="ap_content_r_1" style="padding-left:90px" class="regular">
                                     <h2>Возникли вопросы?</h2>
                                     Если вы не можете найти ответ на свой <span style="white-space: nowrap;">вопрос — напишите нам</span>. Мы постараемся ответить в течение 24 часов по рабочим дням.
-                                    <?=$this->html->link('<img src="/img/send-email.png">', 'Pages::contacts', array('escape' => false))?>
+                                    <?=$this->html->link('<img src="/img/send-email.png">', 'Pages::contacts', ['escape' => false])?>
                                 </div>
                             </div>
                         </div>
@@ -42,4 +42,4 @@
 	</div><!-- /middle -->
 
 </div><!-- .wrapper -->
-<?=$this->html->style(array('/howitworks', '/about_project', '/special'), array('inline' => false))?>
+<?=$this->html->style(['/howitworks', '/about_project', '/special'], ['inline' => false])?>

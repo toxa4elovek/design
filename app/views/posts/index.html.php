@@ -1,6 +1,6 @@
 <div class="wrapper">
 
-    <?=$this->view()->render(array('element' => 'header'), array('logo' => 'logo'))?>
+    <?=$this->view()->render(['element' => 'header'], ['logo' => 'logo'])?>
 
     <div class="middle">
         <div class="middle_inner">
@@ -28,7 +28,7 @@
                         <input type="text" id="blog-search" name="search" value="<?=$search?>" class="text">
                         <input type="submit" class="blog-submit" value="">
                     </form>
-                    <?=$this->view()->render(array('element' => 'posts/categories_menu'))?>
+                    <?=$this->view()->render(['element' => 'posts/categories_menu'])?>
                     <div id="current_pitch">
                     <?php echo $this->stream->renderStream(8, false);?>
                     </div>
@@ -44,7 +44,7 @@
 
 </div><!-- .wrapper -->
 <div class="onTop">&nbsp;</div>
-<?=$this->html->script(array(
+<?=$this->html->script([
     'jquery.timeago',
     'moment.min.js',
     'moment-timezone-with-data-2010-2020.min.js',
@@ -52,11 +52,11 @@
     'posts/index/BlogPostList.js',
     'posts/index/BlogPostEntryBox.js',
     'posts/index'
-), array('inline' => false))?>
-<?=$this->html->style(array(
+], ['inline' => false])?>
+<?=$this->html->style([
     '/help',
     '/blog',
     '/css/common/page-title-with-flag.css',
     '/css/common/clear.css',
     '/css/posts/index.css'
-), array('inline' => false))?>
+], ['inline' => false])?>

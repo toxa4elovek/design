@@ -65,7 +65,7 @@ class AppController extends \lithium\action\Controller
                     Auth::clear('user');
                     return $this->redirect('/users/banned');
                 }
-                if(($userRecord->banned_until) && ($userRecord->banned_until != '0000-00-00 00:00:00') && (time() < strtotime($userRecord->banned_until))) {
+                if (($userRecord->banned_until) && ($userRecord->banned_until != '0000-00-00 00:00:00') && (time() < strtotime($userRecord->banned_until))) {
                     Auth::clear('user');
                     return $this->redirect('/users/banned');
                 }
@@ -77,13 +77,13 @@ class AppController extends \lithium\action\Controller
                 // updates avatars
                 $this->userHelper->write('user.images', $userRecord->images);
                 $ids = $this->userHelper->getId();
-                if($this->userHelper->isAdmin() && $ids != '108') {
+                if ($this->userHelper->isAdmin() && $ids != '108') {
                     $ids .= ' OR Pitch.user_id = 108';
                 }
-                if($this->userHelper->isSubscriptionActive()) {
-                //if ($this->userHelper->isLoggedIn()) {
+                if ($this->userHelper->isSubscriptionActive()) {
+                    //if ($this->userHelper->isLoggedIn()) {
                     if ($records = Manager::all(['conditions' => ['subscriber_id' => $this->userHelper->getId()]])) {
-                        foreach($records as $record) {
+                        foreach ($records as $record) {
                             $ids .= ' OR Pitch.user_id = ' . $record->manager_id;
                         }
                     }

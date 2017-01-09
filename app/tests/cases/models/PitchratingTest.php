@@ -7,17 +7,21 @@ use \app\models\Pitchrating;
 use \app\models\Pitch;
 use \app\models\User;
 
-class PitchratingTest extends AppUnit {
+class PitchratingTest extends AppUnit
+{
 
-    public function setUp() {
-        $this->rollUp(array('Pitch', 'User', 'Pitchrating'));
+    public function setUp()
+    {
+        $this->rollUp(['Pitch', 'User', 'Pitchrating']);
     }
 
-    public function tearDown() {
-        $this->rollDown(array('Pitch', 'User', 'Pitchrating'));
+    public function tearDown()
+    {
+        $this->rollDown(['Pitch', 'User', 'Pitchrating']);
     }
 
-    public function testSetRating() {
+    public function testSetRating()
+    {
         // Рейтинг не существует
         $this->assertTrue(Pitchrating::setRating(2, 1, 4));
 
@@ -36,24 +40,26 @@ class PitchratingTest extends AppUnit {
 
         // Значение больше 5
         Pitchrating::setRating($pitchRating->user_id, $pitchRating->pitch_id, 99);
-        $pitchRating2 = Pitchrating::first(array('conditions' => array('user_id' => $pitchRating->user_id, 'pitch_id' => $pitchRating->pitch_id)));
+        $pitchRating2 = Pitchrating::first(['conditions' => ['user_id' => $pitchRating->user_id, 'pitch_id' => $pitchRating->pitch_id]]);
         $this->assertEqual(5, $pitchRating2->rating);
 
         // Значение меньше 1
         Pitchrating::setRating($pitchRating->user_id, $pitchRating->pitch_id, 0);
-        $pitchRating2 = Pitchrating::first(array('conditions' => array('user_id' => $pitchRating->user_id, 'pitch_id' => $pitchRating->pitch_id)));
+        $pitchRating2 = Pitchrating::first(['conditions' => ['user_id' => $pitchRating->user_id, 'pitch_id' => $pitchRating->pitch_id]]);
         $this->assertEqual(1, $pitchRating2->rating);
     }
 
-    public function testGetRating() {
+    public function testGetRating()
+    {
         $this->assertEqual(4, Pitchrating::getRating(User::first()->id, Pitch::first()->id));
         $this->assertEqual(0, Pitchrating::getRating(0, Pitch::first()->id));
         $this->assertEqual(0, Pitchrating::getRating(User::first()->id, 0));
     }
 
-    public function testTakePart() {
+    public function testTakePart()
+    {
         $this->assertTrue(Pitchrating::takePart(2, 1));
-        $rating = Pitchrating::first(array('conditions' => array('user_id' => 2, 'pitch_id' => 1)));
+        $rating = Pitchrating::first(['conditions' => ['user_id' => 2, 'pitch_id' => 1]]);
         $this->assertIdentical('1', $rating->trigger);
 
         //Пользователь не существует
@@ -62,5 +68,4 @@ class PitchratingTest extends AppUnit {
         //Питч не существует
         $this->assertFalse(Pitchrating::takePart(1, 0));
     }
-
 }

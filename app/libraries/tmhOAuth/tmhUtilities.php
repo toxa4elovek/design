@@ -10,37 +10,39 @@
  * 29 September 2011
  */
 namespace tmhOAuth;
- 
-class tmhUtilities {
-  /**
+
+class tmhUtilities
+{
+    /**
    * Entifies the tweet using the given entities element
    *
    * @param array $tweet the json converted to normalised array
    * @return the tweet text with entities replaced with hyperlinks
    */
-  function entify($tweet, &$replacements=array()) {
-    $encoding = mb_internal_encoding();
-    mb_internal_encoding("UTF-8");
+  public function entify($tweet, &$replacements=[])
+  {
+      $encoding = mb_internal_encoding();
+      mb_internal_encoding("UTF-8");
 
-    $keys = array();
+      $keys = [];
     // $replacements = array();
     $is_retweet = false;
 
-    if (isset($tweet['retweeted_status'])) {
-      $tweet = $tweet['retweeted_status'];
-      $is_retweet = true;
-    }
+      if (isset($tweet['retweeted_status'])) {
+          $tweet = $tweet['retweeted_status'];
+          $is_retweet = true;
+      }
 
-    if (!isset($tweet['entities'])) {
-      return $tweet['text'];
-    }
+      if (!isset($tweet['entities'])) {
+          return $tweet['text'];
+      }
 
     // prepare the entities
     foreach ($tweet['entities'] as $type => $things) {
-      foreach ($things as $entity => $value) {
-        $tweet_link = "<a href=\"http://twitter.com/{$tweet['user']['screen_name']}/statuses/{$tweet['id']}\">{$tweet['created_at']}</a>";
+        foreach ($things as $entity => $value) {
+            $tweet_link = "<a href=\"http://twitter.com/{$tweet['user']['screen_name']}/statuses/{$tweet['id']}\">{$tweet['created_at']}</a>";
 
-        switch ($type) {
+            switch ($type) {
           case 'hashtags':
             $href = "<a href=\"http://twitter.com/search?q=%23{$value['text']}\">#{$value['text']}</a>";
             break;
@@ -56,29 +58,29 @@ class tmhUtilities {
             $href = "<a href=\"{$value['url']}\">{$display}</a>";
             break;
         }
-        $keys[$value['indices']['0']] = mb_substr(
+            $keys[$value['indices']['0']] = mb_substr(
           $tweet['text'],
           $value['indices']['0'],
           $value['indices']['1'] - $value['indices']['0']
         );
-        $replacements[$value['indices']['0']] = $href;
-      }
+            $replacements[$value['indices']['0']] = $href;
+        }
     }
 
-    ksort($replacements);
-    $replacements = array_reverse($replacements, true);
-    $entified_tweet = $tweet['text'];
-    foreach ($replacements as $k => $v) {
-      // $entified_tweet = substr_replace($entified_tweet, $v, $k, strlen($keys[$k]));
+      ksort($replacements);
+      $replacements = array_reverse($replacements, true);
+      $entified_tweet = $tweet['text'];
+      foreach ($replacements as $k => $v) {
+          // $entified_tweet = substr_replace($entified_tweet, $v, $k, strlen($keys[$k]));
       $entified_tweet = mb_substr($entified_tweet, 0, $k).$v.mb_substr($entified_tweet, $k + strlen($keys[$k]));
-    }
-    $replacements = array(
+      }
+      $replacements = [
       'replacements' => $replacements,
       'keys' => $keys
-    );
+    ];
 
-    mb_internal_encoding($encoding);
-    return $entified_tweet;
+      mb_internal_encoding($encoding);
+      return $entified_tweet;
   }
 
   /**
@@ -87,55 +89,61 @@ class tmhUtilities {
    * @param bool $dropqs whether to drop the querystring or not. Default true
    * @return string the current URL
    */
-  function php_self($dropqs=true) {
-    $url = sprintf('%s://%s%s',
+  public function php_self($dropqs=true)
+  {
+      $url = sprintf('%s://%s%s',
       empty($_SERVER['HTTPS']) ? (@$_SERVER['SERVER_PORT'] == '443' ? 'https' : 'http') : 'http',
       $_SERVER['SERVER_NAME'],
       $_SERVER['REQUEST_URI']
     );
 
-    $parts = parse_url($url);
+      $parts = parse_url($url);
 
-    $port = $_SERVER['SERVER_PORT'];
-    $scheme = $parts['scheme'];
-    $host = $parts['host'];
-    $path = @$parts['path'];
-    $qs   = @$parts['query'];
+      $port = $_SERVER['SERVER_PORT'];
+      $scheme = $parts['scheme'];
+      $host = $parts['host'];
+      $path = @$parts['path'];
+      $qs   = @$parts['query'];
 
-    $port or $port = ($scheme == 'https') ? '443' : '80';
+      $port or $port = ($scheme == 'https') ? '443' : '80';
 
-    if (($scheme == 'https' && $port != '443')
+      if (($scheme == 'https' && $port != '443')
         || ($scheme == 'http' && $port != '80')) {
-      $host = "$host:$port";
-    }
-    $url = "$scheme://$host$path";
-    if ( ! $dropqs)
-      return "{$url}?{$qs}";
-    else
-      return $url;
+          $host = "$host:$port";
+      }
+      $url = "$scheme://$host$path";
+      if (! $dropqs) {
+          return "{$url}?{$qs}";
+      } else {
+          return $url;
+      }
   }
 
-  function is_cli() {
-    return (PHP_SAPI == 'cli' && empty($_SERVER['REMOTE_ADDR']));
-  }
+    public function is_cli()
+    {
+        return (PHP_SAPI == 'cli' && empty($_SERVER['REMOTE_ADDR']));
+    }
 
   /**
    * Debug function for printing the content of an object
    *
    * @param mixes $obj
    */
-  function pr($obj) {
-
-    if (!self::is_cli())
-      echo '<pre style="word-wrap: break-word">';
-    if ( is_object($obj) )
-      print_r($obj);
-    elseif ( is_array($obj) )
-      print_r($obj);
-    else
-      echo $obj;
-    if (!self::is_cli())
-      echo '</pre>';
+  public function pr($obj)
+  {
+      if (!self::is_cli()) {
+          echo '<pre style="word-wrap: break-word">';
+      }
+      if (is_object($obj)) {
+          print_r($obj);
+      } elseif (is_array($obj)) {
+          print_r($obj);
+      } else {
+          echo $obj;
+      }
+      if (!self::is_cli()) {
+          echo '</pre>';
+      }
   }
 
   /**
@@ -156,27 +164,31 @@ class tmhUtilities {
    * @param string $useauth whether to use authentication when making the request. Default true.
    * @param string $multipart whether this request contains multipart data. Default false
    */
-  function auto_fix_time_request($tmhOAuth, $method, $url, $params=array(), $useauth=true, $multipart=false) {
-    $tmhOAuth->request($method, $url, $params, $useauth, $multipart);
+  public function auto_fix_time_request($tmhOAuth, $method, $url, $params=[], $useauth=true, $multipart=false)
+  {
+      $tmhOAuth->request($method, $url, $params, $useauth, $multipart);
 
     // if we're not doing auth the timestamp isn't important
-    if ( ! $useauth)
-      return;
+    if (! $useauth) {
+        return;
+    }
 
     // some error that isn't a 401
-    if ($tmhOAuth->response['code'] != 401)
-      return;
+    if ($tmhOAuth->response['code'] != 401) {
+        return;
+    }
 
     // some error that is a 401 but isn't because the OAuth token and signature are incorrect
     // TODO: this check is horrid but helps avoid requesting twice when the username and password are wrong
-    if (stripos($tmhOAuth->response['response'], 'password') !== false)
-     return;
+    if (stripos($tmhOAuth->response['response'], 'password') !== false) {
+        return;
+    }
 
     // force the timestamp to be the same as the Twitter servers, and re-request
     $tmhOAuth->auto_fixed_time = true;
-    $tmhOAuth->config['force_timestamp'] = true;
-    $tmhOAuth->config['timestamp'] = strtotime($tmhOAuth->response['headers']['date']);
-    return $tmhOAuth->request($method, $url, $params, $useauth, $multipart);
+      $tmhOAuth->config['force_timestamp'] = true;
+      $tmhOAuth->config['timestamp'] = strtotime($tmhOAuth->response['headers']['date']);
+      return $tmhOAuth->request($method, $url, $params, $useauth, $multipart);
   }
 
   /**
@@ -185,11 +197,12 @@ class tmhUtilities {
    * @param string $prompt the text to display to the user
    * @return the text entered by the user
    */
-  function read_input($prompt) {
-    echo $prompt;
-    $handle = fopen("php://stdin","r");
-    $data = fgets($handle);
-    return trim($data);
+  public function read_input($prompt)
+  {
+      echo $prompt;
+      $handle = fopen("php://stdin", "r");
+      $data = fgets($handle);
+      return trim($data);
   }
 
   /**
@@ -201,36 +214,36 @@ class tmhUtilities {
    * @return string
    * @url http://www.dasprids.de/blog/2008/08/22/getting-a-password-hidden-from-stdin-with-php-cli
    */
-  function read_password($prompt, $stars=false) {
-    echo $prompt;
-    $style = shell_exec('stty -g');
+  public function read_password($prompt, $stars=false)
+  {
+      echo $prompt;
+      $style = shell_exec('stty -g');
 
-    if ($stars === false) {
-      shell_exec('stty -echo');
-      $password = rtrim(fgets(STDIN), "\n");
-    } else {
-      shell_exec('stty -icanon -echo min 1 time 0');
-      $password = '';
-      while (true) :
+      if ($stars === false) {
+          shell_exec('stty -echo');
+          $password = rtrim(fgets(STDIN), "\n");
+      } else {
+          shell_exec('stty -icanon -echo min 1 time 0');
+          $password = '';
+          while (true) :
         $char = fgetc(STDIN);
-        if ($char === "\n") :
-          break;
-        elseif (ord($char) === 127) :
+          if ($char === "\n") :
+          break; elseif (ord($char) === 127) :
           if (strlen($password) > 0) {
-            fwrite(STDOUT, "\x08 \x08");
-            $password = substr($password, 0, -1);
+              fwrite(STDOUT, "\x08 \x08");
+              $password = substr($password, 0, -1);
+          } else {
+              fwrite(STDOUT, "*");
           }
-        else
-          fwrite(STDOUT, "*");
           $password .= $char;
-        endif;
-      endwhile;
-    }
+          endif;
+          endwhile;
+      }
 
     // Reset
     shell_exec('stty ' . $style);
-    echo PHP_EOL;
-    return $password;
+      echo PHP_EOL;
+      return $password;
   }
 
   /**
@@ -240,12 +253,14 @@ class tmhUtilities {
    * @param string $needle the string to check $haystack ends with
    * @return true if $haystack ends with $needle, false otherwise
    */
-  function endswith($haystack, $needle) {
-    $haylen  = strlen($haystack);
-    $needlelen = strlen($needle);
-    if ($needlelen > $haylen)
-      return false;
+  public function endswith($haystack, $needle)
+  {
+      $haylen  = strlen($haystack);
+      $needlelen = strlen($needle);
+      if ($needlelen > $haylen) {
+          return false;
+      }
 
-    return substr_compare($haystack, $needle, -$needlelen) === 0;
+      return substr_compare($haystack, $needle, -$needlelen) === 0;
   }
 }

@@ -43,7 +43,8 @@ class SmsFeedback
         return $responseBody;
     }
 
-    public static function status($id) {
+    public static function status($id)
+    {
         $fp = fsockopen(static::$defaults['host'], static::$defaults['port'], $errno, $errstr);
         fwrite($fp, "GET /messages/v2/status/" .
             "?id=" . rawurlencode($id) .

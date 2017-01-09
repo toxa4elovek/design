@@ -2326,7 +2326,7 @@ class UsersController extends \app\controllers\AppController
                 $payments[] = $refundedObject;
             }
         }
-        if(!empty($idsForAddons)) {
+        if (!empty($idsForAddons)) {
             $addons = Addon::all(['conditions' => [
                 'Addon.pitch_id' => $idsForAddons,
                 'Addon.billed' => 1

@@ -7,17 +7,21 @@ use \app\extensions\mailers\PromoMailer;
 use app\models\Pitch;
 use app\models\User;
 
-class PromoMailerTest extends  AppUnit {
+class PromoMailerTest extends  AppUnit
+{
 
-    public function setUp() {
-        $this->rollUp(array('Pitch', 'User', 'Solution', 'Category'));
+    public function setUp()
+    {
+        $this->rollUp(['Pitch', 'User', 'Solution', 'Category']);
     }
 
-    public function tearDown() {
-        $this->rollDown(array('Pitch', 'User', 'Solution', 'Category'));
+    public function tearDown()
+    {
+        $this->rollDown(['Pitch', 'User', 'Solution', 'Category']);
     }
 
-    public function testSendPromoCodeFollowUp() {
+    public function testSendPromoCodeFollowUp()
+    {
         $pitch = Pitch::first(1);
         $user = User::first(2);
         $promocode = 'afaf';
@@ -32,7 +36,8 @@ class PromoMailerTest extends  AppUnit {
         $this->assertPattern("@Проверка названия</a>@", $html);
     }
 
-    public function testSendGoodProfitFollowUp() {
+    public function testSendGoodProfitFollowUp()
+    {
         $pitch = Pitch::first(1);
         $user = User::first(2);
         $data['project'] = $pitch;

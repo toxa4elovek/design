@@ -26,11 +26,11 @@ class Task extends AppModel
      */
     public static function getCompletedTasks($limit = 100)
     {
-        return self::all(array(
-            'conditions' => array('completed' => 1),
+        return self::all([
+            'conditions' => ['completed' => 1],
             'limit' => $limit,
-            'order' => array('id' => 'asc')
-        ));
+            'order' => ['id' => 'asc']
+        ]);
     }
 
     /**
@@ -43,12 +43,12 @@ class Task extends AppModel
      */
     public static function createNewTask($modelId, $type, $delay = 0)
     {
-        $data = array(
+        $data = [
             'model_id' => (int) $modelId,
             'type' => $type,
             'date' => date('Y-m-d H:i:s', time() + $delay),
             'completed' => '0'
-        );
+        ];
         $newTask = Task::create($data);
         $newTask->save();
         return $newTask->id;

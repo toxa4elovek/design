@@ -1,41 +1,41 @@
 <?php
 use lithium\analysis\Logger;
 
-Logger::config(array(
-    'simple' => array('adapter' => 'File'),
-    'masterbank' => array(
+Logger::config([
+    'simple' => ['adapter' => 'File'],
+    'masterbank' => [
         'adapter' => 'File',
-        'priority' => array('info'),
-        'file' => function($data, $config) { return "masterbank.log"; },
-    ),
-    'paymaster' => array(
+        'priority' => ['info'],
+        'file' => function ($data, $config) { return "masterbank.log"; },
+    ],
+    'paymaster' => [
         'adapter' => 'File',
-        'priority' => array('info'),
-        'file' => function($data, $config) { return "paymaster.log"; },
-    ),
-    'payanyway' => array(
+        'priority' => ['info'],
+        'file' => function ($data, $config) { return "paymaster.log"; },
+    ],
+    'payanyway' => [
         'adapter' => 'File',
-        'priority' => array('info'),
-        'file' => function($data, $config) { return "payanyway.log"; },
-    ),
-    'payture' => array(
+        'priority' => ['info'],
+        'file' => function ($data, $config) { return "payanyway.log"; },
+    ],
+    'payture' => [
         'adapter' => 'File',
-        'priority' => array('info'),
-        'file' => function($data, $config) { return "payture.log"; },
-    ),
-    'vklog' => array(
+        'priority' => ['info'],
+        'file' => function ($data, $config) { return "payture.log"; },
+    ],
+    'vklog' => [
         'adapter' => 'File',
-        'priority' => array('info'),
-        'file' => function($data, $config) { return "vklog.log"; },
-    ),
-    'solution' => array(
+        'priority' => ['info'],
+        'file' => function ($data, $config) { return "vklog.log"; },
+    ],
+    'solution' => [
         'adapter' => 'File',
-        'priority' => array('info'),
-        'file' => function($data, $config) { return "solution_select.log"; },
-    ),
-    'deleted_solutions' => array(
+        'priority' => ['info'],
+        'file' => function ($data, $config) { return "solution_select.log"; },
+    ],
+    'deleted_solutions' => [
         'adapter' => 'File',
-        'priority' => array('info'),
-        'file' => function($data, $config) { return "deleted_solutions.log"; },
-    )
-));
+        'priority' => ['info'],
+        'file' => function ($data, $config) { return "deleted_solutions.log"; },
+    ]
+]);

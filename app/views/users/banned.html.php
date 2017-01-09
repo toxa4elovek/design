@@ -1,9 +1,9 @@
 <div class="wrapper auth login">
 
-    <?=$this->view()->render(array('element' => 'header'))?>
+    <?=$this->view()->render(['element' => 'header'])?>
 
     <div class="middle" id="reg-section" style="display:block;">
-        <?php if($shortTerm):?>
+        <?php if ($shortTerm):?>
             <h1>Аккаунт заблокирован на 30 дней</h1>
 
             <div class="main">

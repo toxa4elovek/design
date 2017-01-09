@@ -21,9 +21,9 @@ class Wincomment extends AppModel
         'UploadableWincomment'
     ];
 
-    public static $attaches = array('file' => array(
+    public static $attaches = ['file' => [
         'moveFile' => ['preserveFileName' => false, 'path' => '/webroot/files/'],
-    ));
+    ]];
 
     public static function __init()
     {

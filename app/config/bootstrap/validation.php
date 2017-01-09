@@ -6,14 +6,14 @@ use \lithium\storage\Session;
 /**
 * Checks whether email is unique
 */
-Validator::add('userUniqueEmail', function($value) {
-	if($user = User::find('first', array('conditions' => array('email' => $value)))) {
+Validator::add('userUniqueEmail', function ($value) {
+    if ($user = User::find('first', ['conditions' => ['email' => $value]])) {
         return false;
-	}else {
-		return true;
-	}
+    } else {
+        return true;
+    }
 });
 
-Validator::add('passwordConfirmed', function($value, $attr1, $attr2) {
-	return (bool) ($attr2['values']['confirm_password'] == $attr2['values']['password']);
+Validator::add('passwordConfirmed', function ($value, $attr1, $attr2) {
+    return (bool) ($attr2['values']['confirm_password'] == $attr2['values']['password']);
 });

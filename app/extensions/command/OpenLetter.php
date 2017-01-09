@@ -5,25 +5,27 @@ namespace app\extensions\command;
 use app\models\Pitch;
 use app\models\User;
 
-class OpenLetter extends CronJob {
+class OpenLetter extends CronJob
+{
 
-    public function run() {
+    public function run()
+    {
         $this->header('Welcome to the OpenLetter command!');
-        $pitches = Pitch::all(array(
-            'conditions' => array(
+        $pitches = Pitch::all([
+            'conditions' => [
                 'published' => 1,
                 'blank' => 0,
-                'started' => array(
+                'started' => [
                     '>=' => date('Y-m-d H:i:s', time() - DAY - HOUR),
                     '<=' => date('Y-m-d H:i:s', time() - DAY),
-                ),
-            ),
-            'with' => array('User'),
-        ));
-        $result = array(
+                ],
+            ],
+            'with' => ['User'],
+        ]);
+        $result = [
             'all' => count($pitches),
             'sent' => 0,
-        );
+        ];
         if ($result['all'] > 0) {
             foreach ($pitches as $pitch) {
                 if (User::sendOpenLetter($pitch)) {

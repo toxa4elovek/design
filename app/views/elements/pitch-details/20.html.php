@@ -1,6 +1,6 @@
 <?php
 $details = unserialize($pitch->specifics);
-$types = array(
+$types = [
     '1' => 'Типографика',
     '2' => 'Знак + название',
     '3' => 'Абстрактный знак',
@@ -8,16 +8,16 @@ $types = array(
     '5' => 'Персонаж',
     '6' => 'Буква',
     '7' => 'Вэб-кнопка'
-);
+];
 ?>
 <input type="hidden" id="logo_properties" data-props="<?php echo urlencode(json_encode($details["logo-properties"])); ?>">
-<?php if(!empty($details['qualities'])):?>
-    <h2 class="blueheading">Какие 3 качества нужно донести<?php if(!$pitch->isSubscriberProjectForCopyrighting()):?> через дизайн? <?php else: ?>?<?php endif; ?></h2>
+<?php if (!empty($details['qualities'])):?>
+    <h2 class="blueheading">Какие 3 качества нужно донести<?php if (!$pitch->isSubscriberProjectForCopyrighting()):?> через дизайн? <?php else: ?>?<?php endif; ?></h2>
     <p class="regular"><?php echo nl2br($details['qualities'])?></p>
 <?php endif?>
 
 <div class="group">
-    <h2 class="blueheading">Какими свойствами должен обладать <?php if(!$pitch->isSubscriberProjectForCopyrighting()):?> ваш дизайн?<?php else:?> копирайтинг?<?php endif; ?></h2>
+    <h2 class="blueheading">Какими свойствами должен обладать <?php if (!$pitch->isSubscriberProjectForCopyrighting()):?> ваш дизайн?<?php else:?> копирайтинг?<?php endif; ?></h2>
 
     <ul class="logo-properties">
         <li>

@@ -26,12 +26,12 @@
 
 require '../tmhOAuth.php';
 require '../tmhUtilities.php';
-$tmhOAuth = new tmhOAuth(array(
+$tmhOAuth = new tmhOAuth([
   'consumer_key'    => 'YOUR_CONSUMER_KEY',
   'consumer_secret' => 'YOUR_CONSUMER_SECRET',
   'user_token'      => 'A_USER_TOKEN',
   'user_secret'     => 'A_USER_SECRET',
-));
+]);
 
 // for the demo set the timestamp to yesterday
 $tmhOAuth->config['force_timestamp'] = true;
@@ -40,12 +40,11 @@ $tmhOAuth->config['timestamp'] = strtotime('yesterday');
 $code = tmhUtilities::auto_fix_time_request($tmhOAuth, 'GET', $tmhOAuth->url('1/account/verify_credentials'));
 
 if ($code == 200) {
-  if ($tmhOAuth->auto_fixed_time)
-    echo 'Had to auto adjust the time. Please check the date and time is correct on your device/server';
+    if ($tmhOAuth->auto_fixed_time) {
+        echo 'Had to auto adjust the time. Please check the date and time is correct on your device/server';
+    }
 
-  tmhUtilities::pr(json_decode($tmhOAuth->response['response']));
+    tmhUtilities::pr(json_decode($tmhOAuth->response['response']));
 } else {
-  tmhUtilities::pr(htmlentities($tmhOAuth->response['response']));
+    tmhUtilities::pr(htmlentities($tmhOAuth->response['response']));
 }
-
-?>

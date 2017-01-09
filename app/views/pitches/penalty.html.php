@@ -1,9 +1,8 @@
 <div class="wrapper">
-    <?= $this->view()->render(array('element' => 'header'), array('header' => 'header2')) ?>
+    <?= $this->view()->render(['element' => 'header'], ['header' => 'header2']) ?>
     <?php
     $total = 0;
-    foreach($receipt as $row) {
-
+    foreach ($receipt as $row) {
         $total += $row['value'];
     }
     ?>
@@ -78,7 +77,7 @@ line-height: 27px;margin-top: 20px;">Оплата штрафа <?= (int) $total?
                 <!-- multisolution branch -->
                 <div class="photo_block">
                     <!-- solo branch -->
-                    <?php if($this->solution->getImageCount($solution->images['solution_galleryLargeSize']) > 1):?>
+                    <?php if ($this->solution->getImageCount($solution->images['solution_galleryLargeSize']) > 1):?>
                     <div style="z-index: 2; position: absolute; color: rgb(102, 102, 102); font-weight: bold; font-size: 14px; padding-top: 7px; height: 16px; top: -34px; text-align: right; width: 18px; padding-right: 21px; background: url(/img/multi-icon.png) no-repeat scroll 22px 5px transparent; left: 169px;"><?=$this->solution->getImageCount($solution->images['solution_solutionView'])?></div>
                     <?php endif?>
 
@@ -121,7 +120,7 @@ line-height: 27px;margin-top: 20px;">Оплата штрафа <?= (int) $total?
             </div>
         </div><!-- .main -->
     </div><!-- .middle -->
-    <?= $this->html->script(array(
+    <?= $this->html->script([
         'flux/flux.min.js',
         'jquery-plugins/jquery.numeric.min.js',
         'jquery-plugins/jquery.scrollto.min.js',
@@ -138,8 +137,8 @@ line-height: 27px;margin-top: 20px;">Оплата штрафа <?= (int) $total?
         'subscription_plans/paymentSystems/PaymentTypesList.js',
         'subscription_plans/paymentSystems/PaymentAdmin.js',
         'pitches/penalty.js'
-    ), array('inline' => false)) ?>
-<?= $this->html->style(array(
+    ], ['inline' => false]) ?>
+<?= $this->html->style([
     '/css/common/page-title-with-flag.css',
     '/css/common/receipt.css',
     '/css/common/payment-options.css',
@@ -148,4 +147,4 @@ line-height: 27px;margin-top: 20px;">Оплата штрафа <?= (int) $total?
     '/step3',
     '/css/subscription_plans/subscribe.css',
     '/css/pitches/penalty.css'
-), array('inline' => false))?>
+], ['inline' => false])?>
