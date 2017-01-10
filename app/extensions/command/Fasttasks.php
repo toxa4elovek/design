@@ -111,7 +111,7 @@ class Fasttasks extends CronJob
 
                 $vkApi = new VKAPI();
                 $data = [
-                    'message' => $news->title,
+                    'message' => $news->short,
                     'picture' => 'https://godesigner.ru/news?event=' . $result->id . $manager->getFeedSharingAnalyticsString('vk')
                 ];
                 $id = $vkApi->postMessageToPage($data);
@@ -146,7 +146,7 @@ class Fasttasks extends CronJob
 
                 $vkApi = new VKAPI();
                 $data = [
-                    'message' => $news->title,
+                    'message' => $news->short,
                     'owner_id' => '-26880133',
                     'picture' => 'https://godesigner.ru/news?event=' . $result->id . $manager->getFeedSharingAnalyticsString('vk')
                 ];

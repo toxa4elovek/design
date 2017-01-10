@@ -51,9 +51,19 @@ class TwitterAPI extends AbstractAPI
             $img = $data['picture'];
             $name = basename($img);
             $extension = image_type_to_mime_type(exif_imagetype($img));
-            $this->apiObject->request('POST', 'https://upload.twitter.com/1.1/media/upload.json', [
-                'media' => "@{$img};type={$extension};filename={$name}"
-            ], true, true);
+            if (class_exists('CurlFile', false)) {
+                $media = new \CURLFile($img);
+            } else {
+                $media = "@{$img};type={$extension};filename={$name}";
+            }
+            $this->apiObject->user_request(array(
+                'method' => 'POST',
+                'url'    => 'https://upload.twitter.com/1.1/media/upload.json',
+                'params' => array(
+                    'media' => $media,
+                ),
+                'multipart' => true,
+            ));
             $data = json_decode($this->apiObject->response['response'], true);
             $code = $this->apiObject->request('POST', $this->apiObject->url('1.1/statuses/update'), [
                 'status' => $tweet,
@@ -70,8 +80,8 @@ class TwitterAPI extends AbstractAPI
             //var_dump($data['id_str']);
             return $data['id_str'];
         } else {
-            //echo '<pre>';
-            //var_dump($this->apiObject);
+            echo '<pre>';
+            var_dump($this->apiObject);
             return false;
         }
     }

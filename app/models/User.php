@@ -1442,6 +1442,7 @@ class User extends AppModel
             'conditions' => [
                 'balance' => [
                     '>' => 0,
+                    '<=' => 500
                 ],
                 'phone_valid' => 1,
                 'phone' => ['!=' => ''],
