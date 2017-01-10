@@ -3,34 +3,44 @@
     <?=$this->view()->render(['element' => 'header'], ['header' => 'header2'])?>
 
     <?php
-    if (unserialize($solution->user->paymentOptions)) {
-        $paydata = unserialize($solution->user->paymentOptions);
+    $defaults = [
+        'cashintype' => 'none',
+        'phone' => '',
+        'birthdate' => '',
+        'fio' => '',
+        'birthplace' => '',
+        'accountnum' => '',
+        'inn' => '',
+        'bankname' => '',
+        'bik' => '',
+        'coraccount' => '',
+        'wmr-phone' => '',
+        'wmr-account' => '',
+        'wmr-fio' => '',
+        'passseries' => '',
+        'passnum' => '',
+        'issuedby' => '',
+        'yandex-phone' => '',
+        'yandex-account' => '',
+        'yandex-fio' => '',
+        'passseriesyandex' => '',
+        'passnumyandex' => '',
+        'issuedbyyandex' => '',
+        'documentsfor' => 'not_needed',
+        'documentsfor_companyname' => '',
+        'documentsfor_address' => '',
+        'documentsfor_fio' => '',
+        'documentsfor_grounds' => '',
+        'documentsfor_inn' => '',
+        'documentsfor_orgn' => ''
+
+    ];
+    if (unserialize($user->paymentOptions)) {
+        $paydata = unserialize($user->paymentOptions);
         $paydata = $paydata[0];
+        $paydata = array_merge($defaults, $paydata);
     } else {
-        $paydata = [
-            'cashintype' => 'none',
-            'phone' => '',
-            'birthdate' => '',
-            'fio' => '',
-            'birthplace' => '',
-            'accountnum' => '',
-            'inn' => '',
-            'bankname' => '',
-            'bik' => '',
-            'coraccount' => '',
-            'wmr-phone' => '',
-            'wmr-account' => '',
-            'wmr-fio' => '',
-            'passseries' => '',
-            'passnum' => '',
-            'issuedby' => '',
-            'yandex-phone' => '',
-            'yandex-account' => '',
-            'yandex-fio' => '',
-            'passseriesyandex' => '',
-            'passnumyandex' => '',
-            'issuedbyyandex' => ''
-        ];
+        $paydata = $defaults;
     }
     ?>
 
@@ -43,7 +53,7 @@
 
         </section>
         <div style="margin-left: 50px;">
-            <?=$this->view()->render(['element' => 'complete-process/filtersmenu'], ['link' => ($solution->step == 4) ? 2 : 3])?>
+            <?=$this->view()->render(['element' => 'complete-process/filtersmenu'], ['link' => ((int) $solution->step === 4) ? 2 : 3])?>
         </div>
         <section style="min-height: 550px;">
 
@@ -51,6 +61,7 @@
 
             <form id="worker-payment-data">
             <div class="center_block" style="margin:35px 0 0 63px !important">
+                <?php if($this->user->isSolutionAuthor($solution->user_id)):?>
                 <div style="text-align: center; margin-top: 10px;">
                 <h1 style="font:bold 28px/1 'RodeoC',sans-serif;text-transform: uppercase;color:#c6c6c6; text-shadow:-1px 0 0 #FFFFFF;">способ получения денег</h1>
                 </div>
@@ -59,7 +70,7 @@
                     <table style="width: 608px;">
                         <tbody><tr>
                             <td>
-                                <input type="radio" data-pay="cards" class="rb1" name="cashintype" <?php if ($paydata['cashintype'] == 'card') {
+                                <input type="radio" data-pay="cards" class="rb1" name="cashintype" <?php if ($paydata['cashintype'] === 'card') {
     echo 'checked';
 } ?> value="card" style="width:14px;height:14px;margin-top:15;">
                             </td>
@@ -72,7 +83,7 @@
                             <td>
                             </td>
                         </tr>
-                        <tr  id="cards" <?php if ($paydata['cashintype'] != 'card'):?> style="display:none;" <?php endif;?>>
+                        <tr  id="cards" <?php if ($paydata['cashintype'] !== 'card'):?> style="display:none;" <?php endif;?>>
                             <td colspan="4">
                                 <table id="step1table">
                                     <tr><td class="tableheader" colspan="3">ФИО</td></tr>
@@ -208,7 +219,186 @@
 
                         </tbody></table>
                 </div>
+                <?php else:?>
+                    <div style="text-align: center; margin-top: 10px;">
+                        <h1 style="font:bold 28px/1 'RodeoC',sans-serif;text-transform: uppercase;color:#c6c6c6; text-shadow:-1px 0 0 #FFFFFF;">передача прав на произведение</h1>
+                    </div>
+                    <div class="g_line"></div>
+                    <div id="P_card" style="margin: 20px 0;">
+                        <table style="width: 608px;">
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <input type="radio" data-pay="not_needed" class="rb1" name="documentsfor" <?php if ($paydata['documentsfor'] === 'not_needed') {
+                                        echo 'checked';
+                                    } ?> value="not_needed" id="documentsfor_not_needed" style="width:14px;height:14px;margin-top:8px;">
+                                </td>
+                                <td></td>
+                                <td class="s3_text">
+                                    <label for="documentsfor_not_needed">Оформления перехода прав на произведение не требуется</label>
+                                </td>
+                                <td>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="4"><div class="g_line"></div></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="radio" data-pay="company" class="rb1" name="documentsfor" <?php if ($paydata['documentsfor'] === 'company') {
+                                        echo 'checked';
+                                    } ?> value="company" id="documentsfor_company" style="width:14px;height:14px;margin-top:8px;">
+                                </td>
+                                <td></td>
+                                <td class="s3_text">
+                                    <label for="documentsfor_company">Я &mdash; юридическое лицо и оформление прав требуется</label>
+                                </td>
+                                <td>
+                                </td>
+                            </tr>
+                            <tr id="company" <?php if ($paydata['documentsfor'] !== 'company'):?> style="display:none;" <?php endif;?>>
+                                <td colspan="4">
+                                    <table id="step1table" style="margin-top: 20px;">
+                                        <tr>
+                                            <td class="tableheader" colspan="3">Название организации</td>
+                                        </tr>
+                                        <tr style="height: 80px;">
+                                            <td class="" colspan="3"><input type="text" value="<?=$paydata['documentsfor_companyname']?>" name="documentsfor_companyname" data-validate="notempty" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="tableheader" colspan="3">Адрес</td>
+                                        </tr>
+                                        <tr style="height: 80px;">
+                                            <td class="" colspan="3"><input type="text" value="<?=$paydata['documentsfor_address']?>" name="documentsfor_address" data-validate="notempty" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="tableheader" colspan="3">ФИО представителя</td>
+                                        </tr>
+                                        <tr style="height: 80px;">
+                                            <td class="" colspan="3"><input type="text" value="<?=$paydata['documentsfor_fio']?>" name="documentsfor_fio" data-validate="fio" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="tableheader" colspan="3">Представитель представляет на основании</td>
+                                        </tr>
+                                        <tr style="padding-top: 5px;height: 45px;">
+                                            <td class="" colspan="3" style="padding-top: 5px;">
+                                                <label style="margin-right: 40px;"><input type="radio" style="height: 12px; width: 12px;" name="documentsfor_grounds" value="charter" <?php if($paydata['documentsfor_grounds'] === 'charter'):?>checked="checked"<?php endif?>> на основании устава</label>
+                                                <label><input type="radio" style="height: 12px; width: 12px;" name="documentsfor_grounds" value="proxy" <?php if($paydata['documentsfor_grounds'] === 'proxy'):?>checked="checked"<?php endif?>> на основании доверенности</label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="tableheader" colspan="3">ИНН</td>
+                                        </tr>
+                                        <tr style="height: 80px;">
+                                            <td class="" colspan="3"><input type="text" value="<?=$paydata['documentsfor_inn']?>" name="documentsfor_inn" data-validate="notempty" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="tableheader" colspan="3">ОРГН</td>
+                                        </tr>
+                                        <tr style="height: 80px;">
+                                            <td class="" colspan="3"><input type="text" value="<?=$paydata['documentsfor_orgn']?>" name="documentsfor_orgn" data-validate="notempty" /></td>
+                                        </tr>
+                                        <tr style="height: 80px;">
+                                            <td class="" colspan="3">Агент не несет ответственноть за полноту и достоверность предоставленных сторонами реквизитов.</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="4"><div class="g_line"></div></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="radio" data-pay="individual" class="rb1" name="documentsfor" <?php if ($paydata['documentsfor'] === 'individual') {
+                                        echo 'checked';
+                                    } ?> value="individual" id="documentsfor_individual" style="width:14px;height:14px;margin-top:8px;">
+                                </td>
+                                <td></td>
+                                <td class="s3_text">
+                                    <label for="documentsfor_individual">Я &mdash; индивидуальный предприниматель и оформление прав требуется</label>
+                                </td>
+                                <td>
+                                </td>
+                            </tr>
+                            <tr id="individual" <?php if ($paydata['documentsfor'] !== 'individual'):?> style="display:none;" <?php endif;?>>
+                                <td colspan="4">
+                                    <table id="step1table" style="margin-top: 20px;">
+                                        <tr>
+                                            <td class="tableheader" colspan="3">ФИО</td>
+                                        </tr>
+                                        <tr style="height: 80px;">
+                                            <td class="" colspan="3"><input type="text" value="<?=$paydata['documentsfor_fio']?>" name="documentsfor_fio" data-validate="fio" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="tableheader" colspan="3">Юридический адрес (адрес регистрации с индексом)</td>
+                                        </tr>
+                                        <tr style="height: 80px;">
+                                            <td class="" colspan="3"><input type="text" value="<?=$paydata['documentsfor_address']?>" name="documentsfor_address" data-validate="notempty" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="tableheader" colspan="3">ИНН</td>
+                                        </tr>
+                                        <tr style="height: 80px;">
+                                            <td class="" colspan="3"><input type="text" value="<?=$paydata['documentsfor_inn']?>" name="documentsfor_inn" data-validate="notempty" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="tableheader" colspan="3">ОРГН</td>
+                                        </tr>
+                                        <tr style="height: 80px;">
+                                            <td class="" colspan="3"><input type="text" value="<?=$paydata['documentsfor_orgn']?>" name="documentsfor_orgn" data-validate="notempty" /></td>
+                                        </tr>
+                                        <tr style="height: 80px;">
+                                            <td class="" colspan="3">Агент не несет ответственноть за полноту и достоверность предоставленных сторонами реквизитов.</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="4"><div class="g_line"></div></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="radio" data-pay="simpleclient" class="rb1" name="documentsfor" <?php if ($paydata['documentsfor'] === 'simpleclient') {
+                                        echo 'checked';
+                                    } ?> value="simpleclient" id="documentsfor_simpleclient" style="width:14px;height:14px;margin-top:8px;">
+                                </td>
+                                <td></td>
+                                <td class="s3_text">
+                                    <label for="documentsfor_simpleclient">Я &mdash; физическое лицо и оформление прав требуется</label>
+                                </td>
+                                <td>
+                                </td>
+                            </tr>
+                            <tr id="simpleclient" <?php if ($paydata['documentsfor'] !== 'simpleclient'):?> style="display:none;" <?php endif;?>>
+                                <td colspan="4">
+                                    <table style="margin-top: 20px;">
+                                        <tr>
+                                            <td class="tableheader" colspan="3">ФИО</td>
+                                        </tr>
+                                        <tr style="height: 80px;">
+                                            <td class="" colspan="3"><input type="text" value="<?=$paydata['documentsfor_fio']?>" name="documentsfor_fio" data-validate="fio" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="tableheader" colspan="3">Юридический адрес (адрес регистрации с индексом)</td>
+                                        </tr>
+                                        <tr style="height: 80px;">
+                                            <td class="" colspan="3"><input type="text" value="<?=$paydata['documentsfor_address']?>" name="documentsfor_address" data-validate="notempty" /></td>
+                                        </tr>
+                                        <tr style="height: 80px;">
+                                            <td class="" colspan="3">Агент не несет ответственноть за полноту и достоверность предоставленных сторонами реквизитов.</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                <?php endif ?>
             </form>
+                <?php if($this->user->isSolutionAuthor($solution->user_id)):?>
                 <section class="user-mobile-section" style="width: 540px">
                     <div class="g_line"></div>
                     <h1 class="section-header" style="width: 540px">Для перехода на следующий шаг и получения награды необходимо подтвердить ваш номер телефона!</h1>
@@ -233,8 +423,8 @@
                     </form>
                     <p class="help" style="margin-top: 40px; font-family: Georgia, serif; font-size: 13px; font-style: italic; line-height: 16px;">Свяжитесь с нами, если  не получается подтвердить номер:<br/>
                         <a href="mailto:team@godesigner.ru">team@godesigner.ru</a> или (812) 648-24-12 по будням с 10–17<br/> по Москве</p>                </section>
+                <?php endif ?>
                 <div class="clear"></div>
-
                 <div class="proceed">
                     <?=$this->html->link('<img src="/img/proceed.png" /><br />
                         <span>Продолжить</span>', ['controller' => 'users', 'action' => 'step2', 'id' => $solution->id], ['escape' => false, 'id' => 'step2-link-saveform'])?>
@@ -243,11 +433,8 @@
 
             </div>
 
-
-
             <?=$this->view()->render(['element' => '/complete-process/rightblock'], ['solution' => $solution, 'type' => $type])?>
             <div class="clr"></div>
-
         </section>
     </div>
     <div class="conteiner-bottom"></div>

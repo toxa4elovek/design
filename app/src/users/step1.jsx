@@ -1,6 +1,6 @@
 $(document).ready(function () {
   $('#step2-link-saveform').click(function () {
-    let data = '';
+    let data = ''
     if ($('#cards').is(':visible')) {
       $('input[data-validate]', '#cards').blur()
       data = $('#cards :input, input[name=cashintype]').serialize()
@@ -8,6 +8,21 @@ $(document).ready(function () {
     if ($('#wmr').is(':visible')) {
       $('input[data-validate]', '#wmr').blur()
       data = $('#wmr :input, input[name=cashintype]').serialize()
+    }
+    if (('input[name=documentsfor]').length > 0) {
+      data = $('input[name=documentsfor]').serialize()
+      if ($('#company').is(':visible')) {
+        $('input[data-validate]', '#company').blur()
+        data = $('#company :input, input[name=documentsfor]').serialize()
+      }
+      if ($('#individual').is(':visible')) {
+        $('input[data-validate]', '#individual').blur()
+        data = $('#individual :input, input[name=documentsfor]').serialize()
+      }
+      if ($('#simpleclient').is(':visible')) {
+        $('input[data-validate]', '#simpleclient').blur()
+        data = $('#simpleclient :input, input[name=documentsfor]').serialize()
+      }
     }
     if ($('.wrong-input').length > 0) {
       return false
@@ -38,6 +53,22 @@ $(document).ready(function () {
       $('#cards').hide()
       $('#wmr').hide()
       $('#yandex').show()
+    }
+    const selectedItem = $(this).data('pay')
+    if (selectedItem === 'not_needed') {
+      $('#company').hide()
+    } else if (selectedItem === 'company') {
+      $('#company').show()
+      $('#individual').hide()
+      $('#simpleclient').hide()
+    }else if (selectedItem === 'individual') {
+      $('#company').hide()
+      $('#individual').show()
+      $('#simpleclient').hide()
+    }else if (selectedItem === 'simpleclient') {
+      $('#company').hide()
+      $('#individual').hide()
+      $('#simpleclient').show()
     }
   })
 

@@ -374,31 +374,33 @@ class UsersController extends \app\controllers\AppController
         }
     }
 
+    /**
+     * Метод для отображения страницы первого шага завершения.
+     *
+     * @return array|object
+     * @throws Exception
+     */
     public function step1()
     {
-        if (($solution = Solution::first(['conditions' => ['Solution.id' => $this->request->id], 'with' => ['Pitch', 'User']])) && ($solution->nominated == 1 || $solution->awarded == 1)) {
-            if ((Session::read('user.id') != $solution->user_id) && (Session::read('user.isAdmin') != 1) && (!User::checkRole('admin')) && (Session::read('user.id') != $solution->pitch->user_id)) {
+        if (($solution = Solution::first(['conditions' => ['Solution.id' => $this->request->id], 'with' => ['Pitch', 'User']])) && ((int) $solution->nominated === 1 || (int) $solution->awarded === 1)) {
+            if ((!$this->userHelper->isSolutionAuthor($solution->user_id)) && (!$this->userHelper->isAdmin()) && (!$this->userHelper->isPitchOwner($solution->pitch->user_id))) {
                 return $this->redirect('Users::feed');
             }
-            if (Session::read('user.id') == $solution->pitch->user_id) {
-                return $this->redirect(['controller' => 'users', 'action' => 'step2', 'id' => $solution->id]);
-            }
             $solution->pitch->category = Category::first($solution->pitch->category_id);
-            if ($solution->user_id == $this->userHelper->getId()) {
+            $type = 'client';
+            $paymentDataUserId = $this->userHelper->getId();
+            if ((int) $solution->user_id === $this->userHelper->getId()) {
                 $type = 'designer';
-            } else {
-                $type = 'client';
             }
-            if ((Session::read('user.isAdmin') == 1) || User::checkRole('admin')) {
+            if ($this->userHelper->isAdmin()) {
+                $paymentDataUserId = $solution->user->id;
                 $type = 'admin';
             }
-            /** @TODO - remove */
-            if ($this->userHelper->getId() == 32) {
-                $type = 'client';
-            }
             $step = 1;
-            $user = User::first($this->userHelper->getId());
+            $user = User::first($paymentDataUserId);
             return compact('type', 'solution', 'step', 'user');
+        }else {
+            throw new Exception('Public:Решение-победитель не существует.', 404);
         }
     }
 
@@ -1904,9 +1906,14 @@ class UsersController extends \app\controllers\AppController
         throw new Exception('Public:Такого пользователя не существует.', 404);
     }
 
+    /**
+     * Метод сохраняет данные платёжной информации (или данные юр. фирмы для передачи прав)
+     *
+     * @return mixed|string
+     */
     public function savePaymentData()
     {
-        $user = User::first(Session::read('user.id'));
+        $user = User::first($this->userRecord->id);
         $user->paymentOptions = serialize([$this->request->data]);
         $user->save(null, ['validate' => false]);
         return $user->paymentOptions;
