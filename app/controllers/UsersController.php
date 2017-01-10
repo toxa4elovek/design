@@ -658,47 +658,6 @@ class UsersController extends \app\controllers\AppController
                     ($this->userHelper->isAdmin() || ($this->userHelper->isPitchOwner($solution->pitch->user_id))) && ($solution->step < 3)) {
                 $user = User::first($solution->user_id);
                 $client = User::first($solution->pitch->user_id);
-                /*if (!User::isSubscriptionActive($client->id, $client)) {
-                    $nameInflector = new NameInflector();
-                    $ownerFormatted = $nameInflector->renderName($client->first_name, $client->last_name);
-                    $text = '<a href="#" class="mention-link" data-comment-to="' . $ownerFormatted . '">@' . $ownerFormatted . ',</a> Нам понравилось работать с вами, и мы хотим продолжить наше партнерство. Сотрудничайте с&nbsp;дизайнерами и&nbsp;копирайтерами без рисков дальше, корректируйте макеты без сервисных сборов, создавайте проекты от 500р. в&nbsp;течение года, став нашим абонентом. В течение недели <a href="/pages/subscribe?utm_source=GDsite&utm_medium=final_stage_comment&utm_campaign=off10percent" target="_blank">мы предлагаем вам скидку 10%</a> на <a href="/pages/subscribe?utm_source=GDsite&utm_medium=final_stage_comment&utm_campaign=off10percent" target="_blank">годовое обслуживание</a>.';
-                    $data = [
-                        'user_id' => 108,
-                        'text' => $text,
-                        'step' => 3,
-                        'solution_id' => $solution->id,
-                        'created' => date('Y-m-d H:i:s'),
-                        'touch' => '0000-00-00 00:00:00'
-                    ];
-                    $comment = Wincomment::create($data);
-                    $comment->save();
-                    User::sendSpamWincomment($comment, $client);
-                    if (!$client->hasActiveSubscriptionDiscountForRecord($client)) {
-                        User::setSubscriptionDiscount($client->id, 10, date('Y-m-d H:i:s', time() + (DAY * 7)));
-                        Lead::resetLeadForUser($client->id);
-                        if (!SubscriptionPlan::hasSubscriptionPlanDraft($client->id)) {
-                            $plan = SubscriptionPlan::getPlan(1);
-                            $paymentId = SubscriptionPlan::getNextSubscriptionPlanId($this->userHelper->getId());
-                            $receipt = [
-                                [
-                                    'name' => 'Оплата тарифа «' . $plan['title'] . '»',
-                                    'value' => $plan['price']
-                                ],
-                                [
-                                    'name' => 'Пополнение счёта',
-                                    'value' => 0
-                                ]
-                            ];
-                            $discount = 10;
-                            $discountValue = -1 * ($plan['price'] - $this->money->applyDiscount($plan['price'], $discount));
-                            $receipt = Receipt::addRow($receipt, "Скидка — $discount%", $discountValue);
-                            Receipt::updateOrCreateReceiptForProject($paymentId, $receipt);
-                            SubscriptionPlan::setTotalOfPayment($paymentId, Receipt::getTotalForProject($paymentId));
-                            SubscriptionPlan::setPlanForPayment($paymentId, $plan['id']);
-                            SubscriptionPlan::setFundBalanceForPayment($paymentId, 0);
-                        }
-                    }
-                }*/
                 User::sendSpamWinstep($user, $solution, '3');
                 $solution->step = 3;
                 $solution->save();
@@ -797,6 +756,36 @@ class UsersController extends \app\controllers\AppController
                 $comment['originalText'] = strip_tags($comment['originalText'], '<a>');
                 $comment['originalText'] = htmlentities($comment['originalText'], ENT_COMPAT, 'utf-8');
                 return json_encode(compact('newComment', 'comment', 'userAvatar'));
+            }
+            $commentCount = Wincomment::count(
+                [
+                    'fields' => ['id'],
+                    'conditions' =>
+                        ['step' => 3, 'solution_id' => $solution->id],
+                    'order' => ['created' => 'desc'],
+                    'with' => ['User']]
+            );
+            if (0 === $commentCount) {
+                $nameInflector = new NameInflector();
+                $ownerFormatted = $nameInflector->renderName($client->first_name, $client->last_name);
+                $text = '<a href="#" class="mention-link" data-comment-to="' . $ownerFormatted . '">@' . $ownerFormatted . ',</a> на проверку исходников предоставляется 24 часа. Пожалуйста, предупреждайте, если потребуется больше времени на проверку или согласование файлов.';
+                if((!User::isSubscriptionActive($client->id, $client)) && $client->hasActiveSubscriptionDiscountForRecord()) {
+                    $discountEndDate = $client->getSubscriptionDiscountEndTimeForRecord();
+                    $text .= sprintf(' Напоминаем, до %s доступна скидка 10%% на абонентские тарифы!', date('d.m.Y', strtotime($discountEndDate)));
+                }
+                $date = new \DateTime();
+                $dateString = $date->format('Y-m-d H:i:s');
+                $data = [
+                    'user_id' => 108,
+                    'text' => $text,
+                    'step' => 3,
+                    'solution_id' => $solution->id,
+                    'created' => $dateString,
+                    'touch' => '0000-00-00 00:00:00'
+                ];
+                $comment = Wincomment::create($data);
+                $comment->save();
+                User::sendSpamWincomment($comment, $client);
             }
             $comments = Wincomment::all(['conditions' => ['step' => 3, 'solution_id' => $solution->id], 'order' => ['created' => 'desc'], 'with' => ['User']]);
             $files = [];
