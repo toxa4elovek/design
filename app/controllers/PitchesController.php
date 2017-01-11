@@ -2256,4 +2256,27 @@ Disallow: /pitches/upload/'.$pitch['id'];
         }
         die();
     }
+
+    public function getTransferOfRightsDocument() {
+        if($project = Pitch::first([
+            'conditions' => ['Pitch.id' => (int) $this->request->id],
+            'with' => ['User']])) {
+            $clientData = unserialize($project->user->paymentOptions)[0];
+            $solution = Solution::first([
+                'conditions' => ['Solution.id' => $project->awarded],
+                'with' => ['User']]);
+            $designerData = unserialize($solution->user->paymentOptions)[0];
+            error_reporting(0);
+            require_once LITHIUM_APP_PATH.'/'.'libraries'.'/'.'MPDF54/MPDF54/mpdf.php';
+            $pdfWriter = new \mPDF('', 'A4', '0', '', 0, 0, 0, 0, 0);
+            $options = compact('project', 'clientData', 'designerData');
+            $pdfWriter->adjustFontDescLineheight = 1.35;
+            $pdfWriter->WriteHTML(PdfGetter::get('TransferOfRightsDocument', $options));
+            $pdfWriter->Output('Presentation.pdf', 'd');
+            die();
+            //return $this->render(['layout' => false, 'data' => compact('project', 'clientData', 'designerData')]);
+        }else {
+            throw new Exception('Public:Такого проекта не существует.', 404);
+        }
+    }
 }

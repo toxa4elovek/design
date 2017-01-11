@@ -36,9 +36,9 @@ use lithium\data\entity\Record;
 /**
  * Class Pitch
  * @package app\models
- * @method Record|null first(array $conditions) static
+ * @method Record|null first(int|array $conditions) static
  * @method int count(array $conditions) static
- * @method RecordSet|null all(array|int $conditions) static
+ * @method RecordSet|null all(array $conditions) static
  */
 class Pitch extends AppModel
 {

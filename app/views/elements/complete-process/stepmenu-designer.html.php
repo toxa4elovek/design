@@ -1,11 +1,13 @@
 <div class="status">
-    <?php //if ($type == 'designer'):?>
+    <?php
+        $title = 'Передача прав';
+        if ($type === 'designer'): $title = 'Реквизиты'; endif;?>
         <?php if ($step == 1):?>
         <div class="requisites_active">
         <?php else:?>
         <div class="requisites">
         <?php endif?>
-        <?=$this->html->link('Реквизиты', ['controller' => 'users', 'action' => 'step1', 'id' => $solution->id])?>
+        <?=$this->html->link($title, ['controller' => 'users', 'action' => 'step1', 'id' => $solution->id])?>
         </div>
     <?php //endif;?>
 

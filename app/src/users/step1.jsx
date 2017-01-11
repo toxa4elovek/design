@@ -9,19 +9,19 @@ $(document).ready(function () {
       $('input[data-validate]', '#wmr').blur()
       data = $('#wmr :input, input[name=cashintype]').serialize()
     }
-    if (('input[name=documentsfor]').length > 0) {
+    if ($('input[name=documentsfor]').length > 0) {
       data = $('input[name=documentsfor]').serialize()
       if ($('#company').is(':visible')) {
         $('input[data-validate]', '#company').blur()
-        data = $('#company :input, input[name=documentsfor]').serialize()
+        data = $('#company :input, input[name=documentsfor], #solution_id').serialize()
       }
       if ($('#individual').is(':visible')) {
         $('input[data-validate]', '#individual').blur()
-        data = $('#individual :input, input[name=documentsfor]').serialize()
+        data = $('#individual :input, input[name=documentsfor], #solution_id').serialize()
       }
       if ($('#simpleclient').is(':visible')) {
         $('input[data-validate]', '#simpleclient').blur()
-        data = $('#simpleclient :input, input[name=documentsfor]').serialize()
+        data = $('#simpleclient :input, input[name=documentsfor], #solution_id').serialize()
       }
     }
     if ($('.wrong-input').length > 0) {

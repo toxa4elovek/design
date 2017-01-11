@@ -20,6 +20,7 @@
         'passseries' => '',
         'passnum' => '',
         'issuedby' => '',
+        'address' => '',
         'yandex-phone' => '',
         'yandex-account' => '',
         'yandex-fio' => '',
@@ -103,6 +104,8 @@
                                     <tr style="height: 80px;"><td class="" colspan="3"><input type="text" value="<?=$paydata['birthdate']?>" name="birthdate" data-validate="notempty" /></td></tr>
                                     <tr><td class="tableheader" colspan="3">Место рождения</td></tr>
                                     <tr style="height: 80px;"><td class="" colspan="3"><input type="text" value="<?=$paydata['birthplace']?>" name="birthplace" data-validate="notempty"/></td></tr>
+                                    <tr><td class="tableheader" colspan="3">Адрес регистрации</td></tr>
+                                    <tr style="height: 80px;"><td class="" colspan="3"><input type="text" value="<?=$paydata['address']?>" name="address" data-validate="notempty" /></td></tr>
                                     <tr>
                                         <td width="304" class="tableheader" style="padding-right:10px" colspan="2">Номер счета получателя</td>
                                         <td width="304" class="tableheader" style="padding-left:10px">Ваш личный ИНН <a href="#" style="display: block; width: 10px; height: 10px; margin-left: 110px; margin-top: -25px; font: 12px Helvetica, sans-serif; color: #658fa5" class="second tooltip" title="12 цифр без пробелов">(?)</a></td></tr>
@@ -167,6 +170,8 @@
                                     <tr style="height: 80px;"><td class="" colspan="3"><input type="text" value="<?=$paydata['birthdate']?>" name="birthdate" data-validate="notempty"/></td></tr>
                                     <tr><td class="tableheader" colspan="3">Место рождения</td></tr>
                                     <tr style="height: 80px;"><td class="" colspan="3"><input type="text" value="<?=$paydata['birthplace']?>" name="birthplace" data-validate="notempty" /></td></tr>
+                                    <tr><td class="tableheader" colspan="3">Адрес регистрации</td></tr>
+                                    <tr style="height: 80px;"><td class="" colspan="3"><input type="text" value="<?=$paydata['address']?>" name="address" data-validate="notempty" /></td></tr>
                                     <tr><td class="tableheader" colspan="3">Примечание</td></tr>
                                     <tr style="height: 80px;"><td class="" colspan="3"><input type="text" value="<?php if (isset($paydata['extradatawmr'])) {
     echo $paydata['extradatawmr'];
@@ -223,6 +228,7 @@
                     <div style="text-align: center; margin-top: 10px;">
                         <h1 style="font:bold 28px/1 'RodeoC',sans-serif;text-transform: uppercase;color:#c6c6c6; text-shadow:-1px 0 0 #FFFFFF;">передача прав на произведение</h1>
                     </div>
+                    <input type="hidden" value="<?=$solution->id?>" name="solution_id" id="solution_id">
                     <div class="g_line"></div>
                     <div id="P_card" style="margin: 20px 0;">
                         <table style="width: 608px;">

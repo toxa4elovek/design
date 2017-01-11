@@ -399,7 +399,7 @@ class UsersController extends \app\controllers\AppController
             $step = 1;
             $user = User::first($paymentDataUserId);
             return compact('type', 'solution', 'step', 'user');
-        }else {
+        } else {
             throw new Exception('Public:Решение-победитель не существует.', 404);
         }
     }
@@ -771,7 +771,7 @@ class UsersController extends \app\controllers\AppController
                 $nameInflector = new NameInflector();
                 $ownerFormatted = $nameInflector->renderName($client->first_name, $client->last_name);
                 $text = '<a href="#" class="mention-link" data-comment-to="' . $ownerFormatted . '">@' . $ownerFormatted . ',</a> на проверку исходников предоставляется 24 часа. Пожалуйста, предупреждайте, если потребуется больше времени на проверку или согласование файлов.';
-                if((!User::isSubscriptionActive($client->id, $client)) && $client->hasActiveSubscriptionDiscountForRecord()) {
+                if ((!User::isSubscriptionActive($client->id, $client)) && $client->hasActiveSubscriptionDiscountForRecord()) {
                     $discountEndDate = $client->getSubscriptionDiscountEndTimeForRecord();
                     $text .= sprintf(' Напоминаем, до %s доступна скидка 10%% на абонентские тарифы!', date('d.m.Y', strtotime($discountEndDate)));
                 }
@@ -1916,6 +1916,26 @@ class UsersController extends \app\controllers\AppController
         $user = User::first($this->userRecord->id);
         $user->paymentOptions = serialize([$this->request->data]);
         $user->save(null, ['validate' => false]);
+        if (isset($this->request->data['documentsfor']) && ($this->request->data['documentsfor'] !== 'not_needed')) {
+            $solution = Solution::first($this->request->data['solution_id']);
+            $designer = User::first($solution->user_id);
+            $nameInflector = new NameInflector();
+            $ownerFormatted = $nameInflector->renderName($designer->first_name, $designer->last_name);
+            $text = '<a href="#" class="mention-link" data-comment-to="' . $ownerFormatted . '">@' . $ownerFormatted . ',</a> пожалуйста, перейдите по ссылке https://godesigner.ru/pitches/getTransferOfRightsDocument/' . $solution->pitch_id . ' и сохраните соглашение о переходе исключительных прав на произведение. При предоставлении исходников загрузите заполненную и подписанную с вашей стороны форму. Спасибо!';
+            $date = new \DateTime();
+            $dateString = $date->format('Y-m-d H:i:s');
+            $data = [
+                'user_id' => 108,
+                'text' => $text,
+                'step' => 3,
+                'solution_id' => $solution->id,
+                'created' => $dateString,
+                'touch' => '0000-00-00 00:00:00'
+            ];
+            $comment = Wincomment::create($data);
+            $comment->save();
+            User::sendSpamWincomment($comment, $solution);
+        }
         return $user->paymentOptions;
     }
 
