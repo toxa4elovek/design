@@ -59,7 +59,7 @@ class UsersController extends \app\controllers\AppController
      * @var array
      */
     public $publicActions = [
-        'eventtest', 'vklogin', 'unsubscribe', 'registration', 'login', 'sale', /* 'info', 'sendmail', */ 'confirm', 'checkform', 'recover', 'setnewpassword', 'loginasadmin', 'view', 'updatetwitter', 'updatetwitterfeed', 'banned', 'activation', 'need_activation', 'requesthelp', 'testemail', 'feed', 'test'
+        'activateEmailSubscription', 'vklogin', 'unsubscribe', 'registration', 'login', 'sale', /* 'info', 'sendmail', */ 'confirm', 'checkform', 'recover', 'setnewpassword', 'loginasadmin', 'view', 'updatetwitter', 'updatetwitterfeed', 'banned', 'activation', 'need_activation', 'requesthelp', 'testemail', 'feed', 'test'
     ];
 
     public $nominatedCount = false;
@@ -2412,6 +2412,40 @@ class UsersController extends \app\controllers\AppController
         User::fillBalance($this->userHelper->getId(), $amount);
         return compact('amount');
     }
+
+    /**
+     * Метод позволяет сохранить адрес пользователя для последующей рассылки
+     * или обновляет существующую запись
+     *
+     * @return object
+     */
+    public function activateEmailSubscription() {
+        if($this->request->data && isset($this->request->data['email']) && filter_var($this->request->data['email'], FILTER_VALIDATE_EMAIL)) {
+            if(!$user = User::first(['conditions' => ['User.email' => $this->request->data['email']]])) {
+                $user = User::create();
+                $user->email = $this->request->data['email'];
+                $user->token = $user->generateToken();
+                $user->created = date('Y-m-d H:i:s');
+                $user->email_newpitch = 0;
+                $user->email_newcomments = 0;
+                $user->email_newpitchonce = 0;
+                $user->email_newsolonce = 0;
+                $user->email_newsol = 0;
+                $user->email_digest = 1;
+                $user->save(null, ['validate' => false]);
+                UserMailer::verification_mail($user);
+            }else {
+                $user->email_digest = 1;
+                if($this->userHelper->isLoggedIn()) {
+                    $this->userHelper->write('user.email_digest', 1);
+                }
+                $user->save(null, ['validate' => false]);
+            }
+            return $user->email_digest;
+        }
+        die();
+    }
+
 }
 
 class qqUploadedFileXhr

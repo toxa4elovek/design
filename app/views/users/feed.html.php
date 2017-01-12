@@ -19,7 +19,7 @@
                 var userGender = <?php echo $this->user->getGender(); ?>;
                 var tag = '<?= $tag?>';
             </script>
-            <?php if (($this->user->isAdmin()) or ($this->user->isFeedWriter())): ?>
+                <?php if ($this->user->isAdmin() || $this->user->isFeedWriter()): ?>
                 <div id="news-add" style="display:none;">
                     <input type="text" name="news-title" placeholder="Заголовок">
                     <input type="text" name="news-link" placeholder="Ссылка">
@@ -38,7 +38,7 @@
                 <div class="new-content group" style="margin-top:10px">
                 <?php endif; ?>
                 <?php
-                if (($banner) && ($this->user->getId()) && (!$_COOKIE['closedbanner' . $banner->id])): ?>
+                if (($banner) && $this->user->getId() && (!$_COOKIE['closedbanner' . $banner->id])): ?>
                     <div class="banner-block">
                         <div>
                             <div data-bannerid="<?= $banner->id ?>" class="close-gender"></div>
@@ -50,7 +50,7 @@
                         <?= $this->view()->render(['element' => 'office/nav']); ?>
                     </nav>
                     <div class="new-content group" style="margin-top:10px">
-                    <?php elseif ($this->user->getGender() < 1 && $this->user->getId()): ?>
+                <?php elseif ($this->user->getGender() < 1 && $this->user->getId()): ?>
                         <div id="gender-box">
                             <div>
                                 <div class="close-gender"></div>
@@ -62,20 +62,38 @@
                                 <p>Это необходимо для корректного отображения ваших действий в ленте обновлений</p>
                             </div>
                         </div>
-                        <?php if ($this->user->getId()): ?>
                         <nav class="main_nav clear" style="width:832px;margin:66px auto -50px;">
                             <?= $this->view()->render(['element' => 'office/nav']); ?>
                         </nav>
-                        <?php endif; ?>
                         <div class="new-content group" style="margin-top:10px">
-                        <?php else: ?>
+                <?php else: ?>
                             <?php if ($this->user->getId()): ?>
                             <nav class="main_nav clear" style="width:832px;margin:56px auto -50px;">
                                 <?= $this->view()->render(['element' => 'office/nav']); ?>
                             </nav>
                             <?php endif; ?>
                             <div class="new-content group">
+                            <?php if((!isset($_COOKIE['closed-email-banner'])) && (!$this->user->getId() || ($this->user->getId() && (int) $this->user->read('user.email_digest') === 0))):?>
+                                <div class="email-prompt">
+                                    <?php if($this->user->getId() && (int) $this->user->read('user.email_digest') === 0):?>
+                                        <form method="post" action="/users/activateEmailSubscription">
+                                            <a href="#" class="close"></a>
+                                            <h2>Активируйте подписку на новости дизайна</h2>
+                                            <input type="hidden" name="email" placeholder="Email" value="<?=$this->user->read('user.email')?>">
+                                            <input type="submit" name="submit" value="Включить" style="float:right;">
+                                            <div class="clear"></div>
+                                        </form>
+                                    <?php elseif(!$this->user->getId()):?>
+                                        <form method="post" action="/users/activateEmailSubscription">
+                                            <a href="#" class="close"></a>
+                                            <h2>Подпишитесь на новости дизайна</h2>
+                                            <input type="email" name="email" placeholder="Email">
+                                            <input type="submit" name="submit" value="Подписаться">
+                                        </form>
+                                    <?php endif ?>
+                                </div>
                             <?php endif; ?>
+                <?php endif; ?>
                             <div id="l-sidebar-office">
                                 <?php
                                 $solutionDate = '';
