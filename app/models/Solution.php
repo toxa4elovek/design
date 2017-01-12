@@ -594,7 +594,10 @@ http://godesigner.ru/answers/view/73'];
             $award = 6000;
         }
         $total = $fee + $award;
-        $pitch = Pitch::first(['conditions' => ['blank' => 1, 'user_id' => $user_id, 'billed' => 0]]);
+        $pitch = Pitch::first([
+            'conditions' => ['blank' => 1, 'user_id' => $user_id, 'billed' => 0],
+            'order' => ['Pitch.id' => 'desc']
+        ]);
         if ($pitch && ((int) $pitch->total === $total)) {
             $pitch->awarded = $solution_id;
             $pitch->save();
