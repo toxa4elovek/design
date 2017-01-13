@@ -43,7 +43,7 @@ class Tasks extends CronJob
         $unserialized = unserialize($task->serialized_data);
         $ids = $unserialized['ids'];
         $subject = $unserialized['subject'];
-        $posts = News::all(['conditions' => ['id' => array_values($ids)], 'order' => ['created' => 'desc'], 'limit' => 8]);
+        $posts = News::all(['conditions' => ['id' => array_values($ids)], 'order' => ['created' => 'desc']]);
         foreach ($posts as $post) {
             if (preg_match('@^/events@', $post->imageurl)) {
                 $post->imageurl = 'https://godesigner.ru' . $post->imageurl;
