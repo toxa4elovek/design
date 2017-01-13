@@ -30,6 +30,9 @@
                             endif;
                             $i = 0;
                             foreach ($posts as $post):
+                            if($post->imageurl === '') {
+                                $post->imageurl = $post->og_image;
+                            }
                             $i++;
                             if ($i === 1):
                             ?>
