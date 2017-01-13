@@ -24,10 +24,14 @@
                             <tr><td height="20"></td></tr>
                             <?php
                             $total = count($posts);
+                            $emptySlots = 0;
+                            if((($total - 2) % 3) > 0):
+                                $emptySlots = (($total - 2) % 3);
+                            endif;
                             $i = 0;
                             foreach ($posts as $post):
                             $i++;
-                            if ($i == 1):
+                            if ($i === 1):
                             ?>
                             <tr><td>
                                     <?php
@@ -67,12 +71,12 @@
                         <?php
                         endif;
                         elseif ($i > 2):
-                        if ($i == 3):
+                        if ($i === 3):
                         ?>
                             <tr><td><table>
                                         <?php
                                         endif;
-                                        if ($i == 6):
+                                        if (($i % 3) === 0):
                                         ?>
                                         <tr>
                                             <?php endif; ?>
@@ -95,8 +99,21 @@
                                                     </tr>
                                                 </table>
                                             </td>
-                                            <?php if ($i == 8): ?>
-                                        </tr></table></td>
+                                            <?php
+                                            $x = $i - 2;
+                                            if (($x % 3) === 0):
+                                            ?>
+                                        </tr>
+                                    <?php endif?>
+                                        <?php if ($i === $total):
+                                        if($emptySlots > 0):
+                                            for($j = 0; $j <= $emptySlots; $j++):?>
+                                                <td width="33%" valign="top">&nbsp;</td>
+                                            <?php endfor;?>
+                                            </tr>
+                                        <?php endif;
+                                        ?>
+                                    </table></td>
                                 <?php endif; ?>
                                 <?php endif;
                                 ?>
