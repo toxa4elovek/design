@@ -38,11 +38,11 @@
                 <div style="height:2px;clear:both;width:807px;background: url('/img/obnovleniya_line.jpg') repeat-x scroll 0 100% transparent; margin-bottom: 15px;"></div>
 
                 <div class="tos-container supplement">
-                    <label><input type="checkbox" name="tos" style="margin-right:5px;"/>Я прочитал(а) и выражаю безусловное согласие с условиями настоящего <a href="/docs/dogovor_2016.pdf" style="text-decoration: none;">конкурсного соглашения</a>.</label>
+                    <label><input type="checkbox" name="tos" style="margin-right:5px;"/>Я прочитал(а) и выражаю безусловное согласие с условиями настоящего <a href="/docs/ddogovor_oferta_2017.pdf" style="text-decoration: none;">конкурсного соглашения</a>.</label>
                 </div>
 
                 <div class="tos-container supplement">
-                    <label><input type="checkbox" name="rights_tos" style="margin-right: 5px; margin-bottom: 2px;"/>Я прочитал и согласен с <a href="http://godesigner.ru/docs/Договор отчуждения исключительных прав.pdf" style="text-decoration: none;">договором передачи исключительных прав на произведение</a></label>
+                    <label><input type="checkbox" name="rights_tos" style="margin-right: 5px; margin-bottom: 2px;"/>Я прочитал и согласен с <a href="/docs/dogovor_otchuzhdenia_2017.pdf" style="text-decoration: none;">договором передачи исключительных прав на произведение</a></label>
                     <?= $this->view()->render(['element' => 'newbrief/required_star'], ['tooltipClass' => "tooltip3"]) ?>
                 </div>
 
