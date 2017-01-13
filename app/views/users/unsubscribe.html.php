@@ -22,7 +22,8 @@
 
                     <form action="/users/unsubscribe" method="post" style="margin-bottom:20px;margin-left: -10px;">
                         <input type="hidden" name="token" value="<?=$this->_request->query['token']?>">
-                        <input style="width:150px;" type="submit" value="Да, отписаться" class="button">
+                        <input type="hidden" name="from" value="<?=$this->_request->query['from']?>">
+                        <input style="width:150px; padding-left: 15px;" type="submit" value="Да, отписаться" class="button">
                 <a style="width:82px; margin-left:5px" href="/" class="button second">Нет, отмена</a>
                     </form>
 

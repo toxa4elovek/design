@@ -54,7 +54,7 @@ class Tasks extends CronJob
             for ($i = 1; $i <= $totalPages; $i++) {
                 $users = User::all(
                     [
-                        'fields' => ['User.id', 'User.email'],
+                        'fields' => ['User.id', 'User.email', 'User.created'],
                         'conditions' => [
                             'User.email' => ['!=' => ''],
                             'User.email_digest' => 1,

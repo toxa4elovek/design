@@ -950,10 +950,10 @@ class UsersController extends \app\controllers\AppController
 
     public function unsubscribe()
     {
-        if (($this->request->query) && (isset($this->request->query['token'])) && (isset($this->request->query['from']))) {
-            $email = base64_decode($this->request->query['from']);
+        if ($this->request->data && isset($this->request->data['token'], $this->request->data['from'])) {
+            $email = base64_decode($this->request->data['from']);
             if ($user = User::first(['conditions' => ['email' => $email]])) {
-                if (sha1($user->id . $user->created) == base64_decode($this->request->query['token'])) {
+                if (sha1($user->id . $user->created) === base64_decode($this->request->data['token'])) {
                     $user->email_newpitch = 0;
                     $user->email_newcomments = 0;
                     $user->email_newpitchonce = 0;
