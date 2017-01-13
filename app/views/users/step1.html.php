@@ -79,7 +79,11 @@
                                 <img alt="" src="/img/visa_mastercard.png">
                             </td>
                             <td class="s3_text">
-                                Получить вознаграждение <br>на банковскую карту VISA, MASTERCARD
+                                Получить вознаграждение <br>на банковскую карту VISA, MASTERCARD<br>
+                                <span style="
+    text-transform: none;
+    font-size: 10px;
+">Комиссия за перевод вознаграждения на банковские карты составляет 5 %</span>
                             </td>
                             <td>
                             </td>
@@ -144,7 +148,11 @@
                                 <img alt="" src="/img/wmr.png">
                             </td>
                             <td class="s3_text" style="margin-top: 14px;">
-                                Получить вознаграждение в wmr (webmoney.ru)
+                                Получить вознаграждение* в wmr (webmoney.ru)<br>
+                                <span style="
+    text-transform: none;
+    font-size: 10px;
+">Комиссия на перевод вознаграждения на кошельки Webmoney составляет 6 %</span>
                             </td>
                             <td></td>
                         </tr>
