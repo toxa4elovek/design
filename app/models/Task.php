@@ -39,15 +39,18 @@ class Task extends AppModel
      * @param $modelId integer
      * @param $type string
      * @param $delay integer
+     * @param $serialized string
      * @return integer
+     * @todo Рефактор параметров метода
      */
-    public static function createNewTask($modelId, $type, $delay = 0)
+    public static function createNewTask($modelId, $type, $delay = 0, $serialized = '')
     {
         $data = [
             'model_id' => (int) $modelId,
             'type' => $type,
             'date' => date('Y-m-d H:i:s', time() + $delay),
-            'completed' => '0'
+            'completed' => 0,
+            'serialized_data' => $serialized
         ];
         $newTask = Task::create($data);
         $newTask->save();
