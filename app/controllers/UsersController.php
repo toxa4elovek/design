@@ -565,7 +565,7 @@ class UsersController extends \app\controllers\AppController
                 if (!User::isSubscriptionActive($client->id, $client)) {
                     $nameInflector = new NameInflector();
                     $ownerFormatted = $nameInflector->renderName($client->first_name, $client->last_name);
-                    $text = '<a href="#" class="mention-link" data-comment-to="' . $ownerFormatted . '">@' . $ownerFormatted . ',</a> Нам понравилось работать с вами, и мы хотим продолжить наше партнерство. Сотрудничайте с&nbsp;дизайнерами и&nbsp;копирайтерами без рисков дальше, корректируйте макеты без сервисных сборов, создавайте проекты от 500р. в&nbsp;течение года, став нашим абонентом. В течение недели <a href="/pages/subscribe?utm_source=GDsite&utm_medium=final_stage_comment&utm_campaign=off10percent" target="_blank">мы предлагаем вам скидку 10%</a> на <a href="/pages/subscribe?utm_source=GDsite&utm_medium=final_stage_comment&utm_campaign=off10percent" target="_blank">годовое обслуживание</a>.';
+                    $text = '<a href="#" class="mention-link" data-comment-to="' . $ownerFormatted . '">@' . $ownerFormatted . ',</a> Нам понравилось работать с вами, и мы хотим продолжить наше партнерство. Сотрудничайте с&nbsp;дизайнерами и&nbsp;копирайтерами без рисков дальше, корректируйте макеты без сервисных сборов, создавайте проекты от 500р. в&nbsp;течение года, став нашим абонентом. В течение недели <a href="https://godesigner.ru/pages/subscribe?utm_source=GDsite&utm_medium=final_stage_comment&utm_campaign=off10percent" target="_blank">мы предлагаем вам скидку 10%</a> на <a href="https://godesigner.ru/pages/subscribe?utm_source=GDsite&utm_medium=final_stage_comment&utm_campaign=off10percent" target="_blank">годовое обслуживание</a>.';
                     $data = [
                         'user_id' => 108,
                         'text' => $text,
@@ -773,7 +773,7 @@ class UsersController extends \app\controllers\AppController
                 $text = '<a href="#" class="mention-link" data-comment-to="' . $ownerFormatted . '">@' . $ownerFormatted . ',</a> на проверку исходников предоставляется 24 часа. Пожалуйста, предупреждайте, если потребуется больше времени на проверку или согласование файлов.';
                 if ((!User::isSubscriptionActive($client->id, $client)) && $client->hasActiveSubscriptionDiscountForRecord()) {
                     $discountEndDate = $client->getSubscriptionDiscountEndTimeForRecord();
-                    $text .= sprintf(' Напоминаем, до %s доступна скидка 10%% на абонентские тарифы!', date('d.m.Y', strtotime($discountEndDate)));
+                    $text .= sprintf(' Напоминаем, до %s доступна <a href="https://godesigner.ru/pages/subscribe?utm_source=GDsite&utm_medium=final_stage_comment&utm_campaign=off10percent&utm_content=reminder_comment" target="_blank">скидка 10%% на абонентские тариф</a>!', date('d.m.Y', strtotime($discountEndDate)));
                 }
                 $date = new \DateTime();
                 $dateString = $date->format('Y-m-d H:i:s');
