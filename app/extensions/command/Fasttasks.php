@@ -110,8 +110,12 @@ class Fasttasks extends CronJob
                 $manager = new SocialMediaManager();
 
                 $vkApi = new VKAPI();
+                $vkMessage = $news->short;
+                if (preg_match('@<iframe@', $vkMessage)) {
+                    $vkMessage = '';
+                }
                 $data = [
-                    'message' => $news->short,
+                    'message' => $vkMessage,
                     'picture' => 'https://godesigner.ru/news?event=' . $result->id . $manager->getFeedSharingAnalyticsString('vk')
                 ];
                 $id = $vkApi->postMessageToPage($data);
@@ -145,8 +149,12 @@ class Fasttasks extends CronJob
                 $manager = new SocialMediaManager();
 
                 $vkApi = new VKAPI();
+                $vkMessage = $news->short;
+                if (preg_match('@<iframe@', $vkMessage)) {
+                    $vkMessage = '';
+                }
                 $data = [
-                    'message' => $news->short,
+                    'message' => $vkMessage,
                     'owner_id' => '-26880133',
                     'picture' => 'https://godesigner.ru/news?event=' . $result->id . $manager->getFeedSharingAnalyticsString('vk')
                 ];
