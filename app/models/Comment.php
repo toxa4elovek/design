@@ -225,7 +225,7 @@ class Comment extends AppModel
                     }
                     return $record;
                 };
-                if (get_class($result) == 'lithium\data\entity\Record') {
+                if (get_class($result) === 'lithium\data\entity\Record') {
                     //$result = $addSolutionNumLinkIfNotExists($result);
                     $result = $addOriginalText($result);
                     $result = $addHyperlink($result);
@@ -235,8 +235,8 @@ class Comment extends AppModel
                     foreach ($result as $foundItem) {
                         //$foundItem = $addSolutionNumLinkIfNotExists($foundItem);
                         $foundItem = $addOriginalText($foundItem);
-                        $foundItem = $addMentionLink($foundItem);
                         $foundItem = $addHyperlink($foundItem);
+                        $foundItem = $addMentionLink($foundItem);
                         $foundItem = $stripEmail($foundItem);
                     }
                 }

@@ -53,10 +53,11 @@ class Solution extends \lithium\template\Helper
         $user = new UserHelper([]);
         if (((int) $project->category_id === 7) || ((int) $project->category_id === 20 && $project->isSubscriberProjectForCopyrighting())) {
             if ($user->isPitchOwner($project->user_id) || $user->isManagerOfProject($project->id) || $user->isExpert() || $user->isAdmin() || $user->isSolutionAuthor($solution->user_id)) {
-                if (mb_strlen(trim($solution->description)) > 100) {
-                    $description = mb_substr(trim($solution->description), 0, 100, 'UTF-8');
+                $description = $solution->description;
+                if (mb_strlen(trim($description)) > 100) {
+                    $description = mb_substr(trim($description), 0, 100, 'UTF-8');
                 } else {
-                    $description = trim($solution->description);
+                    $description = trim($description);
                 }
                 return htmlspecialchars($description, ENT_QUOTES, 'UTF-8');
             } else {
