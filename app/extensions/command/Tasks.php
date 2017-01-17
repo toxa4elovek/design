@@ -26,10 +26,8 @@ class Tasks extends CronJob
         foreach ($tasks as $task) {
             $methodName = '__' . $task->type;
             if (method_exists('app\extensions\command\Tasks', $methodName)) {
-                if($task->type === 'newsDigest') {
-                    $task->markAsCompleted();
-                    Tasks::$methodName($task);
-                }
+                $task->markAsCompleted();
+                Tasks::$methodName($task);
             }
         }
         if ($count) {
