@@ -21,7 +21,8 @@
         <td>
             <a style="color: #ff585d; line-height: 17px; font-size: 20px; font-weight: bold; font-family: Arial, sans-serif;text-decoration: none;" href="https://godesigner.ru/users/step4/<?=$solution->id?>"><?=$pitch->title?></a><br/>
             <span style="color: #AEAEAE; line-height: 17px; font-size: 11px; font-family: Arial, sans-serif;"><?=$this->view()->render(['template' => 'pitch-info'], ['pitch' => $pitch]);?></span><br/>
-            <span style="color: #444444; line-height: 17px; font-size: 12px; font-family: Arial, sans-serif;"><?=$text?></span><br/>
+            <span style="color: #444444; line-height: 17px; font-size: 12px; font-family: Arial, sans-serif;"><?=$text?></span><br/><br><br>
+            <p style="color: #AEAEAE; line-height: 17px; font-size: 11px; font-family: Arial, sans-serif;">* Обратите внимание, что с вознаграждений в проектах, выигранных после 15 января 2017 года, удерживается комиссия за переводы. Комиссия составляет 5 % для гонораров,отправляемых на банковские карты, и 6 % для гонораров, отправляемых на кошельки Webmoney.</p>
         </td></tr>
     <tr>
         <td colspan="3" height="100"></td>
