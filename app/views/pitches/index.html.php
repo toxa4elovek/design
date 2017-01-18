@@ -276,12 +276,12 @@ height: 41px;margin-left:15px;margin-top:2px;display: block" href="#" id="goSear
                 <div class="pitches-ajax-wrapper no-separator">
                     <div class="pitches-ajax-loader">&nbsp;</div>
                 </div>
-                <!--span style="
+                <span style="
                 margin-top: 30px;
                 width: 235px;
                 height: 10px;
                 color: #6590a3;
-                font-family: Arial;
+                font-family: Arial, Sans-serif;
                 font-size: 14px;
                 font-weight: 700;
                 line-height: 26px;
@@ -290,7 +290,7 @@ height: 41px;margin-left:15px;margin-top:2px;display: block" href="#" id="goSear
                 text-align: center;">
                     <a href="/pitches?page=1&type=finished&category=&order%5Bprice%5D=desc&priceFilter=all&searchTerm=" target="_blank">
                         <?= $this->moneyFormatter->formatMoney($totalCount, ['suffix' => '']) ?> <?=$this->numInflector->formatString($totalCount, ['first' => 'завершенный проект', 'second' => 'завершенных проекта', 'third' => 'завершенных проектов'])?></a>
-                </span-->
+                </span>
 				<div class="page-nambe-nav" style="float: none; margin-right: 0;">
                     <?php
                     if ($data['info']['total'] > 1):
