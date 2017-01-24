@@ -53,7 +53,7 @@
                                             <td>
                                                 <table cellpadding="0" cellspacing="0" width="100%" align="left" style="border-collapse: collapse;">
                                                     <tr><td height="14"></td></tr>
-                                                    <tr><td><a href="<?= $post->link ?>" target="_blank" style="color: #7095a9; text-decoration: none; text-transform: uppercase; line-height: 17px; font-weight:bold; font-size: 15px; font-family: Arial, sans-serif;"><?= $post->title ?></a></td></tr>
+                                                    <tr><td><a href="<?= $post->link ?>" target="_blank" style="color: #2d2f3a; text-decoration: none; text-transform: uppercase; line-height: 17px; font-weight:bold; font-size: 15px; font-family: Arial, sans-serif;"><?= $post->title ?></a></td></tr>
                                                     <tr><td height="15"></td></tr>
                                                     <tr>
                                                         <td>
@@ -95,7 +95,7 @@
                                                         <td>
                                                             <table cellpadding="0" cellspacing="0" width="100%" align="left" style="border-collapse: collapse;">
                                                                 <tr><td height="8"></td></tr>
-                                                                <tr><td><a href="<?= $post->link ?>" target="_blank" style="color: #7095a9; text-decoration: none; line-height: 17px; font-weight:bold; font-size: 14px; font-family: Arial, sans-serif;"><?= $post->title ?></a></td></tr>
+                                                                <tr><td><a href="<?= $post->link ?>" target="_blank" style="color: #2d2f3a; text-decoration: none; line-height: 17px; font-weight:bold; font-size: 14px; font-family: Arial, sans-serif;"><?= $post->title ?></a></td></tr>
                                                                 <tr><td height="27"></td></tr>
                                                             </table>
                                                         </td>
