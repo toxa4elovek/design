@@ -828,12 +828,15 @@ function warningModal () {
  * Fetch Comments data from response. Hierarchial
  */
 function fetchCommentsNew (result, popup) {
-  var fetchedComments = ''
+  let fetchedComments = ''
   $.each(result.comments, function (idx, comment) {
-    var commentData = prepareCommentData(comment, result)
+    if (($('input[name=is_owner]').val() === '1') && (comment.text.match(/100% разрешении/))) {
+        return true
+    }
+    const commentData = prepareCommentData(comment, result)
     fetchedComments += populateComment(commentData, popup)
     if (comment.child) {
-      var commentChildData = prepareCommentData(comment.child, result)
+      const commentChildData = prepareCommentData(comment.child, result)
       fetchedComments += populateComment(commentChildData, popup)
     }
   })
