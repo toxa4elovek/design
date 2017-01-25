@@ -578,7 +578,7 @@ class User extends AppModel
                 $isUserPremium = User::getAwardedSolutionNum($user->id);
                 if (($isUserPremium > 0) && ((int) $params['pitch']->premium === 1)) {
                     SpamMailer::newPremiumProject($data);
-                } elseif ($params['pitch']->premium === 0) {
+                } elseif ((int) $params['pitch']->premium === 0) {
                     SpamMailer::newpitch($data);
                 }
             }
