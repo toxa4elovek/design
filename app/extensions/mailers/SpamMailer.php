@@ -11,9 +11,9 @@ class SpamMailer extends \li3_mailer\extensions\Mailer
     public static function newpitch($data)
     {
         return self::_mail([
-                    'to' => $data['user']->email,
-                    'subject' => 'Новый проект!',
-                    'data' => $data
+            'to' => $data['user']->email,
+            'subject' => 'Новый проект!',
+            'data' => $data
         ]);
     }
 
@@ -29,49 +29,49 @@ class SpamMailer extends \li3_mailer\extensions\Mailer
     public static function promocode($data)
     {
         return self::_mail([
-                    'use-smtp' => true,
-                    'to' => $data['user']->email,
-                    'subject' => 'Подарочный промокод',
-                    'data' => $data
+            'use-smtp' => true,
+            'to' => $data['user']->email,
+            'subject' => 'Подарочный промокод',
+            'data' => $data
         ]);
     }
 
     public static function comeback($data)
     {
         return self::_mail([
-                    'use-smtp' => true,
-                    'to' => $data['user']->email,
-                    'subject' => 'Проект требует вашего внимания',
-                    'data' => $data
+            'use-smtp' => true,
+            'to' => $data['user']->email,
+            'subject' => 'Проект требует вашего внимания',
+            'data' => $data
         ]);
     }
 
     public static function newclientpitch($data)
     {
         return self::_mail([
-                    'to' => $data['user']->email,
-                    'subject' => 'Проект успешно оплачен!',
-                    'data' => $data
+            'to' => $data['user']->email,
+            'subject' => 'Проект успешно оплачен!',
+            'data' => $data
         ]);
     }
 
     public static function sendclientexpertspeaking($data)
     {
         return self::_mail([
-                    'use-smtp' => true,
-                    'to' => $data['user']->email,
-                    'subject' => 'Добавлено экспертное мнение',
-                    'data' => $data,
+            'use-smtp' => true,
+            'to' => $data['user']->email,
+            'subject' => 'Добавлено экспертное мнение',
+            'data' => $data,
         ]);
     }
 
     public static function newbriefedpitch($data)
     {
         return self::_mail([
-                    'use-smtp' => true,
-                    'to' => $data['user']->email,
-                    'subject' => 'Заполнить бриф: ' . $data['pitch']->{'phone-brief'},
-                    'data' => $data
+            'use-smtp' => true,
+            'to' => $data['user']->email,
+            'subject' => 'Заполнить бриф: ' . $data['pitch']->{'phone-brief'},
+            'data' => $data
         ]);
     }
 
@@ -114,10 +114,10 @@ class SpamMailer extends \li3_mailer\extensions\Mailer
     public static function newmoderatedpitch($data)
     {
         return self::_mail([
-                    'use-smtp' => true,
-                    'to' => $data['user']->email,
-                    'subject' => 'Новый проект на модерацию!',
-                    'data' => $data
+            'use-smtp' => true,
+            'to' => $data['user']->email,
+            'subject' => 'Новый проект на модерацию!',
+            'data' => $data
         ]);
     }
 
@@ -151,38 +151,38 @@ class SpamMailer extends \li3_mailer\extensions\Mailer
         }
 
         return self::_mail([
-                    'use-smtp' => true,
-                    'to' => $data['user']->email,
-                    'subject' => $stringSubject,
-                    'data' => $data
+            'use-smtp' => true,
+            'to' => $data['user']->email,
+            'subject' => $stringSubject,
+            'data' => $data
         ]);
     }
 
     public static function newaddonbrief($data)
     {
         return self::_mail([
-                    'use-smtp' => true,
-                    'to' => $data['user']->email,
-                    'subject' => 'Новая доп. опция "заполнить бриф"!',
-                    'data' => $data
+            'use-smtp' => true,
+            'to' => $data['user']->email,
+            'subject' => 'Новая доп. опция "заполнить бриф"!',
+            'data' => $data
         ]);
     }
 
     public static function dailydigest($data)
     {
         return self::_mail([
-                    'to' => $data['user']->email,
-                    'subject' => 'Добавлено решение или комментарий',
-                    'data' => $data
+            'to' => $data['user']->email,
+            'subject' => 'Добавлено решение или комментарий',
+            'data' => $data
         ]);
     }
 
     public static function dailypitch($data)
     {
         return self::_mail([
-                    'to' => $data['user']->email,
-                    'subject' => 'Новые проекты!',
-                    'data' => $data
+            'to' => $data['user']->email,
+            'subject' => 'Новые проекты!',
+            'data' => $data
         ]);
     }
 
@@ -194,100 +194,100 @@ class SpamMailer extends \li3_mailer\extensions\Mailer
     public static function choosewinner($data)
     {
         return self::_mail([
-                    'use-smtp' => true,
-                    'to' => $data['user']->email,
-                    'subject' => 'Срок анонсирования победителя',
-                    'data' => $data
+            'use-smtp' => true,
+            'to' => $data['user']->email,
+            'subject' => 'Срок анонсирования победителя',
+            'data' => $data
         ]);
     }
 
     public static function step2($data)
     {
         return self::_mail([
-                    'use-smtp' => true,
-                    'to' => $data['user']->email,
-                    'subject' => 'Доработка макетов',
-                    'data' => $data
+            'use-smtp' => true,
+            'to' => $data['user']->email,
+            'subject' => 'Доработка макетов',
+            'data' => $data
         ]);
     }
 
     public static function step3($data)
     {
         return self::_mail([
-                    'use-smtp' => true,
-                    'to' => $data['user']->email,
-                    'subject' => 'Получение исходников',
-                    'data' => $data
+            'use-smtp' => true,
+            'to' => $data['user']->email,
+            'subject' => 'Получение исходников',
+            'data' => $data
         ]);
     }
 
     public static function step4($data)
     {
         return self::_mail([
-                    'use-smtp' => true,
-                    'to' => $data['user']->email,
-                    'subject' => 'Завершение рабочего процесса, рейтинг.',
-                    'data' => $data
+            'use-smtp' => true,
+            'to' => $data['user']->email,
+            'subject' => 'Завершение рабочего процесса, рейтинг.',
+            'data' => $data
         ]);
     }
 
     public static function newcomment($data)
     {
         return self::_mail([
-                    'use-smtp' => true,
-                    'to' => $data['user']->email,
-                    'subject' => 'Новый комментарий к вашему решению!',
-                    'data' => $data
+            'use-smtp' => true,
+            'to' => $data['user']->email,
+            'subject' => 'Новый комментарий к вашему решению!',
+            'data' => $data
         ]);
     }
 
     public static function newwincomment($data)
     {
         return self::_mail([
-                    'use-smtp' => true,
-                    'to' => $data['user']->email,
-                    'subject' => 'Обновление завершающего процесса!',
-                    'data' => $data
+            'use-smtp' => true,
+            'to' => $data['user']->email,
+            'subject' => 'Обновление завершающего процесса!',
+            'data' => $data
         ]);
     }
 
     public static function winstep($data)
     {
         return self::_mail([
-                    'use-smtp' => true,
-                    'to' => $data['user']->email,
-                    'subject' => 'Обновление завершающего процесса!',
-                    'data' => $data
+            'use-smtp' => true,
+            'to' => $data['user']->email,
+            'subject' => 'Обновление завершающего процесса!',
+            'data' => $data
         ]);
     }
 
     public static function newadminnotification($data)
     {
         return self::_mail([
-                    'use-smtp' => true,
-                    'to' => $data['admin'],
-                    'subject' => 'Оставлен комментарий после завершения проекта',
-                    'data' => $data
+            'use-smtp' => true,
+            'to' => $data['admin'],
+            'subject' => 'Оставлен комментарий после завершения проекта',
+            'data' => $data
         ]);
     }
 
     public static function firstsolution($data)
     {
         return self::_mail([
-                    'use-smtp' => true,
-                    'to' => $data['user']->email,
-                    'subject' => 'Добавлено решение',
-                    'data' => $data
+            'use-smtp' => true,
+            'to' => $data['user']->email,
+            'subject' => 'Добавлено решение',
+            'data' => $data
         ]);
     }
 
     public static function expertselected($data)
     {
         return self::_mail([
-                    'use-smtp' => true,
-                    'to' => $data['user']->email,
-                    'subject' => 'Экспертное мнение',
-                    'data' => $data
+            'use-smtp' => true,
+            'to' => $data['user']->email,
+            'subject' => 'Экспертное мнение',
+            'data' => $data
         ]);
     }
 
@@ -403,6 +403,7 @@ class SpamMailer extends \li3_mailer\extensions\Mailer
     public static function blognewsdigest($data)
     {
         return self::_mail([
+            'use-smtp' => true,
             'to' => $data['email'],
             'subject' => $data['subject'],
             'data' => $data
@@ -412,27 +413,27 @@ class SpamMailer extends \li3_mailer\extensions\Mailer
     public static function designerRemind($data)
     {
         return self::_mail([
-                    'to' => $data['email'],
-                    'subject' => $data['subject'],
-                    'data' => $data
+            'to' => $data['email'],
+            'subject' => $data['subject'],
+            'data' => $data
         ]);
     }
 
     public static function discountWeekends($data)
     {
         return self::_mail([
-                    'to' => $data['email'],
-                    'subject' => $data['subject'],
-                    'data' => $data
+            'to' => $data['email'],
+            'subject' => $data['subject'],
+            'data' => $data
         ]);
     }
 
     public static function discountDesigners($data)
     {
         return self::_mail([
-                    'to' => $data['email'],
-                    'subject' => $data['subject'],
-                    'data' => $data
+            'to' => $data['email'],
+            'subject' => $data['subject'],
+            'data' => $data
         ]);
     }
 
