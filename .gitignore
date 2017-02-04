@@ -118,3 +118,4 @@ app/webroot/js/pitches/upload.js
 .vs/GoDesigner/v14/.suo
 GoDesigner.phpproj
 GoDesigner.sln
+libraries/*

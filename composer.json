@@ -3,6 +3,7 @@
     "vendor-dir": "libraries"
   },
   "require": {
+    "roave/security-advisories": "dev-master",
     "ins0/google-measurement-php-client": "dev-master",
     "verot/class.upload.php": "dev-master",
     "swiftmailer/swiftmailer": "^5.4",
@@ -12,6 +13,7 @@
     "symfony/finder": "^2.8",
     "norkunas/onesignal-php-api": "^0.1.5",
     "paquettg/php-html-parser": "^1.6.9",
-    "drewm/mailchimp-api": "dev-master"
+    "drewm/mailchimp-api": "dev-master",
+    "mandrill/mandrill": "dev-master"
   }
 }
