@@ -41,6 +41,7 @@ class Tasks extends CronJob
         $unserialized = unserialize($task->serialized_data);
         $ids = $unserialized['ids'];
         $subject = $unserialized['subject'];
+        $useExternalService = $unserialized['useExternalService'];
         $posts = News::all(['conditions' => ['id' => array_values($ids)], 'order' => ['created' => 'desc']]);
         foreach ($posts as $post) {
             if (preg_match('@^/events@', $post->imageurl)) {
@@ -76,7 +77,8 @@ class Tasks extends CronJob
                         'email' => $user->email,
                         'subject' => $subject,
                         'posts' => $posts,
-                        'user' => $user
+                        'user' => $user,
+                        'useExternalService' => $useExternalService
                     ];
                     $this->out($user->email);
                     SpamMailer::blognewsdigest($data);

@@ -403,7 +403,7 @@ class SpamMailer extends \li3_mailer\extensions\Mailer
     public static function blognewsdigest($data)
     {
         return self::_mail([
-            'use-smtp' => true,
+            'use-smtp' => $data['useExternalService'],
             'to' => $data['email'],
             'subject' => $data['subject'],
             'data' => $data
