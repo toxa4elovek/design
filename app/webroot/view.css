@@ -918,6 +918,7 @@ a.order-button:hover {
     text-shadow: -1px 0 0 #ffffff;
     font: 14px/20px "Arial",sans-serif;
     color: #666666;
+    word-break: break-all;
 }
 .editor_content ul, .editor_content ol {
     list-style: disc;
