@@ -28,8 +28,8 @@
         <td style="line-height: 22px;">
             <p style="line-height: 22px;">Настоящее соглашение заключено в соответствии с Договором-офертой о передаче в полном объеме исключительного права на произведение между Исполнителем, действующим от своего имени: <?=$designerData['fio']?>, <?=$designerData['passseries']?> <?=$designerData['passnum']?> <?=$designerData['issuedby']?>, <?=$designerData['addresss']?> (далее – Автор, Исполнитель), с одной стороны, и  Заказчиком: <?php
                 switch($clientData['documentsfor']):
-                    case 'company': ?><?=$clientData['documentsfor_companyname']?>, <?=$clientData['documentsfor_address']?>, ИНН <?=$clientData['documentsfor_inn']?>,ОГРН <?=$clientData['documentsfor_orgn']?>, в лице: <?=$clientData['documentsfor_fio']?><?php break;
-                    case 'individual': ?>Индивидуальный предприниматель <?=$clientData['documentsfor_fio']?>, <?=$clientData['documentsfor_address']?>, ИНН <?=$clientData['documentsfor_inn']?>, ОГРН <?=$clientData['documentsfor_orgn']?>, действующим от своего имени<?php break;
+                    case 'company': ?><?=$clientData['documentsfor_companyname']?>, <?=$clientData['documentsfor_address']?>, ИНН <?=$clientData['documentsfor_inn']?>,<?php if($clientData['documentsfor_orgn'] !== ''):?>ОГРН <?=$clientData['documentsfor_orgn']?>,<?php endif?> в лице: <?=$clientData['documentsfor_fio']?><?php break;
+                    case 'individual': ?>Индивидуальный предприниматель <?=$clientData['documentsfor_fio']?>, <?=$clientData['documentsfor_address']?>, ИНН <?=$clientData['documentsfor_inn']?>, <?php if($clientData['documentsfor_orgn'] !== ''):?>ОГРН <?=$clientData['documentsfor_orgn']?>,<?php endif?> действующим от своего имени<?php break;
                     case 'simpleclient': ?><?=$clientData['documentsfor_fio']?>, <?=$clientData['documentsfor_address']?>, действующим от своего имени<?php break;
                 endswitch;
                 ?> (далее – Заказчик), с другой стороны, совместно именуемые — Стороны, о нижеследующем:</p><br>

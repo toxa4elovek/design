@@ -307,10 +307,10 @@
                                             <td class="" colspan="3"><input type="text" value="<?=$paydata['documentsfor_inn']?>" name="documentsfor_inn" data-validate="notempty" /></td>
                                         </tr>
                                         <tr>
-                                            <td class="tableheader" colspan="3">ОРГН</td>
+                                            <td class="tableheader" colspan="3">ОГРН</td>
                                         </tr>
                                         <tr style="height: 80px;">
-                                            <td class="" colspan="3"><input type="text" value="<?=$paydata['documentsfor_orgn']?>" name="documentsfor_orgn" data-validate="notempty" /></td>
+                                            <td class="" colspan="3"><input type="text" value="<?=$paydata['documentsfor_orgn']?>" name="documentsfor_orgn" /></td>
                                         </tr>
                                         <tr style="height: 80px;">
                                             <td class="" colspan="3">Агент не несет ответственноть за полноту и достоверность предоставленных сторонами реквизитов.</td>
@@ -357,10 +357,10 @@
                                             <td class="" colspan="3"><input type="text" value="<?=$paydata['documentsfor_inn']?>" name="documentsfor_inn" data-validate="notempty" /></td>
                                         </tr>
                                         <tr>
-                                            <td class="tableheader" colspan="3">ОРГН</td>
+                                            <td class="tableheader" colspan="3">ОГРН</td>
                                         </tr>
                                         <tr style="height: 80px;">
-                                            <td class="" colspan="3"><input type="text" value="<?=$paydata['documentsfor_orgn']?>" name="documentsfor_orgn" data-validate="notempty" /></td>
+                                            <td class="" colspan="3"><input type="text" value="<?=$paydata['documentsfor_orgn']?>" name="documentsfor_orgn" /></td>
                                         </tr>
                                         <tr style="height: 80px;">
                                             <td class="" colspan="3">Агент не несет ответственноть за полноту и достоверность предоставленных сторонами реквизитов.</td>
