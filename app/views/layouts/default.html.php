@@ -25,9 +25,9 @@
     <!--[if lte IE 7]><?= $this->html->style(['/ie7.css']); ?><![endif]-->
     <meta property="og:type" content="website"/>
     <meta property="fb:app_id" content="202765613136579"/>
-
+    <meta name="yandex-verification" content="1e23f2e572159f90" />
     <?php echo $this->Og->getOgUrl(''); ?>
-    <?php if ((isset($solution)) && (isset($solution->images)) && (isset($solution->images['solution_solutionView']))):
+    <?php if (isset($solution, $solution->images, $solution->images['solution_solutionView'])):
         if (!isset($solution->images['solution_galleryLargeSize'][0])):
             $url = 'https://godesigner.ru' . $solution->images['solution_gallerySiteSize']['weburl'];
         else:
@@ -83,8 +83,6 @@
         echo $this->Og->getOgImage('');
         echo '<meta property="fb:admins" content="nyudmitriy"/>';
         echo '<meta property="fb:app_id" content="202765613136579"/>';
-    elseif (preg_match('@/questions@', $_SERVER['REQUEST_URI'])):
-
     elseif (preg_match('@/pitches/(details|view)@', $_SERVER['REQUEST_URI'])):
         echo '<meta content="godesigner:pitch" property="og:type"/>';
         echo $this->Og->getOgDescription($pitch->description);
@@ -94,22 +92,22 @@
         echo '<meta property="fb:app_id" content="202765613136579"/>';
     elseif (preg_match('@/questions@', $_SERVER['REQUEST_URI'])):
         if ((!empty($_GET)) && (isset($_GET['result']))):
-            if ($_GET['result'] == 'dvornik'):
+            if ($_GET['result'] === 'dvornik'):
                 echo $this->Og->getOgImage('https://godesigner.ru/img/questions/dvornik_468_246.png');
                 echo $this->Og->getOgTitle('Тест «Какой ты дизайнер на самом деле» показал, что я дворник, совсем не дизайнер!');
             endif;
 
-            if ($_GET['result'] == 'malyar'):
+            if ($_GET['result'] === 'malyar'):
                 echo $this->Og->getOgImage('https://godesigner.ru/img/questions/malyar_468_246.png');
                 echo $this->Og->getOgTitle('Тест «Какой ты дизайнер на самом деле» показал, что я маляр, лучший кандидат в команду Тома Сойера!');
             endif;
 
-            if ($_GET['result'] == 'master'):
+            if ($_GET['result'] === 'master'):
                 echo $this->Og->getOgImage('https://godesigner.ru/img/questions/master_468_246.png');
                 echo $this->Og->getOgTitle('Тест «Какой ты дизайнер на самом деле» показал, что я Большой мастер, и выше только бог!');
             endif;
 
-            if ($_GET['result'] == 'apollo'):
+            if ($_GET['result'] === 'apollo'):
                 echo $this->Og->getOgImage('https://godesigner.ru/img/questions/apollo_468_246.png');
                 echo $this->Og->getOgTitle('Тест «Какой ты дизайнер на самом деле» показал, что я Аполлон, бог искусств!');
             endif;
@@ -163,7 +161,7 @@
 </head>
 
 <body class="<?=$this->_request->controller;?>_<?=$this->_request->action;?>">
-<?php if ($this->_request->action != 'feed'): ?>
+<?php if ($this->_request->action !== 'feed'): ?>
 <a target="_blank" id="feedback-link" href="http://godesigner.userecho.com/" style="width:67px;position:fixed;top:25%;z-index: 100000;left:-5px;"><img src="/img/LABEL_transparent.png" alt="Отзывы и советы"></a>
 <?php endif?>
 <?php echo $this->content() ?>
@@ -172,14 +170,14 @@
 <?php
 $env = lithium\core\Environment::get();
 echo $this->html->script('https://vk.com/js/api/openapi.js');?>
-<?php if ($env == 'development') {
+<?php if ($env === 'development') {
     echo $this->html->script('/js/react/react-15.1.0.js', ['inline' => false, 'weight' => 8]);
     echo $this->html->script('/js/react/react-dom-15.1.0.js', ['inline' => false, 'weight' => 9]);
 } else {
     echo $this->html->script('/js/react/react-15.1.0.min.js', ['inline' => false, 'weight' => 8]);
     echo $this->html->script('/js/react/react-dom-15.1.0.min.js', ['inline' => false, 'weight' => 9]);
 }
-if (($this->_request->params['controller'] == 'users') && ($this->_request->params['action'] == 'subscriber')) {
+if (($this->_request->params['controller'] === 'users') && ($this->_request->params['action'] === 'subscriber')) {
     echo $this->html->script('/js/jquery/jquery-1.9.1.min.js', ['inline' => false, 'weight' => 10]);
     echo $this->html->script('/js/jquery/jquery-migrate-1.1.0.min.js', ['inline' => false, 'weight' => 11]);
 } else {
@@ -225,8 +223,8 @@ echo $this->html->script('/dist/components.js', []);
         $totalTimeRedis = 0;
         $redisCount = 0;
         foreach ($debugQueries as $query):
-            if ($query['type'] == 'sql'):
-                $totalTimeMysql += $this->debug->roundTime($query['elapsed_time']); elseif ($query['type'] == 'redis'):
+            if ($query['type'] === 'sql'):
+                $totalTimeMysql += $this->debug->roundTime($query['elapsed_time']); elseif ($query['type'] === 'redis'):
                 $redisCount++;
         $totalTimeRedis += $this->debug->roundTime($query['elapsed_time']);
         endif;
