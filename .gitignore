@@ -119,3 +119,7 @@ app/webroot/js/pitches/upload.js
 GoDesigner.phpproj
 GoDesigner.sln
 libraries/*
+app/webroot/js/users/mypitches/ManagerRow.js
+app/webroot/js/users/mypitches/ManagersProjects.js
+app/webroot/js/users/mypitches/ManagersProjectsRow.js
+app/webroot/js/users/mypitches/ProjectListItem.js

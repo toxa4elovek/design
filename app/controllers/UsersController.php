@@ -1919,15 +1919,20 @@ class UsersController extends \app\controllers\AppController
         if (isset($this->request->data['documentsfor']) && ($this->request->data['documentsfor'] !== 'not_needed')) {
             $solution = Solution::first($this->request->data['solution_id']);
             $designer = User::first($solution->user_id);
+            $project = Pitch::first($solution->pitch_id);
             $nameInflector = new NameInflector();
             $ownerFormatted = $nameInflector->renderName($designer->first_name, $designer->last_name);
             $text = '<a href="#" class="mention-link" data-comment-to="' . $ownerFormatted . '">@' . $ownerFormatted . ',</a> пожалуйста, перейдите по ссылке https://godesigner.ru/pitches/getTransferOfRightsDocument/' . $solution->pitch_id . ' и сохраните соглашение о переходе исключительных прав на произведение. При предоставлении исходников загрузите заполненную и подписанную с вашей стороны форму. Спасибо!';
             $date = new \DateTime();
             $dateString = $date->format('Y-m-d H:i:s');
+            $step = 3;
+            if($project->isCopyrighting()) {
+                $step = 2;
+            }
             $data = [
                 'user_id' => 108,
                 'text' => $text,
-                'step' => 3,
+                'step' => $step,
                 'solution_id' => $solution->id,
                 'created' => $dateString,
                 'touch' => '0000-00-00 00:00:00'
