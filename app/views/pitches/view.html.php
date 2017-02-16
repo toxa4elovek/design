@@ -112,7 +112,7 @@
                     </tr>
                     </table>
 
-                    <div style="float:right;height:209px;width:458px;">
+                    <div style="float:right;height:209px;width:456px;">
                         <ul style="margin-top: 51px;margin-left:4px; float:left;width: 100px;height:190px;">
                             <li data-points="5" style="font-size:10px;text-transform: uppercase;color:#a9a8a8;margin-bottom:3px">Фантастик!!!</li>
                             <li data-points="4" style="font-size:10px;text-transform: uppercase;color:#a9a8a8;margin-bottom:3px">Хорошо</li>

@@ -14,7 +14,6 @@ use \app\models\Expert;
 use \app\models\User;
 use \app\models\Task;
 use \app\models\Note;
-use \app\models\Promoted;
 use \app\models\Promocode;
 use \app\models\Grade;
 use \app\models\Transaction;
@@ -669,31 +668,6 @@ class Pitch extends AppModel
         }
         $pitch->latestSolution = Solution::first($latestSolution->id);
         return $pitch->data();
-    }
-
-    public static function promospam()
-    {
-        $pitches = Pitch::all(['conditions' => ['published' => 1, 'status' => 2, 'started' => ['>' => '2013-01-01 00:00::00']]]);
-        $count = 0;
-        foreach ($pitches as $pitch) {
-            $promoted = Promoted::first(['conditions' => ['pitch_id' => $pitch->id]]);
-            if (!$promoted) {
-                $grade = Grade::first(['conditions' => ['pitch_id' => $pitch->id, 'user_id' => $pitch->user_id]]);
-                if (($grade) && (($grade->site_rating == 4) || ($grade->site_rating == 5))) {
-                    $promocode = Promocode::first(['conditions' => ['pitch_id' => $pitch->id]]);
-                    if (!$promocode) {
-                        if (!User::isSubscriptionActive($pitch->user_id)) {
-                            $count ++;
-                            User::sendPromoCode($pitch->user_id);
-                            $promoted = Promoted::create();
-                            $promoted->set(['pitch_id' => $pitch->id]);
-                            $promoted->save();
-                        }
-                    }
-                }
-            }
-        }
-        return $count;
     }
 
     public static function dailypitch()
