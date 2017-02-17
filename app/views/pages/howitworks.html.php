@@ -101,7 +101,7 @@
 					<ul class="marsh" id="advantages">
 						<li style="margin-bottom: 70px;">
 							<h2 class="greyboldheader" style="margin-bottom: 8px">Вы определяете бюджет</h2>
-							<p class="regular">Вы сами решаете, сколько<br/> платить дизайнеру. Сбор составит 20,5&#8209;29,5% установленной суммы вознаграждения победителю.
+							<p class="regular">Вы сами решаете, сколько<br/> платить дизайнеру. Сервисный сбор GoDesigner составит 20,5&#8209;29,5% установленной суммы вознаграждения победителю.
 							</p>
 						</li>
 						<li style="margin-bottom: 70px;">
