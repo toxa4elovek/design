@@ -4194,66 +4194,66 @@ tr.even{
 }
 .project-list-icons-container li {
     float: left;
-    margin-right: 10px;
+    margin-right: 7px;
     margin-bottom: 7px;
 }
 .icons-choosing-winner-light {
-    width: 13px;
-    height: 22px;
+    width: 17px;
+    height: 25px;
     display: block;
-    background: url(/img/common/project_status/choosing-winner-light.png) no-repeat;
+    background: url(/img/common/project_status/choosing-winner-light.png) no-repeat 2px 0;
 }
 .icons-expert-light {
-    width: 15px;
-    height: 14px;
+    width: 17px;
+    height: 25px;
     display: block;
-    background: url(/img/common/project_status/expert-light.png) no-repeat;
+    background: url(/img/common/project_status/expert-light.png) no-repeat 0 3px;
 }
 .icons-private-light {
-    width: 11px;
-    height: 14px;
+    width: 17px;
+    height: 25px;
     display: block;
-    background: url(/img/common/project_status/private-light.png) no-repeat;
+    background: url(/img/common/project_status/private-light.png) no-repeat 3px 0;
 }
 .icons-closed-light {
-    width: 15px;
+    width: 17px;
     height: 25px;
     display: block;
     background: url(/img/common/project_status/closed-light.png) no-repeat;
 }
 .icons-premium-light {
     width: 17px;
-    height: 11px;
+    height: 25px;
     display: block;
     background: url(/img/common/project_status/premium-light.png) no-repeat;
 }
 .all-pitches tr:hover .icons-choosing-winner-light {
-    width: 13px;
-    height: 22px;
+    width: 17px;
+    height: 25px;
     display: block;
-    background: url(/img/common/project_status/choosing-winner-dark.png) no-repeat;
+    background: url(/img/common/project_status/choosing-winner-dark.png) no-repeat 2px 0;
 }
 .all-pitches tr:hover .icons-expert-light {
-    width: 15px;
-    height: 14px;
+    width: 17px;
+    height: 25px;
     display: block;
-    background: url(/img/common/project_status/expert-dark.png) no-repeat;
+    background: url(/img/common/project_status/expert-dark.png) no-repeat 0 3px;
 }
 .all-pitches tr:hover .icons-private-light {
-    width: 11px;
-    height: 14px;
+    width: 17px;
+    height: 25px;
     display: block;
-    background: url(/img/common/project_status/private-dark.png) no-repeat;
+    background: url(/img/common/project_status/private-dark.png) no-repeat 3px 0;
 }
 .all-pitches tr:hover .icons-closed-light {
-    width: 15px;
+    width: 17px;
     height: 25px;
     display: block;
     background: url(/img/common/project_status/closed-dark.png) no-repeat;
 }
 .all-pitches tr:hover .icons-premium-light {
     width: 17px;
-    height: 11px;
+    height: 25px;
     display: block;
     background: url(/img/common/project_status/premium-dark.png) no-repeat;
 }
