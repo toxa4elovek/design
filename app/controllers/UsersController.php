@@ -1883,7 +1883,7 @@ class UsersController extends \app\controllers\AppController
 
             $moderations = null;
             if (User::checkRole('admin') || (Session::read('user.isAdmin') == 1)) {
-                $moderations = Moderation::all(['conditions' => ['model_user' => $user->id]]);
+                $moderations = Moderation::all(['conditions' => ['Moderation.model_user' => $user->id], 'order' => ['Moderation.created' => 'asc']]);
             }
             $isClient = false;
             $userPitches = Pitch::all(['order' => ['started' => 'desc'],  'with' => ['Category'], 'conditions' => ['OR' => [['type' => 'company_project'], ['type' => '']], 'billed' => 1, 'published' => 1, 'user_id' => $user->id, 'blank' => 0, 'multiwinner' => 0]]);
