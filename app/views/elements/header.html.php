@@ -174,6 +174,14 @@
         </div>
     </div>
 </div>
+    <script>
+        var currentActiveProjects = [];
+        <?php foreach ($this->user->getCurrentPitches() as $mypitch):?>
+            currentActiveProjects.push({
+              'id': <?=$mypitch->id?>, 'title': "<?=$mypitch->title?>"
+            });
+        <?php endforeach ?>
+    </script>
 <?php endif?>
 <?php if ($this->user->getCountOfCurrentDesignersPitches() > 0):?>
 <div id="pitch-panel">
@@ -198,47 +206,54 @@
                         }
                     ?>
                     <tr data-id="<?=$mypitch->id?>" class="selection <?php if ($i == 0): echo 'even'; else: echo 'odd'; endif;?> coda">
+                        <?php if ($mypitch->invite === false):?>
                         <td width="105" style="text-align: left; border: 0;">
-                            <?php if ($mypitch->category_id != 7 && (($mypitch->status == 2) || ($mypitch->status == 1)) && ($mypitch->awarded != 0)):?>
+                            <?php if ((int) $mypitch->category_id !== 7 && (((int) $mypitch->status === 2) || ((int) $mypitch->status === 1)) && ((int) $mypitch->awarded !== 0)):?>
                                 <img data="<?= $mypitch->category_id ?>" class="pitches-image" src="<?php echo isset($mypitch->winner->images['solution_tutdesign'][0]) ? $mypitch->winner->images['solution_tutdesign'][0]['weburl'] :$mypitch->winner->images['solution_tutdesign']['weburl']?>">
                             <?php endif?>
                         </td>
+                        <?php endif ?>
                         <td class="pitches-name" <?php if ($closing):?>colspan="3"<?php endif ?>>
                             <div style="background-image: none; padding: 15px 0 17px 40px;">
-                                <?php if ($mypitch->awarded != 0):
+                                <?php if ((int) $mypitch->awarded !== 0):
                                 $step = $mypitch->winner->step;
-
-                                //echo '';
                                 if ($step < 1) {
                                     $step = 1;
                                 }
-
                                 ?>
                                 <a href="/users/step<?=$step?>/<?=$mypitch->awarded?>"><?=$mypitch->title?></a>
                                 <?php endif?>
-                                <!--span><?=$mypitch->industry?></span-->
+                                <?php if ($mypitch->invited):?>
+                                    <span style="text-transform: none; color: #e2e2e2; font-size: 13px; font-family: Arial, sans-serif">Заказчик приглашает вас в проект:</span><br>
+                                    <a href="/pitches/view/<?=$mypitch->id?>"><?=$mypitch->title?></a>
+                                <?php endif?>
                             </div></td>
-                        <?php if ($mypitch->blank != 1):?>
+                        <?php if (((int) $mypitch->blank !== 1) && (!$mypitch->invited)):?>
                             <?php if (!$closing):?>
                             <td class="pitches-cat"><a href="#"><?=$mypitch->category->title?></a></td>
                             <td class="idea"><?=$mypitch->ideas_count?></td>
                             <?php endif ?>
                         <td class="pitches-time"><a style="color:#639F6D; font-size: 12px;" href="/users/step<?=$step?>/<?=$mypitch->awarded?>">
-                        <?php if ($mypitch->status == 1):?>
+                        <?php if ((int) $mypitch->status === 1):?>
                                 Победа!<br/> Завершите проект!
-                        <?php elseif ($mypitch->status == 2): ?>
+                        <?php elseif ((int) $mypitch->status === 2): ?>
                             Победа!<br/> Проставьте рейтинг!
                         <?php endif?>
                         </a></td>
-                        <?php elseif (($mypitch->blank == 1) && ($mypitch->confirmed == 0)): ?>
+                        <?php elseif (((int) $mypitch->blank === 1) && ((int) $mypitch->confirmed === 0)): ?>
                         <td class="pitches-time"  style="text-align: left; padding-left: 8px; width: 175px;">
                             <a style="font-size: 11px;color:#639F6D;background: url(/img/header/header_tick.png) 0 2px no-repeat;padding-left: 14px;" href="/pitches/accept/<?=$mypitch->id?>">Подтвердить &nbsp;&nbsp;<span class="countdown" data-deadline="<?=(strtotime($mypitch->started)) + 3 * DAY;?>"><?php echo ($interval = $this->pitch->confirmationTimeRemain($mypitch)) ? $interval->format('%d дн. %H:%I:%S') : ''; ?></span></a><br><br>
                             <a style="font-size: 11px;color:#666666;background: url(/img/header/header_cross.png) 0 2px no-repeat;padding-left: 14px;" class="popup-decline" data-title="<?=$mypitch->title?>" data-solutionid="<?=$mypitch->awarded?>" data-solutionnum="<?=$mypitch->winner->num?>" data-pitchid="<?=$mypitch->id?>" href="/pitches/decline/<?=$mypitch->id?>">Отказать</a>
                         </td>
-                        <?php elseif (($mypitch->blank == 1) && ($mypitch->confirmed == 1)): ?>
+                        <?php elseif (((int) $mypitch->blank === 1) && ((int) $mypitch->confirmed === 1)): ?>
                         <td class="pitches-time"  style="text-align: left; padding-left: 8px; width: 175px;">
                             <a style="font-size: 11px;color:#639F6D;" class="pitches-finish" href="/users/step2/<?=$mypitch->awarded?>">Перейти<br>на завершающий этап</a>
                         </td>
+                        <?php elseif ((int) $mypitch->invited === 1): ?>
+                            <td class="pitches-time"  style="text-align: left; padding-left: 8px; width: 175px;">
+                                <a style="font-size: 11px;color:#639F6D;background: url(/img/header/header_tick.png) 0 2px no-repeat;padding-left: 14px;" href="/invites/accept/<?=$mypitch->id?>">Подтвердить участие</a><br><br>
+                                <a style="font-size: 11px;color:#666666;background: url(/img/header/header_cross.png) 0 2px no-repeat;padding-left: 14px;" href="/invites/decline/<?=$mypitch->id?>">Отказаться от участия</a>
+                            </td>
                         <?php endif ?>
                         <td class="price"><?=$this->moneyFormatter->formatMoney($mypitch->price)?></td></tr>
                         <?php

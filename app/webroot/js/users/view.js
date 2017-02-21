@@ -67,6 +67,20 @@
   });
 
   $(document).on('click', '#invite-user', function () {
+    if (currentActiveProjects.length > 1 && $('p', '#popup-invite').length === 1) {
+      var string = '';
+      currentActiveProjects.forEach(function (project, index) {
+        var checked = '';
+        if (index === 0) {
+          checked = 'checked="checked"';
+        }
+        string += '<label style="display: block; text-align: left; position: relative; padding-left: 25px;"><input type="radio" value="' + project.id + '" name="selectedProject" ' + checked + ' style="top: 5px; left: 0; position: absolute; outline: none;" /> ' + project.title + '</label>';
+      });
+      $('p', '#popup-invite').after('<p>' + string + '</p>');
+    } else if (currentActiveProjects.length === 1) {
+      var project = currentActiveProjects[0];
+      $('p', '#popup-invite').after('<input type="hidden" value="' + project.id + '" name="selectedProject"/>');
+    }
     $('#popup-invite').modal({
       containerId: 'spinner',
       opacity: 80,
@@ -75,8 +89,25 @@
     return false;
   });
 
-  $('#invite').on('click', function () {
-    $('.mobile-close').click();
+  $('#invite').one('click', function () {
+    $('#invite').css({
+      'width': '205px',
+      'cursor': 'default'
+    }).text('Отправляем приглашение...');
+    var projectId = 0;
+    if ($('input[name=selectedProject]').length > 1) {
+      projectId = $('input[name=selectedProject]:checked').val();
+    } else {
+      projectId = $('input[name=selectedProject]').val();
+    }
+    var data = {
+      'designerId': $('#user_id').val(),
+      'projectId': projectId
+    };
+    $.post('/invites/invite.json', data, function (response) {
+      $('#invite').text('Приглашение отправлено!');
+      $('#gotest-close', '#popup-invite').text('Закрыть');
+    });
     return false;
   });
 

@@ -6,7 +6,6 @@ use app\models\Promocode;
 
 class UserMailer extends \li3_mailer\extensions\Mailer
 {
-
     public static function verification_mail($user)
     {
         $subject = 'Активация аккаунта на сайте Godesigner.ru';
@@ -197,5 +196,21 @@ class UserMailer extends \li3_mailer\extensions\Mailer
                 ]);
             }
         }
+    }
+
+    /**
+     * Метод отправляет приглашение в проект, требуется
+     * $user и $pitch
+     *
+     * @param $data
+     * @return bool|mixed|string
+     */
+    public static function newInvite($data)
+    {
+        return self::_mail([
+            'to' => $data['user']->email,
+            'subject' => 'Вас пригласили к участию в проекте!',
+            'data' => $data
+        ]);
     }
 }

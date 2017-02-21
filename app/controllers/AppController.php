@@ -5,16 +5,19 @@ namespace app\controllers;
 use app\extensions\helper\Debug;
 use app\extensions\helper\MoneyFormatter as Money;
 use app\extensions\helper\User as UserHelper;
+use app\models\Addon;
 use app\models\Answer;
+use app\models\Category;
 use app\models\Favourite;
 use app\models\Manager;
 use app\models\Pitch;
 use app\models\Post;
 use app\models\Solution;
 use app\models\User;
+use lithium\action\Controller;
 use lithium\security\Auth;
 
-class AppController extends \lithium\action\Controller
+class AppController extends Controller
 {
 
     /**
@@ -65,7 +68,7 @@ class AppController extends \lithium\action\Controller
                     Auth::clear('user');
                     return $this->redirect('/users/banned');
                 }
-                if (($userRecord->banned_until) && ($userRecord->banned_until != '0000-00-00 00:00:00') && (time() < strtotime($userRecord->banned_until))) {
+                if ($userRecord->banned_until && ($userRecord->banned_until !== '0000-00-00 00:00:00') && (time() < strtotime($userRecord->banned_until))) {
                     Auth::clear('user');
                     return $this->redirect('/users/banned');
                 }
@@ -77,15 +80,12 @@ class AppController extends \lithium\action\Controller
                 // updates avatars
                 $this->userHelper->write('user.images', $userRecord->images);
                 $ids = $this->userHelper->getId();
-                if ($this->userHelper->isAdmin() && $ids != '108') {
+                if ($ids !== 108 && $this->userHelper->isAdmin()) {
                     $ids .= ' OR Pitch.user_id = 108';
                 }
-                if ($this->userHelper->isSubscriptionActive()) {
-                    //if ($this->userHelper->isLoggedIn()) {
-                    if ($records = Manager::all(['conditions' => ['subscriber_id' => $this->userHelper->getId()]])) {
-                        foreach ($records as $record) {
-                            $ids .= ' OR Pitch.user_id = ' . $record->manager_id;
-                        }
+                if ($this->userHelper->isSubscriptionActive() && ($records = Manager::all(['conditions' => ['subscriber_id' => $this->userHelper->getId()]]))) {
+                    foreach ($records as $record) {
+                        $ids .= ' OR Pitch.user_id = ' . $record->manager_id;
                     }
                 }
                 $topPanel = Pitch::all(
@@ -119,19 +119,32 @@ class AppController extends \lithium\action\Controller
                     ]);
                     foreach ($pitchesToCheck as $pitch) {
                         $solution = Solution::first($pitch->awarded);
-                        if ($this->userHelper->isSolutionAuthor($solution->user_id)) {
-                            if (($pitch->status == 2) and ($pitch->hadDesignerLeftRating())) {
-                            } else {
-                                $pitch->winner = $solution;
-                                $topPanelDesigner[] = $pitch;
-                            }
+                        if ($this->userHelper->isSolutionAuthor($solution->user_id) && ((int) $pitch->status !== 2 && !$pitch->hadDesignerLeftRating())) {
+                            $pitch->winner = $solution;
+                            $pitch->invited = false;
+                            $topPanelDesigner[] = $pitch;
                         }
                     }
                 }
-
+                $invites = Addon::all([
+                    'conditions' => [
+                        'Addon.billed' => 1,
+                        'Addon.invite_id' => $this->userHelper->getId(),
+                        'Addon.invite_status' => 0,
+                        'Pitch.status' => 0
+                    ],
+                    'with' => ['Pitch']
+                ]);
+                if(count($invites) > 0) {
+                    foreach ($invites as $invite) {
+                        $invite->pitch->category = Category::first($invite->pitch->category_id);
+                        $invite->pitch->invited = true;
+                        $topPanelDesigner[] = $invite->pitch;
+                    }
+                }
                 $this->userHelper->write('user.currentdesignpitches', $topPanelDesigner);
                 $this->userHelper->write('user.faves', Favourite::getFavouriteProjectsIdsForUser($this->userHelper->getId()));
-                if (($this->userHelper->read('user.blogpost') == null) || ($this->userHelper->read('user.blogpost.count') == 0)) {
+                if (($this->userHelper->read('user.blogpost') == null) || ((int) $this->userHelper->read('user.blogpost.count') === 0)) {
                     $lastPost = Post::first(['fields' => ['created'], 'conditions' => ['published' => 1], 'order' => ['created' => 'desc']]);
                     $date = date('Y-m-d H:i:s', strtotime($lastPost->created));
 
@@ -152,10 +165,10 @@ class AppController extends \lithium\action\Controller
         } else {
             if (isset($_COOKIE['autologindata'])) {
                 $exploded = explode('&', $_COOKIE['autologindata']);
-                $id = (explode('=', $exploded[0]));
+                $id = explode('=', $exploded[0]);
                 if (count($id) > 0) {
                     $id = $id[1];
-                    $token = (explode('=', $exploded[1]));
+                    $token = explode('=', $exploded[1]);
                     $token = $token[1];
                     if (($userRecord = User::first($id)) && (sha1($userRecord->autologin_token) == $token)) {
                         if ($userRecord->banned) {
@@ -184,14 +197,14 @@ class AppController extends \lithium\action\Controller
             User::setReferalCookie($this->request->query['ref']);
         }
 
-        if ((!empty($this->request->query['sref'])) && (User::isValidReferalCodeForSubscribers($this->request->query['sref']))) {
+        if ((!empty($this->request->query['sref'])) && User::isValidReferalCodeForSubscribers($this->request->query['sref'])) {
             User::setReferalForSubscriberCookie($this->request->query['sref']);
         }
         $this->discountForSubscriberReferal = 0;
-        if ((isset($_COOKIE['sref'])) && (User::isValidReferalCodeForSubscribers($_COOKIE['sref']))) {
+        if (isset($_COOKIE['sref']) && User::isValidReferalCodeForSubscribers($_COOKIE['sref'])) {
             $this->discountForSubscriberReferal = 20;
         }
-        if (($this->userHelper->isLoggedIn()) && (isset($userRecord))) {
+        if (isset($userRecord) && $this->userHelper->isLoggedIn() ) {
             $this->userRecord = $userRecord;
         }
     }

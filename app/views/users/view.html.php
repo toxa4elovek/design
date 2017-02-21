@@ -7,7 +7,7 @@
     <div class="middle">
 
         <div class="middle_inner user_view" style="min-height:330px;">
-
+            <input type="hidden" value="<?= $user->id ?>" id="user_id"/>
             <?php if ($this->user->isAdmin()): ?>
                 <div class="right-sidebar-user" style="<?php if ((bool) $user->subscription_status): echo 'margin-top: 66px;'; endif;?>">
                     <a id="enter-name" class="order-button" href="http://cp.godesigner.ru/users/loginasadmin?query=redirect&redirect=https://godesigner.ru/users/loginasuser/<?= $user->id ?>">Войти под именем</a>
@@ -24,16 +24,15 @@
                             <button class="order-button allowcomment" style="margin-top:10px" data-term=""/>Разрешить комментарии</button>
                         <?php endif ?>
                     <?php endif ?>
-                    <input type="hidden" value="<?= $user->id ?>" id="user_id"/>
                     <button class="order-button banhammer" data-term="10" style="<?php if ((bool) $user->subscription_status): echo 'margin-bottom:7px';endif;?>" />Бан на 10 дней</button>
                     <button class="order-button banhammer" data-term="30" style="<?php if ((bool) $user->subscription_status): echo 'margin-bottom:7px';endif;?>" />Бан на 1 месяц</button>
                     <button class="order-button block" data-term="" <?php if ($user->banned == 1): ?>style="display: none;"<?php else: ?>style="display: inline;<?php if ((bool) $user->subscription_status): echo 'margin-bottom:7px';endif;?>"<?php endif ?>/>Навсегда</button>
                     <button class="order-button unblock" data-term="" <?php if (($user->banned_until != '0000-00-00 00:00:00') || ($user->banned == 1)): ?>style="display: inline;<?php if ((bool) $user->subscription_status): echo 'margin-bottom:7px';endif;?>"<?php else: ?>style="display: none;"<?php endif ?>/>Разблокировать</button>
                     <div class="g_line"></div>
                 </div>
-            <?php elseif ($this->user->isLoggedIn()):?>
+            <?php elseif ($this->user->isLoggedIn() && $this->user->isSubscriptionActive()):?>
                 <div class="right-sidebar-user" style="<?php if ((bool) $user->subscription_status): echo 'margin-top: 66px;'; endif;?>">
-                    <a id="invite-user" class="order-button" style="padding:5px 15px 5px 13px" href="http://cp.godesigner.ru/users/loginasadmin?query=redirect&redirect=https://godesigner.ru/users/invite/<?= $user->id ?>">Пригласить в проект</a>
+                    <a id="invite-user" class="order-button" style="padding:5px 15px 5px 13px" href="/invites/invite/<?= $user->id ?>">Пригласить в проект</a>
                 </div>
             <?php endif ?>
 
