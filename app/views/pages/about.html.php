@@ -51,7 +51,7 @@
                                     <td width="35"></td>
                                     <td width="253" class="img" style="text-align: center;"><img src="/img/od.png" alt="Оксана Девочкина"></td>
                                     <td width="35"></td>
-                                    <td width="253" class="img" style="text-align: center;"><img src="/img/dn.png" alt="Дмитрий Ню"></td>
+                                    <td width="253" class="img" style="text-align: center;"><a href="https://dmitriynyu.com" target="_blank"><img src="/img/dn.png" alt="Дмитрий Ню"></a></td>
                                 </tr>
                                 <tr height="5"><td colspan="5"></td></tr>
                                 <tr>	
