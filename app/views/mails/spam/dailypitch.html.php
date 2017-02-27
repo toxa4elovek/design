@@ -31,7 +31,6 @@
             <?php else:?>
             <span style="color: #444444; line-height: 17px; font-size: 12px; font-family: Arial, sans-serif;"><?php echo strip_tags($pitch->editedDescription, '<br><br/><p><a><ul><li><ol>')?></span><br/>
             <?php endif?>
-            <a href="https://godesigner.ru/users/subscribers_referal"><img src="https://godesigner.ru/img/mail/10000/10000-for-client.png" alt="Как получить 10 000 р. за 1 клиента"></a>
         </td></tr>
     <tr>
         <td colspan="3" height="40"></td>
