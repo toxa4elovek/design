@@ -1091,7 +1091,7 @@
           html += '<a class="select-winner-popup" href="/solutions/select/' + result.solution.id + '.json" data-solutionid="' + result.solution.id + '" data-user="' + result.solution.user.first_name + ' ' + result.solution.user.last_name.substring(0, 1) + '." data-num="' + result.solution.num + '" data-userid="' + result.solution.user_id + '">Назначить победителем</a>'
         }
         $('.solution-abuse').html(html)
-      } else if ((currentUserId == result.solution.user_id) || isCurrentAdmin) {
+      } else if ((result.pitch.awarded !== result.solution.id) && ((currentUserId == result.solution.user_id) || isCurrentAdmin)) {
         $('.solution-abuse').html('<a class="abuse warning" href="/solutions/warn/' + result.solution.id + '.json" data-solution-id="' + result.solution.id + '">Пожаловаться</a> \
                     <a class="delete-solution-popup hide" data-solution="' + result.solution.id + '" href="/solutions/delete/' + result.solution.id + '.json">Удалить</a>')
       } else {

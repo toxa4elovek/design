@@ -100,18 +100,21 @@ class SolutionsController extends AppController
     public function delete()
     {
         $result = false;
-        if (($solution = Solution::first($this->request->id)) && (($this->userHelper->isAdmin()) || User::checkRole('admin') || ($this->userHelper->isSolutionAuthor($solution->user_id)))) {
+        if (($solution = Solution::first($this->request->id)) && ($this->userHelper->isAdmin() || User::checkRole('admin') || $this->userHelper->isSolutionAuthor($solution->user_id))) {
             $projectId = $solution->pitch_id;
-            $data = [
-                'id' => $solution->id,
-                'num' => $solution->num,
-                'user_who_deletes' => $this->userHelper->getId(),
-                'user_id' => $solution->user_id,
-                'date' => date('Y-m-d H:i:s'),
-                'isAdmin' => $this->userHelper->isAdmin()
-            ];
-            Logger::write('info', serialize($data), ['name' => 'deleted_solutions']);
-            $result = $solution->delete();
+            $project = Pitch::first($projectId);
+            if((int) $project->awarded !== (int) $solution->id) {
+                $data = [
+                    'id' => $solution->id,
+                    'num' => $solution->num,
+                    'user_who_deletes' => $this->userHelper->getId(),
+                    'user_id' => $solution->user_id,
+                    'date' => date('Y-m-d H:i:s'),
+                    'isAdmin' => $this->userHelper->isAdmin()
+                ];
+                Logger::write('info', serialize($data), ['name' => 'deleted_solutions']);
+                $result = $solution->delete();
+            }
         }
         if ($this->request->is('json')) {
             return compact('result');

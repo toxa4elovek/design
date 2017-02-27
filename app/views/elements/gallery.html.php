@@ -278,7 +278,7 @@ foreach ($solutions as $solution):
             <?php if (($this->user->isLoggedIn()) && ($solution->hidden == 1) && (($this->user->isManagerOfProject($pitch->id)) || $this->user->isPitchOwner($pitch->user_id))): ?>
             <li class="sol_hov" style="margin:0;width:152px;height:20px;padding:0;"><a href="/solutions/unhide/<?=$solution->id?>.json" class="unhide-item" data-to="<?=$solution->num?>">Сделать видимой</a></li>
             <?php endif;?>
-            <?php if (($this->user->isSolutionAuthor($solution->user_id)) || ($this->user->isAdmin())):?>
+            <?php if (((int) $pitch->awarded !== (int) $solution->id) && ($this->user->isSolutionAuthor($solution->user_id) || $this->user->isAdmin())):?>
             <li class="sol_hov" style="margin:0;width:152px;height:20px;padding:0;"><a class="delete-solution" data-solution="<?=$solution->id?>" data-solution_num="<?=$solution->num?>" href="/solutions/delete/<?=$solution->id?>.json">Удалить</a></li>
             <?php endif;?>
 
