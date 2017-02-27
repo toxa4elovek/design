@@ -2272,7 +2272,7 @@ Disallow: /pitches/upload/'.$pitch['id'];
             $options = compact('project', 'clientData', 'designerData');
             $pdfWriter->adjustFontDescLineheight = 1.35;
             $pdfWriter->WriteHTML(PdfGetter::get('TransferOfRightsDocument', $options));
-            $pdfWriter->Output('Presentation.pdf', 'd');
+            $pdfWriter->Output('TransferOfRightsDocument.pdf', 'd');
             die();
             //return $this->render(['layout' => false, 'data' => compact('project', 'clientData', 'designerData')]);
         }else {
