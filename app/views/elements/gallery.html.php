@@ -166,7 +166,7 @@ foreach ($solutions as $solution):
                     <span class="underlying-likes" style="color: rgb(205, 204, 204); font-size: 10px; vertical-align: middle; display: block; float: left; height: 16px; padding-top: 5px; margin-left: 2px;" data-id="<?=$solution->id?>" rel="https://godesigner.ru/pitches/viewsolution/<?=$solution->id?>"><?=$solution->likes?></span>
                     <?php endif ?>
                     <?php if ((($pitch->private != 1) && (!$pitch->isCopyrighting()))):
-                        if (rand(1, 100) <= 50) {
+                        if (mt_rand(1, 100) <= 50) {
                             $tweetLike = 'Мне нравится этот дизайн! А вам?';
                         } else {
                             $tweetLike = 'Из всех ' . $pitch->ideas_count . ' мне нравится этот дизайн';
@@ -268,7 +268,7 @@ foreach ($solutions as $solution):
                         ?>
                         <a class="<?= $selectWinnerClass?>" href="<?=$selectWinnerUrl?>" data-solutionid="<?=$solution->id?>" data-user="<?=$this->user->getFormattedName($solution->user->first_name, $solution->user->last_name)?>" data-num="<?=$solution->num?>" data-userid="<?=$solution->user->id?>">Назначить победителем</a>
                     </li>
-                <?php elseif (($pitch->awarded != $solution->id) && (($pitch->status == 1) or ($pitch->status == 2)) && ($pitch->awarded != 0)): ?>
+                <?php elseif (((int) $pitch->free === 0)&& (((int) $pitch->awarded !== (int) $solution->id) && (((int) $pitch->status === 1) || ((int) $pitch->status === 2)) && ((int) $pitch->awarded !== 0))): ?>
                     <li class="sol_hov select-winner-li" style="margin:0;width:152px;height:20px;padding:0;">
                         <a class="select-multiwinner" href="/pitches/setnewwinner/<?=$solution->id?>" data-solutionid="<?=$solution->id?>" data-user="<?=$this->user->getFormattedName($solution->user->first_name, $solution->user->last_name)?>" data-num="<?=$solution->num?>" data-userid="<?=$solution->user->id?>">Назначить <?=$pitchesCount+2?> победителя</a>
                     </li>
