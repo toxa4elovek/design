@@ -671,7 +671,7 @@ $(function () {
       cookie: true, // enable cookies to allow the server to access the session
       oauth: true, // enable OAuth 2.0
       xfbml: true, // parse XFBM
-      version: 'v2.0'
+      version: 'v2.8'
     })
   }
   ;(function (d) {
