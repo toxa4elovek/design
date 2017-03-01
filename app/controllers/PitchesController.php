@@ -1630,10 +1630,10 @@ Disallow: /pitches/upload/'.$pitch['id'];
             ];
             $canViewFullImage = false;
             if (
-                ($this->userHelper->isPitchOwner($pitch->user_id)) &&
-                ($this->userHelper->isSubscriptionActive()) &&
-                ($pitch->category_id == 20) &&
-                (in_array($this->userHelper->read('user.subscription_status'), [2, 3, 4]))
+                (int) $pitch->category_id === 20 &&
+                $this->userHelper->isPitchOwner($pitch->user_id) &&
+                $this->userHelper->isSubscriptionActive() &&
+                in_array((int) $this->userHelper->read('user.subscription_status'), [2, 3, 4, 7], true)
             ) {
                 $canViewFullImage = true;
             }

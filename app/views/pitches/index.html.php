@@ -208,12 +208,12 @@ height: 41px;margin-left:15px;margin-top:2px;display: block" href="#" id="goSear
                     }
                     $multiple = (is_null($pitch['multiple'])) ? '' : '<br>' . $pitch['multiple'];
                     $categoryLinkHref = '#';
-                    if ($pitch['category_id'] == 20) {
-                        if ($pitch['user']['subscription_status'] < 4) {
-                            $categoryLinkHref = '/pages/subscribe';
-                        } else {
+                    if ((int) $pitch['category_id'] === 20) {
+                        if ((int) $pitch['user']['subscription_status'] === 4) {
                             $categoryLinkHref = '/golden-fish';
                             $pitch['category']['title'] = 'Золотая рыбка';
+                        } else {
+                            $categoryLinkHref = '/pages/subscribe';
                         }
                     }
                     $iconsItems = [];
