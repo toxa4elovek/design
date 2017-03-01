@@ -185,11 +185,11 @@ function TableLoader () {
       }
       let categoryLinkHref = '#'
       if (object.category_id == 20) {
-        if (object.user.subscription_status < 4) {
-          categoryLinkHref = '/pages/subscribe'
-        } else {
+        if (object.user.subscription_status == 4) {
           categoryLinkHref = '/golden-fish'
           object.category.title = 'Золотая рыбка'
+        } else {
+          categoryLinkHref = '/pages/subscribe'
         }
       }
       let iconsItems = []

@@ -151,6 +151,20 @@
                         <td class="try"><h5>69 000</h5>р./год <a href="/subscription_plans/subscriber/2" class="small-rounded-button almost-white">оплатить</a></td>
                         <td class="try"><h5>89 000</h5>р./год <a href="/subscription_plans/subscriber/3" class="small-rounded-button almost-white">оплатить</a></td>
                     </tr>
+                    <tr style="height: 15px;"><td colspan="4"></td></tr>
+                    <tr>
+                        <td></td>
+                        <td class="try"><h5>27 000</h5>р. за 6 месяцев <a href="/subscription_plans/subscriber/6" class="small-rounded-button almost-white">оплатить</a></td>
+                        <td class="try"><h5>39 000</h5>р. за 6 месяцев <a href="/subscription_plans/subscriber/7" class="small-rounded-button almost-white">оплатить</a></td>
+                        <td></td>
+                    </tr>
+                    <tr style="height: 15px;"><td colspan="4"></td></tr>
+                    <tr>
+                        <td></td>
+                        <td class="try"><h5>15 000</h5>р. за 3 месяца <a href="/subscription_plans/subscriber/5" class="small-rounded-button almost-white">оплатить</a></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
                 </table>
             </div>
         </section>

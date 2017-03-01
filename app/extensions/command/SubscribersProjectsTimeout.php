@@ -34,7 +34,7 @@ class SubscribersProjectsTimeout extends CronJob
                     $this->out("Project #$project->id is not waiting for experts anymore...");
                     $expertOpinionDate = $projectHelper->expertOpinion($project->id);
                     $client = \app\models\User::first($project->user_id);
-                    if ((int) $client->subscription_status === 1) {
+                    if (in_array((int) $client->subscription_status, [1, 5, 6], true) === 1) {
                         $delayedChooseWinnerTime = $expertOpinionDate + (3 * DAY);
                     } elseif ((int) $client->subscription_status === 4) {
                         $delayedChooseWinnerTime = $expertOpinionDate + (7 * DAY);
