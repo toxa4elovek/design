@@ -1,6 +1,8 @@
 <?php
 namespace app\extensions\mailers;
 
+use DrewM\MailChimp\MailChimp;
+
 class PromoMailer extends \li3_mailer\extensions\Mailer
 {
 
@@ -39,7 +41,11 @@ class PromoMailer extends \li3_mailer\extensions\Mailer
 
     public static function sendStep3MarketingSalesFunnelEmail($data)
     {
-        return self::_mail([
+        $mailchimp = new MailChimp('02887cbd428f1ae0b9849eb586382ea7-us13');
+        $mailchimp->post('automations/20e72f4836/emails/833ded9402/queue', [
+            'email_address' => $data['email'],
+        ]);
+        /*return self::_mail([
             'use-smtp' => true,
             'to' => $data['email'],
             'subject' => '20% скидка!',
@@ -52,6 +58,7 @@ class PromoMailer extends \li3_mailer\extensions\Mailer
                 ]),
             ],
             'data' => $data,
-        ]);
+        ]);*/
+        return true;
     }
 }

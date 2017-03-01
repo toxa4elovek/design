@@ -11,6 +11,7 @@ use app\models\Pitch;
 use app\models\Receipt;
 use app\models\SubscriptionPlan;
 use app\models\User;
+use DrewM\MailChimp\MailChimp;
 
 class Step3MarketingSalesFunnel extends CronJob
 {
@@ -24,8 +25,8 @@ class Step3MarketingSalesFunnel extends CronJob
     {
         $this->_renderHeader();
         $arrayOfProjects = [];
-        $finishDateDeltaStart = new \DateTime(date(MYSQL_DATETIME_FORMAT, time() - (8 * DAY)));
-        $finishDateDeltaEnd = new \DateTime(date(MYSQL_DATETIME_FORMAT, time() -  7 *DAY));
+        $finishDateDeltaStart = new \DateTime(date(MYSQL_DATETIME_FORMAT, time() - (5 * MINUTE)));
+        $finishDateDeltaEnd = new \DateTime(date(MYSQL_DATETIME_FORMAT, time()));
         $projects = Pitch::all([
             'conditions' => [
                 'Pitch.type' => '',
@@ -93,8 +94,6 @@ class Step3MarketingSalesFunnel extends CronJob
                 SubscriptionPlan::setFundBalanceForPayment($paymentId, 0);
             }
         });
-
-
         $this->_renderFooter(sprintf('%d projects processed', count($arrayOfProjects)));
     }
 }
