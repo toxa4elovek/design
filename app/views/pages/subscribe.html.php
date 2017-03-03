@@ -39,12 +39,12 @@
         </section>
         <section class="lp-headline">
             Вам больше не нужен дизайнер в штате.<br />
-            Решайте творческие и технические задачи через сервис,<br /> и выбирайте лучшие идеи!
+            Решайте творческие и технические задачи через сервис,<br />  и выбирайте лучшие идеи!
         </section>
         <section class="lp-explain paper-background">
             <div>
             <ul>
-                <li>Одна задача — много идей<br/> от разных дизайнеров.<br/> Как и всегда.</li>
+                <li>Одна задача — много идей<br/> от разных дизайнеров.<br/>  Как и всегда.</li>
                 <li class="center">Целый год проекты на -25%<br/>
                     дешевле: мы не берем<br/>
                     сервисный сбор с абонентов</li>
@@ -56,7 +56,7 @@
         <section class="lp-badges">
             <div class="badges-block">
                 <div class="badge" style="">
-                    <p>Идеально для частных лиц<br/> и малого бизнеса</p>
+                    <p>Идеально для частных лиц<br/>  и малого бизнеса</p>
                     <span class="price">49 000</span>
                     <span class="price-description">руб./год*</span>
                     <a href="/subscription_plans/subscriber/1" class="small-rounded-button almost-white">Оплатить</a>
