@@ -200,9 +200,15 @@ class AppController extends Controller
         if ((!empty($this->request->query['sref'])) && User::isValidReferalCodeForSubscribers($this->request->query['sref'])) {
             User::setReferalForSubscriberCookie($this->request->query['sref']);
         }
+        if ((!empty($this->request->query['sref2'])) && User::isValidReferalCodeForSubscribers($this->request->query['sref2'], 'subscriber2_referal_token')) {
+            User::setReferalForSubscriberCookie($this->request->query['sref2'], 'sref2');
+        }
         $this->discountForSubscriberReferal = 0;
         if (isset($_COOKIE['sref']) && User::isValidReferalCodeForSubscribers($_COOKIE['sref'])) {
             $this->discountForSubscriberReferal = 20;
+        }
+        if (isset($_COOKIE['sref2']) && User::isValidReferalCodeForSubscribers($_COOKIE['sref2'], 'subscriber2_referal_token')) {
+            $this->discountForSubscriberReferal = 10;
         }
         if (isset($userRecord) && $this->userHelper->isLoggedIn() ) {
             $this->userRecord = $userRecord;

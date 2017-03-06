@@ -1,4 +1,7 @@
 ;(function (ReactDOM, payload) {
+  if($('.copy-link').length) {
+    const clipboardLink = new Clipboard('.copy-link');
+  }
   let settings = [
     {
       'node': <PaymentPayture key='1' payload={payload} selected={false} />

@@ -101,6 +101,19 @@
             <span class="label-fund-balance">Пополнить личный счет, руб.</span>
             <section id="fund-balance-container"></section>
 
+            <?php if($this->user->isSubscriptionActive()):?>
+            <section class="subscriber-referal-section" style="text-align: left; margin-top: 60px;">
+                <h4 style="line-height: 32px; margin-bottom: 5px;">Мы продлим ваш тариф на 3 месяца бесплатно, если ваш друг приобретёт*
+                <a href="/pages/subscribe">годовое обслуживание GoDesigner</a>. Используйте ссылку!</h4>
+                <input type="text" id="url-to-copy" value="<?=$shortUrl?>" />
+                <div class="link-box">
+                    <a class="copy-link" data-clipboard-target="#url-to-copy">Скопировать ссылку</a>
+                    <a href="<?=$shortUrl?>" target="_blank">Открыть в новом окне</a>
+                </div>
+                <p>*Отправляйте индивидуальную ссылку по электронной почте или публикуйте в социальных сетях, блогах и форумах. Любой, кто по ссылке оплатит годовое абонентское обслуживание в течение 10 дней (любой тариф на 12 месяцев), получает скидку 10% на все тарифы, а вы — 3 дополнительных месяца вашего текущего тарифа бесплатно.</p>
+            </section>
+            <?php endif?>
+
             <?php if (!$this->user->isLoggedIn()):?>
                 <span class="label-fund-balance">Оставьте номер телефона</span>
                 <section id="phone-number-container"></section>
@@ -116,6 +129,7 @@
     'flux/flux.min.js',
     'jquery-plugins/jquery.numeric.min.js',
     'jquery-plugins/jquery.scrollto.min.js',
+    'clipboard.min.js',
     'subscription_plans/actions/PaymentActions.js',
     'common/receipt/ReceiptLine.js',
     'common/receipt/ReceiptTotal.js',
@@ -139,5 +153,6 @@
     '/css/common/paymaster-widget.css',
     '/brief',
     '/step3',
+    '/css/users/subscribers_referal.css',
     '/css/subscription_plans/subscribe.css'
 ], ['inline' => false])?>

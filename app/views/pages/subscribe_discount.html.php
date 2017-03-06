@@ -161,14 +161,14 @@
                     <tr style="height: 15px;"><td colspan="4"></td></tr>
                     <tr>
                         <td></td>
-                        <td class="try"><h5><?= $this->moneyFormatter->formatMoney($this->moneyFormatter->applyDiscount(27000, $discount), ['suffix' => ''])?></h5>р. за 6 месяцев <a href="/subscription_plans/subscriber/6" class="small-rounded-button almost-white">оплатить</a></td>
-                        <td class="try"><h5><?= $this->moneyFormatter->formatMoney($this->moneyFormatter->applyDiscount(39000, $discount), ['suffix' => ''])?></h5>р. за 6 месяцев <a href="/subscription_plans/subscriber/7" class="small-rounded-button almost-white">оплатить</a></td>
+                        <td class="try"><h5>27 000</h5>р. за 6 месяцев <a href="/subscription_plans/subscriber/6" class="small-rounded-button almost-white">оплатить</a></td>
+                        <td class="try"><h5>39 000</h5>р. за 6 месяцев <a href="/subscription_plans/subscriber/7" class="small-rounded-button almost-white">оплатить</a></td>
                         <td></td>
                     </tr>
                     <tr style="height: 15px;"><td colspan="4"></td></tr>
                     <tr>
                         <td></td>
-                        <td class="try"><h5><?= $this->moneyFormatter->formatMoney($this->moneyFormatter->applyDiscount(15000, $discount), ['suffix' => ''])?></h5>р. за 3 месяца <a href="/subscription_plans/subscriber/5" class="small-rounded-button almost-white">оплатить</a></td>
+                        <td class="try"><h5>15 000</h5>р. за 3 месяца <a href="/subscription_plans/subscriber/5" class="small-rounded-button almost-white">оплатить</a></td>
                         <td></td>
                         <td></td>
                     </tr>

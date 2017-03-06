@@ -304,12 +304,12 @@ class User extends AppModel
         return $token;
     }
 
-    public static function generateSubscriberReferalToken($length = 4)
+    public static function generateSubscriberReferalToken($length = 4, $field = 'subscriber_referal_token')
     {
         $exists = true;
-        while ($exists == true) {
-            $token = substr(md5(rand() . rand()), 0, $length);
-            if (!self::first(['conditions' => ['subscriber_referal_token' => $token]])) {
+        while ($exists === true) {
+            $token = substr(md5(mt_rand() . mt_rand()), 0, $length);
+            if (!self::first(['conditions' => [$field => $token]])) {
                 $exists = false;
             }
         }
@@ -1985,12 +1985,13 @@ class User extends AppModel
      * Метод определяет, является ли указанная строчка реальным реферальным кодом или нет
      *
      * @param $code
+     * @param $field string
      * @return bool
      */
-    public static function isValidReferalCodeForSubscribers($code)
+    public static function isValidReferalCodeForSubscribers($code, $field = 'subscriber_referal_token')
     {
-        if (((is_string($code)) || (is_numeric($code))) && (!empty($code))) {
-            return (bool) self::count(['conditions' => ['subscriber_referal_token' => (string) $code]]);
+        if ((is_string($code) || is_numeric($code)) && (!empty($code))) {
+            return (bool) self::count(['conditions' => [$field => (string) $code]]);
         }
         return false;
     }
@@ -1999,13 +2000,14 @@ class User extends AppModel
      * Метод устанавливает куки для отслеживания перехода по реферальной ссылке на год
      *
      * @param $code
+     * @param $cookieName string
      * @return bool
      */
-    public static function setReferalForSubscriberCookie($code)
+    public static function setReferalForSubscriberCookie($code, $cookieName = 'sref')
     {
-        if (((is_string($code)) || (is_numeric($code))) && (!empty($code))) {
-            setcookie('sreftime', time(), strtotime('+1 year'), '/');
-            return setcookie('sref', $code, strtotime('+1 year'), '/');
+        if ((is_string($code) || is_numeric($code)) && (!empty($code))) {
+            setcookie($cookieName . 'time', time(), strtotime('+1 year'), '/');
+            return setcookie($cookieName, $code, strtotime('+1 year'), '/');
         }
         return false;
     }

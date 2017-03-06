@@ -251,7 +251,7 @@ class PagesController extends AppController
      */
     public function subscribe()
     {
-        if ((!empty($this->request->query['sref'])) && (User::isValidReferalCodeForSubscribers($this->request->query['sref']))) {
+        if ((!empty($this->request->query['sref'])) && User::isValidReferalCodeForSubscribers($this->request->query['sref'])) {
             return $this->redirect($this->request->url);
         }
         if ($this->userHelper->isLoggedIn() && $this->userRecord->hasActiveSubscriptionDiscountForRecord()) {
@@ -260,8 +260,16 @@ class PagesController extends AppController
             $data = compact('discount', 'discountEndTime');
             return $this->render(['template' => 'subscribe_discount', 'data' => $data]);
         }
-        if (($this->discountForSubscriberReferal > 0) && (isset($_COOKIE['sreftime']))) {
-            $startTime = strtotime(date(MYSQL_DATETIME_FORMAT, $_COOKIE['sreftime']));
+        $cookieExists = false;
+        if(isset($_COOKIE['sreftime'])) {
+            $cookieExists = isset($_COOKIE['sreftime']);
+            $cookieName = 'sreftime';
+        }else if($_COOKIE['sref2time']) {
+            $cookieExists = isset($_COOKIE['sref2time']);
+            $cookieName = 'sref2time';
+        }
+        if (($this->discountForSubscriberReferal > 0) && $cookieExists) {
+            $startTime = strtotime(date(MYSQL_DATETIME_FORMAT, $_COOKIE[$cookieName]));
             $delta = (time() - $startTime);
             if (floor($delta / DAY) < 10) {
                 $discount = $this->discountForSubscriberReferal;
