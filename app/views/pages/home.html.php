@@ -80,20 +80,20 @@
        <?php $randonBanner = mt_rand(1, 3);?>
         <div style="height:261px;width:260px" id="bannerblock">
             <div id="special_banner" style="position: absolute; <?php if ($randonBanner != 1) {
-    echo 'display:none;';
-}?>">
+                      echo 'display:none;';
+                  }?>">
                 <img src="/img/vernem_dengi_feb-02.png" alt="" />
                 <a class="more_info" href="/pages/special"></a>
             </div>
             <div id="brief_banner" style="position: absolute; <?php if ($randonBanner != 2) {
-    echo 'display:none;';
-}?>">
+                      echo 'display:none;';
+                  }?>">
                 <img src="/img/brief.png" alt="" />
                 <a class="more_info" href="/pages/brief"></a>
             </div>
             <div id="referal_banner" style="position: absolute; <?php if ($randonBanner != 3) {
-    echo 'display:none;';
-}?>">
+                      echo 'display:none;';
+                  }?>">
                 <img src="/img/banner-referal.jpg" alt="" />
                 <a class="more_info" href="/pages/referal"></a>
             </div>
@@ -165,8 +165,8 @@
     <div class="experts-main">
       <ul id="experts-zone">
         <?php foreach ($experts->data() as $expert): if ($expert['enabled'] == 0) {
-     continue;
- } ?>
+        continue;
+    } ?>
         <li class="expert-<?=$expert['id']?> expert_enabled" data-expert_id="<?=$expert['id']?>" style="display:none;">
             <?=$this->html->link('<img style="width: 174px; height: 174px;" src="'. $imageArray[$expert['id']] .'" alt="" />', ['Experts::view', 'id' => $expert['id']], ['data-id' => $expert['id'], 'escape' => false])?>
             <p><?=$this->html->link($expert['name'], ['Experts::view', 'id' => $expert['id']], ['data-id' => $expert['id']])?></p>
@@ -324,23 +324,9 @@
 
 <div id="popup-final-step" class="popup-final-step" style="display:none; padding-left: 0px; height: 390px;">
     <div id="ytplayer"></div>
-    <script>
-        var tag = document.createElement('script');
-        tag.src = "https://www.youtube.com/player_api";
-        var firstScriptTag = document.getElementsByTagName('script')[0];
-        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-        var player;
-        function onYouTubePlayerAPIReady() {
-            player = new YT.Player('ytplayer', {
-                height: '390',
-                width: '640',
-                videoId: '3bhLkorXLI8',
-                playerVars: {"autoplay": '0'}
-            });
-        }
-    </script>
 </div>
 
+<?=$this->html->script(['https://www.youtube.com/player_api'])?>
 <?=$this->html->script([
     'slides.min.jquery',
     'jquery.simplemodal-1.4.2.js',

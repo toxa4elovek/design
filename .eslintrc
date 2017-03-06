@@ -3,5 +3,11 @@
   "env": {
     "browser": true,
     "jquery": true
+  },
+  "globals": {
+    "Chatra": false,
+    "_gaq": false,
+    "YT": false,
+    "mixpanel": false
   }
 }

@@ -8,22 +8,21 @@ $(document).ready(function () {
   const expertsZone = $('#experts-zone')
 
   expertsZone.on('hover', 'a', function () {
-    var id = $(this).data('id')
+    const id = $(this).data('id')
     $('a[data-id="' + id + '"]', '#experts-zone').css('color', '#ff585d')
   })
 
   expertsZone.on('mouseout', 'a', function () {
-    var id = $(this).data('id')
+    const id = $(this).data('id')
     $('a[data-id="' + id + '"]', '#experts-zone').css('color', '#666666')
   })
 
   $(function () {
     $('.take, .fill').click(function () {
-      var link = $(this).children('a').attr('href')
-      if (link == '/pitches/create') {
+      const link = $(this).children('a').attr('href')
+      if (link === '/pitches/create') {
         _gaq.push(['_trackEvent', 'Создание проекта', 'Пользователь перешел на выбор категории', 'Ссылка "Заказчику" на главной'])
       }
-
       window.location = link
     })
 
@@ -84,9 +83,9 @@ $(document).ready(function () {
     $('#pitch-table').height($('.wap_table').height())
 
     function changeBanner () {
-      var $el = $('div:visible', '#bannerblock')
-      var $elNext = $el.next()
-      if ($elNext.length == 0) {
+      const $el = $('div:visible', '#bannerblock')
+      let $elNext = $el.next()
+      if ($elNext.length === 0) {
         $elNext = $el.prevAll().last()
       }
       $el.fadeOut(300)
@@ -112,7 +111,17 @@ $(document).ready(function () {
       $('#popup-final-step').modal({
         containerId: 'video-container',
         opacity: 80,
-        closeClass: 'popup-close'
+        closeClass: 'popup-close',
+        onShow: function () {
+          const player = new YT.Player('ytplayer', {
+            height: '390',
+            width: '640',
+            videoId: '3bhLkorXLI8',
+            playerVars: { 'autoplay': '1' }
+          })
+          mixpanel.track('Проигрывание видео')
+          return true
+        }
       })
       return false
     })
@@ -128,14 +137,14 @@ $(document).ready(function () {
   })
 
   function expertsRandom () {
-    var limit = 3
-    var expertsArray = []
+    const limit = 3
+    const expertsArray = []
     $('li.expert_enabled').each(function (idx, obj) {
       expertsArray.push($(obj).data('expert_id'))
     })
     expertsArray.sort(function () { return 0.5 - Math.random() })
 
-    for (var i = 0; i < limit; i++) {
+    for (let i = 0; i < limit; i++) {
       $('li.expert-' + expertsArray[i], '#experts-zone').show()
     }
   }
