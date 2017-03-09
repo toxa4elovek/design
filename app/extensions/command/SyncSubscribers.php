@@ -11,7 +11,7 @@ class SyncSubscribers extends CronJob
     {
         $this->header('Welcome to the Sync Unsubscribes command!');
         $mailChimp = new MailChimp('02887cbd428f1ae0b9849eb586382ea7-us13');
-        $maxLimit = 1000;
+        $maxLimit = 2000;
         $currentTotal = $this->getCurrentSubscribers($mailChimp);
         $diff = $maxLimit - $currentTotal;
         $this->out(sprintf('Current total is %s, need to add %s', $currentTotal, $diff));
