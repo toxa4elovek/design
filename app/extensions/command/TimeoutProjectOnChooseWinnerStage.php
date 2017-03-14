@@ -25,7 +25,7 @@ class TimeoutProjectOnChooseWinnerStage extends CronJob
         $currentDateTime = new \DateTime();
         $count = 0;
         foreach ($projects as $project) {
-            if ($project->isCopyrighting() && ($project->guaranteed == 0)) {
+            if ($project->isCopyrighting() && ((int) $project->guaranteed === 0)) {
                 $chooseWinnerTime = $helper->getChooseWinnerTime($project) + (10 * DAY);
                 $beyondPenaltyDate = new \DateTime();
                 $beyondPenaltyDate->setTimestamp($chooseWinnerTime);
@@ -49,6 +49,30 @@ class TimeoutProjectOnChooseWinnerStage extends CronJob
                     } else {
                         $project->split = 0;
                     }
+                    $project->status = 2;
+                    $project->totalFinishDate = date('Y-m-d H:i:s');
+                    $project->save();
+                }
+            }else if (((int) $project->guaranteed === 1) && $project->isCopyrighting()) {
+                $chooseWinnerTime = $helper->getChooseWinnerTime($project) + (10 * DAY);
+                $beyondPenaltyDate = new \DateTime();
+                $beyondPenaltyDate->setTimestamp($chooseWinnerTime);
+                if ($currentDateTime > $beyondPenaltyDate) {
+                    $this->out('Need to perform random reward');
+                    $this->out($project->id);
+                    $winner = Solution::first([
+                        'conditions' => ['pitch_id' => $project->id],
+                        'order' => ['RAND()'],
+                        'with' => ['Pitch']
+                    ]);
+                    Solution::selectSolution($winner);
+                    $updatedWinner = Solution::first(['conditions' => ['id' => $winner->id]]);
+                    $updatedWinner->step = 4;
+                    $updatedWinner->awarded = 1;
+                    $updatedWinner->nominated = 0;
+                    $updatedWinner->save();
+                    $project->awarded = $updatedWinner->id;
+                    $project->split = 0;
                     $project->status = 2;
                     $project->totalFinishDate = date('Y-m-d H:i:s');
                     $project->save();

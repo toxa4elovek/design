@@ -95,7 +95,9 @@ class AddonsController extends AppController
             }
             $addon->set($data);
             $addon->save();
-            if ($subscriber) {
+            if ($subscriber && ((
+                $total === 0 && (int) $addon->pinned !== 0 && $addon->brief !== 0
+            ) || ($total !== 0))) {
                 $paymentResult = User::reduceBalance($this->userHelper->getId(), (int) $total);
                 if (!$paymentResult) {
                     $status = 'no_money';
