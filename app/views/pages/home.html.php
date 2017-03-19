@@ -109,10 +109,10 @@
               <div class="wap_table">
                 <table class="spec_table">
                   <tr>
-                    <th style="font-size:11px;color:#666666;">текущие проекты</th>
-                    <th class="price_th" style="font-size:11px;color:#666666;">цена</th>
-                    <th class="idea__th" style="font-size:11px;color:#666666;">идей</th>
-                    <th class="term_th" style="font-size:11px;color:#666666;">Срок</th>
+                    <th style="font-size:11px;color:#999;">текущие проекты</th>
+                    <th class="price_th" style="font-size:11px;color:#999;">цена</th>
+                    <th class="idea__th" style="font-size:11px;color:#999;">идей</th>
+                    <th class="term_th" style="font-size:11px;color:#999;">Срок</th>
                   </tr>
                   <?php
                   $counter =1;
