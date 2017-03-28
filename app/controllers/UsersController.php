@@ -16,6 +16,7 @@ use app\models\Logreferal;
 use app\models\Manager;
 use app\models\Paymaster;
 use app\models\Payment;
+use app\models\Solutionfile;
 use app\models\SubscriptionPlan;
 use app\models\TextMessage;
 use app\models\Url;
@@ -2447,6 +2448,137 @@ class UsersController extends \app\controllers\AppController
                 $user->save(null, ['validate' => false]);
             }
             return $user->email_digest;
+        }
+        die();
+    }
+
+    public function hireDesigner() {
+        if($this->request->params['id'] && ($designer = User::first((int) $this->request->params['id']))) {
+            $solutionRecords = Solution::all([
+                'conditions' => [
+                    'Solution.user_id' => $designer->id,
+                    'Solution.selected' => 1,
+                    'Pitch.multiwinner' => 0
+                ],
+                'order' => ['Solution.id' => 'desc'],
+                'limit' => 96,
+                'with' => ['Pitch']
+            ]);
+            foreach ($solutionRecords as $solution) {
+                if ($solution->pitch->isSubscriberProjectForCopyrighting()) {
+                    continue;
+                }
+                if (isset($solution->images['solution_promo'])) {
+                    continue;
+                }
+                if (isset($solution->images['solution'][0])) {
+                    $newfiledata = pathinfo($solution->images['solution'][0]['filename']);
+                    $originalFilename = $solution->images['solution'][0]['filename'];
+                } else {
+                    $newfiledata = pathinfo($solution->images['solution']['filename']);
+                    $originalFilename = $solution->images['solution']['filename'];
+                }
+                $newfilename = $newfiledata['dirname'] . '/' . $newfiledata['filename'] . '_promo.' . $newfiledata['extension'];
+                $imageProcessor = new \upload($originalFilename);
+                $imageProcessor->upload($originalFilename);
+                $imageProcessor->init();
+                $imageProcessor->uploaded = true;
+                $imageProcessor->no_upload_check = true;
+                $imageProcessor->file_src_pathname = $originalFilename;
+                $imageProcessor->file_src_name_ext = $newfiledata['extension'];
+                $imageProcessor->file_new_name_body = $newfiledata['filename'] . '_promo';
+                $promoSize = ['image_resize' => true, 'image_ratio_crop' => 'T', 'image_x' => 322, 'image_y' => 322, 'file_overwrite' => true];
+                foreach ($promoSize as $param => $value) {
+                    $imageProcessor->{$param} = $value;
+                }
+                $imageProcessor->process($newfiledata['dirname']);
+                $conditions = ['model' => '\app\models\Solution', 'model_id' => $solution->id, 'filekey' => 'solution' . '_promo', 'filename' => $newfilename];
+                $data = ['filename' => $newfilename] + $conditions;
+                if ($existingRow = Solutionfile::first(['conditions' => $conditions])) {
+                    $existingRow->set($data);
+                    $existingRow->save();
+                } else {
+                    Solutionfile::create($data)->save();
+                }
+                $solution = Solution::first($solution->id);
+            }
+            $solutionRecords = Solution::all([
+                'conditions' => [
+                    'Solution.user_id' => $designer->id,
+                    'Solution.selected' => 1,
+                    'Pitch.multiwinner' => 0
+                ],
+                'order' => ['Solution.id' => 'desc'],
+                'limit' => 96,
+                'with' => ['Pitch']
+            ]);
+            $separatorPrice = 5000;
+            $solutions = $lowList = $highList = [];
+            $totalCount = count($solutionRecords);
+            foreach ($solutionRecords as $solution) {
+                if ($solution->pitch->isSubscriberProjectForCopyrighting()) {
+                    continue;
+                }
+                if ((int) $solution->pitch->price < $separatorPrice) {
+                    $lowList[] = $solution;
+                } else {
+                    $highList[] = $solution;
+                }
+            }
+            for ($i = 0; $i < $totalCount; $i++) {
+                if (count($lowList) >= ($i + 1)) {
+                    $solutions[] = $lowList[$i];
+                }
+                if (count($highList) >= ($i + 1)) {
+                    $solutions[] = $highList[$i];
+                }
+            }
+            $totalSolutionNum = (int) User::getTotalSolutionNum($designer->id);
+            $awardedSolutionNum = (int) User::getAwardedSolutionNum($this->request->id);
+            if (!$averageGrade = User::getAverageGrade($this->request->id)) {
+                $averageGrade = 0;
+            }
+            $userId = $this->userHelper->getId();
+            $possibleExistingProjects = Pitch::all([
+                'conditions' => [
+                    'type' => '1on1',
+                    'user_id' => $userId
+                ]
+            ]);
+            $selectedProject = null;
+            foreach ($possibleExistingProjects as $possibleProject) {
+                if ($data = unserialize($possibleProject->specifics)) {
+                    if ((int)$data['designer_id'] === (int) $this->request->params['id']) {
+                        $selectedProject = $possibleProject;
+                        break;
+                    }
+                }
+            }
+            $receipt = [
+                [
+                    'name' => 'Награда дизайнеру',
+                    'value' => 8000
+                ],
+                [
+                    'name' => 'Сбор GoDesigner 21.9',
+                    'value' => 1750
+                ]
+            ];
+            $projectData = [
+                'award' => '',
+                'days' => '',
+                'description' => ''
+            ];
+            if ($selectedProject) {
+                $receipt = Receipt::exportToArray($selectedProject->id);
+                $projectData = [
+                    'award' => (int) $selectedProject->price,
+                    'days' => $data['days'],
+                    'description' => $selectedProject->description
+                ];
+            }
+
+            return compact('projectData', 'designer', 'receipt', 'totalSolutionNum', 'awardedSolutionNum', 'averageGrade', 'solutions');
         }
         die();
     }

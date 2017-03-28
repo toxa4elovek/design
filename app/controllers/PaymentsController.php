@@ -72,11 +72,19 @@ class PaymentsController extends AppController
             $totalInCents = (int) $pitch->total * 100;
             $formatter = new MoneyFormatter();
             $pitch = Pitch::generateNewPaytureId($this->request->id);
+            $type = 'Pay';
+            $url = 'https://godesigner.ru/users/mypitches';
+            if($pitch->type === '1on1') {
+                $type = 'Block';
+                if ($data = unserialize($pitch->specifics)) {
+                    $url = 'https://godesigner.ru/users/hireDesigner/' . $data['designer_id'];
+                }
+            }
             $result = Payture::init([
-                'SessionType' => 'Pay',
+                'SessionType' => $type,
                 'OrderId' => $pitch->payture_id,
                 'Amount' => $totalInCents,
-                'Url' => 'http://godesigner.ru/users/mypitches',
+                'Url' => $url,
                 'Total' => $formatter->formatMoney($pitch->total, ['suffix' => '.00']),
                 'Product' => 'Оплата проекта'
             ]);

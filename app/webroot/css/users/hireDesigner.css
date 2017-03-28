@@ -1,0 +1,131 @@
+h2 {
+    color: #666666;
+    font: normal 28px/34px "RodeoC", sans-serif;
+    text-align: center;
+    font-weight: 400;
+    line-height: 30px;
+    margin-bottom: 47px;
+}
+.lp-projects {
+    height: 400px;
+    padding-top: 82px;
+}
+
+.lp-projects h2 {
+    width: 550px;
+    height: 26px;
+    color: #666666;
+    font: normal 28px/34px "RodeoC", sans-serif;
+    font-weight: 400;
+    line-height: 30px;
+    margin: 0 auto 52px;
+}
+.lp-projects .slick-slide,
+.lp-projects .slick-slide img {
+    width: 322px;
+    height: 322px;
+}
+
+.lp-projects-slider {
+    display: none;
+}
+
+.lp-projects-slider .overlay {
+    display: none;
+    position: absolute;
+    padding: 20px;
+    width: 302px;
+    height: 302px;
+    background: url(/img/pages/golden-fish/overlay.png) no-repeat;
+    background-size: 322px 322px;
+    top: 0;
+    left: 0;
+    color: white;
+    font-family: 'OfficinaSansC Book', serif;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 24px;
+}
+
+.lp-projects .img-container {
+    position: relative;
+}
+
+.overlay span {
+    position: absolute;
+    bottom: 35px;
+    left: 20px;
+}
+.arrows-container {
+    position: absolute;
+    top: 14px;
+    right: -100px;
+}
+.arrows {
+    position: relative;
+    width: 48px;
+    height: 26px;
+}
+.arrows .slick-prev, .arrows .slick-next {
+    position: static;
+    float: left;
+}
+.arrows .slick-prev {
+    width: 14px;
+    height: 26px;
+    background: transparent url(/img/pages/golden-fish/left-arrow.png) no-repeat;
+    margin-right: 20px;
+}
+.arrows .slick-next {
+    width: 14px;
+    height: 26px;
+    background: transparent url(/img/pages/golden-fish/right-arrow.png) no-repeat;
+}
+.arrows .slick-prev:before {
+    content: ""
+}
+.arrows .slick-next:before {
+    content: ""
+}
+.arrows .slick-prev:hover,
+.arrows .slick-prev:focus {
+    background: transparent url(/img/pages/golden-fish/left-arrow-active.png) no-repeat;
+
+}
+.arrows .slick-next:hover,
+.arrows .slick-next:focus
+{
+    background: transparent url(/img/pages/golden-fish/right-arrow-active.png) no-repeat;
+}
+.profile, .lp-rules, .lp-form {
+    padding-left: 50px;
+    padding-right: 50px;
+}
+.lp-rules {
+    padding-top: 50px;
+}
+.lp-rules p {
+    margin-bottom: 20px;
+}
+.lp-form {
+    position: relative;
+}
+.lp-form input[type=text] {
+    font-size: 37px;
+    line-height: 37px;
+    width: 250px;
+    height: 74px;
+    color: rgb(79, 81, 89);
+    margin-bottom: 30px;
+    margin-top: 5px;
+}
+.lp-form input:invalid {
+    border: 1px solid red;
+}
+.lp-form textarea {
+    width: 826px;
+    height: 150px;
+    color: rgb(79, 81, 89);
+    margin-bottom: 30px;
+    margin-top: 5px;
+}

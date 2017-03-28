@@ -2257,8 +2257,9 @@ Disallow: /pitches/upload/'.$pitch['id'];
         die();
     }
 
-    public function getTransferOfRightsDocument() {
-        if($project = Pitch::first([
+    public function getTransferOfRightsDocument()
+    {
+        if ($project = Pitch::first([
             'conditions' => ['Pitch.id' => (int) $this->request->id],
             'with' => ['User']])) {
             $clientData = unserialize($project->user->paymentOptions)[0];
@@ -2275,8 +2276,92 @@ Disallow: /pitches/upload/'.$pitch['id'];
             $pdfWriter->Output('TransferOfRightsDocument.pdf', 'd');
             die();
             //return $this->render(['layout' => false, 'data' => compact('project', 'clientData', 'designerData')]);
-        }else {
+        } else {
             throw new Exception('Public:Такого проекта не существует.', 404);
         }
+    }
+
+    public function create1on1Project()
+    {
+        if ($this->request->data) {
+            $returnUrl = '/users/hireDesigner/' . $this->request->params['id'];
+            if ((int) $this->request->data['price'] < 2000) {
+                return $this->redirect($returnUrl);
+            }
+            $userId = $this->userHelper->getId();
+            $possibleExistingProjects = Pitch::all([
+                'conditions' => [
+                    'type' => '1on1',
+                    'user_id' => $userId
+                ]
+            ]);
+            $selectedProject = null;
+            foreach ($possibleExistingProjects as $possibleProject) {
+                if ($data = unserialize($possibleProject->specifics)) {
+                    if ((int)$data['designer_id'] === (int) $this->request->params['id']) {
+                        $selectedProject = $possibleProject;
+                    }
+                }
+            }
+            if($selectedProject) {
+                $this->request->data['commonPitchData']['id'] = $selectedProject->id;
+            }
+            $this->request->data['commonPitchData']['user_id'] = $userId;
+            $this->request->data['commonPitchData']['category_id'] = 21;
+            $this->request->data['commonPitchData']['type'] = '1on1';
+            $this->request->data['commonPitchData']['description'] = $this->request->data['description'];
+            $this->request->data['commonPitchData']['chooseWinnerFinishDate'] = date('Y-m-d H:i:s');
+            $this->request->data['commonPitchData']['phone-brief'] = '';
+            $this->request->data['commonPitchData']['materials'] = '';
+            $this->request->data['commonPitchData']['materials-limit'] = '';
+            $this->request->data['commonPitchData']['fileFormatDesc'] = '';
+            $this->request->data['commonPitchData']['title'] = 'Индивидуальный проект';
+            $this->request->data['features']['award'] = (int) $this->request->data['price'];
+            $value = (int) $this->request->data['price'];
+            if ($value < 5000) {
+                $fee = 1000;
+            } elseif ($value < 10000) {
+                $fee = 1750;
+            } elseif ($value < 20000) {
+                $fee = 3250;
+            } elseif ($value < 50000) {
+                $fee = 7000;
+            } elseif ($value < 100000) {
+                $fee = 12500;
+            } else {
+                $fee = $value / 10;
+            }
+            $this->request->data['features']['total'] = (int) $this->request->data['price'] + $fee;
+            $this->request->data['commonPitchData']['finishDate'] = date('Y-m-d H:i:s', time() + $this->request->data['days'] * DAY);
+            $this->request->data['specificPitchData'] = [
+                'designer_id' => $this->request->params['id'],
+                'days' => $this->request->data['days']
+            ];
+            $gatracking = new \Racecore\GATracking\GATracking('UA-9235854-5');
+            $gaId = $gatracking->getClientId();
+            $this->request->data['commonPitchData']['ga_id'] = $gaId;
+            $result = Pitch::saveDraft($this->request->data);
+            if (null === $result) {
+                $result = ['error' => 'save error'];
+            } else {
+                $projectId = $result;
+                $result = ['success' => $result];
+
+                $percentage = round(($fee / $value) * 100, 1);
+                $receipt = [
+                    [
+                        'name' => 'Награда дизайнеру',
+                        'value' => $this->request->data['price']
+                    ],
+                    [
+                        'name' => "Сбор GoDesigner $percentage",
+                        'value' => $fee
+                    ]
+                ];
+                Receipt::updateOrCreateReceiptForProject($projectId, $receipt);
+            }
+            return $this->redirect('/payments/startpayment/' . $projectId);
+        }
+        die();
     }
 }

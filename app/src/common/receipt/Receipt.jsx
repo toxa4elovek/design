@@ -15,10 +15,12 @@ class Receipt extends React.Component {
         e.preventDefault();
     }
     componentDidMount() {
-        if($(window).scrollTop() > $('header').offset().top) {
-            $('.summary-price').css('position', 'fixed').css('top', '150px');
-        }else {
-            $('.summary-price').css('position', 'absolute').css('top', ($('header').offset().top + 155) + 'px');
+        if(typeof(this.props.style) === 'undefined') {
+            if($(window).scrollTop() > $('header').offset().top) {
+                $('.summary-price').css('position', 'fixed').css('top', '150px');
+            }else {
+                $('.summary-price').css('position', 'absolute').css('top', ($('header').offset().top + 155) + 'px');
+            }
         }
     }
     render() {
@@ -26,8 +28,23 @@ class Receipt extends React.Component {
         for (let i = 0; i < this.props.data.length; i++) {
             total += this.props.data[i].value;
         }
+        let style = {}
+        if(this.props.style) {
+          style = this.props.style
+        }
+        let showControl = true
+        let controlElement = ''
+        if((typeof(this.props.showControl) !== 'undefined') && (this.props.showControl === false)) {
+          showControl = false
+        }
+        if(showControl) {
+          controlElement = <div>
+              <a href="#" className="show" onClick={this.showLinkOnClick}><span>Подробнее</span></a>
+              <a href="#" className="hide" onClick={this.hideLinkOnClick}><span>Скрыть</span></a>
+          </div>
+        }
         return (
-            <aside ref="receiptContainer" className="summary-price expanded">
+            <aside ref="receiptContainer" className="summary-price expanded" style={style}>
                 <h3>Итого:</h3>
                 <p className="summary">
                     <strong><ReceiptTotal total={total} /></strong></p>
@@ -36,8 +53,7 @@ class Receipt extends React.Component {
                         return (<ReceiptLine key={index} row={object}/>)
                     })}
                 </ul>
-                <a href="#" className="show" onClick={this.showLinkOnClick}><span>Подробнее</span></a>
-                <a href="#" className="hide" onClick={this.hideLinkOnClick}><span>Скрыть</span></a>
+                {controlElement}
             </aside>
         )
     }

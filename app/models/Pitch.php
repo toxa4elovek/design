@@ -2056,10 +2056,22 @@ class Pitch extends AppModel
         if (!isset($commonPitchData['fileIds'])) {
             $commonPitchData['fileIds'] = [];
         }
+        $type = 'company_project';
+        $total = 0;
+        if (isset($commonPitchData['type'])) {
+            $type = $commonPitchData['type'];
+        }
+        if($type !== 'company_project' && isset($featuresData['total'])) {
+            $total = $featuresData['total'];
+        }
+        $categoryId = 20;
+        if (isset($commonPitchData['category_id'])) {
+            $categoryId = 21;
+        }
         $data = [
             'user_id' => $commonPitchData['user_id'],
-            'type' => 'company_project',
-            'category_id' => 20,
+            'type' => $type,
+            'category_id' => $categoryId,
             'title' => $commonPitchData['title'],
             'industry' => serialize($commonPitchData['jobTypes']),
             'started' => date('Y-m-d H:i:s'),
@@ -2067,7 +2079,7 @@ class Pitch extends AppModel
             'awardedDate' => '0000-00-00 00:00:00',
             'ideas_count' => 0,
             'price' => $featuresData['award'],
-            'total' => 0,
+            'total' => $total,
             'fee' => 0,
             'awarded' => 0,
             'free' => 0,
@@ -2432,4 +2444,6 @@ class Pitch extends AppModel
     {
         return $record->price >= self::getMinimalAwardForCategoryForDate($record->category_id, $dateTime);
     }
+
+
 }

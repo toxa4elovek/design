@@ -94,7 +94,7 @@
                         <p class="confirm-message" <?php if (!empty($user->phone) && $user->phone_valid == 1):?>style="display:none;"<?php endif?> <?php if (!empty($user->phone) && $user->phone_valid == 0):?>style="display:block;"<?php endif?>>Для подтверждения номера +<?=$user->phone?> введите код, который пришел по смс.</p>
                         <div class="phone-input-container" <?php if (!empty($user->phone) && $user->phone_valid == 1):?>style="display:none;"<?php endif?> <?php if (!empty($user->phone) && $user->phone_valid == 0):?>style="display:none;"<?php endif?>>
                             <span class="plus">+</span>
-                            <input type="text" name="phone" placeholder="79811234567">
+                            <input type="text" name="phone" placeholder="7">
                         </div>
                         <div class="clear"></div>
                         <ul <?php if (!empty($user->phone) && $user->phone_valid == 1):?>style="display:block;"<?php endif?> <?php if (!empty($user->phone) && $user->phone_valid == 0):?>style="display:block;"<?php endif?>>
