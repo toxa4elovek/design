@@ -226,7 +226,9 @@ class PagesController extends AppController
             $x = false;
             if (!in_array($temp->format('Y-m-d H:i:s'), $deny_time) && $temp->getTimestamp() >= $start_hours->getTimestamp()) {
                 if ($temp->getTimestamp() <= $end_hours->getTimestamp() && (int) $temp->format('w') != 0 && (int) $temp->format('w') != 6) {
-                    $allowTime[$temp->getTimestamp()] = $temp->format('H:i d/m/y');
+                    if(time() < $temp->getTimestamp()) {
+                        $allowTime[$temp->getTimestamp()] = $temp->format('H:i d/m/y');
+                    }
                     $i++;
                 } else {
                     $start_hours->setDate($start_hours->format('Y'), $start_hours->format('m'), (int) $start_hours->format('d') + 1);
@@ -240,7 +242,6 @@ class PagesController extends AppController
                 $allowTime[strtotime($max_time)] = date('H:i d/m/y', strtotime($max_time));
             }
         }
-
         return compact('allowTime');
     }
 
