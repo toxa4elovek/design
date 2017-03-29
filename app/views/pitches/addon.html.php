@@ -33,9 +33,9 @@
         <div class="ribbon">
             <p class="option"><label><input type="checkbox" name="" class="single-check" <?php if (isset($this->_request->query['click']) && $this->_request->query['click'] == 'prolong'): echo 'checked'; endif?> data-option-title="продлить срок" data-option-value="<?= $prolongCoeff?>" id="prolong-checkbox">Продлить срок</label></p>
             <?php if ((int) $pitch->category_id === 20):?>
-            <p class="description">Укажите количество дней, на которое вы хотите продлить проект. каждый день стоит 1 000 Р.-, которая будет добавлена на увеличение гонорара.
+            <p class="description">Укажите количество дней, на которое вы хотите продлить проект. Каждый день стоит 1 000 Р.-, которая будет добавлена на увеличение гонорара.
             <?php else:?>
-            <p class="description">Укажите количество дней, на которое вы хотите продлить проект. Каждый день стоит 1 950 Р.-, из которых<br> 1 000Р.- добавляется в счет гонорара для дизайнера.
+            <p class="description">Укажите количество дней, на которое вы хотите продлить проект. Каждый день стоит 1 950 Р.-, из которых<br> 1 000Р.- добавляется в счет гонорара для дизайнера.
             <?php endif; ?>
                 <a href="#" class="second tooltip" title="">(?)</a></p>
             <p class="label <?php if (isset($this->_request->query['click']) && $this->_request->query['click'] === 'prolong'): echo 'unfold'; endif?>" id="prolong-label" style="font:16px/68px "RodeoC",sans-serif">+<?= $prolongCoeff?>.-</p>

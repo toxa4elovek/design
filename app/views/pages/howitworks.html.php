@@ -66,7 +66,7 @@
 				</li>
 				<li style="width: 149px; margin-right: 47px;">
 					<a href="/answers/view/103" target="_blank">Приём работ</a>
-					<p>Вы комментируете,<br>участники<br>корректируют. </p>
+					<p>Вы комментируете,<br>участники<br>корректируют. </p>
 				</li>
 				<li style="width: 197px; margin-right: 18px;">
 					<a href="/answers/view/70" target="_blank">Выбор победителя 4 дня</a>
@@ -115,7 +115,7 @@
 							</p>
 						</li>
 						<li class="clear">
-							<h2 class="greyboldheader" style="margin-bottom: 8px">Интерактивно<br>и оперативно</h2>
+							<h2 class="greyboldheader" style="margin-bottom: 8px">Интерактивно<br>и оперативно</h2>
 							<p class="regular">Из-за отсутствия рутинной доку-<br>ментации и иерархии, вы увидите<br> решения сразу, как только дизай-<br>неры загрузят идеи на сайт.</p>
 						</li>
 						<li>
@@ -124,7 +124,7 @@
 								</p>
 						</li>
 						<li>
-							<h2 class="greyboldheader" style="margin-bottom: 8px">Экономьте деньги<br/>и время</h2>
+							<h2 class="greyboldheader" style="margin-bottom: 8px">Экономьте деньги<br/>и время</h2>
 							<p class="regular">Мы ограничиваем срок проекта,<br> это мотивирует креативщиков:<br> меньше, чем за месяц, вы полу-<br>чите то, что хотели!
 							</p>
 						</li>

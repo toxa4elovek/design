@@ -17,7 +17,7 @@
             </div>
             <section class="mainblock">
                 <section class="subscriber-referal-section">
-                    <span class="referal-title">Вы получите 10 000 рублей на карту,<br/>если ваш друг станет <a href="/pages/subscribe">абонентом GoDesigner</a></span>
+                    <span class="referal-title">Вы получите 10 000 рублей на карту,<br/>если ваш друг станет <a href="/pages/subscribe">абонентом GoDesigner</a></span>
                     <a href="/answers/view/110" target="_blank">Правила и условия</a>
                     <div class="image-box">
                         <img src="/img/users/subscribers_referal/referal-illustration2.png" alt="" />
