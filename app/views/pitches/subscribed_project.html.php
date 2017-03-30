@@ -176,7 +176,7 @@
                     в течение рабочего дня с момента оплаты:
                 </p>
                 <p><input type="text" id="phonenumber" name="phone-brief" placeholder="+7 XXX XXX XX XX" class="phone" value="<?=$pitch->{'phone-brief'}?>"></p>
-                <p>Наши специалисты знают, как правильно сформулировать ваши ожидания и поставить задачу перед дизайнерами (копирайтерами). Мы убеждены, что хороший бриф — залог эффективной работы. С примерами заполненных брифов можно <a href="/answers/view/68">ознакомиться тут</a>.
+                <p>Наши специалисты знают, как правильно сформулировать ваши ожидания и поставить задачу перед дизайнерами (копирайтерами). Мы убеждены, что хороший бриф — залог эффективной работы. С примерами заполненных брифов можно <a href="/answers/view/68">ознакомиться тут</a>.
                 </p>
                 <img src="/img/brief/brief.png" alt="Заполнить бриф"/>
             </div>
@@ -208,7 +208,7 @@
             <div class="explanation closed" style="margin-top: 0px; display: none; padding-bottom: 50px;" id="explanation_closed">
                 <img class="explanation_closed" src="/img/brief/closed.png" alt="" style="">
                 <ul class="" style="">
-                    <li>Идеально для посредников, рекламных агентств или<br>    для сохранения маркетинговых секретов</li>
+                    <li>Идеально для посредников, рекламных агентств или<br>    для сохранения маркетинговых секретов</li>
                     <li>Проект станет недоступен поисковым системам</li>
                     <li>Участники подпишут «Cоглашение о неразглашении»</li>
                     <li>Идеи будут не доступны для просмотра посторонними</li>
@@ -416,7 +416,7 @@
     <div id="progressbarimage" style="text-align: left; padding-left: 6px; padding-top: 1px; padding-right: 6px; height: 23px; background: url('/img/indicator_empty.png') repeat scroll 0px 0px transparent; width: 341px;">
         <img id="filler" src="/img/progressfilled.png" style="width:1px" height="22">
     </div>
-    <div style="color: rgb(202, 202, 202); font-size: 14px; margin-top: 20px;">Пожалуйста, используйте эту паузу<br> с пользой для здоровья!</div>
+    <div style="color: rgb(202, 202, 202); font-size: 14px; margin-top: 20px;">Пожалуйста, используйте эту паузу<br> с пользой для здоровья!</div>
 </div>
 
 <?= $this->view()->render(['element' => 'popups/brief_tos']); ?>

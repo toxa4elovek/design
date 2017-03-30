@@ -22,7 +22,9 @@
 	font: 14px/20px "Arial", sans-serif;
 	color: #666;
 }
-
+.answer tr, .answer td {
+	border: 1px solid;
+}
 .answer h2 {
 	margin: 15px 0 15px;
 }

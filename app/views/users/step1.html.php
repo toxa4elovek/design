@@ -432,11 +432,11 @@
                         <input type="text" name="phone_code"  <?php if (!empty($user->phone) && $user->phone_valid == 0):?>style="display:block;"<?php endif?>>
                         <input type="submit" id="confirm-mobile" class="button" value="Подтвердить код" <?php if (!empty($user->phone) && $user->phone_valid == 0):?>style="display:block;"<?php endif?>>
                         <input type="submit" id="save-mobile" class="button" value="Подтвердить телефон" <?php if (!empty($user->phone) && $user->phone_valid == 1):?>style="display:none;"<?php endif?> <?php if (!empty($user->phone) && $user->phone_valid == 0):?>style="display:none;"<?php endif?>>
-                        <span class="note" <?php if (!empty($user->phone) && $user->phone_valid == 1):?>style="display:none;"<?php endif?> <?php if (!empty($user->phone) && $user->phone_valid == 0):?>style="display:none;"<?php endif?>>для смс оповещения в экстренных случаях</span>
+                        <span class="note" <?php if (!empty($user->phone) && $user->phone_valid == 1):?>style="display:none;"<?php endif?> <?php if (!empty($user->phone) && $user->phone_valid == 0):?>style="display:none;"<?php endif?>>для смс оповещения в экстренных случаях</span>
                         <div class="clear"></div>
                     </form>
                     <p class="help" style="margin-top: 40px; font-family: Georgia, serif; font-size: 13px; font-style: italic; line-height: 16px;">Свяжитесь с нами, если  не получается подтвердить номер:<br/>
-                        <a href="mailto:team@godesigner.ru">team@godesigner.ru</a> или (812) 648-24-12 по будням с 10–17<br/> по Москве</p>                </section>
+                        <a href="mailto:team@godesigner.ru">team@godesigner.ru</a> или (812) 648-24-12 по будням с 10–17<br/> по Москве</p>                </section>
                 <?php endif ?>
                 <div class="clear"></div>
                 <div class="proceed">
