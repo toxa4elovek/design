@@ -49,7 +49,7 @@
                         <br/><span style="position: relative; top: 6px; left: 2px; font-size: 13px; font-family: 'OfficinaSansC Book', serif; text-decoration: none; text-transform:  none; color: #666666;">тариф <a href="/pages/subscribe#plans" target="_blank">«<?= $this->user->getCurrentPlanData($user->id)['title']?>»</a></span>
                         <?php endif ?>
                         <?php if ($this->user->isLoggedIn()): ?>
-                            <a style="width: 137px; padding-left: 30px; line-height: 24px; float: right;" data-id="<?= $user->id ?>" class="order-button " href="/users/hireDesigner/<?= $user->id?>">Работать 1 на 1</a>
+                            <a data-id="<?= $user->id ?>" class="order-button hire" href="/users/hireDesigner/<?= $user->id?>">Работать 1-на-1</a>
                             <!--a id="fav-user" data-id="<?= $user->id ?>" class="order-button rss-img-profile <?= $isFav ? 'unfav-user' : 'fav-user' ?>" href="#"><?= $isFav ? 'Отписаться' : 'Подписаться' ?></a-->
                         <?php endif; ?>
                         <ul class="profile-list-info"></ul>

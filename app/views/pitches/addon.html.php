@@ -54,7 +54,7 @@
                 endif;
             endforeach;
         endif;
-        if (((int) $pitch->brief === '0') && ((int) $pitch->status === 0)): ?>
+        if (((int) $pitch->brief === 0) && ((int) $pitch->status === 0)): ?>
         <div class="ribbon complete-brief">
             <p class="option"><label><input  type="checkbox" name="" <?php if (isset($this->_request->query['click']) && $this->_request->query['click'] == 'phonebrief'): echo 'checked'; endif?> class="single-check" data-option-title="Заполнение брифа" data-option-value="<?=$briefValue?>" id="phonebrief">Заполнить бриф</label></p>
             <p class="description">Вы можете ознакомиться с примерами заполнения брифа <a href="/docs/<?=$briefExamples[$category->id]?>" target="_blank">тут</a>, или мы заполним его за вас. Оставьте свой № телефона, мы свяжемся с вами для интервью в течении рабочего дня с момента оплаты <a href="#" class="second tooltip" title="Мы работаем пн-пт с 10:00-19:00. Поставив галочку, вы сможете пропустить следующую страницу (или ответить на легкие вопросы) и перейти непосредственно к оплате.">(?)</a></p>
@@ -118,7 +118,7 @@
             endforeach?>
         </ul><!-- .experts -->
 
-        <?php if (((int) $pitch->guaranteed === '0') && ((int) $pitch->status === 0)): ?>
+        <?php if (((int) $pitch->guaranteed === 0) && ((int) $pitch->status === 0)): ?>
             <div class="ribbon" id="guaranteed-block">
                 <p class="option"><label><input type="checkbox" id="guaranteed" name="" <?php if (isset($this->_request->query['click']) && $this->_request->query['click'] == 'guarantee'): echo 'checked'; endif?> class="single-check" data-option-title="Гарантировать проект" data-option-value="1400">Гарантировать проект</label></p>
                 <p class="description">Гарантировать выбор победителя <a href="#" class="second tooltip" title="Вы гарантируете, что выберете победителя в любом случае, тем самым инициировав до 40% больше решений. Мы выделяем такой проект в списке. Дизайнеры увидят, что проект не останется без победителя, и вы получите больший выбор идей.">(?)</a></p>
@@ -136,7 +136,7 @@
                 endif;
             endforeach;
         endif;
-        if (((int) $pitch->pinned === '0') && ((int) $pitch->status === 0)): ?>
+        if (((int) $pitch->pinned === 0) && ((int) $pitch->status === 0)): ?>
             <div class="ribbon" id="pinned-block">
                 <p class="option"><label><input type="checkbox" id="pinned" name="" <?php if (isset($this->_request->query['click']) && $this->_request->query['click'] == 'pinned'): echo 'checked'; endif?> class="single-check" data-option-title="“Прокачать” бриф" data-option-value="<?=$pinnedValue?>">“Прокачать” бриф</label></p>
                 <p class="description">Увеличить количество решений <a href="#" class="second tooltip" title="Вы сможете увеличить количество предложенных вариантов на 15-40%. Для привлечения дизайнеров мы используем e-mail рассылку, facebook, vkontakte, twitter, выделение синим цветом в списке и на главной странице">(?)</a></p>
@@ -144,7 +144,7 @@
             </div>
         <?php endif ?>
 
-        <?php if (($pitch->private == '0') && ($pitch->id == '105318')): ?>
+        <?php if (((int) $pitch->private === 0) && ($pitch->id == '105318')): ?>
             <div class="ribbon" id="private-block">
                 <p class="option"><label><input type="checkbox" id="private" name="" <?php if (isset($this->_request->query['click']) && $this->_request->query['click'] == 'private'): echo 'checked'; endif?> class="single-check" data-option-title="Скрыть проект" data-option-value="3500">Скрыть проект</label></p>
                 <p class="description">Проект станет не виден для поисковых систем, а идеи будут доступны для просмотра только вам и их авторам. Подробнее <a target="_blank" href="https://godesigner.ru/answers/view/64">тут</a></p>

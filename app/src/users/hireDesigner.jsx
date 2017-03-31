@@ -18,7 +18,7 @@
       })
     }
   )
-  const style = {'position': 'absolute', 'top': 0}
+  const style = {'position': 'absolute', 'top': '120px'}
   const minimalPrice = 2000
   const getUpdatedReceiptData = (value) => {
     value = parseInt(value)

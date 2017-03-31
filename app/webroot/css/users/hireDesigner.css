@@ -1,10 +1,11 @@
 h2 {
     color: #666666;
     font: normal 28px/34px "RodeoC", sans-serif;
-    text-align: center;
     font-weight: 400;
     line-height: 30px;
-    margin-bottom: 47px;
+    margin-bottom: 35px;
+    text-align: left;
+    text-transform: uppercase;
 }
 .lp-projects {
     height: 400px;
@@ -98,16 +99,50 @@ h2 {
     background: transparent url(/img/pages/golden-fish/right-arrow-active.png) no-repeat;
 }
 .profile, .lp-rules, .lp-form {
-    padding-left: 50px;
     padding-right: 50px;
 }
 .lp-rules {
-    padding-top: 50px;
+    /*padding-top: 50px;*/
 }
 .lp-rules p {
-    margin-bottom: 20px;
+    font-family: 'OfficinaSansC Book', sans-serif;
+    font-size: 16px;
+    line-height: 20px;
+    margin-bottom: 60px;
+    display: block;
+    width: 500px;
+    color: #666666;
+}
+.lp-rules .users {
+    display: block;
+    height: 43px;
+    margin-bottom: 33px;
+}
+.lp-rules .users a {
+    color: #6590a2;
+    font-family: Helvetica, sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 43px;
+    text-transform: uppercase;
+}
+.lp-rules .users .avatar-link {
+    display: inline-block;
+    margin-left: 15px;
+    margin-right: 15px;
 }
 .lp-form {
+    position: relative;
+}
+.lp-form label {
+    color: #666666;
+    font-family: Helvetica, serif;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 16px;
+    text-transform: uppercase;
+    width: 560px;
+    display: block;
     position: relative;
 }
 .lp-form input[type=text] {
@@ -119,13 +154,36 @@ h2 {
     margin-bottom: 30px;
     margin-top: 5px;
 }
+.lp-form input[type=submit] {
+    width: 565px;
+    height: 50px;
+    opacity: 0.84;
+    color: #ffffff;
+    font-family: Arial, serif;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 45px;
+    text-transform: uppercase;
+}
 .lp-form input:invalid {
     border: 1px solid red;
 }
 .lp-form textarea {
-    width: 826px;
-    height: 150px;
+    width: 528px;
+    height: 209px;
+    box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.19);
+    background-color: #ffffff;
     color: rgb(79, 81, 89);
     margin-bottom: 30px;
     margin-top: 5px;
+}
+.lp-form .hint {
+    position: absolute;
+    top:0;
+    right: 0;
+    color: #779cac;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 16px;
+    text-transform: none;
 }

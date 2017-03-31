@@ -17,7 +17,7 @@
       $(this).hide();
     });
   });
-  var style = { 'position': 'absolute', 'top': 0 };
+  var style = { 'position': 'absolute', 'top': '120px' };
   var minimalPrice = 2000;
   var getUpdatedReceiptData = function getUpdatedReceiptData(value) {
     value = parseInt(value);
