@@ -2066,7 +2066,7 @@ class Pitch extends AppModel
         }
         $categoryId = 20;
         if (isset($commonPitchData['category_id'])) {
-            $categoryId = 21;
+            $categoryId = $commonPitchData['category_id'];
         }
         $data = [
             'user_id' => $commonPitchData['user_id'],
