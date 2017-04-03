@@ -1,0 +1,189 @@
+h2 {
+    color: #666666;
+    font: normal 28px/34px "RodeoC", sans-serif;
+    font-weight: 400;
+    line-height: 30px;
+    margin-bottom: 35px;
+    text-align: left;
+    text-transform: uppercase;
+}
+.lp-projects {
+    height: 400px;
+    padding-top: 82px;
+}
+
+.lp-projects h2 {
+    width: 550px;
+    height: 26px;
+    color: #666666;
+    font: normal 28px/34px "RodeoC", sans-serif;
+    font-weight: 400;
+    line-height: 30px;
+    margin: 0 auto 52px;
+}
+.lp-projects .slick-slide,
+.lp-projects .slick-slide img {
+    width: 322px;
+    height: 322px;
+}
+
+.lp-projects-slider {
+    display: none;
+}
+
+.lp-projects-slider .overlay {
+    display: none;
+    position: absolute;
+    padding: 20px;
+    width: 302px;
+    height: 302px;
+    background: url(/img/pages/golden-fish/overlay.png) no-repeat;
+    background-size: 322px 322px;
+    top: 0;
+    left: 0;
+    color: white;
+    font-family: 'OfficinaSansC Book', serif;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 24px;
+}
+
+.lp-projects .img-container {
+    position: relative;
+}
+
+.overlay span {
+    position: absolute;
+    bottom: 35px;
+    left: 20px;
+}
+.arrows-container {
+    position: absolute;
+    top: 14px;
+    right: -100px;
+}
+.arrows {
+    position: relative;
+    width: 48px;
+    height: 26px;
+}
+.arrows .slick-prev, .arrows .slick-next {
+    position: static;
+    float: left;
+}
+.arrows .slick-prev {
+    width: 14px;
+    height: 26px;
+    background: transparent url(/img/pages/golden-fish/left-arrow.png) no-repeat;
+    margin-right: 20px;
+}
+.arrows .slick-next {
+    width: 14px;
+    height: 26px;
+    background: transparent url(/img/pages/golden-fish/right-arrow.png) no-repeat;
+}
+.arrows .slick-prev:before {
+    content: ""
+}
+.arrows .slick-next:before {
+    content: ""
+}
+.arrows .slick-prev:hover,
+.arrows .slick-prev:focus {
+    background: transparent url(/img/pages/golden-fish/left-arrow-active.png) no-repeat;
+
+}
+.arrows .slick-next:hover,
+.arrows .slick-next:focus
+{
+    background: transparent url(/img/pages/golden-fish/right-arrow-active.png) no-repeat;
+}
+.profile, .lp-rules, .lp-form {
+    padding-right: 50px;
+}
+.lp-rules {
+    /*padding-top: 50px;*/
+}
+.lp-rules p {
+    font-family: 'OfficinaSansC Book', sans-serif;
+    font-size: 16px;
+    line-height: 20px;
+    margin-bottom: 60px;
+    display: block;
+    width: 500px;
+    color: #666666;
+}
+.lp-rules .users {
+    display: block;
+    height: 43px;
+    margin-bottom: 33px;
+}
+.lp-rules .users a {
+    color: #6590a2;
+    font-family: Helvetica, sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 43px;
+    text-transform: uppercase;
+}
+.lp-rules .users .avatar-link {
+    display: inline-block;
+    margin-left: 15px;
+    margin-right: 15px;
+}
+.lp-form {
+    position: relative;
+}
+.lp-form label {
+    color: #666666;
+    font-family: Helvetica, serif;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 16px;
+    text-transform: uppercase;
+    width: 560px;
+    display: block;
+    position: relative;
+}
+.lp-form input[type=text] {
+    font-size: 37px;
+    line-height: 37px;
+    width: 250px;
+    height: 74px;
+    color: rgb(79, 81, 89);
+    margin-bottom: 30px;
+    margin-top: 5px;
+}
+.lp-form input[type=submit] {
+    width: 565px;
+    height: 50px;
+    opacity: 0.84;
+    color: #ffffff;
+    font-family: Arial, serif;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 45px;
+    text-transform: uppercase;
+}
+.lp-form input:invalid {
+    border: 1px solid red;
+}
+.lp-form textarea {
+    width: 528px;
+    height: 209px;
+    box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.19);
+    background-color: #ffffff;
+    color: rgb(79, 81, 89);
+    margin-bottom: 30px;
+    margin-top: 5px;
+}
+.lp-form .hint {
+    position: absolute;
+    top:0;
+    right: 0;
+    color: #779cac;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 16px;
+    text-transform: none;
+}

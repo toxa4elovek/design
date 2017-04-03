@@ -3,7 +3,6 @@ $briefExamples = [
     '4' => 'brief_visit_card.pdf',
     '5' => 'brief_visit_card.pdf',
     '9' => 'brief_illustration.pdf',
-    '12' => 'brief_illustration.pdf',
     '1' => 'brief_logo.pdf',
     '2' => 'brief_logo.pdf',
     '3' => 'brief_logo.pdf',

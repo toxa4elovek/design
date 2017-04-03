@@ -134,13 +134,22 @@
                                 <?php if (($mypitch->status < 1) || ($mypitch->multiwinner > 0 && $mypitch->billed = 0)):?>
                                 <td class="pitches-edit mypitches">
                                     <?php if ($mypitch->billed == 0):?>
-                                        <?php if ($mypitch->multiwinner == 0):?>
-                                            <a href="<?= $fast_url ?>#step3" class="mypitch_pay_link buy" title="оплатить">оплатить</a>
+                                        <?php if ((int) $mypitch->multiwinner === 0):
+                                            $fast_url .= '#step3';
+                                            if($mypitch->type === '1on1'):
+                                                $fast_url = '/payments/startpayment/' . $mypitch->id;
+                                            endif;?>
+                                            <a href="<?= $fast_url ?>" class="mypitch_pay_link buy" title="оплатить">оплатить</a>
                                         <?php else:?>
                                             <a href="/pitches/newwinner/<?=$mypitch->id?>" class="mypitch_pay_link buy" title="оплатить">оплатить1</a>
                                         <?php endif?>
-                                        <?php if (($fastpitch === false) && ($mypitch->multiwinner == 0) && ($mypitch->type != 'plan-payment')):?>
-                                            <a href="/pitches/edit/<?=$mypitch->id?>" class="edit mypitch_edit_link" title="редактировать">редактировать</a>
+                                        <?php if (($fastpitch === false) && ((int) $mypitch->multiwinner === 0) && ($mypitch->type !== 'plan-payment')):
+                                            $editUrl = '/pitches/edit/' . $mypitch->id;
+                                            if($mypitch->type === '1on1'):
+                                                $data = unserialize($mypitch->specifics);
+                                                $editUrl = '/users/hireDesigner/' . $data['designer_id'];
+                                            endif;?>
+                                            <a href="<?=$editUrl?>" class="edit mypitch_edit_link" title="редактировать">редактировать</a>
                                         <?php endif; ?>
                                         <?php if ($mypitch->multiwinner == 0):?>
                                         <a data-id="<?=$mypitch->id?>" href="/pitches/delete/<?=$mypitch->id?>" class="delete deleteheader mypitch_delete_link" title="удалить">удалить</a>
