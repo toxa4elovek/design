@@ -930,9 +930,14 @@ class PitchesController extends AppController
         }
     }
 
+    /**
+     * Метод редактирования черновика/или запущенного проекта
+     *
+     * @return array|object|void
+     */
     public function edit()
     {
-        if (isset($this->request->id) && (is_numeric($this->request->id)) && ($pitch = Pitch::first($this->request->id)) && (($this->userHelper->isPitchOwner($pitch->user_id)) || ($this->userHelper->isUserManagerOfCurrentUser($pitch->user_id)) || ($this->userHelper->isAdmin()))) {
+        if (isset($this->request->id) && is_numeric($this->request->id) && ($pitch = Pitch::first($this->request->id)) && ($this->userHelper->isPitchOwner($pitch->user_id) || $this->userHelper->isUserManagerOfCurrentUser($pitch->user_id) || $this->userHelper->isAdmin())) {
             $category = Category::first($pitch->category_id);
             $files = [];
             if (count(unserialize($pitch->filesId)) > 0) {
@@ -942,7 +947,7 @@ class PitchesController extends AppController
             $experts = Expert::all(['order' => ['id' => 'asc']]);
             // Referal correction
             if (!empty($pitch->referal)) {
-                if ((User::isReferalAllowed($pitch->user_id) != 1) || (false == Pitch::isReferalAllowed($pitch))) {
+                if ((User::isReferalAllowed($pitch->user_id) !== 1) || (false === (bool) Pitch::isReferalAllowed($pitch))) {
                     $receiptComission = Receipt::first(['conditions' => ['pitch_id' => $pitch->id, 'name' => ['LIKE' => '%Сбор%']]]);
                     $receiptComission->value += $pitch->referal_sum;
                     $receiptComission->save();
@@ -952,7 +957,7 @@ class PitchesController extends AppController
                     $pitch->save();
                 }
             }
-            if (($category->id != 20) || ($category->id == 20 && $pitch->billed == 1)) {
+            if (((int) $category->id !== 20) || ((int) $category->id === 20 && (int) $pitch->billed === 1)) {
                 return compact('pitch', 'category', 'files', 'experts', 'codes');
             } else {
                 $receipt = Receipt::exportToArray($pitch->id);
