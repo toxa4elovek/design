@@ -580,7 +580,7 @@ class PitchesController extends AppController
             //$event->setEventCategory('Создание проекта');
             //$event->setEventAction('Пользователь выбрал категорию «' . $category->title . '»');
             //$gatracking->sendTracking($event);
-            if ($category->id != 20) {
+            if ((int) $category->id !== 20) {
                 return compact('category', 'experts', 'referal', 'referalId', 'promocode');
             } else {
                 if ($this->userHelper->isLoggedIn() && !$this->userHelper->isSubscriptionActive()) {

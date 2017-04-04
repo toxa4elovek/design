@@ -2,6 +2,7 @@
     <?= $this->view()->render(['element' => 'newbrief/awardfield'], ['pitch' => $pitch, 'category' => $category]); ?>
     <div class="clr"></div>
     <!-- <div id="indicator" class="indicator low tooltip" title="С помощью этой шкалы мы информируем вас о средних финансовых запросах современного фрилансера. Чем больше сумма вознаграждения, тем больше дизайнеров откликнется, тем больше вариантов на выбор вы получите."> -->
+    <?php if((int) $category->id !== 22):?>
     <div id="indicator" class="indicator low" data-normal="183" data-high="366">
         <div class="bar">
             <div class="line"></div>
@@ -39,7 +40,8 @@
                 <?php endif;?></li>
         </ul>
     </div><!-- .indicator -->
+    <?php endif?>
     <?php if ($category->id != 20): ?>
-    <img src="/img/comissions.png" style="margin-bottom: 30px;">
+    <!--img src="/img/comissions.png" style="margin-bottom: 30px;"-->
     <?php endif?>
 </div><!-- .set-price -->

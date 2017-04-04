@@ -45,8 +45,13 @@ $specifics = unserialize($pitch->specifics);
 <input type="hidden" id="referal" value="<?=$pitch->referal_sum;?>">
 <input type="hidden" id="referalId" value="<?=$pitch->referal;?>">
 <script>
-var feeRatesOrig = {low: <?php echo FEE_LOW;?>, normal: <?php echo FEE_NORMAL;?>, good: <?php echo FEE_GOOD;?>};
-var feeRates = {low: <?php echo FEE_LOW;?>, normal: <?php echo FEE_NORMAL;?>, good: <?php echo FEE_GOOD;?>};
+    <?php if((int) $category->id === 22):?>
+    var feeRatesOrig = {low: <?php echo FEE_LOW_MICRO; ?>, normal: <?php echo FEE_NORMAL_MICRO; ?>, good: <?php echo FEE_GOOD_MICRO; ?>};
+    var feeRates = {low: <?php echo FEE_LOW_MICRO; ?>, normal: <?php echo FEE_NORMAL_MICRO; ?>, good: <?php echo FEE_GOOD_MICRO; ?>};
+    <?php else: ?>
+    var feeRatesOrig = {low: <?php echo FEE_LOW; ?>, normal: <?php echo FEE_NORMAL; ?>, good: <?php echo FEE_GOOD; ?>};
+    var feeRates = {low: <?php echo FEE_LOW; ?>, normal: <?php echo FEE_NORMAL; ?>, good: <?php echo FEE_GOOD; ?>};
+    <?php endif?>
 </script>
 <aside class="summary-price expanded">
     <h3>Итого:</h3>
@@ -144,21 +149,30 @@ endif?>
 
         <?= $this->view()->render(['element' => 'newbrief/setprice_block'], ['pitch' => $pitch, 'category' => $category]); ?>
 
-        <div style="margin-top:5px;height:200px;">
-
-            <div style="margin-bottom:40px">
-                <input <?php if ($pitch->guaranteed == 1): echo "checked"; endif;?> style="vertical-align: top;margin-top:3px" id="guaranteedTrue" type="radio" name="isGuaranteed" value="1" data-option-title="Гарантированный проект" data-option-value="950">
-                <label for="guaranteedTrue" style="text-shadow: 0 1px 1px #eee;font-size: 29px; color:#658fa5; font-family: 'RodeoC', 'Helvetica Neue';margin-left:10px;">Гарантированный проект&nbsp;&nbsp;&nbsp;+950р.</label>
-                <p class="guaranteeExplanation" id="guaranteedTooltip">Вы гарантируете, что выберете победителя в любом случае, тем самым инициировав до 40% больше решений. Мы выделяем такой проект в списке. <?php if ($category->id == 7): echo 'Копирайтеры'; else: echo 'Дизайнеры'; endif;?> увидят, что проект не останется без победителя, и вы получите больший выбор идей.</p>
+        <?php if((int) $category->id === 22):?>
+            <div style="margin-top:35px;height:100px;">
+                <div>
+                    <input style="vertical-align: top;margin-top:3px" id="guaranteedFalse" type="hidden" name="isGuaranteed" value="0" data-option-title="Гарантированный проект">
+                    <label for="guaranteedFalse" style="text-shadow: 0 1px 1px #eee;font-size: 29px; color:#6f6f6f; font-family: 'RodeoC', 'Helvetica Neue';margin-left:10px;">Внимание!</label>
+                    <p class="guaranteeExplanation" id="nonguaranteedTooltip" style="padding-left: 10px;">
+                        При создании «Микропроекта» мы не можем обеспечить интерес дизайнеров к конкурсу, поэтому опция <a href="/answers/view/71" target="_blank">«Гарантировать»</a> недоступна.</p>
+                </div>
             </div>
+        <?php else: ?>
+            <div style="margin-top:5px;height:200px;">
+                <div style="margin-bottom:40px">
+                    <input <?php if ($pitch->guaranteed == 1): echo "checked"; endif;?> style="vertical-align: top;margin-top:3px" id="guaranteedTrue" type="radio" name="isGuaranteed" value="1" data-option-title="Гарантированный проект" data-option-value="950">
+                    <label for="guaranteedTrue" style="text-shadow: 0 1px 1px #eee;font-size: 29px; color:#658fa5; font-family: 'RodeoC', 'Helvetica Neue';margin-left:10px;">Гарантированный проект&nbsp;&nbsp;&nbsp;+950р.</label>
+                    <p class="guaranteeExplanation" id="guaranteedTooltip">Вы гарантируете, что выберете победителя в любом случае, тем самым инициировав до 40% больше решений. Мы выделяем такой проект в списке. <?php if ($category->id == 7): echo 'Копирайтеры'; else: echo 'Дизайнеры'; endif;?> увидят, что проект не останется без победителя, и вы получите больший выбор идей.</p>
+                </div>
 
-            <div>
-                <input <?php if ($pitch->guaranteed == 0): echo "checked"; endif;?> style="vertical-align: top;margin-top:3px" id="guaranteedFalse" type="radio" name="isGuaranteed" value="0" data-option-title="Гарантированный проект">
-                <label for="guaranteedFalse" style="text-shadow: 0 1px 1px #eee;font-size: 29px; color:#6f6f6f; font-family: 'RodeoC', 'Helvetica Neue';margin-left:10px;">Проект без гарантий&nbsp;&nbsp;&nbsp;0р.</label>
-                <p class="guaranteeExplanation" id="nonguaranteedTooltip" style=" display:none;">При активном взаимодействии с <?php if ($category->id == 7): echo 'копирайтерами'; else: echo 'дизайнерами'; endif;?> вы сможете <a href="/answers/view/71" target="_blank">вернуть деньги, если решения не понравятся</a>. Отсутствие гарантий, однако, спровоцирует меньший интерес к проекту.</p>
+                <div>
+                    <input <?php if ($pitch->guaranteed == 0): echo "checked"; endif;?> style="vertical-align: top;margin-top:3px" id="guaranteedFalse" type="radio" name="isGuaranteed" value="0" data-option-title="Гарантированный проект">
+                    <label for="guaranteedFalse" style="text-shadow: 0 1px 1px #eee;font-size: 29px; color:#6f6f6f; font-family: 'RodeoC', 'Helvetica Neue';margin-left:10px;">Проект без гарантий&nbsp;&nbsp;&nbsp;0р.</label>
+                    <p class="guaranteeExplanation" id="nonguaranteedTooltip" style=" display:none;">При активном взаимодействии с <?php if ($category->id == 7): echo 'копирайтерами'; else: echo 'дизайнерами'; endif;?> вы сможете <a href="/answers/view/71" target="_blank">вернуть деньги, если решения не понравятся</a>. Отсутствие гарантий, однако, спровоцирует меньший интерес к проекту.</p>
+                </div>
             </div>
-
-        </div>
+        <?php endif ?>
 
         <?= $this->view()->render(['element' => 'newbrief/time_block'], compact('category', 'pitch')); ?>
 
@@ -172,7 +186,9 @@ endif?>
                 text-align: center;
                 text-transform: uppercase;margin-bottom:30px;">Дополнительные опции</h1>
 
-        <script>var fillBrief = 0;</script>
+        <script>
+            var fillBrief = 0;
+        </script>
 
         <div class="ribbon complete-brief" style="padding-top: 35px; height: 56px; padding-bottom: 0;">
             <p class="option"><label><input type="checkbox" name="" <?php if ($pitch->brief): echo "checked"; endif;?> class="single-check" data-option-title="Заполнение брифа" data-option-value="2750" id="phonebrief">Заполнить бриф</label></p>

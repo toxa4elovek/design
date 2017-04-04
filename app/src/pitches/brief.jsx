@@ -69,7 +69,7 @@ $(document).ready(function () {
     var isBilled = $('#billed').val()
     var existsNotPublshed = (Cart.id != 0) && (isBilled == 0)
     var notExists = (Cart.id == 0)
-    if ($('input[name="isGuaranteed"]:checked').length == 0) {
+    if (($('input[name="isGuaranteed"][type="radio"]').length > 0) && ($('input[name="isGuaranteed"]:checked').length === 0)) {
       $.scrollTo(awardInput, {duration: 600, onAfter: function () {
           alert('Необходимо уточнить, оставляете ли вы проект без гарантий или создаете гарантированный проект.')
         }
@@ -1058,9 +1058,11 @@ function FeatureCart () {
       initVal = this.award.attr('value')
     }
     self.addOption(self.awardKey, initVal)
-    var radioButton = $('#guaranteedTrue')
-    radioButton.prop('checked', true)
-    Cart.addOption(radioButton.data('optionTitle'), radioButton.data('optionValue'))
+    if($('#guaranteedTrue').length === 1) {
+      const radioButton = $('#guaranteedTrue')
+      radioButton.prop('checked', true)
+      Cart.addOption(radioButton.data('optionTitle'), radioButton.data('optionValue'))
+    }
     if (self.id > 0) {
       var awardName = ($('input[name=category_id]').val() == 7) ? 'Награда копирайтеру' : 'Награда Дизайнеру'
       self.addOption(awardName, initVal)

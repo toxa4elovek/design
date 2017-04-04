@@ -108,6 +108,10 @@ define('FEE_LOW', 0.295);
 define('FEE_NORMAL', 0.245);
 define('FEE_GOOD', 0.205);
 
+define('FEE_LOW_MICRO', 1);
+define('FEE_NORMAL_MICRO', 0.75);
+define('FEE_GOOD_MICRO', 0.5);
+
 define('COPY_BASE_PRICE', 7000);
 
 define('WINS_FOR_VIEW', 1); // Designer`s wins for allow private pitches view

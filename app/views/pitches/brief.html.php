@@ -156,7 +156,7 @@ endif;
             function renderNumBox($category)
             {
                 $categoriesWithBox = [2, 3, 4, 6, 8, 9, 10, 11, 12];
-                if (!in_array($category, $categoriesWithBox)) {
+                if (!in_array((int) $category, $categoriesWithBox, true)) {
                     return '';
                 }
                 $info = [
@@ -188,7 +188,7 @@ endif;
 
             <?php echo renderNumBox($category->id) ?>
 
-            <?php if ($category->id == 7): ?>
+            <?php if ((int) $category->id === 7): ?>
                 <div class="groupc">
                     <p>
                         <label>Выберите вид копирайтинга</label>
@@ -204,8 +204,17 @@ endif;
 
             <?= $this->view()->render(['element' => 'newbrief/setprice_block'], ['pitch' => $pitch, 'category' => $category]); ?>
 
+            <?php if((int) $category->id === 22):?>
+            <div style="margin-top:35px;height:100px;">
+                <div>
+                    <input style="vertical-align: top;margin-top:3px" id="guaranteedFalse" type="hidden" name="isGuaranteed" value="0" data-option-title="Гарантированный проект">
+                    <label for="guaranteedFalse" style="text-shadow: 0 1px 1px #eee;font-size: 29px; color:#6f6f6f; font-family: 'RodeoC', 'Helvetica Neue';margin-left:10px;">Внимание!</label>
+                    <p class="guaranteeExplanation" id="nonguaranteedTooltip" style="padding-left: 10px;">
+                        При создании «Микропроекта» мы не можем обеспечить интерес дизайнеров к конкурсу, поэтому опция <a href="/answers/view/71" target="_blank">«Гарантировать»</a> недоступна.</p>
+                </div>
+            </div>
+            <?php else: ?>
             <div style="margin-top:5px;height:200px;">
-
                 <div style="margin-bottom:40px">
                     <input style="vertical-align: top;margin-top:3px" id="guaranteedTrue" type="radio" name="isGuaranteed" value="1" data-option-title="Гарантированный проект" data-option-value="950">
                     <label for="guaranteedTrue" style="text-shadow: 0 1px 1px #eee;font-size: 29px; color:#658fa5; font-family: 'RodeoC', 'Helvetica Neue';margin-left:10px;">Гарантированный проект&nbsp;&nbsp;&nbsp;+950р.</label>
@@ -217,8 +226,8 @@ endif;
                     <label for="guaranteedFalse" style="text-shadow: 0 1px 1px #eee;font-size: 29px; color:#6f6f6f; font-family: 'RodeoC', 'Helvetica Neue';margin-left:10px;">Проект без гарантий&nbsp;&nbsp;&nbsp;0р.</label>
                     <p class="guaranteeExplanation" id="nonguaranteedTooltip" style=" display:none;">При активном взаимодействии с <?php if ($category->id == 7): echo 'копирайтерами'; else: echo 'дизайнерами'; endif;?> вы сможете <a href="/answers/view/71" target="_blank">вернуть деньги, если решения не понравятся</a>. Отсутствие гарантий, однако, спровоцирует меньший интерес к проекту.</p>
                 </div>
-
             </div>
+            <?php endif ?>
 
             <?= $this->view()->render(['element' => 'newbrief/time_block'], compact('category', 'pitch')); ?>
 
@@ -233,8 +242,13 @@ endif;
                 text-transform: uppercase;margin-bottom:30px;">Дополнительные опции</h1>
             <script>
                 var fillBrief = <?php echo ($this->session->read('fillbrief')) ? 1 : 0; ?>;
+                <?php if((int) $category->id === 22):?>
+                var feeRatesOrig = {low: <?php echo FEE_LOW_MICRO; ?>, normal: <?php echo FEE_NORMAL_MICRO; ?>, good: <?php echo FEE_GOOD_MICRO; ?>};
+                var feeRates = {low: <?php echo FEE_LOW_MICRO; ?>, normal: <?php echo FEE_NORMAL_MICRO; ?>, good: <?php echo FEE_GOOD_MICRO; ?>};
+                <?php else: ?>
                 var feeRatesOrig = {low: <?php echo FEE_LOW; ?>, normal: <?php echo FEE_NORMAL; ?>, good: <?php echo FEE_GOOD; ?>};
                 var feeRates = {low: <?php echo FEE_LOW; ?>, normal: <?php echo FEE_NORMAL; ?>, good: <?php echo FEE_GOOD; ?>};
+                <?php endif?>
             </script>
 
             <div class="ribbon complete-brief" style="padding-top: 35px; height: 56px; padding-bottom: 0;">
