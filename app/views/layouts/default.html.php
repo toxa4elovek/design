@@ -26,6 +26,9 @@
     <meta property="og:type" content="website"/>
     <meta property="fb:app_id" content="202765613136579"/>
     <meta name="yandex-verification" content="1e23f2e572159f90" />
+    <?php if(isset($pitch) && ((int) $pitch->private === 1) && preg_match('@/pitches/@', $_SERVER['REQUEST_URI'])): ?>
+        <meta name="robots" content="noindex" />
+    <?php endif?>
     <?php echo $this->Og->getOgUrl(''); ?>
     <?php if (isset($solution, $solution->images, $solution->images['solution_solutionView'])):
         if (!isset($solution->images['solution_galleryLargeSize'][0])):

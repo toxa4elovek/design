@@ -983,10 +983,11 @@ class PitchesController extends AppController
             if (($pitch->published == 0) && (($currentUser != $pitch->user_id) && ($currentUser['isAdmin'] != 1) && (!in_array($currentUser['id'], User::$admins)))) {
                 return $this->redirect('/pitches');
             }
-            if ($pitch->private == 1) {
-                if (($pitch->user_id != Session::read('user.id')) && (!in_array(Session::read('user.id'), User::$admins)) && (!$isExists = Request::first(['conditions' => ['user_id' => Session::read('user.id'), 'pitch_id' => $pitch->id]]))) {
+            if ((int) $pitch->private === 1) {
+                if (($pitch->user_id != Session::read('user.id')) && (!$this->userHelper->isUserManagerOfCurrentUser($pitch->user_id)) && (!in_array(Session::read('user.id'), User::$admins)) && (!$isExists = Request::first(['conditions' => ['user_id' => Session::read('user.id'), 'pitch_id' => $pitch->id]]))) {
                     return $this->redirect('/requests/sign/'.$pitch->id);
                 }
+                $this->response->headers('X-Robots-Tag', 'noindex, nofollow');
             }
             $pitch->views += 1;
             $pitch->save();
@@ -1004,15 +1005,6 @@ class PitchesController extends AppController
     public function view()
     {
         if ($pitch = Pitch::first(['conditions' => ['Pitch.id' => $this->request->id], 'with' => ['User']])) {
-            /*if(($pitch->status == 1) && ($pitch->awarded != 0) && ($this->userHelper->isPitchOwner($pitch->user_id))) {
-                $winningSolution = Solution::first($pitch->awarded);
-                if($winningSolution->step > 2) {
-                    $closingStep = $winningSolution->step;
-                }else{
-                    $closingStep = 2;
-                }
-                return $this->redirect("/users/step$closingStep/$winningSolution->id");
-            }*/
             $nameInflector = new NameInflector();
             $avatarHelper = new AvatarHelper();
             $autosuggestUsers = [];
@@ -1042,10 +1034,11 @@ class PitchesController extends AppController
             if (($pitch->published == 0) && ((!$this->userHelper->isPitchOwner($pitch->user_id)) && (!$this->userHelper->isAdmin()) && (!$this->userHelper->isUserManagerOfCurrentUser($pitch->user_id)) && (!$this->userHelper->isManagerOfProject($pitch->id)))) {
                 return $this->redirect('/pitches');
             }
-            if ($pitch->private == 1) {
+            if ((int) $pitch->private === 1) {
                 if ((!$this->userHelper->isPitchOwner($pitch->user_id)) && (!$this->userHelper->isUserManagerOfCurrentUser($pitch->user_id)) && (!$this->userHelper->isManagerOfProject($pitch->id)) && (!$this->userHelper->isAdmin()) && (!$isExists = Request::first(['conditions' => ['user_id' => $currentUser['id'], 'pitch_id' => $pitch->id]]))) {
                     return $this->redirect('/requests/sign/'.$pitch->id);
                 }
+                $this->response->headers('X-Robots-Tag', 'noindex, nofollow');
             }
 
             $canViewPrivate = false;
@@ -1253,10 +1246,11 @@ Disallow: /pitches/upload/'.$pitch['id'];
             if (($pitch->published == 0) && (!$this->userHelper->isUserManagerOfCurrentUser($pitch->user_id)) && ((!$this->userHelper->isPitchOwner($pitch->user_id)) && (!$this->userHelper->isAdmin()))) {
                 return $this->redirect('/pitches');
             }
-            if ($pitch->private == 1) {
+            if ((int) $pitch->private === 1) {
                 if (($pitch->user_id != Session::read('user.id')) && (!$this->userHelper->isUserManagerOfCurrentUser($pitch->user_id)) && (!in_array(Session::read('user.id'), User::$admins)) && (!$isExists = Request::first(['conditions' => ['user_id' => Session::read('user.id'), 'pitch_id' => $pitch->id]]))) {
                     return $this->redirect('/requests/sign/'.$pitch->id);
                 }
+                $this->response->headers('X-Robots-Tag', 'noindex, nofollow');
             }
             $nominatedSolutionOfThisPitch = Solution::first([
                 'conditions' => ['OR' => ['awarded' => 1, 'nominated' => 1], 'pitch_id' => $pitch->id],
@@ -1315,10 +1309,11 @@ Disallow: /pitches/upload/'.$pitch['id'];
             if (($pitch->published == 0) && (!$this->userHelper->isUserManagerOfCurrentUser($pitch->user_id)) && (($currentUser != $pitch->user_id) && ($currentUser['isAdmin'] != 1) && (!in_array($currentUser['id'], User::$admins)))) {
                 return $this->redirect('/pitches');
             }
-            if ($pitch->private == 1) {
+            if ((int) $pitch->private === 1) {
                 if (($pitch->user_id != Session::read('user.id')) && (!$this->userHelper->isUserManagerOfCurrentUser($pitch->user_id)) && (!in_array(Session::read('user.id'), User::$admins)) && (!$isExists = Request::first(['conditions' => ['user_id' => Session::read('user.id'), 'pitch_id' => $pitch->id]]))) {
                     return $this->redirect('/requests/sign/'.$pitch->id);
                 }
+                $this->response->headers('X-Robots-Tag', 'noindex, nofollow');
             }
             $nominatedSolutionOfThisPitch = Solution::first([
                 'conditions' => ['OR' => ['awarded' => 1, 'nominated' => 1], 'pitch_id' => $pitch->id],
