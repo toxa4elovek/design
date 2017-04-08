@@ -399,7 +399,7 @@
         </div></div>
 
         <div class="tos-container supplement" style="margin-bottom: 20px; position: relative;">
-            <label><input type="checkbox" name="tos" style="vertical-align: middle; margin-right: 5px;"/>Я прочитал(а) и выражаю безусловное согласие с условиями настоящего <a target="_blank" href="/docs/dogovor_2016.pdf" style="text-decoration: none;">конкурсного соглашения</a>.</label>
+            <label><input type="checkbox" name="tos" style="vertical-align: middle; margin-right: 5px;"/>Я прочитал(а) и выражаю безусловное согласие с условиями настоящего <a target="_blank" href="/docs/dogovor_oferta_04_2017.pdf" style="text-decoration: none;">конкурсного соглашения</a>.</label>
             <?= $this->view()->render(['element' => 'newbrief/required_star'], ['style' => "position: absolute; top:0;right:0"]) ?>
         </div>
         <p class="submit submit-brief">

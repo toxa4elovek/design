@@ -146,7 +146,7 @@ http://godesigner.ru/answers/view/73'];
                 $solution = $params['solution'];
                 User::sendWinnerComment($solution);
                 Task::createNewTask($solution->id, 'victoryNotification');
-                if (!$solution->pitch->private) {
+                if (((int) $solution->pitch->category_id !== 22) && (!$solution->pitch->private)) {
                     Task::createNewTask($solution->id, 'victoryNotificationTwitter');
                     $config = new Config();
                     $config->setApplicationId('46001cba-49be-4cc5-945a-bac990a6d995');

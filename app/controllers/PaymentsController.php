@@ -24,22 +24,23 @@ class PaymentsController extends AppController
         error_reporting(0);
         @ini_set('display_errors', 0);
         if (!empty($this->request->data)) {
-            if (($this->request->data['SessionType'] == 'Pay') && ($this->request->data['Success'] == 'True')) {
+            if ((($this->request->data['SessionType'] === 'Pay') && ($this->request->data['Success'] === 'True')) ||
+            (($this->request->data['SessionType'] === 'Block') && ($this->request->data['Success'] === 'True'))) {
                 $transaction = Payment::create();
                 $transaction->set($this->request->data);
                 $transaction->save();
                 $paytureId = $this->request->data['OrderId'];
                 Logger::write('info', $paytureId, ['name' => 'payture']);
                 if ($pitch = Pitch::first(['conditions' => ['payture_id' => $paytureId]])) {
-                    if (($pitch->type == 'plan-payment') || ($pitch->type == 'fund-balance')) {
+                    if (($pitch->type === 'plan-payment') || ($pitch->type === 'fund-balance')) {
                         SubscriptionPlan::activatePlanPayment($pitch->id);
-                    } elseif ($pitch->type == 'penalty') {
+                    } elseif ($pitch->type === 'penalty') {
                         Pitch::activatePenalty($pitch->id);
                     } else {
-                        if ($pitch->blank == 1) {
+                        if ((int) $pitch->blank === 1) {
                             Pitch::activateLogoSalePitch($pitch->id);
                         } else {
-                            if ($pitch->multiwinner != 0) {
+                            if ((int) $pitch->multiwinner !== 0) {
                                 Pitch::activateNewWinner($pitch->id);
                             } else {
                                 Pitch::activate($pitch->id);
@@ -79,6 +80,9 @@ class PaymentsController extends AppController
                 if ($data = unserialize($pitch->specifics)) {
                     $url = 'https://godesigner.ru/users/hireDesigner/' . $data['designer_id'];
                 }
+            }
+            if((int) $pitch->category_id === 22) {
+                $type = 'Block';
             }
             $result = Payture::init([
                 'SessionType' => $type,

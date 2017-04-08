@@ -12,7 +12,7 @@ class Payture
     public static $url = 'secure.payture.com';
     #public static $key = 'GoDesignerPSB437';
     public static $key = 'GoDesignerOpen3DS';
-    public static $password = '123';
+    public static $password = 'hF4bUvS5';
     public static $scheme = 'https';
 
     /**
@@ -46,6 +46,24 @@ class Payture
         ];
         $service = new Service($config);
         $result = $service->get(self::__formUrl('PayStatus'), self::__formOrderRequestData($orderId));
+        return self::__getArrayFromXml($result);
+    }
+
+    /**
+     * Метод снимает холдирование с суммы $amount
+     *
+     * @param $orderId
+     * @param $amount
+     * @return mixed
+     */
+    public static function unblock($orderId, $amount)
+    {
+        $config = [
+            'scheme'     => self::$scheme,
+            'host'       => self::$url
+        ];
+        $service = new Service($config);
+        $result = $service->get(self::__formUrl('Unblock'), self::__formOrderRefundData($orderId, $amount));
         return self::__getArrayFromXml($result);
     }
 

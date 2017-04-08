@@ -28,6 +28,9 @@
             if ((date('N') > 5) && ($category->discountPrice != $category->minAward)):
                 $showBill = false;
             endif;
+            if ((int) $category->id === 22) {
+                $showBill = false;
+            }
             if ($showBill):?>
             <tr>
                 <td colspan="4"><div class="g_line"><i>или</i></div></td>

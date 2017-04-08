@@ -2049,7 +2049,12 @@ textarea.placeholder {
     text-shadow: none;
     color: #666;
 }
-
+.pitch-category .empty {
+    background: none;
+}
+.pitch-category .empty:hover {
+    background: none;
+}
 .pitch-category .big {
     height: 252px;
     background: url("/img/category-flag.png") 0 0 no-repeat;
@@ -2120,6 +2125,10 @@ textarea.placeholder {
 .pitch-category .category-subscriber a {
     padding-left: 59px;
     background: url("/img/category/category_subscriber.png") 18px 16px no-repeat;
+}
+.pitch-category .category-micro a {
+    background: none;
+    padding-left: 35px;
 }
 .pitch-category .category-buklet a:hover {
     background-image: url("/img/category/category-buklet-hover.png");

@@ -71,13 +71,14 @@ class Pitch extends AppModel
             $result = $chain->next($self, $params, $chain);
             if ($result) {
                 $params['pitch'] = Pitch::first($params['id']);
+                $project = $params['pitch'];
                 if ($params['pitch']->referal > 0) {
                     User::fillBalance((int) $params['pitch']->referal, 500);
                 }
-                if (($params['pitch']->status == 0) && ($params['pitch']->brief == 0)) {
+                if (((int) $project->status === 0) && ((int) $project->brief === 0)) {
                     Event::createEvent($params['id'], 'PitchCreated', $params['user_id']);
                     // Send messages for Public Pitch only
-                    if ($params['pitch']->private != 1) {
+                    if (((int) $project->category_id !== 22) && ((int) $project->private !== 1)) {
                         $mediaManager = new SocialMediaManager;
                         $mediaManager->postNewProjectMessage($params['pitch']);
                     }
@@ -92,8 +93,7 @@ class Pitch extends AppModel
                 if ($params['pitch']->type === '') {
                     Lead::resetLeadForUser($params['pitch']->user_id);
                 }
-                $project = $params['pitch'];
-                if (($project->category_id != 20) && (!empty($project->ga_id))) {
+                if (((int) $project->category_id !== 20) && (!empty($project->ga_id))) {
                     $options = ['client_id' => $project->ga_id, 'user_id' => $project->user_id];
                     $tracking = new \Racecore\GATracking\GATracking('UA-9235854-5', $options);
 

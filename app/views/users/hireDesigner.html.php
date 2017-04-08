@@ -27,7 +27,7 @@
                     <label style="display:block;">2. Дней на исполнение <br/><input type="text" required name="days" value="<?= $projectData['days']?>" pattern="^[0-9]+$" placeholder="5"/></label>
                     <label style="display:block;">3. Опишите задачу<a href="/answers/view/4" class="hint" target="_blank">Что указывать в брифе?</a><br/><textarea name="description" required><?= $projectData['description']?></textarea></label>
                     <div class="tos-container supplement" style="padding-left: 2px; margin-bottom: 20px; position: relative;">
-                        <label><input type="checkbox" name="tos" required style="vertical-align: middle; margin-right: 5px;">Я прочитал(а) и выражаю безусловное согласие с условиями настоящего <a target="_blank" href="/docs/dogovor_oferta_200317.pdf" style="text-decoration: none;">договора публичной оферты</a>.</label>
+                        <label><input type="checkbox" name="tos" required style="vertical-align: middle; margin-right: 5px;">Я прочитал(а) и выражаю безусловное согласие с условиями настоящего <a target="_blank" href="/docs/dogovor_oferta_04_2017.pdf" style="text-decoration: none;">договора публичной оферты</a>.</label>
                     </div>
                     <input class="clear button" type="submit" value="Оплатить" style="margin-bottom: 17px;">
                 </form>
