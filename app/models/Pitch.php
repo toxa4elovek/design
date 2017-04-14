@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\extensions\billing\Payture;
 use app\extensions\mailers\NotificationsMailer;
 use app\extensions\social\TwitterAPI;
 use app\extensions\storage\Rcache;
@@ -41,7 +42,6 @@ use lithium\data\entity\Record;
  */
 class Pitch extends AppModel
 {
-
     public $belongsTo = ['Category', 'User'];
     public $hasMany = ['Solution'];
 
@@ -71,14 +71,13 @@ class Pitch extends AppModel
             $result = $chain->next($self, $params, $chain);
             if ($result) {
                 $params['pitch'] = Pitch::first($params['id']);
-                $project = $params['pitch'];
                 if ($params['pitch']->referal > 0) {
                     User::fillBalance((int) $params['pitch']->referal, 500);
                 }
-                if (((int) $project->status === 0) && ((int) $project->brief === 0)) {
+                if (($params['pitch']->status == 0) && ($params['pitch']->brief == 0)) {
                     Event::createEvent($params['id'], 'PitchCreated', $params['user_id']);
                     // Send messages for Public Pitch only
-                    if (((int) $project->category_id !== 22) && ((int) $project->private !== 1)) {
+                    if (((int) $params['pitch']->private !== 1) || ((int) $params['pitch']->category_id !== 22)) {
                         $mediaManager = new SocialMediaManager;
                         $mediaManager->postNewProjectMessage($params['pitch']);
                     }
@@ -93,7 +92,8 @@ class Pitch extends AppModel
                 if ($params['pitch']->type === '') {
                     Lead::resetLeadForUser($params['pitch']->user_id);
                 }
-                if (((int) $project->category_id !== 20) && (!empty($project->ga_id))) {
+                $project = $params['pitch'];
+                if (($project->category_id != 20) && (!empty($project->ga_id))) {
                     $options = ['client_id' => $project->ga_id, 'user_id' => $project->user_id];
                     $tracking = new \Racecore\GATracking\GATracking('UA-9235854-5', $options);
 
@@ -138,8 +138,7 @@ class Pitch extends AppModel
             $client = User::first($params['pitch']->user_id);
             $nameInflector = new nameInflector();
             if ($params['pitch']->expert == 0):
-                $message = Comment::getWinnerSelectionCommentForClient($nameInflector->renderName($client->first_name, $client->last_name), Pitch::getDaysForWinnerSelection($params['pitch']->id), $params['pitch']);
-            else:
+                $message = Comment::getWinnerSelectionCommentForClient($nameInflector->renderName($client->first_name, $client->last_name), Pitch::getDaysForWinnerSelection($params['pitch']->id), $params['pitch']); else:
                 $message = '@' . $nameInflector->renderName($client->first_name, $client->last_name) . ', проект завершен и ожидает мнения эксперта, который в течение 2 рабочих дней выберет 3 идеи, которые лучше всего отвечают поставленной задаче. Дизайнеры больше не могут предлагать решения и оставлять комментарии!';
             endif;
             $data = ['pitch_id' => $params['pitch']->id, 'reply_to' => $client->id, 'user_id' => $admin, 'text' => $message, 'public' => 1];
@@ -331,40 +330,40 @@ class Pitch extends AppModel
             $user_id = $pitch->user_id;
             $params = compact('id', 'user_id', 'pitch');
             return static::_filter(__FUNCTION__, $params, function ($self, $params) {
-                        extract($params);
-                        if ($pitch->status == 0) {
-                            $category = Category::first($pitch->category_id);
-                            if ($pitch->timelimit == 0) {
-                                $modifier = $category->default_timelimit;
-                            } elseif ($pitch->timelimit == 1) {
-                                $modifier = $category->shortTimelimit;
-                            } elseif ($pitch->timelimit == 2) {
-                                $modifier = $category->shortestTimelimit;
-                            } elseif ($pitch->timelimit == 3) {
-                                $modifier = $category->smallIncreseTimelimit;
-                            } elseif ($pitch->timelimit == 4) {
-                                $modifier = $category->largeIncreaseTimelimit;
-                            }
-                            if ($pitch->published == 0) {
-                                $pitch->started = date('Y-m-d H:i:s');
-                                if ($pitch->type != 'company_project') {
-                                    $pitch->finishDate = date('Y-m-d H:i:s', time() + (DAY * $modifier));
-                                }
-                                $pitch->billed = 1;
-                                if ($pitch->brief) {
-                                    $pitch->published = 0;
-                                } else {
-                                    $pitch->published = 1;
-                                }
-                            } else {
-                                $pitch->billed = 1;
-                            }
-                        } else {
-                            $pitch->billed = 1;
+                extract($params);
+                if ($pitch->status == 0) {
+                    $category = Category::first($pitch->category_id);
+                    if ($pitch->timelimit == 0) {
+                        $modifier = $category->default_timelimit;
+                    } elseif ($pitch->timelimit == 1) {
+                        $modifier = $category->shortTimelimit;
+                    } elseif ($pitch->timelimit == 2) {
+                        $modifier = $category->shortestTimelimit;
+                    } elseif ($pitch->timelimit == 3) {
+                        $modifier = $category->smallIncreseTimelimit;
+                    } elseif ($pitch->timelimit == 4) {
+                        $modifier = $category->largeIncreaseTimelimit;
+                    }
+                    if ($pitch->published == 0) {
+                        $pitch->started = date('Y-m-d H:i:s');
+                        if ($pitch->type != 'company_project') {
+                            $pitch->finishDate = date('Y-m-d H:i:s', time() + (DAY * $modifier));
                         }
-                        $pitch->billed_date = date('Y-m-d H:i:s');
-                        return $pitch->save();
-                    });
+                        $pitch->billed = 1;
+                        if ($pitch->brief) {
+                            $pitch->published = 0;
+                        } else {
+                            $pitch->published = 1;
+                        }
+                    } else {
+                        $pitch->billed = 1;
+                    }
+                } else {
+                    $pitch->billed = 1;
+                }
+                $pitch->billed_date = date('Y-m-d H:i:s');
+                return $pitch->save();
+            });
         }
         return false;
     }
@@ -394,10 +393,20 @@ class Pitch extends AppModel
     {
         $params = compact('pitch');
         return static::_filter(__FUNCTION__, $params, function ($self, $params) {
-                    extract($params);
-                    $pitch->status = 1;
-                    $pitch->save();
-                });
+            extract($params);
+            if ((int) $pitch->category_id === 22) {
+                $count = Solution::count([
+                            'conditions' => ['Solution.pitch_id' => $pitch->id]
+                        ]);
+                if ($count) {
+                    Payture::charge($pitch->payture_id);
+                } else {
+                    Payture::unblock($pitch->payture_id, (int) $pitch->total * 100);
+                }
+            }
+            $pitch->status = 1;
+            $pitch->save();
+        });
     }
 
     public static function addHumanisedTimeleft($result)
@@ -575,12 +584,12 @@ class Pitch extends AppModel
         if ($solution) {
             $params = compact('pitch', 'solution');
             return static::_filter(__FUNCTION__, $params, function ($self, $params) {
-                        extract($params);
-                        $pitch->status = 2;
-                        $pitch->totalFinishDate = date('Y-m-d H:i:s');
-                        $pitch->save();
-                        return true;
-                    });
+                extract($params);
+                $pitch->status = 2;
+                $pitch->totalFinishDate = date('Y-m-d H:i:s');
+                $pitch->save();
+                return true;
+            });
         }
         return false;
     }
@@ -2061,7 +2070,7 @@ class Pitch extends AppModel
         if (isset($commonPitchData['type'])) {
             $type = $commonPitchData['type'];
         }
-        if($type !== 'company_project' && isset($featuresData['total'])) {
+        if ($type !== 'company_project' && isset($featuresData['total'])) {
             $total = $featuresData['total'];
         }
         $categoryId = 20;
@@ -2444,6 +2453,4 @@ class Pitch extends AppModel
     {
         return $record->price >= self::getMinimalAwardForCategoryForDate($record->category_id, $dateTime);
     }
-
-
 }
