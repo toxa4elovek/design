@@ -9,35 +9,35 @@
             <div class="shadow-b"></div>
         </div><!-- .bar -->
         <ul>
-            <li>
-                <?php if (($category->id == 1) && ($this->pitch->getStatisticalAverages($category->id, 'minimal') != 0)):?>
+            <li>Новички
+                <?php /*if (($category->id == 1) && ($this->pitch->getStatisticalAverages($category->id, 'minimal') != 0)):?>
                 ~ <?= $this->pitch->getStatisticalAverages($category->id, 'minimal')?> <?= $this->NumInflector->formatString($this->pitch->getStatisticalAverages($category->id, 'minimal'), ['string' => 'решени',
                     'first' => 'е',
                     'second' => 'я',
                     'third' => 'й'])?>
                 <?php else: ?>
                     мало
-                <?php endif;?>
+                <?php endif;*/?>
             </li>
-            <li>
-                <?php if (($category->id == 1) && ($this->pitch->getStatisticalAverages($category->id, 'normal') != 0)):?>
+            <li>Профессионалы
+                <?php /*if (($category->id == 1) && ($this->pitch->getStatisticalAverages($category->id, 'normal') != 0)):?>
                     ~ <?= $this->pitch->getStatisticalAverages($category->id, 'normal')?> <?= $this->NumInflector->formatString($this->pitch->getStatisticalAverages($category->id, 'normal'), ['string' => 'решени',
                         'first' => 'е',
                         'second' => 'я',
                         'third' => 'й'])?>
                 <?php else: ?>
                     хорошо
-                <?php endif;?>
+                <?php endif;*/?>
             </li>
-            <li>
-                <?php if (($category->id == 1) && ($this->pitch->getStatisticalAverages($category->id, 'good') != 0)):?>
+            <li>ТОП-10
+                <?php /*if (($category->id == 1) && ($this->pitch->getStatisticalAverages($category->id, 'good') != 0)):?>
                 ~ <?= $this->pitch->getStatisticalAverages($category->id, 'good')?> <?= $this->NumInflector->formatString($this->pitch->getStatisticalAverages($category->id, 'good'), ['string' => 'решени',
                     'first' => 'е',
                     'second' => 'я',
                     'third' => 'й'])?>
                 <?php else: ?>
                     самое то!
-                <?php endif;?></li>
+                <?php endif;*/?></li>
         </ul>
     </div><!-- .indicator -->
     <?php endif?>
