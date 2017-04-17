@@ -540,7 +540,7 @@ class UsersController extends \app\controllers\AppController
                     'order' => ['created' => 'desc'],
                     'with' => ['User']]
             );
-            if (0 == $commentCount) {
+            if (0 === $commentCount) {
                 $timelimit = $solution->pitch->category->default_timelimit;
                 if ($solution->pitch->category_id == 20) {
                     $diff = ceil((strtotime($solution->pitch->finishDate) - strtotime($solution->pitch->started)) / DAY);
@@ -549,7 +549,7 @@ class UsersController extends \app\controllers\AppController
                         $timelimit = 5;
                     }
                 }
-                $text = sprintf('Вся переписка до запроса исходников должна быть проведена в рамках этого кабинета. Мы не допускаем обмена контактами до момента одобрения исходников, т.о. в спорной ситуации мы сможем разрешить конфликт. Мы убедительно просим вас соблюдать правила платформы. Срок завершительного этапа %d дней. Предупреждайте, если правки или комментарии займут более 24 часов.', $timelimit);
+                $text = sprintf('Вся переписка до запроса исходников должна быть проведена в рамках этого кабинета. Мы не допускаем обмен контактами, так как в спорной ситуации мы сможем разрешить конфликт. Мы убедительно просим вас соблюдать правила платформы. Срок завершительного этапа %d дней. Предупреждайте, если правки или комментарии займут более 24 часов.', $timelimit);
                 $date = new \DateTime();
                 $dateString = $date->format('Y-m-d H:i:s');
                 $data = [
@@ -771,6 +771,22 @@ class UsersController extends \app\controllers\AppController
             if (0 === $commentCount) {
                 $nameInflector = new NameInflector();
                 $ownerFormatted = $nameInflector->renderName($client->first_name, $client->last_name);
+                $designerFormatted = $nameInflector->renderName($designer->first_name, $designer->last_name);
+                $text = '<a href="#" class="mention-link" data-comment-to="' . $ownerFormatted . '">@' . $ownerFormatted . ',</a> в соответствии с <a href="/answers/view/5" target="_blank">Правилами</a> обмен контактами ограничен. Если вы хотите продолжить работу с <a href="#" class="mention-link" data-comment-to="' . $designerFormatted . '">@' . $designerFormatted . '</a> после завершения, то можете предложить ему <a href="/users/hireDesigner/' . $designer->id . '">Индивидуальный проект</a>.';
+                $date = new \DateTime();
+                $dateString = $date->format('Y-m-d H:i:s');
+                $data = [
+                    'user_id' => 108,
+                    'text' => $text,
+                    'step' => 3,
+                    'solution_id' => $solution->id,
+                    'created' => $dateString,
+                    'touch' => '0000-00-00 00:00:00'
+                ];
+                $comment = Wincomment::create($data);
+                $comment->save();
+                User::sendSpamWincomment($comment, $client);
+
                 $text = '<a href="#" class="mention-link" data-comment-to="' . $ownerFormatted . '">@' . $ownerFormatted . ',</a> на проверку исходников предоставляется 24 часа. Пожалуйста, предупреждайте, если потребуется больше времени на проверку или согласование файлов.';
                 if ((!User::isSubscriptionActive($client->id, $client)) && $client->hasActiveSubscriptionDiscountForRecord()) {
                     $discountEndDate = $client->getSubscriptionDiscountEndTimeForRecord();
