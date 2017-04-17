@@ -54,8 +54,8 @@
                     <div class="green-discount-star" style="top: 75px; right: 5px; -webkit-transform: rotate(12deg) scale(0.4) !important; transform: rotate(12deg) scale(0.4)">
                         <span class="green-discount-star-text">- <?= $discount?></span>
                     </div>
-                    <p class="old-price">49 000</p>
-                    <span class="price" style="margin-top: 17px;"><?= $this->moneyFormatter->formatMoney($this->moneyFormatter->applyDiscount(49000, $discount), ['suffix' => ''])?></span>
+                    <p class="old-price"><?= $this->moneyFormatter->formatMoney($plans[1], ['suffix' => ''])?></p>
+                    <span class="price" style="margin-top: 17px;"><?= $this->moneyFormatter->formatMoney($this->moneyFormatter->applyDiscount($plans[1], $discount), ['suffix' => ''])?></span>
                     <span class="price-description" style="margin-bottom: 32px;">руб./год*</span>
                     <a href="/subscription_plans/subscriber/1" class="small-rounded-button almost-white">Оплатить</a>
                 </div>
@@ -63,8 +63,8 @@
                     <div class="green-discount-star" style="top: 35px; right: -15px; -webkit-transform: rotate(12deg) scale(0.4) !important; transform: rotate(12deg) scale(0.4)">
                         <span class="green-discount-star-text">- <?= $discount?></span>
                     </div>
-                    <p class="old-price" style="padding-left: 0 !important">69 000</p>
-                    <span class="price" style="margin-top: 17px;"><?= $this->moneyFormatter->formatMoney($this->moneyFormatter->applyDiscount(69000, $discount), ['suffix' => ''])?></span>
+                    <p class="old-price" style="padding-left: 0 !important"><?= $this->moneyFormatter->formatMoney($plans[2], ['suffix' => ''])?></p>
+                    <span class="price" style="margin-top: 17px;"><?= $this->moneyFormatter->formatMoney($this->moneyFormatter->applyDiscount($plans[2], $discount), ['suffix' => ''])?></span>
                     <span class="price-description" style="margin-bottom: 32px;">руб./год*</span>
                     <a href="/subscription_plans/subscriber/2" class="small-rounded-button red-button">Оплатить</a>
                 </div>
@@ -72,8 +72,8 @@
                     <div class="green-discount-star" style="top: 80px; right: 5px; -webkit-transform: rotate(12deg) scale(0.4) !important; transform: rotate(12deg) scale(0.4)">
                         <span class="green-discount-star-text">- <?= $discount?></span>
                     </div>
-                    <p class="old-price" style="margin-bottom: 0;">89 000</p>
-                    <span class="price" style="margin-top: 17px;"><?= $this->moneyFormatter->formatMoney($this->moneyFormatter->applyDiscount(89000, $discount), ['suffix' => ''])?></span>
+                    <p class="old-price" style="margin-bottom: 0;"><?= $this->moneyFormatter->formatMoney($plans[3], ['suffix' => ''])?></p>
+                    <span class="price" style="margin-top: 17px;"><?= $this->moneyFormatter->formatMoney($this->moneyFormatter->applyDiscount($plans[3], $discount), ['suffix' => ''])?></span>
                     <span class="price-description" style="margin-bottom: 32px;">руб./год*</span>
                     <a href="/subscription_plans/subscriber/3" class="small-rounded-button almost-white">Оплатить</a>
                 </div>
@@ -152,23 +152,23 @@
                     <tr>
                         <td class="description">* Стоимость тарифного плана не включает гонорары дизайнеру. Абоненты каждого получат возможность<br/> создать счет в рамках сервиса и пополнять его<br/> в зависимости от задач.</td>
                         <td class="try">
-                            <h5><?= $this->moneyFormatter->formatMoney($this->moneyFormatter->applyDiscount(49000, $discount), ['suffix' => ''])?></h5>р./год <a href="/subscription_plans/subscriber/1" class="small-rounded-button almost-white">оплатить</a></td>
+                            <h5><?= $this->moneyFormatter->formatMoney($this->moneyFormatter->applyDiscount($plans[1], $discount), ['suffix' => ''])?></h5>р./год <a href="/subscription_plans/subscriber/1" class="small-rounded-button almost-white">оплатить</a></td>
                         <td class="try">
-                            <h5><?= $this->moneyFormatter->formatMoney($this->moneyFormatter->applyDiscount(69000, $discount), ['suffix' => ''])?></h5>р./год <a href="/subscription_plans/subscriber/2" class="small-rounded-button almost-white">оплатить</a></td>
+                            <h5><?= $this->moneyFormatter->formatMoney($this->moneyFormatter->applyDiscount($plans[2], $discount), ['suffix' => ''])?></h5>р./год <a href="/subscription_plans/subscriber/2" class="small-rounded-button almost-white">оплатить</a></td>
                         <td class="try">
-                            <h5><?= $this->moneyFormatter->formatMoney($this->moneyFormatter->applyDiscount(89000, $discount), ['suffix' => ''])?></h5>р./год <a href="/subscription_plans/subscriber/3" class="small-rounded-button almost-white">оплатить</a></td>
+                            <h5><?= $this->moneyFormatter->formatMoney($this->moneyFormatter->applyDiscount($plans[3], $discount), ['suffix' => ''])?></h5>р./год <a href="/subscription_plans/subscriber/3" class="small-rounded-button almost-white">оплатить</a></td>
                     </tr>
                     <tr style="height: 15px;"><td colspan="4"></td></tr>
                     <tr>
                         <td></td>
-                        <td class="try"><h5>27 000</h5>р. за 6 месяцев <a href="/subscription_plans/subscriber/6" class="small-rounded-button almost-white">оплатить</a></td>
-                        <td class="try"><h5>39 000</h5>р. за 6 месяцев <a href="/subscription_plans/subscriber/7" class="small-rounded-button almost-white">оплатить</a></td>
+                        <td class="try"><h5><?= $this->moneyFormatter->formatMoney($plans[6], ['suffix' => ''])?></h5>р. за 6 месяцев <a href="/subscription_plans/subscriber/6" class="small-rounded-button almost-white">оплатить</a></td>
+                        <td class="try"><h5><?= $this->moneyFormatter->formatMoney($plans[7], ['suffix' => ''])?></h5>р. за 6 месяцев <a href="/subscription_plans/subscriber/7" class="small-rounded-button almost-white">оплатить</a></td>
                         <td></td>
                     </tr>
                     <tr style="height: 15px;"><td colspan="4"></td></tr>
                     <tr>
                         <td></td>
-                        <td class="try"><h5>15 000</h5>р. за 3 месяца <a href="/subscription_plans/subscriber/5" class="small-rounded-button almost-white">оплатить</a></td>
+                        <td class="try"><h5><?= $this->moneyFormatter->formatMoney($plans[5], ['suffix' => ''])?></h5>р. за 3 месяца <a href="/subscription_plans/subscriber/5" class="small-rounded-button almost-white">оплатить</a></td>
                         <td></td>
                         <td></td>
                     </tr>

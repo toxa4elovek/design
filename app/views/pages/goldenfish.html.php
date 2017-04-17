@@ -49,7 +49,7 @@
                     <h3>За 12 месяцев я получу:</h3>
                     <span class="from">от</span> <h1 id="result">1 500 000 Р</h1>
                     <a href="/subscription_plans/subscriber/4" class="yellow-button clean-style-button ">Начать зарабатывать</a>
-                    <span class="nb">39 000 руб./год<br>стоимость &laquo;Золотой рыбки&raquo;</span>
+                    <span class="nb"><?= $this->moneyFormatter->formatMoney($plan, ['suffix' => ''])?>руб./год<br>стоимость &laquo;Золотой рыбки&raquo;</span>
                 </div>
             </div>
 
@@ -104,7 +104,7 @@
                     <ul class="call-to-action">
                         <li class="price">
                             <h3>всего за</h3>
-                            <h1>39 000<span style="font-size: 20px;">руб./год</span></h1>
+                            <h1><?= $this->moneyFormatter->formatMoney($plan, ['suffix' => ''])?><span style="font-size: 20px;">руб./год</span></h1>
                         </li>
                         <li class="press-button">
                             <a href="/subscription_plans/subscriber/4" class="yellow-button clean-style-button ">Начать зарабатывать</a>

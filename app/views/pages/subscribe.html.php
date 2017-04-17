@@ -57,19 +57,19 @@
             <div class="badges-block">
                 <div class="badge" style="">
                     <p>Идеально для частных лиц<br/>  и малого бизнеса</p>
-                    <span class="price">49 000</span>
+                    <span class="price"><?= $this->moneyFormatter->formatMoney($plans[1], ['suffix' => ''])?></span>
                     <span class="price-description">руб./год*</span>
                     <a href="/subscription_plans/subscriber/1" class="small-rounded-button almost-white">Оплатить</a>
                 </div>
                 <div class="center-badge" style="">
                     <p>Идеально для среднего бизнеса<br/>и рекламных агентств</p>
-                    <span class="price">69 000</span>
+                    <span class="price"><?= $this->moneyFormatter->formatMoney($plans[2], ['suffix' => ''])?></span>
                     <span class="price-description">руб./год*</span>
                     <a href="/subscription_plans/subscriber/2" class="small-rounded-button red-button">Оплатить</a>
                 </div>
                 <div class="right-badge" style="">
                     <p>Идеально для маркетинговых<br />отделов или крупных компаний</p>
-                    <span class="price">89 000</span>
+                    <span class="price"><?= $this->moneyFormatter->formatMoney($plans[3], ['suffix' => ''])?></span>
                     <span class="price-description">руб./год*</span>
                     <a href="/subscription_plans/subscriber/3" class="small-rounded-button almost-white">Оплатить</a>
                 </div>
@@ -147,21 +147,21 @@
                 <table class="footer-table">
                     <tr>
                         <td class="description">* Стоимость тарифного плана не включает гонорары дизайнеру. Абоненты каждого получат возможность<br/> создать счет в рамках сервиса и пополнять его<br/> в зависимости от задач.</td>
-                        <td class="try"><h5>49 000</h5>р./год <a href="/subscription_plans/subscriber/1" class="small-rounded-button almost-white">оплатить</a></td>
-                        <td class="try"><h5>69 000</h5>р./год <a href="/subscription_plans/subscriber/2" class="small-rounded-button almost-white">оплатить</a></td>
-                        <td class="try"><h5>89 000</h5>р./год <a href="/subscription_plans/subscriber/3" class="small-rounded-button almost-white">оплатить</a></td>
+                        <td class="try"><h5><?= $this->moneyFormatter->formatMoney($plans[1], ['suffix' => ''])?></h5>р./год <a href="/subscription_plans/subscriber/1" class="small-rounded-button almost-white">оплатить</a></td>
+                        <td class="try"><h5><?= $this->moneyFormatter->formatMoney($plans[2], ['suffix' => ''])?></h5>р./год <a href="/subscription_plans/subscriber/2" class="small-rounded-button almost-white">оплатить</a></td>
+                        <td class="try"><h5><?= $this->moneyFormatter->formatMoney($plans[3], ['suffix' => ''])?></h5>р./год <a href="/subscription_plans/subscriber/3" class="small-rounded-button almost-white">оплатить</a></td>
                     </tr>
                     <tr style="height: 15px;"><td colspan="4"></td></tr>
                     <tr>
                         <td></td>
-                        <td class="try"><h5>27 000</h5>р. за 6 месяцев <a href="/subscription_plans/subscriber/6" class="small-rounded-button almost-white">оплатить</a></td>
-                        <td class="try"><h5>39 000</h5>р. за 6 месяцев <a href="/subscription_plans/subscriber/7" class="small-rounded-button almost-white">оплатить</a></td>
+                        <td class="try"><h5><?= $this->moneyFormatter->formatMoney($plans[6], ['suffix' => ''])?></h5>р. за 6 месяцев <a href="/subscription_plans/subscriber/6" class="small-rounded-button almost-white">оплатить</a></td>
+                        <td class="try"><h5><?= $this->moneyFormatter->formatMoney($plans[7], ['suffix' => ''])?></h5>р. за 6 месяцев <a href="/subscription_plans/subscriber/7" class="small-rounded-button almost-white">оплатить</a></td>
                         <td></td>
                     </tr>
                     <tr style="height: 15px;"><td colspan="4"></td></tr>
                     <tr>
                         <td></td>
-                        <td class="try"><h5>15 000</h5>р. за 3 месяца <a href="/subscription_plans/subscriber/5" class="small-rounded-button almost-white">оплатить</a></td>
+                        <td class="try"><h5><?= $this->moneyFormatter->formatMoney($plans[5], ['suffix' => ''])?></h5>р. за 3 месяца <a href="/subscription_plans/subscriber/5" class="small-rounded-button almost-white">оплатить</a></td>
                         <td></td>
                         <td></td>
                     </tr>

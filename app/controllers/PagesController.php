@@ -12,6 +12,7 @@ use app\models\Pitch;
 use app\models\Schedule;
 use app\models\Solution;
 use app\models\Solutionfile;
+use app\models\SubscriptionPlan;
 use app\models\User;
 use app\models\Wp_post;
 use tmhOAuth\tmhOAuth;
@@ -125,7 +126,8 @@ class PagesController extends AppController
                 $solutions[] = $highList[$i];
             }
         }
-        return compact('solutions');
+        $plan = SubscriptionPlan::getPlan(4)['price'];
+        return compact('solutions', 'plan');
     }
 
     /**
@@ -255,10 +257,14 @@ class PagesController extends AppController
         if ((!empty($this->request->query['sref'])) && User::isValidReferalCodeForSubscribers($this->request->query['sref'])) {
             return $this->redirect($this->request->url);
         }
+        $plans = [];
+        for($i = 1; $i < 8; $i++) {
+            $plans[$i] = SubscriptionPlan::getPlan($i)['price'];
+        }
         if ($this->userHelper->isLoggedIn() && $this->userRecord->hasActiveSubscriptionDiscountForRecord()) {
             $discount = $this->userRecord->getSubscriptionDiscountForRecord();
             $discountEndTime = $this->userRecord->getSubscriptionDiscountEndTimeForRecord();
-            $data = compact('discount', 'discountEndTime');
+            $data = compact('discount', 'discountEndTime', 'plans');
             return $this->render(['template' => 'subscribe_discount', 'data' => $data]);
         }
         $cookieExists = false;
@@ -275,9 +281,10 @@ class PagesController extends AppController
             if (floor($delta / DAY) < 10) {
                 $discount = $this->discountForSubscriberReferal;
                 $discountEndTime = date(MYSQL_DATETIME_FORMAT, $startTime + 10 * DAY);
-                $data = compact('discount', 'discountEndTime');
+                $data = compact('discount', 'discountEndTime', 'plans');
                 return $this->render(['template' => 'subscribe_discount', 'data' => $data]);
             }
         }
+        return compact('plans');
     }
 }
