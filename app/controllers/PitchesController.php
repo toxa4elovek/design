@@ -2032,7 +2032,7 @@ Disallow: /pitches/upload/'.$pitch['id'];
                 'brief' => 1,
                 'specifics' => 'a:2:{s:9:"qualities";s:64:"Прагматичный, надежный, элегантный";s:15:"logo-properties";a:7:{i:0;s:1:"5";i:1;s:1:"5";i:2;s:1:"5";i:3;s:1:"5";i:4;s:1:"5";i:5;s:1:"5";i:6;s:1:"5";}}',
                 'price' => 14000,
-                'total' => 19800,
+                'total' => 21400,
                 'ga_id' => $gaId
                 ]);
             if ($this->userHelper->isLoggedIn()) {
@@ -2050,7 +2050,7 @@ Disallow: /pitches/upload/'.$pitch['id'];
                 $receiptData = [
                     'features' => [
                         'award' => $pitch->price,
-                        'discount' => -4530,
+                        'discount' => -4330,
                         'brief' => 2750,
                         'experts' => [1],
                         'guaranteed' => 950,
