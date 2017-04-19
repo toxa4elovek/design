@@ -59,3 +59,26 @@ a.buy-solution:active {
 .logosale-container:hover a.buy-solution-for-long-image {
   display: block;
 }
+.h2link {
+  display: block;
+  background-attachment: scroll;
+  background-clip: border-box;
+  background-color: transparent;
+  background-image: url(/img/images/howitworks.png);
+  background-origin: padding-box;
+  background-position: 50% 0px;
+  background-repeat: no-repeat;
+  background-size: auto;
+}
+
+.h2link {
+  font-family: "RodeoC", serif;
+  font-size: 12px;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 400;
+  height: 38px;
+  line-height: 41px;
+  text-align: center;
+  text-transform: uppercase;
+}
