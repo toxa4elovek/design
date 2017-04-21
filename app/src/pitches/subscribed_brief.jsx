@@ -395,7 +395,7 @@
     const givenId = +$(this).parent().attr('data-id')
     if (Cart.projectId) {
       if (givenId) { // File came from database
-        $.post('/pitchfiles/delete', {'id': givenId}, function (response) {
+        $.post('/pitchfiles/delete/', {'id': givenId}, function (response) {
           if (response != 'true') {
             alert('При удалении файла произошла ошибка')
           }
@@ -409,7 +409,7 @@
       $(this).parent().remove()
       return false
     } else if ($(this).data('imfromiframe') == true) {
-      $.post('/pitchfiles/delete', {'id': givenId}, function (response) {
+      $.post('/pitchfiles/delete/', {'id': givenId}, function (response) {
         if (response != 'true') {
           alert('При удалении файла произошла ошибка')
         }

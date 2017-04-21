@@ -320,7 +320,7 @@
                 <a href="/posts">Блог</a>
                 <?php endif?>
                 <?php if (!$this->user->isLoggedIn()):?>
-                    /  <a href="/login">Вход</a>
+                    /  <a href="/login/">Вход</a>
                 <?php endif?>
             </div>
             <ul class="header-menu" <?php if ($this->user->isSubscriptionActive()):?>style="height: 253px;"<?php endif?>>

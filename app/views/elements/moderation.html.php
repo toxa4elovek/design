@@ -1,7 +1,7 @@
 <!-- Comment Delete Moderation -->
 <div id="popup-delete-comment" class="popup-warn generic-window" style="display:none">
     <br>
-    <form id="delete-comment-form" action="/moderations/add" method="post">
+    <form id="delete-comment-form" action="/moderations/add/" method="post">
         <h1 class="largest-header regular">Удалить комментарий</h1>
         <ul>
             <li>
@@ -35,7 +35,7 @@
 <!-- Solution Delete Moderation -->
 <div id="popup-delete-solution" class="popup-warn generic-window" style="display:none; padding-left: 50px; padding-right: 42px; ">
     <br>
-    <form id="delete-solution-form" action="/moderations/add" method="post">
+    <form id="delete-solution-form" action="/moderations/add/" method="post">
         <h1 class="largest-header regular">Удалить решение</h1>
         <p id="winner-warning" style="display: none; font-weight: bold; color: red;">Внимание! Решение является победителем в проекте!!!</p>
         <ul>

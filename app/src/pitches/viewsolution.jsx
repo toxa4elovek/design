@@ -281,7 +281,6 @@ $(document).ready(function () {
       $(document).off('click', '#sendDeleteSolution')
       var data = form.serialize()
       $.post(form.attr('action') + '.json', data).done(function () {
-        console.log($('input[name="pitch_id"]').val())
         window.location = '/pitches/view/' + $('input[name="pitch_id"]').val()
       })
       return false
@@ -437,7 +436,9 @@ $(document).ready(function () {
   } else {
     var queryParam = ''
   }
-  var urlJSON = window.location.pathname + '.json' + queryParam
+  //var urlJSON = window.location.pathname + '.json' + queryParam
+  var urlJSON = window.location.pathname.slice(0, -1) + '.json' + queryParam
+
   fetchSolution(urlJSON)
   /*
    * Fetch solution via JSON and populate layout
@@ -451,6 +452,7 @@ $(document).ready(function () {
     $('.description-more').hide()
     $('#newComment', '.solution-left-panel').val('')
     solutionThumbnail = ''
+    console.log(urlJSON)
     $.getJSON(urlJSON, function (result) {
       // hide receipt and buy buttons
       if (result.isSolutionReady == false) {

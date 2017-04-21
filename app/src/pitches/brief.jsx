@@ -426,7 +426,7 @@ $(document).ready(function () {
     var givenId = +$(this).parent().attr('data-id')
     if (Cart.id) {
       if (givenId) { // File came from database
-        $.post('/pitchfiles/delete', {'id': givenId}, function (response) {
+        $.post('/pitchfiles/delete/', {'id': givenId}, function (response) {
           if (response != 'true') {
             alert('При удалении файла произошла ошибка')
           }
@@ -440,7 +440,7 @@ $(document).ready(function () {
       $(this).parent().remove()
       return false
     } else if ($(this).data('imfromiframe') == true) {
-      $.post('/pitchfiles/delete', {'id': givenId}, function (response) {
+      $.post('/pitchfiles/delete/', {'id': givenId}, function (response) {
         if (response != 'true') {
           alert('При удалении файла произошла ошибка')
         }

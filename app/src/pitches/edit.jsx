@@ -182,7 +182,7 @@ $(function () {
     if (Cart.id) {
       var givenId = +$(this).parent().attr('data-id')
       if (givenId) { // File came from database
-        $.post('/pitchfiles/delete', {'id': givenId}, function (response) {
+        $.post('/pitchfiles/delete/', {'id': givenId}, function (response) {
           if (response != 'true') {
             alert('При удалении файла произошла ошибка')
           }

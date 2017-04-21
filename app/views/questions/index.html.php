@@ -49,7 +49,7 @@
                 </section>
                 <section class="nicht" style="display: none; position: relative;">
                     <h1><?php echo 'Пройти тест на профпригодность'; ?></h1>
-                    <form id="quiz_form" action="/questions/validate" method="post">
+                    <form id="quiz_form" action="/questions/validate/" method="post">
                     <ol>
                     <?php
                     $i = 1;

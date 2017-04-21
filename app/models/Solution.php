@@ -921,9 +921,9 @@ http://godesigner.ru/answers/view/73'];
         if (!Pitch::isReadyForLogosale($pitch)) {
             return false;
         }
-        if (strtotime($solution->user->lastTimeOnline) < time() - 3 * MONTH) {
+        /*if (strtotime($solution->user->lastTimeOnline) < time() - 3 * MONTH) {
             return false;
-        }
+        }*/
         if (((int) $pitch->awarded !== (int) $solution->id) && ((int) $solution->awarded === 0)) {
             return true;
         }

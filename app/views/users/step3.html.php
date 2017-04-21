@@ -166,7 +166,7 @@
                     <div class="clr"></div>
 
                     <div class="hiddenform" style="display:none">
-                        <section><form style="margin-bottom: 25px;" action="/comments/edit/<?=$comment->id?>" method="post">
+                        <section><form style="margin-bottom: 25px;" action="/comments/edit/<?=$comment->id?>/" method="post">
                             <textarea name="text" data-id="<?=$comment->id?>"></textarea>
                             <input type="button" src="/img/message_button.png" value="Отправить" class="button editcomment" style="margin:15px 15px 5px 16px; width: 200px;"><br>
                             <span style="margin-left:25px;" class="supplement3">Нажмите Esс, чтобы отменить</span>

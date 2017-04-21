@@ -112,7 +112,7 @@
                     $this->session->delete('flash.login');
                 endif;
                 ?>
-                <?= $this->form->create(null, ['action' => 'login']) ?>
+                <form action="/login/" method="post">
                 <p>
                     <input type="text" name="email" value="" placeholder="Email" class="email" id="Email" />
                     <strong class="error">Email обязателен</strong>
@@ -128,7 +128,7 @@
 
                     <small><a href="/users/recover">Забыли пароль?</a></small>
                 </p><!-- .submit -->
-                <?= $this->form->end() ?>
+                </form>
             </section>
             <?php if (!$this->user->isLoggedIn()): ?>
                 <section>

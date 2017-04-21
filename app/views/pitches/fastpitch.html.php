@@ -93,7 +93,7 @@
                                     <label><input type="radio" name="radio-face" class="rb-face" data-pay="offline-yur"> ЮРИДИЧЕСКОЕ ЛИЦО</label>
                                     <div class="pay-fiz">
                                         <p>Заполните поля, скачайте счёт на оплату и оплатите его. С помощью него вы можете сделать безналичный перевод через банк.</p>
-                                        <form action="/bills/save" method="post" id="bill-fiz">
+                                        <form action="/bills/save/" method="post" id="bill-fiz">
                                             <input type="hidden" name="fiz-id" id="fiz-id" value="<?=$pitch->id?>">
                                             <input type="hidden" name="fiz-individual" id="fiz-individual" value="1">
                                             <input type="text" name="fiz-name" id="fiz-name" placeholder="Иванов Иван Иванович" data-placeholder="Иванов Иван Иванович" required="" data-content="symbolic">
@@ -106,7 +106,7 @@
                                     </div>
                                     <div class="pay-yur">
                                         <p>Заполните поля, скачайте счёт на оплату и оплатите его. С помощью него вы можете сделать безналичный перевод через банк.</p>
-                                        <form action="/bills/save" method="post" id="bill-yur">
+                                        <form action="/bills/save/" method="post" id="bill-yur">
                                             <input type="hidden" name="yur-id" id="yur-id" value="<?=$pitch->id?>">
                                             <input type="hidden" name="yur-individual" id="yur-individual" value="0">
 

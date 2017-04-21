@@ -22,7 +22,7 @@
                 <p>Мы холдируем, но не списываем средства с карты, пока дизайнер не подтвердит согласие на работу в течение 3-х дней; мы переведем ему гонорар, только когда вы утвердите исходники. Подробнее в <a href="/answers/view/115" target="_blank">Регламенте проведения проекта «Один на один»</a>.</p>
             </section>
             <section class="lp-form">
-                <form method="post" action="/pitches/create1on1Project/<?=$designer->id?>">
+                <form method="post" action="/pitches/create1on1Project/<?=$designer->id?>/">
                     <label style="display:block;">1. Гонорар (от 2000 рублей)<br/><input type="text" required name="price" value="<?= $projectData['award']?>" pattern="^[0-9]+$" placeholder="8000"/></label>
                     <label style="display:block;">2. Дней на исполнение <br/><input type="text" required name="days" value="<?= $projectData['days']?>" pattern="^[0-9]+$" placeholder="5"/></label>
                     <label style="display:block;">3. Опишите задачу<a href="/answers/view/4" class="hint" target="_blank">Что указывать в брифе?</a><br/><textarea name="description" required><?= $projectData['description']?></textarea></label>

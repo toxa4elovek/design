@@ -72,7 +72,7 @@
         <div style="height:2px;clear:both;width:580px;background: url(/img/obnovleniya_line.jpg) repeat-x scroll 0 100% transparent; margin-bottom: 15px;margin-top:15px;"></div>
         <h3 class="greyboldheader" style="margin-bottom:10px;">Оставьте свои настоящие имя и фамилию <?= $this->view()->render(['element' => 'newbrief/required_star'], ['tooltipClass' => "tooltip3"]) ?>
         </h3>
-        <form action="/requests/create" method="post">
+        <form action="/requests/create/" method="post">
             <input type="hidden" name="pitch_id" value="<?=$pitch->id?>">
             <input class="sign-input" <?php if ($errors): echo 'class="wrong-input"'; endif;?> style="color: #b6b6b6; font-size: 18px; font-family: OfficinaSansC Book, serif; width: 580px; margin-bottom: 15px;" type="text" name="first_name" placeholder="Имя"/>
             <input class="sign-input" <?php if ($errors): echo 'class="wrong-input"'; endif;?> style="color: #b6b6b6; font-size: 18px; font-family: OfficinaSansC Book, serif; width: 580px; margin-bottom: 15px;" type="text" name="last_name" placeholder="Фамилия"/>

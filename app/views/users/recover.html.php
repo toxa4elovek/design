@@ -15,8 +15,7 @@
                 <?php else: ?>
                 <h2>Введите email</h2>
 
-
-                <?=$this->form->create(null, ['url' => '/users/recover']) ?>
+                <form action="/users/recover/" method="post">
                 <p>
                     <?=$this->form->text('email', ['value' => '', 'placeholder' => 'Email', 'class' => 'email', 'required' => 'required']) ?>
                     <?php if (!empty($errors)):?>
@@ -26,9 +25,9 @@
 
                 <p class="submit">
                     <input type="submit" value="Начать процесс восстановления" class="button">
-                    <small><a href="/users/login">Перейти к странице входа на сайт</a></small>
+                    <small><a href="/login/">Перейти к странице входа на сайт</a></small>
                 </p><!-- .submit -->
-                <?=$this->form->end() ?>
+                </form>
                 <?php endif?>
             </section>
         </div><!-- .main -->

@@ -9,7 +9,7 @@
           var postLock = '<?= $post->lock ?>';
           if(myLock != postLock) {
               alert('Статья редактируется другим автором!');
-              window.location.href = "/posts";
+              window.location.href = "/posts/";
           }
       </script>
     <?php endif ?>
