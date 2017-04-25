@@ -1,6 +1,9 @@
 <div class="right_block">
+    <?php
+    if($solution->pitch->type !== '1on1'):?>
     <div class="user_photo">
-        <?php if ($solution->pitch->category_id == 7):?>
+    <?php
+        if ($solution->pitch->category_id == 7):?>
             <a href="/users/step<?=$step?>" style="width:147px;height:104px;background-color:#efefef;display:block;color:#666666;text-decoration:none;font-weight:bold;padding-top:16px;padding: 16px;">
                 <?php if (mb_strlen(trim($solution->description)) > 100):?>
                 <?=mb_substr(trim($solution->description), 0, 100, 'UTF-8')?>
@@ -15,6 +18,7 @@
         <img src="/img/looked.png" style="margin: 10px 0 0 37px;" /><span><?=$solution->views?></span>
         <img src="/img/like.png" style="margin: 6px 0 0 0px;" /><span><?=$solution->likes?></span>
     </div>
+    <?php endif?>
     <div class="info ">
         <span class="bold supplement"><?=$this->user->getFormattedName($solution->user->first_name, $solution->user->last_name)?></span>
         <span class="supplement"><a href="/pitches/view/<?=$solution->pitch->id?>" target="_blank"><?=$solution->pitch->title?></a></span>

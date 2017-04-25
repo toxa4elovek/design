@@ -76,7 +76,7 @@
                             <?php if((!isset($_COOKIE['closed-email-banner'])) && (!$this->user->getId() || ($this->user->getId() && (int) $this->user->read('user.email_digest') === 0))):?>
                                 <div class="email-prompt">
                                     <?php if($this->user->getId() && (int) $this->user->read('user.email_digest') === 0):?>
-                                        <form method="post" action="/users/activateEmailSubscription">
+                                        <form method="post" action="/users/activateEmailSubscription/">
                                             <a href="#" class="close"></a>
                                             <h2>Активируйте подписку на новости дизайна</h2>
                                             <input type="submit" name="submit" value="Включить" style="float:right;">
@@ -84,7 +84,7 @@
                                             <div class="clear"></div>
                                         </form>
                                     <?php elseif(!$this->user->getId()):?>
-                                        <form method="post" action="/users/activateEmailSubscription">
+                                        <form method="post" action="/users/activateEmailSubscription/">
                                             <a href="#" class="close"></a>
                                             <h2>Подпишитесь на новости дизайна</h2>
                                             <input type="submit" name="submit" value="Подписаться">

@@ -20,7 +20,7 @@
                     Вы уверены, что больше не хотите получать от нас рассылку о новостях, новых проектах, комментариях? Нажимая «Да, отписаться» мы больше не побеспокоим вас своими письмами.
                 </p>
 
-                    <form action="/users/unsubscribe" method="post" style="margin-bottom:20px;margin-left: -10px;">
+                    <form action="/users/unsubscribe/" method="post" style="margin-bottom:20px;margin-left: -10px;">
                         <input type="hidden" name="token" value="<?=$this->_request->query['token']?>">
                         <input type="hidden" name="from" value="<?=$this->_request->query['from']?>">
                         <input style="width:150px; padding-left: 15px;" type="submit" value="Да, отписаться" class="button">

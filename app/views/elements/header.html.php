@@ -68,10 +68,16 @@
                                     $discount = " (скидка — $discountAmount%)";
                                 }
                             }
+
+                            if ($mypitch->type === '1on1') {
+                                $details = unserialize($mypitch->specifics);
+                                $designerId = $details['designer_id'];
+                                $viewUrl = "/users/hireDesigner/$designerId/" ;
+                            }
                             ?>
                             <tr data-id="<?=$mypitch->id?>" class="selection <?php if ($i == 0): echo 'even'; else: echo 'odd'; endif;?> coda">
 							<td>
-							<?php if ($mypitch->category_id != 7 &&($mypitch->status == 1) && ($mypitch->awarded != 0)):?>
+							<?php if ($mypitch->category_id != 7 &&($mypitch->status == 1) && ($mypitch->awarded != 0) && ($mypitch->type !== '1on1')):?>
                                                     <img data="<?= $mypitch->category_id ?>" class="pitches-image" src="<?php echo isset($mypitch->winner->images['solution_tutdesign'][0]) ? $mypitch->winner->images['solution_tutdesign'][0]['weburl'] :$mypitch->winner->images['solution_tutdesign']['weburl']?>">
 							<?php endif?>
 							</td>
@@ -104,7 +110,18 @@
                                         $types['needpay'] += 1?>
                                         <a href="/pitches/edit/<?=$mypitch->id?>">Ожидайте звонка</a>
                                     <?php endif;?>
-                                    <?php if (($mypitch->status == 1) && ($mypitch->billed == 1) &&  ($mypitch->awarded != 0)):
+
+                                    <?php if (($mypitch->status == 1) && ($mypitch->billed == 1) && ($mypitch->type === '1on1')):
+                                        $types['finish'] += 1?>
+                                        <?php if ($mypitch->confirmed == 0):?>
+                                        <span style="text-transform: uppercase; font-size: 11px;color:#639F6D;padding-left: 14px;" >Ожидание подтверждения</span><br>
+                                        <span style="text-transform: uppercase; font-size: 11px;color:#639F6D;padding-left: 14px;" class="countdown" data-deadline="<?=(strtotime($mypitch->started)) + 3 * DAY;?>"><?php echo ($interval = $this->pitch->confirmationTimeRemain($mypitch)) ? $interval->format('%d дн. %H:%I:%S') : ''; ?></span>
+                                    <?php else:?>
+                                        <a class="pitches-finish" href="/users/step<?=$step?>/<?=$mypitch->awarded?>">Перейти<br>на завершающий этап</a>
+                                    <?php endif?>
+                                    <?php endif?>
+
+                                    <?php if (($mypitch->status == 1) && ($mypitch->billed == 1) &&  ($mypitch->awarded != 0) && ($mypitch->type !== '1on1')):
                                         $types['finish'] += 1?>
                                         <?php if (($mypitch->blank == 1) && ($mypitch->confirmed == 0)):?>
                                         <span style="text-transform: uppercase; font-size: 11px;color:#639F6D;padding-left: 14px;" >Ожидание подтверждения</span><br>
@@ -113,10 +130,10 @@
                                         <a class="pitches-finish" href="/users/step<?=$step?>/<?=$mypitch->awarded?>">Перейти<br>на завершающий этап</a>
                                         <?php endif?>
                                     <?php endif?>
-                                    <?php if (($mypitch->status == 1) && ($mypitch->awarded == 0)):
+                                    <?php if (($mypitch->status == 1) && ($mypitch->awarded == 0) && ($mypitch->type !== '1on1')):
                                         $types['winner'] += 1;
                                         ?>
-                                        <?php if (($mypitch->status == 1) && ($mypitch->awarded == 0) && (time() > $this->pitch->getChooseWinnerTime($mypitch)) && !$this->pitch->isWaitingForExperts($mypitch)):
+                                        <?php if (($mypitch->status == 1) && ($mypitch->awarded == 0) && (time() > $this->pitch->getChooseWinnerTime($mypitch)) && !$this->pitch->isWaitingForExperts($mypitch) && $mypitch->type !== '1on1'):
                                         $style = 'color: #ff5360;';
                                         $delay = '&nbsp;&nbsp;(–' . (round((time() - $this->pitch->getChooseWinnerTime($mypitch)) / 60 / 60, 0, PHP_ROUND_HALF_DOWN)) . ' Ч.)';
                                         ?>
@@ -196,7 +213,7 @@
 <div id="pitch-panel">
     <div class="conteiner">
         <div class="content">
-            <table class="all-pitches">
+            <table class="all-pitches" data-row-count="<?= $this->user->getCountOfCurrentDesignersPitches() ?>">
                 <tbody>
                     <?php
                     $i = 0;
@@ -224,20 +241,23 @@
                         <?php endif ?>
                         <td class="pitches-name" <?php if ($closing):?>colspan="3"<?php endif ?>>
                             <div style="background-image: none; padding: 15px 0 17px 40px;">
-                                <?php if ((int) $mypitch->awarded !== 0):
+                                <?php if (((int) $mypitch->awarded !== 0) || (($mypitch->type === '1on1') && $mypitch->confirmed == 1)):
                                 $step = $mypitch->winner->step;
                                 if ($step < 1) {
                                     $step = 1;
                                 }
                                 ?>
                                 <a href="/users/step<?=$step?>/<?=$mypitch->awarded?>"><?=$mypitch->title?></a>
+                                <?php elseif(($mypitch->type === '1on1') && ($mypitch->confirmed == 0)):?>
+                                <a href="/users/hireDesigner/<?=$this->user->getId()?>/?project=<?=$mypitch->id?>"><?=$mypitch->title?></a>
+                                <?php else: ?>
                                 <?php endif?>
                                 <?php if ($mypitch->invited):?>
                                     <span style="text-transform: none; color: #e2e2e2; font-size: 13px; font-family: Arial, sans-serif">Заказчик приглашает вас в проект:</span><br>
                                     <a href="/pitches/view/<?=$mypitch->id?>"><?=$mypitch->title?></a>
                                 <?php endif?>
                             </div></td>
-                        <?php if (((int) $mypitch->blank !== 1) && (!$mypitch->invited)):?>
+                        <?php if (((int) $mypitch->blank !== 1) && ($mypitch->type !== '1on1') && (!$mypitch->invited)):?>
                             <?php if (!$closing):?>
                             <td class="pitches-cat"><a href="#"><?=$mypitch->category->title?></a></td>
                             <td class="idea"><?=$mypitch->ideas_count?></td>
@@ -249,12 +269,12 @@
                             Победа!<br/> Проставьте рейтинг!
                         <?php endif?>
                         </a></td>
-                        <?php elseif (((int) $mypitch->blank === 1) && ((int) $mypitch->confirmed === 0)): ?>
+                        <?php elseif ((((int) $mypitch->blank === 1) || ($mypitch->type === '1on1')) && ((int) $mypitch->confirmed === 0)): ?>
                         <td class="pitches-time"  style="text-align: left; padding-left: 8px; width: 175px;">
-                            <a style="font-size: 11px;color:#639F6D;background: url(/img/header/header_tick.png) 0 2px no-repeat;padding-left: 14px;" href="/pitches/accept/<?=$mypitch->id?>">Подтвердить &nbsp;&nbsp;<span class="countdown" data-deadline="<?=(strtotime($mypitch->started)) + 3 * DAY;?>"><?php echo ($interval = $this->pitch->confirmationTimeRemain($mypitch)) ? $interval->format('%d дн. %H:%I:%S') : ''; ?></span></a><br><br>
-                            <a style="font-size: 11px;color:#666666;background: url(/img/header/header_cross.png) 0 2px no-repeat;padding-left: 14px;" class="popup-decline" data-title="<?=$mypitch->title?>" data-solutionid="<?=$mypitch->awarded?>" data-solutionnum="<?=$mypitch->winner->num?>" data-pitchid="<?=$mypitch->id?>" href="/pitches/decline/<?=$mypitch->id?>">Отказать</a>
+                            <a style="font-size: 11px;color:#639F6D;background: url(/img/header/header_tick.png) 0 2px no-repeat;padding-left: 14px;" href="/pitches/accept/<?=$mypitch->id?>/">Подтвердить &nbsp;&nbsp;<span class="countdown" data-deadline="<?=(strtotime($mypitch->started)) + 3 * DAY;?>"><?php echo ($interval = $this->pitch->confirmationTimeRemain($mypitch)) ? $interval->format('%d дн. %H:%I:%S') : ''; ?></span></a><br><br>
+                            <a style="font-size: 11px;color:#666666;background: url(/img/header/header_cross.png) 0 2px no-repeat;padding-left: 14px;" class="popup-decline" data-title="<?=$mypitch->title?>" data-solutionid="<?=$mypitch->awarded?>" data-solutionnum="<?=$mypitch->winner->num?>" data-pitchid="<?=$mypitch->id?>" href="/pitches/decline/<?=$mypitch->id?>/">Отказать</a>
                         </td>
-                        <?php elseif (((int) $mypitch->blank === 1) && ((int) $mypitch->confirmed === 1)): ?>
+                        <?php elseif ((((int) $mypitch->blank === 1) || ($mypitch->type === '1on1')) && ((int) $mypitch->confirmed === 1)): ?>
                         <td class="pitches-time"  style="text-align: left; padding-left: 8px; width: 175px;">
                             <a style="font-size: 11px;color:#639F6D;" class="pitches-finish" href="/users/step2/<?=$mypitch->awarded?>">Перейти<br>на завершающий этап</a>
                         </td>

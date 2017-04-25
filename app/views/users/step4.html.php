@@ -92,7 +92,7 @@
                 </ul>
                 <h1 class="greyboldheader">Помогите Go Designer стать лучше, оставьте свой отзыв:</h1>
                 <br />
-                <form method="post" action="/users/step4/<?=$solution->id?>" id="afterPitchCommentForm">
+                <form method="post" action="/users/step4/<?=$solution->id?>/" id="afterPitchCommentForm">
                     <div class="comment" style="margin-left:0px;margin-top:50px">
                         <h4>Откуда вы о нас узнали?</h4>
                             <input type="text" name="referer" style="margin:10px 0 0 0;"/>

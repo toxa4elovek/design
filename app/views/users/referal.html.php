@@ -27,7 +27,7 @@
                     <br />
                     <img src="/img/referal-illustration.png" alt="Вы получите 500 рублей на телефон, когда ваши друзья создадут проект на GoDesigner" />
                     <section class="referal-block block-1" style="display: none;">
-                        <form id="referal-1" action="/users/checkphone" method="post" style="margin-top: 35px;">
+                        <form id="referal-1" action="/users/checkphone/" method="post" style="margin-top: 35px;">
                             <div style="display: none; background: url(/img/tooltip-bg-bootom-stripe.png) no-repeat scroll 0 100% transparent !important; padding: 4px 0 4px 0 !important; height: auto; width: 282px; position: absolute; z-index: 2147483647;" id="tooltip-phone">
                                 <div style="background:url(/img/tooltip-top-bg.png) no-repeat scroll 100% 0 transparent; padding: 30px 10px 10px 16px; height: auto;">
                                     <div>

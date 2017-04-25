@@ -133,7 +133,7 @@
                     <input type="hidden" value="<?=$pitch->id?>" name="pitch_id">
                     <?php if ($this->user->isPitchOwner($pitch->user->id) || $this->user->isManagerOfProject($pitch->id) ||  $this->user->isAdmin()): ?>
                     <div class="separator full"></div>
-                    <form class="createCommentForm" method="post" action="/comments/add">
+                    <form class="createCommentForm" method="post" action="/comments/add/">
                     	<textarea id="newComment" data-user-autosuggest="true" name="text"></textarea>
                         <div></div>
                     	<input type="hidden" value="" name="comment_id">

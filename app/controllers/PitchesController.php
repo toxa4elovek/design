@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\extensions\billing\Payture;
 use app\extensions\helper\Brief;
 use app\extensions\helper\NameInflector;
 use app\models\Bill;
@@ -2094,29 +2095,47 @@ Disallow: /pitches/upload/'.$pitch['id'];
 
     public function accept()
     {
-        if (Pitch::acceptLogosalePitch($this->request->id, Session::read('user.id'))) {
-            $logosalePitch = Pitch::first($this->request->id);
-            if (!is_null($this->request->env('HTTP_X_REQUESTED_WITH'))) {
-                return compact('true');
+        if($project = Pitch::first((int) $this->request->id)) {
+            if($project->type === '1on1') {
+                $project->confirmed = 1;
+                $project->save();
+                Payture::charge($project->payture_id);
+            } elseif (Pitch::acceptLogosalePitch($this->request->id, Session::read('user.id'))) {
+                $logosalePitch = Pitch::first($this->request->id);
+                if (!is_null($this->request->env('HTTP_X_REQUESTED_WITH'))) {
+                    return compact('true');
+                } else {
+                    $this->redirect('/users/step2/'.$logosalePitch->awarded);
+                }
             } else {
-                $this->redirect('/users/step2/'.$logosalePitch->awarded);
+                return $this->redirect('/');
             }
-        } else {
-            return $this->redirect('/');
         }
-
         return compact('true');
     }
 
     public function decline()
     {
-        $result = Pitch::declineLogosalePitch($this->request->id, Session::read('user.id'));
-        if (!is_null($this->request->env('HTTP_X_REQUESTED_WITH'))) {
-            return compact('result');
-        } else {
-            $this->redirect('/');
+        if($project = Pitch::first((int) $this->request->id)) {
+            if($project->type === '1on1') {
+                $project->awarded = 0;
+                $project->billed = 0;
+                $project->published = 0;
+                $project->status = 0;
+                $project->confirmed = 0;
+                $project->started = '0000-00-00 00:00:00';
+                $project->finishDate = '0000-00-00 00:00:00';
+                $project->save();
+                Payture::unblock($project->payture_id, (int) $project->total * 100);
+            }else {
+                $result = Pitch::declineLogosalePitch($this->request->id, Session::read('user.id'));
+                if (!is_null($this->request->env('HTTP_X_REQUESTED_WITH'))) {
+                    return compact('result');
+                } else {
+                    $this->redirect('/');
+                }
+            }
         }
-
         return compact('true');
     }
 

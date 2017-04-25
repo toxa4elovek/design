@@ -67,6 +67,17 @@ class Payture
         return self::__getArrayFromXml($result);
     }
 
+    public static function charge($orderId)
+    {
+        $config = [
+            'scheme'     => self::$scheme,
+            'host'       => self::$url
+        ];
+        $service = new Service($config);
+        $result = $service->get(self::__formUrl('Charge'), self::__formOrderChargeData($orderId));
+        return self::__getArrayFromXml($result);
+    }
+
     public static function refund($orderId, $amount)
     {
         $config = [
@@ -148,6 +159,15 @@ class Payture
             'Password' => self::$password,
             'OrderId' => $orderId,
             'Amount' => $amount
+        ];
+    }
+
+    private static function __formOrderChargeData($orderId)
+    {
+        return [
+            'Key' => self::$key,
+            'Password' => self::$password,
+            'OrderId' => $orderId,
         ];
     }
 }
