@@ -77,7 +77,7 @@ class Pitch extends AppModel
                 if (($params['pitch']->status == 0) && ($params['pitch']->brief == 0)) {
                     Event::createEvent($params['id'], 'PitchCreated', $params['user_id']);
                     // Send messages for Public Pitch only
-                    if (((int) $params['pitch']->private !== 1) || ((int) $params['pitch']->category_id !== 22)) {
+                    if (((int) $params['pitch']->private === 0) && ((int) $params['pitch']->category_id !== 22)) {
                         $mediaManager = new SocialMediaManager;
                         $mediaManager->postNewProjectMessage($params['pitch']);
                     }
