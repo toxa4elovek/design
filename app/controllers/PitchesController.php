@@ -1001,6 +1001,7 @@ class PitchesController extends AppController
 
             return $this->render(['layout' => 'print', 'data' => compact('pitch', 'files')]);
         }
+        throw new Exception('Public:Такого проекта не существует.', 404);
     }
 
     public function view()

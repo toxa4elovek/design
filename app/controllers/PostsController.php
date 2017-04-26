@@ -240,7 +240,7 @@ class PostsController extends AppController
             }
             return compact('post', 'related');
         } else {
-            return $this->redirect('/posts');
+            throw new \Exception('Public:Запись в блоге не найдена.', 404);
         }
     }
 
