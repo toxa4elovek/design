@@ -71,8 +71,18 @@ class Pitch extends AppModel
             $result = $chain->next($self, $params, $chain);
             if ($result) {
                 $params['pitch'] = Pitch::first($params['id']);
+                $project = $params['pitch'];
                 if ($params['pitch']->referal > 0) {
                     User::fillBalance((int) $params['pitch']->referal, 500);
+                }
+                if ($project->type === '1on1') {
+                    $details = unserialize($project->specifics);
+                    $data = [
+                        'user_id' => $details['designer_id'],
+                        'pitch_id' => $project->id,
+                        'description' => '1on1'
+                    ];
+                    Solution::create($data)->save();
                 }
                 if (($params['pitch']->status == 0) && ($params['pitch']->brief == 0)) {
                     Event::createEvent($params['id'], 'PitchCreated', $params['user_id']);
@@ -81,7 +91,9 @@ class Pitch extends AppModel
                         $mediaManager = new SocialMediaManager;
                         $mediaManager->postNewProjectMessage($params['pitch']);
                     }
-                    Task::createNewTask($params['pitch']->id, 'newpitch');
+                    if($project->type !== '1on1') {
+                        Task::createNewTask($params['pitch']->id, 'newpitch');
+                    }
                 } elseif (($params['pitch']->status == 0) && ($params['pitch']->brief == 1)) {
                     User::sendAdminBriefPitch($params);
                 }
@@ -681,7 +693,7 @@ class Pitch extends AppModel
 
     public static function dailypitch()
     {
-        $pitches = Pitch::all(['conditions' => ['published' => 1, 'blank' => 0, 'status' => 0, 'started' => ['>=' => date('Y-m-d H:i:s', time() - DAY)]]]);
+        $pitches = Pitch::all(['conditions' => ['type' => ['!=' => '1on1'], 'published' => 1, 'blank' => 0, 'status' => 0, 'started' => ['>=' => date('Y-m-d H:i:s', time() - DAY)]]]);
         if (count($pitches) > 0) {
             $users = User::all(['conditions' => ['email_newpitchonce' => 1, 'confirmed_email' => 1, 'User.email' => ['!=' => '']]]);
             foreach ($users as $user) {
