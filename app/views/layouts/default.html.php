@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html itemscope itemtype="http://schema.org/LocalBusiness" lang="ru">
+<html lang="ru">
 <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# godesigner: http://ogp.me/ns/fb/godesigner#">
     <?= $this->html->charset();?>
     <?php $vars = compact('solution', 'post', 'pitch', 'answer') ?>
@@ -146,6 +146,9 @@
       "@context": "http://schema.org",
       "@type": "WebSite",
       "url": "https://godesigner.ru/",
+      "name" : "GoDesigner",
+      "alternateName" : "GoDesigner.ru",
+      "image": "https://godesigner.ru/icon_512.png",
       "potentialAction": {
         "@type": "SearchAction",
         "target": "https://godesigner.ru/logosale?search={search_term_string}",
@@ -154,11 +157,21 @@
     }
     </script>
     <script type="application/ld+json">
-    {  "@context" : "http://schema.org",
-       "@type" : "WebSite",
-       "name" : "GoDesigner",
-       "alternateName" : "GoDesigner.ru",
-       "url" : "https://godesigner.ru"
+    {
+      "@context": "http://schema.org",
+      "@type": "LocalBusiness",
+      "description": "Сервис, на котором можно получить десятки и сотни вариантов решений ваших дизайн задач.",
+      "name": "GoDesigner",
+      "image": "https://godesigner.ru/icon_512.png",
+      "telephone": "+7 812 648 24 12",
+      "priceRange": "от 500 рублей",
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "Российская Федерация",
+        "addressLocality": "Санкт-Петербург",
+        "postalCode": "190000",
+        "streetAddress": "ул. Беринга, д. 27"
+      }
     }
     </script>
 </head>
