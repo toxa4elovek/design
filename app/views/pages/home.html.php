@@ -14,7 +14,7 @@
             <a href="/pages/howitworks"><img src="/img/main/3.png" alt="" /></a>
         </div>
         <div class="slide">
-            <a href="/fastpitch"><img src="/img/main/4.png" alt="" /></a>
+            <a href="/fastpitch"><img src="/img/main/4.jpg" alt="" /></a>
         </div>
     </div>
     <a id="finished" href="/pitches/?type=finished" style="height:32px;width:173px;position: absolute; top: 251px; left: 79px; z-index:101;background-image:url(/img/examples_173_32_red.png)"><img src="/img/examples_173_32.png" alt="Просмотреть примеры"></a>
