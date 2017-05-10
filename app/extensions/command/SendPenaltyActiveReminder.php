@@ -17,6 +17,7 @@ class SendPenaltyActiveReminder extends CronJob
         $arrayOfProjects = [];
         $projects = Pitch::all([
             'conditions' => [
+                'type' => ['!=' => '1on1'],
                 'status' => 1,
                 'awarded' => 0,
                 'published' => 1,

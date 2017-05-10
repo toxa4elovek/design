@@ -83,11 +83,18 @@ class Pitch extends AppModel
                         'description' => '1on1'
                     ];
                     Solution::create($data)->save();
+                    $solution = Solution::first(['conditions' => [
+                        'user_id' => $details['designer_id'],
+                        'pitch_id' => $project->id,
+                        'description' => '1on1'
+                    ]]);
+                    $project->awarded = $solution->id;
+                    $project->save();
                 }
                 if (($params['pitch']->status == 0) && ($params['pitch']->brief == 0)) {
                     Event::createEvent($params['id'], 'PitchCreated', $params['user_id']);
                     // Send messages for Public Pitch only
-                    if (((int) $params['pitch']->private === 0) && ((int) $params['pitch']->category_id !== 22)) {
+                    if (((int) $params['pitch']->private === 0) && ($project->type !== '1on1') && ((int) $params['pitch']->category_id !== 22)) {
                         $mediaManager = new SocialMediaManager;
                         $mediaManager->postNewProjectMessage($params['pitch']);
                     }
@@ -157,7 +164,7 @@ class Pitch extends AppModel
             Comment::createComment($data);
             if ($params['pitch']->expert == 1) {
                 Pitch::sendExpertTimeoutMail($params);
-            } elseif ($params['pitch']->category_id != 20) {
+            } elseif (($params['pitch']->category_id != 20) && ($params['pitch']->type !== '1on1')) {
                 $project = $params['pitch'];
                 if (($project->guaranteed == 0) && ($project->pitchData()['avgNum'] >= 3.0)) {
                     NotificationsMailer::sendChooseWinnerNotificationForNonGuarantee($project);

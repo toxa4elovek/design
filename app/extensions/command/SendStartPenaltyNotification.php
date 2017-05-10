@@ -23,6 +23,7 @@ class SendStartPenaltyNotification extends CronJob
                 'awarded' => 0,
                 'published' => 1,
                 'category_id' => ['!=' => 20],
+                'type' => ['!=' => '1on1'],
                 'AND' => [
                     [sprintf("finishDate >=  '%s'", $finishDateDeltaStart->format(MYSQL_DATETIME_FORMAT))],
                     [sprintf("finishDate <=  '%s'", $finishDateDeltaEnd->format(MYSQL_DATETIME_FORMAT))],
