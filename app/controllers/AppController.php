@@ -135,7 +135,7 @@ class AppController extends Controller
                 if (count($possible1on1Projects)) {
                       foreach ($possible1on1Projects as $solution) {
                         $project = Pitch::first($solution->pitch_id);
-                        if(($project->type === '1on1') && ((int) $project->confirmed === 0) && ((int)$project->billed === 1)) {
+                        if(($project->type === '1on1') && ((int)$project->billed === 1)) {
                             $topPanelDesigner[] = $project;
                         }
                     }
