@@ -14,7 +14,7 @@
                 <p>Вы можете начать работу в <a href="/users/office">личном кабинете</a> или в <a href="/pitches">списке проектов</a>.</p>
                 <?php else:?>
                 <h2>Введите и сохраните новый пароль!</h2>
-                <?=$this->form->create(null, ['url' => '/users/setnewpassword?token=' . $token]) ?>
+                <?=$this->form->create(null, ['url' => '/users/setnewpassword/?token=' . $token]) ?>
                 <p>
                     <?=$this->form->password('password', ['value' => '', 'placeholder' => 'Пароль', 'class' => 'password', 'required' => 'required']) ?>
                     <?php if (isset($errors['password'])):?>
