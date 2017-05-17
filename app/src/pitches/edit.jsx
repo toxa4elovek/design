@@ -180,13 +180,13 @@ $(function () {
 
   $(document).on('click', '.filezone-delete-link', function () {
     if (Cart.id) {
-      var givenId = +$(this).parent().attr('data-id')
-      if (givenId) { // File came from database
-        $.post('/pitchfiles/delete/', {'id': givenId}, function (response) {
-          if (response != 'true') {
+      const givenId = +$(this).parent().attr('data-id')
+      if (givenId) {
+        $.post(`/pitchfiles/delete/${givenId}`, function (response) {
+          if (response !== 'true') {
             alert('При удалении файла произошла ошибка')
           }
-          var position = $.inArray(givenId, Cart.fileIds)
+          const position = $.inArray(givenId, Cart.fileIds)
           Cart.fileIds.splice(position, 1)
           Cart.saveFileIds()
         })
