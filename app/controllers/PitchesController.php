@@ -1095,6 +1095,17 @@ class PitchesController extends AppController
             ]]))) {
                 $disableUpload = true;
             }
+            if($this->userHelper->isLoggedIn() && $pitch->id == '123099') {
+                $count = Solution::count([
+                    'conditions' => [
+                        'Solution.pitch_id' => $pitch->id,
+                        'Solution.user_id' => $this->userHelper->getId()
+                    ]
+                ]);
+                if(!$count) {
+                    $disableUpload = true;
+                }
+            }
             $pitch->canManageRating = false;
             if (((int) $pitch->category_id === 20)
                 && (Manager::getTeamLeaderOfManager($this->userHelper->getId()) === (int) $pitch->user_id)
@@ -1681,6 +1692,17 @@ Disallow: /pitches/upload/'.$pitch['id'];
                     'pitch_id' => $pitch->id
                 ]]))) {
                 $this->redirect(['Pitches::view', 'id' => $pitch->id]);
+            }
+            if($this->userHelper->isLoggedIn() && $pitch->id == '123099') {
+                $count = Solution::count([
+                    'conditions' => [
+                        'Solution.pitch_id' => $pitch->id,
+                        'Solution.user_id' => $this->userHelper->getId()
+                    ]
+                ]);
+                if(!$count) {
+                    $this->redirect(['Pitches::view', 'id' => $pitch->id]);
+                }
             }
 
             $userHelper = new UserHelper([]);
