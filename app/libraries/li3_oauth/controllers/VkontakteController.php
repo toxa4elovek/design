@@ -17,7 +17,7 @@ class VkontakteController extends \li3_oauth\controllers\ClientController
             'redirect_uri' => 'http://godesigner.ru/vkontakte', // http://94.127.68.233/vkontakte'
             'display' => 'page',
             'scheme' => 'https',
-            'host' => 'api.vkontakte.ru',
+            'host' => 'api.vk.com',
             'port' => 80,
             'authorize' => '/oauth/authorize',
             'access' => '/oauth/access_token',
