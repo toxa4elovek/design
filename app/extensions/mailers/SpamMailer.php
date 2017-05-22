@@ -446,4 +446,14 @@ class SpamMailer extends \li3_mailer\extensions\Mailer
             'data' => $data
         ]);
     }
+
+    public static function send1on1email($data)
+    {
+        return self::_mail([
+            'use-smtp' => true,
+            'to' => $data['user']->email,
+            'subject' => 'Индивидуальный проект: как продолжить работу с дизайнером',
+            'data' => $data
+        ]);
+    }
 }
