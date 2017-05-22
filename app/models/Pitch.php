@@ -80,7 +80,10 @@ class Pitch extends AppModel
                     $data = [
                         'user_id' => $details['designer_id'],
                         'pitch_id' => $project->id,
-                        'description' => '1on1'
+                        'created' => date('Y-m-d H:i:s'),
+                        'description' => '1on1',
+                        'awarded' => 1,
+                        'nominated' => 1
                     ];
                     Solution::create($data)->save();
                     $solution = Solution::first(['conditions' => [
