@@ -70,7 +70,7 @@ class ExpertsController extends AppController
 
             return compact('expert', 'questions', 'comments');
         } else {
-            return $this->redirect('/experts');
+            return $this->redirect('/experts/');
         }
     }
 

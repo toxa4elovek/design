@@ -2,7 +2,10 @@
 <html lang="ru">
 <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# godesigner: http://ogp.me/ns/fb/godesigner#">
     <?= $this->html->charset();?>
-    <?php $vars = compact('solution', 'post', 'pitch', 'answer') ?>
+    <?php
+    $requestUri = $_SERVER['REQUEST_URI'];
+    $request = $this->_request;
+    $vars = compact('solution', 'post', 'expert', 'pitch', 'answer', 'requestUri', 'request') ?>
     <?= $this->HtmlExtended->title($this->_request->params, $vars)?>
     <meta name="viewport" content="width=1024"/>
     <link rel="apple-touch-icon" href="/img/icon_57.png" />
