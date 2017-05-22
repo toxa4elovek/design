@@ -7,6 +7,7 @@
     $request = $this->_request;
     $vars = compact('solution', 'post', 'expert', 'pitch', 'answer', 'requestUri', 'request') ?>
     <?= $this->HtmlExtended->title($this->_request->params, $vars)?>
+    <?= $this->HtmlExtended->description($vars)?>
     <meta name="viewport" content="width=1024"/>
     <link rel="apple-touch-icon" href="/img/icon_57.png" />
     <link rel="apple-touch-icon" sizes="72x72" href="/img/icon_72.png" />
