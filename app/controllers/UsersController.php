@@ -1184,21 +1184,25 @@ class UsersController extends \app\controllers\AppController
                     $redirect = '/users/feed';
                 }
                 if (isset($this->request->data['who_am_i'])) {
-                    if ($this->request->data['who_am_i'] == 'client') {
+                    if ($this->request->data['who_am_i'] === 'client') {
                         $this->request->data['isClient'] = 1;
                         $this->request->data['email_newsolonce'] = 1;
                         $this->request->data['email_newsol'] = 1;
                         $this->request->data['email_newcomments'] = 1;
-                        $this->request->data['email_digest'] = 1;
+                        $this->request->data['email_digest'] = 0;
+                        $this->request->data['email_newpitch'] = 0;
+                        $this->request->data['email_newpitchonce'] = 0;
                     }
-                    if ($this->request->data['who_am_i'] == 'company') {
+                    if ($this->request->data['who_am_i'] === 'company') {
                         $this->request->data['is_company'] = 1;
                         $this->request->data['email_newsolonce'] = 1;
                         $this->request->data['email_newsol'] = 1;
                         $this->request->data['email_newcomments'] = 1;
-                        $this->request->data['email_digest'] = 1;
+                        $this->request->data['email_digest'] = 0;
+                        $this->request->data['email_newpitch'] = 0;
+                        $this->request->data['email_newpitchonce'] = 0;
                     }
-                    if ($this->request->data['who_am_i'] == 'designer') {
+                    if ($this->request->data['who_am_i'] === 'designer') {
                         $this->request->data['isDesigner'] = 1;
                         $redirect = '/users/feed';
                     }
