@@ -15,6 +15,7 @@
     "paquettg/php-html-parser": "^1.6.9",
     "drewm/mailchimp-api": "dev-master",
     "mandrill/mandrill": "dev-master",
-    "unionofrad/lithium": "^1.0"
+    "unionofrad/lithium": "^1.0",
+    "thepixeldeveloper/sitemap": "dev-master"
   }
 }

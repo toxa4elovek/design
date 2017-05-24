@@ -4,21 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "978713a11a2d5b7fa5279738f6af53aa",
-    "content-hash": "1967db50c692fc4883a3c4e24b1b4b41",
+    "hash": "a4de5ec86ae759e5a0940393b4265d93",
+    "content-hash": "763523f2b7c58c49de7f4e562df3c872",
     "packages": [
         {
             "name": "composer/installers",
-            "version": "v1.2.0",
+            "version": "v1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/installers.git",
-                "reference": "d78064c68299743e0161004f2de3a0204e33b804"
+                "reference": "79ad876c7498c0bbfe7eed065b8651c93bfd6045"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/installers/zipball/d78064c68299743e0161004f2de3a0204e33b804",
-                "reference": "d78064c68299743e0161004f2de3a0204e33b804",
+                "url": "https://api.github.com/repos/composer/installers/zipball/79ad876c7498c0bbfe7eed065b8651c93bfd6045",
+                "reference": "79ad876c7498c0bbfe7eed065b8651c93bfd6045",
                 "shasum": ""
             },
             "require": {
@@ -60,12 +60,16 @@
             "keywords": [
                 "Craft",
                 "Dolibarr",
+                "Eliasis",
                 "Hurad",
                 "ImageCMS",
+                "Kanboard",
                 "MODX Evo",
                 "Mautic",
+                "Maya",
                 "OXID",
                 "Plentymarkets",
+                "Porto",
                 "RadPHP",
                 "SMF",
                 "Thelia",
@@ -88,9 +92,11 @@
                 "fuelphp",
                 "grav",
                 "installer",
+                "itop",
                 "joomla",
                 "kohana",
                 "laravel",
+                "lavalite",
                 "lithium",
                 "magento",
                 "mako",
@@ -105,6 +111,7 @@
                 "roundcube",
                 "shopware",
                 "silverstripe",
+                "sydes",
                 "symfony",
                 "typo3",
                 "wordpress",
@@ -112,7 +119,7 @@
                 "zend",
                 "zikula"
             ],
-            "time": "2016-08-13 20:53:52"
+            "time": "2017-04-24 06:37:16"
         },
         {
             "name": "drewm/mailchimp-api",
@@ -120,12 +127,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/drewm/mailchimp-api.git",
-                "reference": "fe480bb652f85270227bf6d639b0026a531f21fc"
+                "reference": "1f8eae2bb996969a96dee01ef893b392950bab1c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drewm/mailchimp-api/zipball/fe480bb652f85270227bf6d639b0026a531f21fc",
-                "reference": "fe480bb652f85270227bf6d639b0026a531f21fc",
+                "url": "https://api.github.com/repos/drewm/mailchimp-api/zipball/1f8eae2bb996969a96dee01ef893b392950bab1c",
+                "reference": "1f8eae2bb996969a96dee01ef893b392950bab1c",
                 "shasum": ""
             },
             "require": {
@@ -155,7 +162,7 @@
             ],
             "description": "Super-simple, minimum abstraction MailChimp API v3 wrapper",
             "homepage": "https://github.com/drewm/mailchimp-api",
-            "time": "2017-02-16 13:24:20"
+            "time": "2017-04-13 12:39:37"
         },
         {
             "name": "gabrielelana/byte-units",
@@ -459,16 +466,16 @@
         },
         {
             "name": "norkunas/onesignal-php-api",
-            "version": "v0.1.13",
+            "version": "v0.1.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/norkunas/onesignal-php-api.git",
-                "reference": "8d9a1a36dff9906a9674b5e4da9aa2dbb49adfa5"
+                "reference": "a9207de80d41f675c1ddfedfbbc120634e2edaa1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/norkunas/onesignal-php-api/zipball/8d9a1a36dff9906a9674b5e4da9aa2dbb49adfa5",
-                "reference": "8d9a1a36dff9906a9674b5e4da9aa2dbb49adfa5",
+                "url": "https://api.github.com/repos/norkunas/onesignal-php-api/zipball/a9207de80d41f675c1ddfedfbbc120634e2edaa1",
+                "reference": "a9207de80d41f675c1ddfedfbbc120634e2edaa1",
                 "shasum": ""
             },
             "require": {
@@ -500,7 +507,7 @@
                 "api",
                 "onesignal"
             ],
-            "time": "2017-02-10 09:15:50"
+            "time": "2017-04-28 11:50:02"
         },
         {
             "name": "paquettg/php-html-parser",
@@ -599,22 +606,25 @@
         },
         {
             "name": "ps/image-optimizer",
-            "version": "1.0.6",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/psliwa/image-optimizer.git",
-                "reference": "1baef5d585e1af2728bed93717c30e8163846439"
+                "reference": "6e7461722d798ab6e77fb7f483d679ac37b71bec"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/psliwa/image-optimizer/zipball/1baef5d585e1af2728bed93717c30e8163846439",
-                "reference": "1baef5d585e1af2728bed93717c30e8163846439",
+                "url": "https://api.github.com/repos/psliwa/image-optimizer/zipball/6e7461722d798ab6e77fb7f483d679ac37b71bec",
+                "reference": "6e7461722d798ab6e77fb7f483d679ac37b71bec",
                 "shasum": ""
             },
             "require": {
                 "psr/log": "1.0.*",
                 "symfony/options-resolver": "~2.1 | ~3.0",
                 "symfony/process": "~2.0 | ~3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5.0"
             },
             "type": "library",
             "autoload": {
@@ -641,7 +651,7 @@
                 "optimization",
                 "optipng"
             ],
-            "time": "2016-01-16 15:05:52"
+            "time": "2017-03-25 15:42:56"
         },
         {
             "name": "psr/log",
@@ -692,20 +702,23 @@
         },
         {
             "name": "react/promise",
-            "version": "v2.5.0",
+            "version": "v2.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/reactphp/promise.git",
-                "reference": "2760f3898b7e931aa71153852dcd48a75c9b95db"
+                "reference": "62785ae604c8d69725d693eb370e1d67e94c4053"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/reactphp/promise/zipball/2760f3898b7e931aa71153852dcd48a75c9b95db",
-                "reference": "2760f3898b7e931aa71153852dcd48a75c9b95db",
+                "url": "https://api.github.com/repos/reactphp/promise/zipball/62785ae604c8d69725d693eb370e1d67e94c4053",
+                "reference": "62785ae604c8d69725d693eb370e1d67e94c4053",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.8"
             },
             "type": "library",
             "autoload": {
@@ -731,7 +744,7 @@
                 "promise",
                 "promises"
             ],
-            "time": "2016-12-22 14:09:01"
+            "time": "2017-03-25 12:08:31"
         },
         {
             "name": "roave/security-advisories",
@@ -739,17 +752,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "411283676149d8b8e8ee53ec621d84099e548090"
+                "reference": "ccffea64be8575eaa7ad09cd16dfeedfa4711607"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/411283676149d8b8e8ee53ec621d84099e548090",
-                "reference": "411283676149d8b8e8ee53ec621d84099e548090",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/ccffea64be8575eaa7ad09cd16dfeedfa4711607",
+                "reference": "ccffea64be8575eaa7ad09cd16dfeedfa4711607",
                 "shasum": ""
             },
             "conflict": {
                 "adodb/adodb-php": "<5.20.6",
-                "amphp/artax": ">=2,<2.0.4|>0.7.1,<1.0.4",
+                "amphp/artax": ">=2,<2.0.6|<1.0.6",
                 "aws/aws-sdk-php": ">=3,<3.2.1",
                 "bugsnag/bugsnag-laravel": ">=2,<2.0.2",
                 "cakephp/cakephp": ">=3,<3.0.15|>=2,<2.4.99|>=2.5,<2.5.99|>=2.6,<2.6.12|>=1.3,<1.3.18|>=2.7,<2.7.6|>=3.1,<3.1.4",
@@ -769,8 +782,8 @@
                 "doctrine/mongodb-odm-bundle": ">=2,<3.0.1",
                 "doctrine/orm": ">=2,<2.4.8|>=2.5,<2.5.1",
                 "dompdf/dompdf": ">=0.6,<0.6.2",
-                "drupal/core": ">=8,<8.2.3",
-                "drupal/drupal": ">=8,<8.2.3",
+                "drupal/core": ">=8,<8.2.8|>=8.3,<8.3.1",
+                "drupal/drupal": ">=8,<8.2.8|>=8.3,<8.3.1",
                 "firebase/php-jwt": "<2",
                 "friendsofsymfony/rest-bundle": ">=1.2,<1.2.2",
                 "friendsofsymfony/user-bundle": ">=1.2,<1.3.5",
@@ -797,9 +810,10 @@
                 "silverstripe/framework": ">=3,<3.3",
                 "silverstripe/userforms": "<3",
                 "simplesamlphp/saml2": "<1.8.1|>=1.9,<1.9.1|>=1.10,<1.10.3|>=2,<2.3.3",
-                "simplesamlphp/simplesamlphp": "<1.14.11",
+                "simplesamlphp/simplesamlphp": "<1.14.12",
                 "simplesamlphp/simplesamlphp-module-infocard": "<1.0.1",
                 "socalnick/scn-social-auth": "<1.15.2",
+                "squizlabs/php_codesniffer": ">=1,<2.8.1",
                 "swiftmailer/swiftmailer": ">=4,<5.4.5",
                 "symfony/dependency-injection": ">=2,<2.0.17",
                 "symfony/form": ">=2.3,<2.3.35|>=2.4,<2.6.12|>=2.7,<2.7.7",
@@ -819,7 +833,7 @@
                 "thelia/backoffice-default-template": ">=2.1,<2.1.2",
                 "thelia/thelia": ">=2.1.0-beta1,<2.1.3|>=2.1,<2.1.2",
                 "twig/twig": "<1.20",
-                "typo3/cms": ">=6.2,<6.2.30|>=8,<8.4.1|>=7,<7.6.13",
+                "typo3/cms": ">=6.2,<6.2.30|>=8,<8.6.1|>=7,<7.6.16",
                 "typo3/flow": ">=2.3,<2.3.16|>=3,<3.0.10|>=3.1,<3.1.7|>=3.2,<3.2.7|>=3.3,<3.3.5|>=1,<1.0.4|>=1.1,<1.1.1|>=2,<2.0.1",
                 "typo3/neos": ">=1.1,<1.1.3|>=1.2,<1.2.13|>=2,<2.0.4",
                 "willdurand/js-translation-bundle": "<2.1.1",
@@ -865,20 +879,20 @@
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
-            "time": "2017-02-08 16:26:47"
+            "time": "2017-05-13 14:02:28"
         },
         {
             "name": "swiftmailer/swiftmailer",
-            "version": "v5.4.6",
+            "version": "v5.4.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swiftmailer/swiftmailer.git",
-                "reference": "81fdccfaf8bdc5d5d7a1ef6bb3a61bbb1a6c4a3e"
+                "reference": "9a06dc570a0367850280eefd3f1dc2da45aef517"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/81fdccfaf8bdc5d5d7a1ef6bb3a61bbb1a6c4a3e",
-                "reference": "81fdccfaf8bdc5d5d7a1ef6bb3a61bbb1a6c4a3e",
+                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/9a06dc570a0367850280eefd3f1dc2da45aef517",
+                "reference": "9a06dc570a0367850280eefd3f1dc2da45aef517",
                 "shasum": ""
             },
             "require": {
@@ -919,20 +933,20 @@
                 "mail",
                 "mailer"
             ],
-            "time": "2017-02-13 07:52:53"
+            "time": "2017-05-01 15:54:03"
         },
         {
             "name": "symfony/finder",
-            "version": "v2.8.17",
+            "version": "v2.8.20",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/finder.git",
-                "reference": "355fccac526522dc5fca8ecf0e62749a149f3b8b"
+                "reference": "16d55394b31547e4a8494551b85c9b9915545347"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/finder/zipball/355fccac526522dc5fca8ecf0e62749a149f3b8b",
-                "reference": "355fccac526522dc5fca8ecf0e62749a149f3b8b",
+                "url": "https://api.github.com/repos/symfony/finder/zipball/16d55394b31547e4a8494551b85c9b9915545347",
+                "reference": "16d55394b31547e4a8494551b85c9b9915545347",
                 "shasum": ""
             },
             "require": {
@@ -968,20 +982,20 @@
             ],
             "description": "Symfony Finder Component",
             "homepage": "https://symfony.com",
-            "time": "2017-01-02 20:30:24"
+            "time": "2017-04-12 14:07:15"
         },
         {
             "name": "symfony/options-resolver",
-            "version": "v3.2.4",
+            "version": "v3.2.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/options-resolver.git",
-                "reference": "855429e3e9014b9dafee2a667de304c3aaa86fe6"
+                "reference": "8cbb4f23414e2a5e92690cf67680a979a461113c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/options-resolver/zipball/855429e3e9014b9dafee2a667de304c3aaa86fe6",
-                "reference": "855429e3e9014b9dafee2a667de304c3aaa86fe6",
+                "url": "https://api.github.com/repos/symfony/options-resolver/zipball/8cbb4f23414e2a5e92690cf67680a979a461113c",
+                "reference": "8cbb4f23414e2a5e92690cf67680a979a461113c",
                 "shasum": ""
             },
             "require": {
@@ -1022,20 +1036,20 @@
                 "configuration",
                 "options"
             ],
-            "time": "2017-01-02 20:32:22"
+            "time": "2017-04-12 14:13:17"
         },
         {
             "name": "symfony/process",
-            "version": "v3.2.4",
+            "version": "v3.2.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
-                "reference": "0ab87c1e7570b3534a6e51eb4ca8e9f6d7327856"
+                "reference": "999c2cf5061e627e6cd551dc9ebf90dd1d11d9f0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/process/zipball/0ab87c1e7570b3534a6e51eb4ca8e9f6d7327856",
-                "reference": "0ab87c1e7570b3534a6e51eb4ca8e9f6d7327856",
+                "url": "https://api.github.com/repos/symfony/process/zipball/999c2cf5061e627e6cd551dc9ebf90dd1d11d9f0",
+                "reference": "999c2cf5061e627e6cd551dc9ebf90dd1d11d9f0",
                 "shasum": ""
             },
             "require": {
@@ -1071,20 +1085,20 @@
             ],
             "description": "Symfony Process Component",
             "homepage": "https://symfony.com",
-            "time": "2017-02-16 14:07:22"
+            "time": "2017-04-12 14:13:17"
         },
         {
             "name": "symfony/stopwatch",
-            "version": "v2.8.17",
+            "version": "v2.8.20",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/stopwatch.git",
-                "reference": "e8bb9de52febc4ee9922b33b1f04ba5feed457b8"
+                "reference": "e02577b841394a78306d7b547701bb7bb705bad5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/stopwatch/zipball/e8bb9de52febc4ee9922b33b1f04ba5feed457b8",
-                "reference": "e8bb9de52febc4ee9922b33b1f04ba5feed457b8",
+                "url": "https://api.github.com/repos/symfony/stopwatch/zipball/e02577b841394a78306d7b547701bb7bb705bad5",
+                "reference": "e02577b841394a78306d7b547701bb7bb705bad5",
                 "shasum": ""
             },
             "require": {
@@ -1120,28 +1134,73 @@
             ],
             "description": "Symfony Stopwatch Component",
             "homepage": "https://symfony.com",
-            "time": "2017-01-02 20:30:24"
+            "time": "2017-04-12 14:07:15"
         },
         {
-            "name": "unionofrad/lithium",
-            "version": "v1.0.2",
+            "name": "thepixeldeveloper/sitemap",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/UnionOfRAD/lithium.git",
-                "reference": "5d9a06b8667e20490ef5ccb3275be8824f77666b"
+                "url": "https://github.com/ThePixelDeveloper/Sitemap.git",
+                "reference": "013b332c93633ed0a979c9e9478a20a466b6c07f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/UnionOfRAD/lithium/zipball/5d9a06b8667e20490ef5ccb3275be8824f77666b",
-                "reference": "5d9a06b8667e20490ef5ccb3275be8824f77666b",
+                "url": "https://api.github.com/repos/ThePixelDeveloper/Sitemap/zipball/013b332c93633ed0a979c9e9478a20a466b6c07f",
+                "reference": "013b332c93633ed0a979c9e9478a20a466b6c07f",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6.0"
+            },
+            "require-dev": {
+                "phpspec/phpspec": "^2.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Thepixeldeveloper\\Sitemap\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mathew Davies",
+                    "email": "thepixeldeveloper@googlemail.com",
+                    "homepage": "http://mathew-davies.co.uk",
+                    "role": "Developer"
+                }
+            ],
+            "description": "XML sitemap generation",
+            "keywords": [
+                "Sitemap",
+                "xml"
+            ],
+            "time": "2017-03-11 18:44:57"
+        },
+        {
+            "name": "unionofrad/lithium",
+            "version": "v1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/UnionOfRAD/lithium.git",
+                "reference": "5d337263469dc14df1f4c05c226e2f24041f112b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/UnionOfRAD/lithium/zipball/5d337263469dc14df1f4c05c226e2f24041f112b",
+                "reference": "5d337263469dc14df1f4c05c226e2f24041f112b",
                 "shasum": ""
             },
             "require": {
                 "composer/installers": "1.*",
-                "php": ">=5.3.6 <7.0.0"
+                "php": "^5.5.14 || ^7.0.3"
             },
             "require-dev": {
-                "unionofrad/li3_fixtures": "1.0.*"
+                "unionofrad/li3_fixtures": "1.1.*@dev"
             },
             "bin": [
                 "console/li3"
@@ -1166,7 +1225,7 @@
                 "li3",
                 "lithium"
             ],
-            "time": "2016-08-26 13:33:49"
+            "time": "2017-04-23 09:19:40"
         },
         {
             "name": "verot/class.upload.php",
@@ -1174,12 +1233,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/verot/class.upload.php.git",
-                "reference": "b983e880969d0d980b77881cb82139361d4e0c63"
+                "reference": "f266dc964f417f2d24a33a7c9efee1d05f6bfc6e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/verot/class.upload.php/zipball/b983e880969d0d980b77881cb82139361d4e0c63",
-                "reference": "b983e880969d0d980b77881cb82139361d4e0c63",
+                "url": "https://api.github.com/repos/verot/class.upload.php/zipball/f266dc964f417f2d24a33a7c9efee1d05f6bfc6e",
+                "reference": "f266dc964f417f2d24a33a7c9efee1d05f6bfc6e",
                 "shasum": ""
             },
             "require": {
@@ -1207,7 +1266,7 @@
                 "gd",
                 "upload"
             ],
-            "time": "2017-01-24 00:19:49"
+            "time": "2017-03-18 00:16:06"
         }
     ],
     "packages-dev": [],
@@ -1218,7 +1277,8 @@
         "ins0/google-measurement-php-client": 20,
         "verot/class.upload.php": 20,
         "drewm/mailchimp-api": 20,
-        "mandrill/mandrill": 20
+        "mandrill/mandrill": 20,
+        "thepixeldeveloper/sitemap": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

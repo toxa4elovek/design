@@ -8,6 +8,7 @@ app/resources/tmp/*
 session/*
 node_modules/*
 app/webroot/minified/*
+app/webroot/sitemap.xml
 app/webroot/js/app.js
 app/webroot/js/pitches/create.js
 app/webroot/js/pitches/brief.js
