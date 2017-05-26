@@ -197,6 +197,19 @@ class Pitch extends AppModel
         return true;
     }
 
+    public static function isCohortClientForMonth($userId, $date) {
+        $result = false;
+        $countPreviousProjects = Pitch::count(['conditions' => [
+            'Pitch.user_id' => $userId,
+            'Pitch.billed' => 1,
+            'Pitch.billed_date' => ['<' => "$date"]
+        ]]);
+        if($countPreviousProjects === 0) {
+            $result = true;
+        }
+        return $result;
+    }
+
     public static function sendExpertTimeoutMail($params)
     {
         $experts = unserialize($params['pitch']->{'expert-ids'});

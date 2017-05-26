@@ -85,6 +85,8 @@ class Addon extends AppModel
         $addonsProlong = 0;
         $addonsCountSub = 0;
         $addonsTotalSub = 0;
+        $addonsCohortTotal = 0;
+        $isCohort = false;
         foreach ($addons as $addon) {
             $day = date('j', strtotime($addon->created));
             if (isset($countArray[$day])) {
@@ -100,6 +102,12 @@ class Addon extends AppModel
             if ($addon->pitch->category_id == 20) {
                 $addonsCountSub++;
                 $addonsTotalSub += $addon->total;
+            }
+            $project = Pitch::first($addon->pitch_id);
+            $userId = $project->user_id;
+            $isCohort = Pitch::isCohortClientForMonth($userId, $date);
+            if($isCohort) {
+                $addonsCohortTotal += $addon->total;
             }
         }
         $values = [];
@@ -126,6 +134,7 @@ class Addon extends AppModel
             'highestValue' => $highestValue,
             'addonsCount' => $addonsCount,
             'addonsTotal' => $addonsTotal,
+            'addonsCohortTotal' => $addonsCohortTotal,
             'addonsCountSub' => $addonsCountSub,
             'addonsTotalSub' => $addonsTotalSub,
             'addonsProlong' => $addonsProlong,
