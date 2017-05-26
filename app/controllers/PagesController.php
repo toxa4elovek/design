@@ -166,7 +166,7 @@ class PagesController extends AppController
         foreach ($promoSolutions as $promoSolution) {
             $promoSolution->pitch->days = ceil((strtotime($promoSolution->pitch->finishDate) - strtotime($promoSolution->pitch->started)) / DAY);
         }
-        $grades = Grade::all(['limit' => 2, 'conditions' => ['enabled' => 1], 'order' => ['RAND()'], 'with' => ['Pitch']]);
+        $grades = Grade::all(['limit' => 2, 'conditions' => ['Grade.enabled' => 1, 'Grade.type' => 'client'], 'order' => ['RAND()'], 'with' => ['Pitch']]);
         foreach ($grades as $grade) {
             $grade->user = User::first(['conditions' => ['id' => $grade->user_id]]);
         }
