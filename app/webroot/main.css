@@ -2455,7 +2455,7 @@ tr.even{
     background:#2f313a;
 }
 tr.highlighted{
-    background:#6891a2;
+    background:#6891a2 !important;
     color:#fff;
 }
 tr.newpitch{
