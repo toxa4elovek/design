@@ -213,4 +213,20 @@ class UserMailer extends \li3_mailer\extensions\Mailer
             'data' => $data
         ]);
     }
+
+    /**
+     * Метод отправляет уведомление в проект 1на1, требуется
+     * $user и $pitch
+     *
+     * @param $data
+     * @return bool|mixed|string
+     */
+    public static function new1on1Project($data)
+    {
+        return self::_mail([
+            'to' => $data['user']->email,
+            'subject' => 'Приглашение в проект',
+            'data' => $data
+        ]);
+    }
 }

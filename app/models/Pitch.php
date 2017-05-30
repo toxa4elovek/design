@@ -4,6 +4,8 @@ namespace app\models;
 
 use app\extensions\billing\Payture;
 use app\extensions\mailers\NotificationsMailer;
+use app\extensions\mailers\UserMailer;
+use app\extensions\smsfeedback\SmsUslugi;
 use app\extensions\social\TwitterAPI;
 use app\extensions\storage\Rcache;
 use \lithium\storage\Session;
@@ -93,6 +95,33 @@ class Pitch extends AppModel
                     ]]);
                     $project->awarded = $solution->id;
                     $project->save();
+                    $designer = User::first($details['designer_id']);
+                    if (($designer->phone !== '') && ((int) $designer->phone_valid === 1)) {
+                        $smsService = new SmsUslugi();
+                        $shortUrl = 'https://godesigner.ru/urls/' . Url::getShortUrlFor("https://godesigner.ru/users/hireDesigner/$designer->id/?project=$project->id");
+                        $message =  "$designer->first_name, вас хотят нанять для индивидуальной работы «1на1» $shortUrl. GoDesigner";
+                        $params = [
+                            'text' => $message
+                        ];
+                        $phones = [$designer->phone];
+                        $respond = $smsService->send($params, $phones);
+                        if (!isset($respond['smsid'])) {
+                            $smsId = 0;
+                        } else {
+                            $smsId = $respond['smsid'];
+                        }
+                        $data = [
+                            'user_id' => $designer->id,
+                            'created' => date('Y-m-d H:i:s'),
+                            'phone' => $designer->phone,
+                            'text' => $message,
+                            'status' => $respond['descr'],
+                            'text_id' => $smsId
+                        ];
+                        TextMessage::create($data)->save();
+                    }
+                    $emailData = ['user' => $designer, 'pitch' => $project];
+                    UserMailer::new1on1Project($emailData);
                 }
                 if (($params['pitch']->status == 0) && ($params['pitch']->brief == 0)) {
                     Event::createEvent($params['id'], 'PitchCreated', $params['user_id']);
