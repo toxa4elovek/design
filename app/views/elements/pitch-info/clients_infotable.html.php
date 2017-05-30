@@ -85,9 +85,9 @@ endif;
 Спасибо за ответ!%0D%0A%0D%0A
 ' . $pitch->user->first_name . ' ' . $pitch->user->last_name .'.'?>" style="width: 178px; top: -3px;">Совет друга (бесплатно)</a>
         </td>
-        <?php if ($pitch->billed == 1): ?>
+        <?php if ((int) $pitch->billed === 1): ?>
             <td width="15"></td>
-            <?php if ($pitch->status == 0):?>
+            <?php if (((int) $pitch->awarded === 0) && ((int) $pitch->status !== 2)):?>
             <td width="255" height="25" class="helpprolong" style="padding-left:5px;padding-top:5px;border-top:1px solid #c1c1c1;border-bottom:1px solid #c1c1c1;">
                 <span class="regular"><a href="https://godesigner.ru/answers/view/88" target="_blank">Продлить срок</a> <a href="https://godesigner.ru/answers/view/88" target="_blank" class="tooltip_hints_long" title="Если не хватает вариантов, или вы решили увеличить размер вознаграждения, воспользуйтесь доп. опцией за 1950р./день, из которых 1000р. идет в гонорар дизайнеру.">(?)</a></span>
                 <a class="order-button" href="/pitches/addon/<?= $pitch->id?>?click=prolong">Заказать</a>

@@ -130,7 +130,7 @@ class Pitch extends AppModel
                         $mediaManager = new SocialMediaManager;
                         $mediaManager->postNewProjectMessage($params['pitch']);
                     }
-                    if($project->type !== '1on1') {
+                    if ($project->type !== '1on1') {
                         Task::createNewTask($params['pitch']->id, 'newpitch');
                     }
                 } elseif (($params['pitch']->status == 0) && ($params['pitch']->brief == 1)) {
@@ -226,14 +226,15 @@ class Pitch extends AppModel
         return true;
     }
 
-    public static function isCohortClientForMonth($userId, $date) {
+    public static function isCohortClientForMonth($userId, $date)
+    {
         $result = false;
         $countPreviousProjects = Pitch::count(['conditions' => [
             'Pitch.user_id' => $userId,
             'Pitch.billed' => 1,
             'Pitch.billed_date' => ['<' => "$date"]
         ]]);
-        if($countPreviousProjects === 0) {
+        if ($countPreviousProjects === 0) {
             $result = true;
         }
         return $result;
@@ -539,16 +540,27 @@ class Pitch extends AppModel
         return $result;
     }
 
+    /**
+     * Метод добавляет дни продления для проекта и увеличивает награду
+     *
+     * @param $addon
+     * @return bool
+     */
     public static function addProlong($addon)
     {
         if ($pitch = self::first($addon->pitch_id)) {
             $sumProlong = 1000 * $addon->{'prolong-days'};
             $pitch->price += $sumProlong;
             $daysAdded = $addon->{'prolong-days'} * DAY;
-            $timeProlong = strtotime($pitch->finishDate) + ($daysAdded);
+            $timeProlong = strtotime($pitch->finishDate) + $daysAdded;
             $pitch->finishDate = date('Y-m-d H:i:s', $timeProlong);
-            if ($pitch->category_id == 20) {
-                $pitch->chooseWinnerFinishDate = date('Y-m-d H:i:s', (strtotime($pitch->chooseWinnerFinishDate) + $daysAdded));
+            if ((int) $pitch->category_id === 20) {
+                $pitch->chooseWinnerFinishDate = date(MYSQL_DATETIME_FORMAT, strtotime($pitch->chooseWinnerFinishDate) + $daysAdded);
+            }
+            if ((int)$pitch->status === 1) {
+                $pitch->status = 0;
+                $timeProlong = strtotime(date(MYSQL_DATETIME_FORMAT)) + $daysAdded;
+                $pitch->finishDate = date('Y-m-d H:i:s', $timeProlong);
             }
             if ($pitch->save()) {
                 Comment::createComment([
@@ -560,7 +572,6 @@ class Pitch extends AppModel
                 return true;
             }
         }
-
         return false;
     }
 

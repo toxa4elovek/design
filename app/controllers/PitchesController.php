@@ -1095,14 +1095,14 @@ class PitchesController extends AppController
             ]]))) {
                 $disableUpload = true;
             }
-            if($this->userHelper->isLoggedIn() && $pitch->id == '123099') {
+            if ($this->userHelper->isLoggedIn() && $pitch->id == '123099') {
                 $count = Solution::count([
                     'conditions' => [
                         'Solution.pitch_id' => $pitch->id,
                         'Solution.user_id' => $this->userHelper->getId()
                     ]
                 ]);
-                if(!$count) {
+                if (!$count) {
                     $disableUpload = true;
                 }
             }
@@ -1693,14 +1693,14 @@ Disallow: /pitches/upload/'.$pitch['id'];
                 ]]))) {
                 $this->redirect(['Pitches::view', 'id' => $pitch->id]);
             }
-            if($this->userHelper->isLoggedIn() && $pitch->id == '123099') {
+            if ($this->userHelper->isLoggedIn() && $pitch->id == '123099') {
                 $count = Solution::count([
                     'conditions' => [
                         'Solution.pitch_id' => $pitch->id,
                         'Solution.user_id' => $this->userHelper->getId()
                     ]
                 ]);
-                if(!$count) {
+                if (!$count) {
                     $this->redirect(['Pitches::view', 'id' => $pitch->id]);
                 }
             }
@@ -1942,7 +1942,19 @@ Disallow: /pitches/upload/'.$pitch['id'];
         } else {
             $prolongCoeff = 1950;
         }
-        return compact('pitch', 'experts', 'prolongCoeff');
+        $disabledProlong = false;
+        $prevBilledProlongAddons = Addon::count([
+            'conditions' => [
+                'Addon.billed' => 1,
+                'Addon.pitch_id' => $this->request->id,
+                'Addon.prolong' => 1,
+                'Addon.created' => ['>' => $pitch->started]
+            ]
+        ]);
+        if ($prevBilledProlongAddons > 0) {
+            $disabledProlong = true;
+        }
+        return compact('pitch', 'experts', 'prolongCoeff', 'disabledProlong');
     }
 
     public function penalty()
@@ -2118,8 +2130,8 @@ Disallow: /pitches/upload/'.$pitch['id'];
 
     public function accept()
     {
-        if($project = Pitch::first((int) $this->request->id)) {
-            if($project->type === '1on1') {
+        if ($project = Pitch::first((int) $this->request->id)) {
+            if ($project->type === '1on1') {
                 $project->confirmed = 1;
                 $project->save();
                 Payture::charge($project->payture_id);
@@ -2139,8 +2151,8 @@ Disallow: /pitches/upload/'.$pitch['id'];
 
     public function decline()
     {
-        if($project = Pitch::first((int) $this->request->id)) {
-            if($project->type === '1on1') {
+        if ($project = Pitch::first((int) $this->request->id)) {
+            if ($project->type === '1on1') {
                 $project->awarded = 0;
                 $project->billed = 0;
                 $project->published = 0;
@@ -2150,7 +2162,7 @@ Disallow: /pitches/upload/'.$pitch['id'];
                 $project->finishDate = '0000-00-00 00:00:00';
                 $project->save();
                 Payture::unblock($project->payture_id, (int) $project->total * 100);
-            }else {
+            } else {
                 $result = Pitch::declineLogosalePitch($this->request->id, Session::read('user.id'));
                 if (!is_null($this->request->env('HTTP_X_REQUESTED_WITH'))) {
                     return compact('result');
@@ -2345,7 +2357,7 @@ Disallow: /pitches/upload/'.$pitch['id'];
                     }
                 }
             }
-            if($selectedProject) {
+            if ($selectedProject) {
                 $this->request->data['commonPitchData']['id'] = $selectedProject->id;
             }
             $this->request->data['commonPitchData']['user_id'] = $userId;
