@@ -5,6 +5,11 @@
   })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
   ga('create', 'UA-9235854-5', 'godesigner.ru');
+  ga(function(tracker) {
+    var clientId = tracker.get('clientId');
+    document.cookie = "_ga_cid=" + clientId + "; path=/";
+    ga('set', 'dimension1', clientId);
+  });
   ga('send', 'pageview');
 </script>
 <script type="text/javascript">(window.Image ? (new Image()) : document.createElement('img')).src = location.protocol + '//vk.com/rtrg?r=CjVIVasbqFcwWYdK*itrX71ZVQjHST6BkS3o6mmjp6uCKBFJqlpmzXLTKfzi9D5AfOOVc84utEqylgc/XRGOHltjb77Nc0BzFjkKAuF*HDYolBHAW2FzqzTYbdMPbRk6VP7FFIj0cD9v7fzVjl4P*E4GawcLrM8mSRxVV0RBLuQ-';</script>
