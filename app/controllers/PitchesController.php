@@ -722,13 +722,9 @@ class PitchesController extends AppController
             if ($featuresData['premium'] > 0) {
                 $premium = 1;
             }
-            if (!empty($commonPitchData['phone-brief'])) {
-                //$brief = 1;
-            }
-            if ((isset($featuresData['guaranteed'])) && ($featuresData['guaranteed'] > 0)) {
+            $guaranteed = 0;
+            if (((int) $commonPitchData['category_id'] === 22) || (isset($featuresData['guaranteed']) && ($featuresData['guaranteed'] > 0))) {
                 $guaranteed = 1;
-            } else {
-                $guaranteed = 0;
             }
             if ($featuresData['timelimitOption'] > 0) {
                 $timelimit = abs(intval($featuresData['timelimitOption']));

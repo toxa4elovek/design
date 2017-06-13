@@ -172,6 +172,9 @@ $(document).ready(function () {
   const promoCodeInput = $('#promocode')
 
   function checkPromocode () {
+    if (!promoCodeInput.length) {
+      return false
+    }
     var value = promoCodeInput.val()
     if (promoCodeInput.prop('disabled') || value.length == 0) {
       return false

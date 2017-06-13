@@ -150,14 +150,21 @@ endif?>
         <?= $this->view()->render(['element' => 'newbrief/setprice_block'], ['pitch' => $pitch, 'category' => $category]); ?>
 
         <?php if((int) $category->id === 22):?>
-            <div style="margin-top:35px;height:100px;">
+            <div style="margin-top:5px;height:200px;">
+                <div style="margin-bottom:40px">
+                    <input style="vertical-align: top;margin-top:3px" id="guaranteedTrue" checked disabled type="radio" name="isGuaranteed" value="1" data-option-title="Гарантированный проект" data-option-value="0">
+                    <label for="guaranteedTrue" style="text-shadow: 0 1px 1px #eee;font-size: 29px; color:#658fa5; font-family: 'RodeoC', 'Helvetica Neue';margin-left:10px;">Гарантированный проект</label>
+                    <p class="guaranteeExplanation" id="guaranteedTooltip">Вы гарантируете, что выберете победителя в любом случае, тем самым инициировав до 40% больше решений. Мы выделяем такой проект в списке. <?php if ($category->id == 7): echo 'Копирайтеры'; else: echo 'Дизайнеры'; endif;?> увидят, что проект не останется без победителя, и вы получите больший выбор идей.</p>
+                </div>
+            </div>
+            <!--div style="margin-top:35px;height:100px;">
                 <div>
                     <input style="vertical-align: top;margin-top:3px" id="guaranteedFalse" type="hidden" name="isGuaranteed" value="0" data-option-title="Гарантированный проект">
                     <label for="guaranteedFalse" style="text-shadow: 0 1px 1px #eee;font-size: 29px; color:#6f6f6f; font-family: 'RodeoC', 'Helvetica Neue';margin-left:10px;">Внимание!</label>
                     <p class="guaranteeExplanation" id="nonguaranteedTooltip" style="padding-left: 10px;">
                         При создании «Микропроекта» мы не можем обеспечить интерес дизайнеров к конкурсу, поэтому опция <a href="/answers/view/71" target="_blank">«Гарантировать»</a> недоступна.</p>
                 </div>
-            </div>
+            </div-->
         <?php else: ?>
             <div style="margin-top:5px;height:200px;">
                 <div style="margin-bottom:40px">
@@ -175,7 +182,7 @@ endif?>
         <?php endif ?>
 
         <?= $this->view()->render(['element' => 'newbrief/time_block'], compact('category', 'pitch')); ?>
-
+        <?php if((int) $category->id !== 22):?>
         <h1 style="background: url('/img/images/faq.png') no-repeat scroll 55% 0 transparent;	font-family: 'RodeoC', serif;
                 font-size: 12px;
                 font-style: normal;
@@ -359,7 +366,7 @@ endif?>
 
 
         </div><!-- .group -->
-
+        <?php endif ?>
         <p class="submit">
             <input type="submit" value="Далее к заполнению брифа" class="button steps-link" data-step="2">
         </p><!-- .submit -->
