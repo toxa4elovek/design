@@ -575,6 +575,10 @@ $(document).ready(function () {
     } else {
       $('#fastpitch-tooltip').fadeOut()
     }
+    if (($('input[name=category_id]').val() === '22') && (award > microProjectPriceLimit)) {
+      input.val(microProjectPriceLimit)
+      award = microProjectPriceLimit
+    }
     // console.log('redrawing indicator and updating cart - ' + award)
     drawIndicator(input, award)
     Cart.updateOption($(this).data('optionTitle'), award)
@@ -1176,6 +1180,9 @@ function FeatureCart () {
     if (commision < 0) {
       commision = 0
     }
+    if ($('input[name=category_id]').val() === '22') {
+      commision = this.transferFee
+    }
     self.content[self.transferFeeKey] = commision
   }
   this.getOption = function (key) {
@@ -1406,6 +1413,7 @@ function FeatureCart () {
     return price
   }
   this.feeRatesReCalc = function (divider) {
+    console.log('recalc');
     feeRates.low = (Math.floor(feeRatesOrig.low * 1000 / divider) / 1000).toFixed(3)
     feeRates.normal = (Math.floor(feeRatesOrig.normal * 1000 / divider) / 1000).toFixed(3)
     feeRates.good = (Math.floor(feeRatesOrig.good * 1000 / divider) / 1000).toFixed(3)
@@ -1469,7 +1477,7 @@ function FeatureCart () {
   this._renderOptions = function () {
     var html = ''
     $.each(self.content, function (key, value) {
-      if (key == self.transferFeeKey) {
+      if ((key == self.transferFeeKey) && ($('input[name=category_id]').val() !== '22')) {
         html += '<li><span>' + key + ' <div>' + (self.transferFee * 100).toFixed(1) + '%</div></span><small>' + value + '.-</small></li>'
       } else {
         html += '<li><span>' + key + '</span><small>' + value + '.-</small></li>'

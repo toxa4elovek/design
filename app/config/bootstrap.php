@@ -108,9 +108,9 @@ define('FEE_LOW', 0.395);
 define('FEE_NORMAL', 0.345);
 define('FEE_GOOD', 0.305);
 
-define('FEE_LOW_MICRO', 1);
-define('FEE_NORMAL_MICRO', 0.75);
-define('FEE_GOOD_MICRO', 0.5);
+define('FEE_LOW_MICRO', 500);
+define('FEE_NORMAL_MICRO', 1750);
+define('FEE_GOOD_MICRO', 2500);
 
 define('COPY_BASE_PRICE', 7000);
 
