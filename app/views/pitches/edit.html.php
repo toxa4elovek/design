@@ -81,7 +81,7 @@ endif?>
         <?php if ((int) $category->id === 22): ?>
             <p class="guaranteeExplanation" style="text-align:center; margin-bottom: 30px;">Проекты от 1000 руб. и 1 дня. Гарантируем выбор решений, или мы вернем деньги</p>
         <?php endif ?>
-        
+
         <ol class="steps">
             <li class="current"><a href="#" class="steps-link" data-step="1">1. Цена</a></li>
             <li><a href="#" class="steps-link" data-step="2">2. Бриф</a></li>
@@ -156,6 +156,9 @@ endif?>
 
         <?php if((int) $category->id === 22):?>
             <div style="margin-top:5px;height:200px;">
+                <p class="guaranteeExplanation" style="margin-bottom:40px;">
+                    Помните, что участие и интерес дизайнеров обеспечивается размером гонорара!
+                </p>
                 <div style="margin-bottom:40px">
                     <input style="vertical-align: top;margin-top:3px" id="guaranteedTrue" checked disabled type="radio" name="isGuaranteed" value="1" data-option-title="Гарантированный проект" data-option-value="0">
                     <label for="guaranteedTrue" style="text-shadow: 0 1px 1px #eee;font-size: 29px; color:#658fa5; font-family: 'RodeoC', 'Helvetica Neue';margin-left:10px;">Гарантированный проект</label>
