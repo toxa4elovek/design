@@ -26,28 +26,28 @@ class Stream extends \lithium\template\Helper
         $count = 1;
         foreach ($tweets as $tweet):
                 $text = $tweet['text'];
-        if (isset($tweet['type']) && $tweet['type'] == 'tutdesign') {
-            $image = '<a href="http://tutdesign.ru/cats/' . $tweet['category'] . '/' . $tweet['id'] . '-' . $tweet['slug'] . '.html" target="_blank"><img style="position: relative; margin: 0 0 10px 6px;" alt="' . $text . '" src="http://tutdesign.ru/wp-content/uploads/' . $tweet['thumbnail'] . '" width="171" height="114"></a>';
-            $link = '<a style="display:inline;color:#ff585d" target="_blank" href="http://tutdesign.ru/cats/' . $tweet['category'] . '/' . $tweet['id'] . '-' . $tweet['slug'] . '.html">http://tutdesign.ru/cats/' . $tweet['category'] . '</a>';
+        if (isset($tweet['type']) && $tweet['type'] === 'tutdesign') {
+            $image = '<!--noindex--><a rel="nofollow" href="http://tutdesign.ru/cats/' . $tweet['category'] . '/' . $tweet['id'] . '-' . $tweet['slug'] . '.html" target="_blank"><img style="position: relative; margin: 0 0 10px 6px;" alt="' . $text . '" src="http://tutdesign.ru/wp-content/uploads/' . $tweet['thumbnail'] . '" width="171" height="114"></a><!--/noindex-->';
+            $link = '<!--noindex--><a rel="nofollow" style="display:inline;color:#ff585d" target="_blank" href="http://tutdesign.ru/cats/' . $tweet['category'] . '/' . $tweet['id'] . '-' . $tweet['slug'] . '.html">http://tutdesign.ru/cats/' . $tweet['category'] . '</a><!--/noindex-->';
             $content .= '<li style="padding-left:5px;"><p class="regular" style="line-height:20px;">' . $image . '<br>' . $text . '<br>' . $link . '</p>';
         } else {
             foreach ($tweet['entities']['hashtags'] as $hashtag) {
-                $text = str_replace('#' . $hashtag['text'], '<a style="display:inline;color:#ff585d" target="_blank" href="https://twitter.com/#!/search/%23' . $hashtag['text'] . '">' . '#' . $hashtag['text'] . '</a>', $text);
+                $text = str_replace('#' . $hashtag['text'], '<!--noindex--><a rel="nofollow" style="display:inline;color:#ff585d" target="_blank" href="https://twitter.com/#!/search/%23' . $hashtag['text'] . '">' . '#' . $hashtag['text'] . '</a><!--/noindex-->', $text);
             }
             foreach ($tweet['entities']['urls'] as $url) {
-                $text = str_replace($url['url'], '<a style="display:inline;color:#ff585d" target="_blank" href="' . $url['url'] . '">' . $url['display_url'] . '</a>', $text);
+                $text = str_replace($url['url'], '<!--noindex--><a rel="nofollow" style="display:inline;color:#ff585d" target="_blank" href="' . $url['url'] . '">' . $url['display_url'] . '</a><!--/noindex-->', $text);
             }
             foreach ($tweet['entities']['user_mentions'] as $user) {
-                $text = str_replace('@' . $user['screen_name'], '<a style="display:inline;color:#ff585d" target="_blank" href="https://twitter.com/#!/' . $user['screen_name'] . '">' . '@' . $user['screen_name'] . '</a>', $text);
+                $text = str_replace('@' . $user['screen_name'], '<!--noindex--><a rel="nofollow" style="display:inline;color:#ff585d" target="_blank" href="https://twitter.com/#!/' . $user['screen_name'] . '">' . '@' . $user['screen_name'] . '</a><!--/noindex-->', $text);
             }
-            $user = '<a style="display:inline;color:#ff585d" target="_blank" href="https://twitter.com/#!/' . $tweet['user']['screen_name'] . '">@' . $tweet['user']['screen_name'] . '</a>';
-            if (($tweet['user']['screen_name'] == 'tutdesign') && (preg_match('/news\?event/', $text))) {
+            $user = '<!--noindex--><a rel="nofollow" style="display:inline;color:#ff585d" target="_blank" href="https://twitter.com/#!/' . $tweet['user']['screen_name'] . '">@' . $tweet['user']['screen_name'] . '</a><!--/noindex-->';
+            if (($tweet['user']['screen_name'] === 'tutdesign') && (preg_match('/news\?event/', $text))) {
                 continue;
             }
             $image = '';
             if (isset($tweet['thumbnail'])) {
                 if ((isset($tweet['entities']['urls'])) && (count($tweet['entities']['urls']) > 0)) {
-                    $image = '<a href="' . $tweet['entities']['urls'][0]['url'] . '"><img style="position: relative; margin: 0 0 10px 6px;" src="' . $tweet['thumbnail'] . '" width="171" alt=""></a><br>';
+                    $image = '<!--noindex--><a rel="nofollow" href="' . $tweet['entities']['urls'][0]['url'] . '"><img style="position: relative; margin: 0 0 10px 6px;" src="' . $tweet['thumbnail'] . '" width="171" alt=""></a><!--/noindex--><br>';
                 } else {
                     $image = '<img style="position: relative; margin: 0 0 10px 6px;" src="' . $tweet['thumbnail'] . '" width="171" alt=""><br>';
                 }
@@ -65,7 +65,7 @@ class Stream extends \lithium\template\Helper
         }
         endforeach;
         endif;
-        $ending = '</ul><h2 style="font:20px \'RodeoC\',serif; text-shadow: 1px 0 1px #FFFFFF;color:#999;text-transform: uppercase; text-align: center;margin-top:10px;">СЛЕДИ ЗА <a class="follow-link" style="font-size:20px;" target="_blank" href="http://www.twitter.com/#!/Go_Deer">@GO_DEER</a><br> В ТВИТТЕРЕ</h2>';
+        $ending = '</ul><h2 style="font:20px \'RodeoC\',serif; text-shadow: 1px 0 1px #FFFFFF;color:#999;text-transform: uppercase; text-align: center;margin-top:10px;">СЛЕДИ ЗА <!--noindex--><a rel="nofollow" class="follow-link" style="font-size:20px;" target="_blank" href="http://www.twitter.com/#!/Go_Deer">@GO_DEER</a><!--/noindex--><br> В ТВИТТЕРЕ</h2>';
 
         return $header . $content . $ending;
     }
@@ -81,15 +81,15 @@ class Stream extends \lithium\template\Helper
                     $text = $tweet['text'];
                     if (!isset($tweet['type']) && $tweet['type'] !== 'tutdesign') {
                         foreach ($tweet['entities']['hashtags'] as $hashtag) {
-                            $text = str_replace('#' . $hashtag['text'], '<a style="display:inline;color:#ff585d" target="_blank" href="https://twitter.com/#!/search/%23' . $hashtag['text'] . '">' . '#' . $hashtag['text'] . '</a>', $text);
+                            $text = str_replace('#' . $hashtag['text'], '<!--noindex--><a rel="nofollow" style="display:inline;color:#ff585d" target="_blank" href="https://twitter.com/#!/search/%23' . $hashtag['text'] . '">' . '#' . $hashtag['text'] . '</a><!--/noindex-->', $text);
                         }
                         foreach ($tweet['entities']['urls'] as $url) {
-                            $text = str_replace($url['url'], '<a class="url-twitter" style="display:inline;color:#ff585d" target="_blank" href="' . $url['url'] . '">' . $url['display_url'] . '</a>', $text);
+                            $text = str_replace($url['url'], '<!--noindex--><a rel="nofollow" class="url-twitter" style="display:inline;color:#ff585d" target="_blank" href="' . $url['url'] . '">' . $url['display_url'] . '</a><!--/noindex-->', $text);
                         }
                         foreach ($tweet['entities']['user_mentions'] as $user) {
-                            $text = str_replace('@' . $user['screen_name'], '<a style="display:inline;color:#ff585d" target="_blank" href="https://twitter.com/#!/' . $user['screen_name'] . '">' . '@' . $user['screen_name'] . '</a>', $text);
+                            $text = str_replace('@' . $user['screen_name'], '<!--noindex--><a rel="nofollow" style="display:inline;color:#ff585d" target="_blank" href="https://twitter.com/#!/' . $user['screen_name'] . '">' . '@' . $user['screen_name'] . '</a><!--/noindex-->', $text);
                         }
-                        $user = '<a style="display:inline;color:#ff585d" target="_blank" href="https://twitter.com/#!/' . $tweet['user']['screen_name'] . '">@' . $tweet['user']['screen_name'] . '</a>';
+                        $user = '<!--noindex--><a rel="nofollow" style="display:inline;color:#ff585d" target="_blank" href="https://twitter.com/#!/' . $tweet['user']['screen_name'] . '">@' . $tweet['user']['screen_name'] . '</a><!--/noindex-->';
                         if ($count == 1) {
                             $content .= '<div id="twitterDate" data-date="' . date('Y-m-d H:i:s', strtotime($tweet['created_at'])) . '" class="job">';
                         } else {

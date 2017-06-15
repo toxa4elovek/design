@@ -3,10 +3,10 @@
     <div class="footer-inner">
 
         <ul class="social">
-            <li id="facebook"><a href="http://www.facebook.com/pages/Go-Designer/160482360714084" target="_blank">Facebook</a></li>
-            <li id="twitter"><a href="https://twitter.com/#!/Go_Deer" target="_blank">Twitter</a></li>
-            <li id="vkontakte"><a href="http://vk.com/public36153921" target="_blank">Vkontakte</a></li>
-            <li id="instagram"><a href="http://instagram.com/godesigner.ru" target="_blank">Instagram</a></li>
+            <li id="facebook"><!--noindex--><a rel="nofollow" href="http://www.facebook.com/pages/Go-Designer/160482360714084" target="_blank">Facebook</a><!--/noindex--></li>
+            <li id="twitter"><!--noindex--><a rel="nofollow" href="https://twitter.com/#!/Go_Deer" target="_blank">Twitter</a><!--/noindex--></li>
+            <li id="vkontakte"><!--noindex--><a rel="nofollow" href="http://vk.com/public36153921" target="_blank">Vkontakte</a><!--/noindex--></li>
+            <li id="instagram"><!--noindex--><a rel="nofollow" href="http://instagram.com/godesigner.ru" target="_blank">Instagram</a><!--/noindex--></li>
             <!--li id="rss"><a href="#">RSS</a></li-->
         </ul><!-- .social -->
 

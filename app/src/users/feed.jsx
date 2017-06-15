@@ -1561,10 +1561,8 @@ function OfficeStatusUpdater () {
       html += '<div class="box" ' + boxStyle + 'data-eventid="' + object.id + '" data-newsid="' + object.news.id + '">'
 
       if (validUrl) {
-        html += '<p class="img-box"> \
-                                        <a class="post-link" href="' + object.news.link + '" target="_blank" ><img onerror="imageLoadError(this);" class="img-post" src="' + img + '"></a> \
-                                    </p>'
-      }else if (self.isEmbeddedLink(object.news.link)) {
+        html += '<p class="img-box"><!--nofollow--><a rel="nofollow" class="post-link" href="' + object.news.link + '" target="_blank" ><img onerror="imageLoadError(this);" class="img-post" src="' + img + '"></a><!--/nofollow--></p>'
+      } else if (self.isEmbeddedLink(object.news.link)) {
         html += '<p class="img-box">' + self.generateEmbeddedIframe(object.news.link) + '</p>'
       }
       html += '<div class="r-content post-content"' + style + '>'

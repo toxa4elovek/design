@@ -23,7 +23,7 @@
                             <a href="/answers">Помощь</a> / <a href="/answers?category=<?= $answer->questioncategory_id?>"><?= $answer->category?></a> / <a href="/answers/view/<?= $answer->id ?>"><?= $answer->title?></a>
                             <div style="margin-top:20px; margin-bottom:0px; width: 611px; background: url(/img/sep.png) repeat-x scroll 0 0 transparent" class="separator"></div>
                         </nav>
-                        <?php echo $answer->text;?>
+                        <?php echo $this->brief->insertHtmlLinkInTextForSeo($answer->text);?>
                         <?=$this->html->link('все вопросы', 'Answers::index', ['class' => 'back', 'style' => 'margin-left:5px;margin-top:20px;display: block;'])?>
 
                     </div>

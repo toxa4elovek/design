@@ -30,7 +30,7 @@
                             <?php if (!empty($expert->spec)):?>
                             <p><?=$expert->spec?></p>
                             <?php endif?>
-                            <?php echo $expert->text?>
+                            <?php echo $this->brief->insertHtmlLinkInTextForSeo($expert->text)?>
 
                             <a style="
                             width: 85px;

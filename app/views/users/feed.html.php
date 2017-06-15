@@ -261,7 +261,7 @@
                                     <div class="box" data-newsid="<?= $object['news']['id'] ?>" <?php if (!$isValidImage($newsImage)): echo 'style="margin-top: 34px;"'; endif;?> data-eventid="<?= $object['id'] ?>">
                                         <?php if ($isValidImage($object['news']['imageurl'])):?>
                                             <p class="img-box">
-                                                <a class="post-link" href="<?= $object['news']['link'] ?>"><img onerror="imageLoadError(this);" class="img-post" src="<?= ((strpos($object['news']['imageurl'], '/events/') !== false) && (strpos($object['news']['imageurl'], '/events/') === 0)) ? 'https://godesigner.ru'.$object['news']['imageurl'] : $object['news']['imageurl']?>"></a>
+                                                <!--noindex--><a rel="nofollow" class="post-link" href="<?= $object['news']['link'] ?>"><img onerror="imageLoadError(this);" class="img-post" src="<?= ((strpos($object['news']['imageurl'], '/events/') !== false) && (strpos($object['news']['imageurl'], '/events/') === 0)) ? 'https://godesigner.ru'.$object['news']['imageurl'] : $object['news']['imageurl']?>"></a><!--/noindex-->
                                             </p>
                                         <?php elseif ($this->feed->isEmbeddedLink($object['news']['link'])):?>
                                             <p class="img-box">
@@ -560,7 +560,7 @@
                                             <div class="box" data-created="<?= $object['news']['created'] ?>" data-newsid="<?= $object['news']['id'] ?>" <?php if ((!$isValidImage($newsImage)) && (!$coub)): echo 'style="margin-top: 34px;"'; endif;?> data-eventid="<?= $object['id'] ?>">
                                                 <?php if ($isValidImage($object['news']['imageurl'])):?>
                                                 <p class="img-box">
-                                                    <a class="post-link" href="<?= $object['news']['link'] ?>" target="_blank"><img onerror="imageLoadError(this);" class="img-post" src="<?= ((strpos($object['news']['imageurl'], '/events/') !== false) && (strpos($object['news']['imageurl'], '/events/') === 0)) ? 'https://godesigner.ru'.$object['news']['imageurl'] : $object['news']['imageurl']?>"></a>
+                                                    <!--noindex--><a rel="nofollow" class="post-link" href="<?= $object['news']['link'] ?>" target="_blank"><img onerror="imageLoadError(this);" class="img-post" src="<?= ((strpos($object['news']['imageurl'], '/events/') !== false) && (strpos($object['news']['imageurl'], '/events/') === 0)) ? 'https://godesigner.ru'.$object['news']['imageurl'] : $object['news']['imageurl']?>"></a><!--/noindex-->
                                                 </p>
                                                 <?php elseif ($this->feed->isEmbeddedLink($object['news']['link'])):?>
                                                 <p class="img-box">

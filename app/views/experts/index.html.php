@@ -47,7 +47,7 @@
                             <div class="regular">
                                 <a href="/experts/view/<?=$expert->id?>"><img src="<?=$imageArray[$expert->id]?>" alt="<?=$expert->name?>"></a>
                                 <h2><a href="/experts/view/<?=$expert->id?>"><?php echo $expert->name?></a></h2>
-                                <p><?php echo $expert->title?></p>
+                                <p><?php echo $this->brief->insertHtmlLinkInTextForSeo($expert->title)?></p>
 
                                 <a href="/experts/view/<?=$expert->id?>" class="more">подробнее</a>
                             </div>

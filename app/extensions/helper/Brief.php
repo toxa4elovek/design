@@ -49,6 +49,10 @@ class Brief extends \lithium\template\Helper
         }
     }
 
+    public function insertHtmlLinkInTextForSeo($text) {
+        return $this->insertHtmlLinkInText($text);
+    }
+
     /**
      * Метод заменяет простые адреса на html ссылки
      *
@@ -111,6 +115,14 @@ class Brief extends \lithium\template\Helper
         }
         while (preg_match('#href="(?!(http|https)://)(.*)"#', $text, $match)) {
             $text = preg_replace('#href="(?!(http|https)://)(.*)"#', 'href="http://$2"', $text, -1);
+        }
+        preg_match_all('(<a(?:(?!\/a>).|\n)*(?=\/a>)...)', $text, $matches);
+        if($matches) {
+            foreach ($matches[0] as $link) {
+                $newLink = preg_replace('!(<a)(\s)!', '$1 rel="nofollow" ', $link);
+                $replacement = '<!--noindex-->' . $newLink . '<!--/noindex-->';
+                $text = str_replace($link, $replacement, $text);
+            }
         }
         return $text;
     }
