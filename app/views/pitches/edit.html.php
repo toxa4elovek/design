@@ -48,7 +48,7 @@ $specifics = unserialize($pitch->specifics);
     <?php if((int) $category->id === 22):?>
     var feeRatesOrig = {low: <?php echo FEE_LOW_MICRO; ?>, normal: <?php echo FEE_NORMAL_MICRO; ?>, good: <?php echo FEE_GOOD_MICRO; ?>};
     var feeRates = {low: <?php echo FEE_LOW_MICRO; ?>, normal: <?php echo FEE_NORMAL_MICRO; ?>, good: <?php echo FEE_GOOD_MICRO; ?>};
-    var microProjectPriceLimit = 8000;
+    var microProjectPriceLimit = 7999;
     <?php else: ?>
     var feeRatesOrig = {low: <?php echo FEE_LOW; ?>, normal: <?php echo FEE_NORMAL; ?>, good: <?php echo FEE_GOOD; ?>};
     var feeRates = {low: <?php echo FEE_LOW; ?>, normal: <?php echo FEE_NORMAL; ?>, good: <?php echo FEE_GOOD; ?>};
@@ -79,7 +79,7 @@ endif?>
         <h2><?php if ($category->title != 'Фирменный стиль и логотип'): echo $category->title; else: echo 'Фир. стиль и логотип'; endif; ?></h2>
 
         <?php if ((int) $category->id === 22): ?>
-            <p class="guaranteeExplanation" style="text-align:center; margin-bottom: 30px;">Проекты от 1000 руб. и 1 дня. Гарантируем выбор решений, или мы вернем деньги</p>
+            <p class="guaranteeExplanation" style="text-align:center; margin-bottom: 30px;">Проекты от 1000 руб. и 1 дня. Гарантируем выбор решений, или мы вернем деньги!</p>
         <?php endif ?>
 
         <ol class="steps">

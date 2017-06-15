@@ -40,8 +40,29 @@
                 <?php endif;*/?></li>
         </ul>
     </div><!-- .indicator -->
+    <?php else:?>
+        <div id="indicator" class="indicator low" data-normal="183" data-high="366">
+            <ul>
+                <li>500-1999
+                </li>
+                <li>2000-4999
+                </li>
+                <li>5000-7999</li>
+            </ul>
+            <div class="bar">
+                <div class="line"></div>
+                <div class="shadow-b"></div>
+            </div><!-- .bar -->
+            <ul>
+                <li>Сбор 500
+                </li>
+                <li>Сбор 1750
+                </li>
+                <li>Сбор 2500</li>
+            </ul>
+        </div><!-- .indicator -->
     <?php endif?>
-    <?php if ($category->id != 20): ?>
+    <?php if ((int) $category->id !== 20): ?>
     <!--img src="/img/comissions.png" style="margin-bottom: 30px;"-->
     <?php endif?>
 </div><!-- .set-price -->

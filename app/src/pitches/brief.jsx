@@ -1017,12 +1017,22 @@ function drawIndicator (input, value) {
     Cart.transferFee = feeRates.normal
     line.width(normalPx + ((highPx - normalPx) / ratio))
   } else {
-    var ratio = (input.data('high') * 3 - input.data('high')) / (value - input.data('high'))
-    $('#indicator').addClass('good')
-    Cart.transferFee = feeRates.good
-    var width = highPx + ((fullPx - highPx) / ratio)
-    if (width > (fullPx - 10)) {
-      width = fullPx - 10
+    if ($('input[name=category_id]').val() === '22') {
+      const indicatorMax = 540
+      $('#indicator').addClass('good')
+      Cart.transferFee = feeRates.good
+      var width = (value / microProjectPriceLimit) * indicatorMax
+      if (width > indicatorMax) {
+        width = indicatorMax
+      }
+    } else {
+      var ratio = (input.data('high') * 3 - input.data('high')) / (value - input.data('high'))
+      $('#indicator').addClass('good')
+      Cart.transferFee = feeRates.good
+      var width = highPx + ((fullPx - highPx) / ratio)
+      if (width > (fullPx - 10)) {
+        width = fullPx - 10
+      }
     }
     line.width(width)
   }
