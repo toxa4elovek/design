@@ -36,7 +36,7 @@ class PitchfilesController extends AppController
 
     public function delete()
     {
-        $file = Pitchfile::first($this->request->data['id']);
+        $file = Pitchfile::first($this->request->params['id']);
 
         //if((($file->user_id) && ($file->user_id == Session::read('user.id'))) || ($file->user_id == 0)){
             $file->delete();
