@@ -57,7 +57,7 @@ class Receipt extends AppModel
         foreach ($keys as $key) {
             if (isset($data['features'][$key])) {
                 $value = $data['features'][$key];
-                if ($key == 'experts') {
+                if ($key === 'experts') {
                     $value = 0;
                     foreach ($data['features']['experts'] as $expertId) {
                         $expert = Expert::first($expertId);
@@ -71,7 +71,7 @@ class Receipt extends AppModel
                 ];
             }
         }
-        if ($data['commonPitchData']['category_id'] != 20) {
+        if (((int) $data['commonPitchData']['category_id'] !== 20) && ((int) $data['commonPitchData']['category_id'] !== 22)) {
             self::$fee = self::findOutFeeModifier($data);
             $commission = self::__getCommissionWithEffectOfPromocodes($data);
             $commission = self::__applyReferalDiscrountEffects($data, $commission);
@@ -80,7 +80,23 @@ class Receipt extends AppModel
                 'name' => self::$dict['fee'] . ' ' . str_replace('.', ',', self::$fee * 100 . '%'),
                 'value' => $commission
             ];
-        } else {
+        }elseif ((int) $data['commonPitchData']['category_id'] === 22) {
+            self::$fee = self::findOutFeeModifier($data);
+            $commission = 500;
+            if($data['features']['award'] < 2000) {
+                $commission = 500;
+            }elseif($data['features']['award'] < 5000) {
+                $commission = 1750;
+            }elseif($data['features']['award'] < 8000) {
+                $commission = 2500;
+            }
+            $receiptData[] = [
+                'pitch_id' => $projectId,
+                'name' => self::$dict['fee'],
+                'value' => $commission
+            ];
+        }
+        else {
             $receiptData[] = [
                 'pitch_id' => $projectId,
                 'name' => self::$dict['fee'] . ' 0%',
