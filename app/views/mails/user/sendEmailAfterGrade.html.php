@@ -39,7 +39,7 @@
         <span style="font-family: Arial, sans-serif; font-size:13px; color: rgb(181, 181, 181); font-style: italic">С уважением,</span><br>
         <span style="font-family: Arial, sans-serif;font-size:13px; color: rgb(181, 181, 181); font-style: italic">команда Go Designer</span><br>
         <span style="font-family: Arial, sans-serif;font-size:13px; color: rgb(181, 181, 181); font-style: italic">Санкт-Петербург</span><br>
-        <span style="font-family: Arial, sans-serif;font-size:13px; color: rgb(181, 181, 181); font-style: italic">+7 (812) 648 24 12</span><br>
+        <span style="font-family: Arial, sans-serif;font-size:13px; color: rgb(181, 181, 181); font-style: italic">8 800 550 52 07</span><br>
         <br>
         <span style="font-family: Arial, sans-serif;font-size:13px; color: rgb(181, 181, 181); font-style: italic">Следите за нами на:</span><br>
         <a style="font-family: Arial, sans-serif;font-size:13px; font-style: italic; color: rgb(17, 50, 204)" href="https://www.facebook.com/pages/Go-Designer/160482360714084">facebook</a><br>

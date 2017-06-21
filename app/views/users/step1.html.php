@@ -436,7 +436,7 @@
                         <div class="clear"></div>
                     </form>
                     <p class="help" style="margin-top: 40px; font-family: Georgia, serif; font-size: 13px; font-style: italic; line-height: 16px;">Свяжитесь с нами, если  не получается подтвердить номер:<br/>
-                        <a href="mailto:team@godesigner.ru">team@godesigner.ru</a> или (812) 648-24-12 по будням с 10–17<br/> по Москве</p>                </section>
+                        <a href="mailto:team@godesigner.ru">team@godesigner.ru</a> или 8 800 550 52 07 по будням с 10–17<br/> по Москве</p>                </section>
                 <?php endif ?>
                 <div class="clear"></div>
                 <div class="proceed">

@@ -181,11 +181,6 @@
             </div>
         </section>
 
-        <!--section class="lp-getinfo">
-            Остались вопросы?<br />
-            Мы ответим в течение рабочего дня: <a href="mailto:team@godesigner.ru">team@godesigner.ru</a><br />
-            Или просто звоните по телефону <a href="tel:+78126482412">+7 812 648-24-12</a> с 10-17 по Москве<br />
-        </section-->
     </main>
 </div><!-- .wrapper -->
 <?=$this->html->style([

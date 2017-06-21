@@ -167,7 +167,7 @@
       "description": "Сервис, на котором можно получить десятки и сотни вариантов решений ваших дизайн задач.",
       "name": "GoDesigner",
       "image": "https://godesigner.ru/icon_512.png",
-      "telephone": "+7 812 648 24 12",
+      "telephone": "8 800 550 52 07",
       "priceRange": "от 500 рублей",
       "address": {
         "@type": "PostalAddress",

@@ -28,7 +28,7 @@
                             <div class="w100"  style="text-align:center;">
                                 <div class="bigletters largest-header">
                                     <a href="mailto:team@godesigner.ru">team@godesigner.ru</a><br/>
-                                    +7 (812) 648 2412
+                                    8 800 550 52 07
                                 </div>
 
                                 <div class="fontBookC">

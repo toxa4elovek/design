@@ -26,7 +26,7 @@ height: 41px;margin-left: 26px;">
             <input type="submit" id="save-mobile" class="button" value="Подтвердить телефон" style="margin-top:23px;width: 219px;height: 49px;">
             <div class="clear"></div>
             <p class="help" style="margin-top: 40px; font-family: Georgia, serif; font-size: 13px; font-style: italic; line-height: 16px;">Свяжитесь с нами, если  не получается подтвердить номер:<br/>
-                <a href="mailto:team@godesigner.ru">team@godesigner.ru</a> или (812) 648-24-12 по будням с 10–17<br/> по Москве</p>
+                <a href="mailto:team@godesigner.ru">team@godesigner.ru</a> или 8 800 550 52 07 по будням с 10–17<br/> по Москве</p>
         </form>
     </section>
     <div class="mobile-close" style="display:none"></div>
