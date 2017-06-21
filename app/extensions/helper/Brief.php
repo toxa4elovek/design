@@ -53,6 +53,10 @@ class Brief extends \lithium\template\Helper
         return $this->insertHtmlLinkInText($text);
     }
 
+    public function wrapHtmlLinksOnly($text) {
+        return $this->_wrapHtmlLinkWithNoIndexInText($text);
+    }
+
     /**
      * Метод заменяет простые адреса на html ссылки
      *
@@ -116,6 +120,11 @@ class Brief extends \lithium\template\Helper
         while (preg_match('#href="(?!(http|https)://)(.*)"#', $text, $match)) {
             $text = preg_replace('#href="(?!(http|https)://)(.*)"#', 'href="http://$2"', $text, -1);
         }
+        $text = $this->_wrapHtmlLinkWithNoIndexInText($text);
+        return $text;
+    }
+
+    private function _wrapHtmlLinkWithNoIndexInText($text) {
         preg_match_all('(<a(?:(?!\/a>).|\n)*(?=\/a>)...)', $text, $matches);
         if($matches) {
             foreach ($matches[0] as $link) {

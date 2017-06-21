@@ -34,7 +34,7 @@
                         <div style="margin-top:20px; clear:both;height:3px;width:600px;margin-bottom:40px;"></div>
 
                         <div class="regular viewpost">
-                                <?php echo $this->brief->insertHtmlLinkInTextForSeo($post->full)?>
+                                <?php echo $this->brief->wrapHtmlLinksOnly($post->full)?>
                             </div>
 
                             <div style="margin-top:50px; clear:both;height:3px; background: url(/img/sep.png) repeat-x scroll 0 0 transparent;width:640px;margin-bottom:15px;"></div>
