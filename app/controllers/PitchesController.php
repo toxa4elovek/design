@@ -1002,6 +1002,14 @@ class PitchesController extends AppController
 
     public function view()
     {
+        if(isset($this->request->query['tab'])) {
+            if($this->request->query['tab'] === 'details') {
+                return $this->_showDetailsTab();
+            }
+            if($this->request->query['tab'] === 'designers') {
+                return $this->_showDesignersTab();
+            }
+        }
         if ($pitch = Pitch::first(['conditions' => ['Pitch.id' => $this->request->id], 'with' => ['User']])) {
             $nameInflector = new NameInflector();
             $avatarHelper = new AvatarHelper();
@@ -1203,12 +1211,11 @@ Disallow: /pitches/upload/'.$pitch['id'];
         die();
     }
 
-    public function details()
-    {
+    protected function _showDetailsTab() {
         if ($pitch = Pitch::first(['conditions' => ['Pitch.id' => $this->request->id], 'with' => ['User']])) {
             $allpitches = Pitch::all(['conditions' => ['status' => 0, 'published' => 1], 'order' => [
-                            'price' => 'desc',
-                            'started' => 'desc',
+                'price' => 'desc',
+                'started' => 'desc',
             ]]);
             $first = null;
             $flag = false;
@@ -1294,17 +1301,16 @@ Disallow: /pitches/upload/'.$pitch['id'];
                     ];
                 }
             }
-            if (is_null($this->request->env('HTTP_X_REQUESTED_WITH'))) {
-                return compact('pitch', 'files', 'comments', 'prevpitch', 'solutions', 'experts', 'rating', 'winnersUserIds', 'autosuggestUsers');
-            } else {
-                return $this->render(['layout' => false, 'data' => compact('pitch', 'files', 'comments', 'prevpitch', 'rating', 'winnersUserIds', 'autosuggestUsers')]);
+            $data = compact('pitch', 'files', 'comments', 'prevpitch', 'solutions', 'experts', 'rating', 'winnersUserIds', 'autosuggestUsers');
+            if (null === $this->request->env('HTTP_X_REQUESTED_WITH')) {
+                return $this->render(['template' => 'details', 'data' => $data]);
             }
+            return $this->render(['layout' => false, 'template' => 'details', 'data' => $data]);
         }
         throw new Exception('Public:Такого проекта не существует.', 404);
     }
 
-    public function designers()
-    {
+    protected function _showDesignersTab() {
         if ($pitch = Pitch::first(['conditions' => ['Pitch.id' => $this->request->id], 'with' => ['User']])) {
             $limit = $limitDesigners = 6; // Set this to limit of designers per page
             $offset = 0;
@@ -1343,7 +1349,7 @@ Disallow: /pitches/upload/'.$pitch['id'];
 
             $fromDesignersTab = true;
 
-            $pitch->applicantsCount = Solution::find('count', ['conditions' => ['pitch_id' => $this->request->id], 'fields' => ['distinct(user_id)']]);
+            $pitch->applicantsCount = Solution::find('count', ['conditions' => ['pitch_id' => $pitch->id], 'fields' => ['distinct(user_id)']]);
 
             $designersCount = $pitch->applicantsCount;
 
@@ -1432,17 +1438,26 @@ Disallow: /pitches/upload/'.$pitch['id'];
                     ];
                 }
             }
-            if (is_null($this->request->env('HTTP_X_REQUESTED_WITH')) || isset($this->request->query['fromTab'])) {
-                return compact('pitch', 'comments', 'sort', 'canViewPrivate', 'limitDesigners', 'designers', 'designersCount', 'fromDesignersTab', 'search', 'winnersUserIds', 'autosuggestUsers');
-            } else {
-                if (isset($this->request->query['count']) || isset($this->request->query['search'])) {
-                    return $this->render(['layout' => false, 'template' => '../elements/designers', 'data' => compact('pitch', 'comments', 'sort', 'canViewPrivate', 'designers', 'designersCount', 'fromDesignersTab', 'search', 'winnersUserIds', 'autosuggestUsers')]);
-                }
-
-                return $this->render(['layout' => false, 'data' => compact('pitch', 'comments', 'sort', 'canViewPrivate', 'designers', 'designersCount', 'fromDesignersTab', 'search', 'winnersUserIds', 'autosuggestUsers')]);
+            if (null === $this->request->env('HTTP_X_REQUESTED_WITH') || isset($this->request->query['fromTab'])) {
+                $data = compact('pitch', 'comments', 'sort', 'canViewPrivate', 'limitDesigners', 'designers', 'designersCount', 'fromDesignersTab', 'search', 'winnersUserIds', 'autosuggestUsers');
+                return $this->render(['template' => 'designers', 'data' => $data]);
             }
+            if (isset($this->request->query['count']) || isset($this->request->query['search'])) {
+                return $this->render(['layout' => false, 'template' => '../elements/designers', 'data' => compact('pitch', 'comments', 'sort', 'canViewPrivate', 'designers', 'designersCount', 'fromDesignersTab', 'search', 'winnersUserIds', 'autosuggestUsers')]);
+            }
+            return $this->render(['layout' => false, 'data' => compact('pitch', 'comments', 'sort', 'canViewPrivate', 'designers', 'designersCount', 'fromDesignersTab', 'search', 'winnersUserIds', 'autosuggestUsers')]);
         }
         throw new Exception('Public:Такого проекта не существует.', 404);
+    }
+
+    public function designers()
+    {
+        return $this->redirect(sprintf('/pitches/view/%s/?tab=designers', $this->request->id));
+    }
+
+    public function details()
+    {
+        return $this->redirect(sprintf('/pitches/view/%s/?tab=details', $this->request->id));
     }
 
     public function crowdsourcing()

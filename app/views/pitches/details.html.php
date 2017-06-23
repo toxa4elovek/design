@@ -17,10 +17,10 @@ function mb_basename($file)
                     <?=$this->html->link('Решения', ['controller' => 'pitches', 'action' => 'view', 'id' => $pitch->id], ['class' => 'menu-toggle ajaxgallery', 'data-page' => 'gallery'])?>
                 </li>
                 <li class="active" style="z-index: 2;">
-                    <?=$this->html->link('Бриф', ['controller' => 'pitches', 'action' => 'details', 'id' => $pitch->id], ['class' => 'menu-toggle ajaxgallery', 'data-page' => 'brief'])?>
+                    <a href="/pitches/view/<?= $pitch->id ?>/?tab=details" class="menu-toggle ajaxgallery" data-page="brief">Бриф</a>
                 </li>
                 <li style="z-index: 1;">
-                    <?=$this->html->link('Участники', ['controller' => 'pitches', 'action' => 'designers', 'id' => $pitch->id], ['class' => 'menu-toggle ajaxgallery', 'data-page' => 'designers'])?>
+                    <a href="/pitches/view/<?= $pitch->id ?>/?tab=designers" class="menu-toggle ajaxgallery" data-page="designers">Участники</a>
                 </li>
             </ul>
             <div class="gallery_container">

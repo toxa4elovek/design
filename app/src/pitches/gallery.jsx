@@ -699,12 +699,12 @@ var gallerySwitch = (function() {
     };
     return {
         historyChange: function() {
-            var url = window.location.pathname;
-            activateTab($('a[href="' + window.location.pathname + '"]'));
-            $(window).off('scroll');
-            var $container = $('.gallery_container');
+            const url = window.location.pathname
+            activateTab($(`a[href="${window.location.pathname}${window.location.search}"]`))
+            $(window).off('scroll')
+            const $container = $('.gallery_container')
             $container.html('<img id="search-ajax-loader" src="/img/blog-ajax-loader.gif" style="margin: 60px 0 100px 400px;">');
-            $.get(url, {fromTab: true}, function(response) {
+            $.get(url + window.location.search, {fromTab: true}, function(response) {
                 var $replacement = $(response).find('.gallery_container');
                 $container.hide().html($replacement).fadeIn();
                 gallerySwitch.tabInit();
