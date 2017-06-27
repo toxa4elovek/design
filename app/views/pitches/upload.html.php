@@ -119,7 +119,7 @@ $job_types = [
                 <div style="height:1px;clear:both;width:807px;background: url('/img/obnovleniya_line.jpg') repeat-x scroll 0 100% transparent; margin-bottom: 15px;"></div>
 
                 <div class="tos-container supplement">
-                    <label><input type="checkbox" name="tos" style="margin-right: 5px; margin-bottom: 2px;"/>Я прочитал и согласен с <a href="/docs/dogovor_oferta_04_2017.pdf" style="text-decoration: none;">правилами и условиями</a> Go Designer</label>
+                    <label><input type="checkbox" name="tos" style="margin-right: 5px; margin-bottom: 2px;"/>Я прочитал и согласен с <a href="/docs/dogovor_oferta_06_2017.pdf" style="text-decoration: none;">правилами и условиями</a> Go Designer</label>
                     <?= $this->view()->render(['element' => 'newbrief/required_star'], ['tooltipClass' => "tooltip3"]) ?>
                 </div>
 
