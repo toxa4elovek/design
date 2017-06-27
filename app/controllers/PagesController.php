@@ -228,7 +228,7 @@ class PagesController extends AppController
             $x = false;
             if (!in_array($temp->format('Y-m-d H:i:s'), $deny_time) && $temp->getTimestamp() >= $start_hours->getTimestamp()) {
                 if ($temp->getTimestamp() <= $end_hours->getTimestamp() && (int) $temp->format('w') != 0 && (int) $temp->format('w') != 6) {
-                    if(time() < $temp->getTimestamp()) {
+                    if (time() < $temp->getTimestamp()) {
                         $allowTime[$temp->getTimestamp()] = $temp->format('H:i d/m/y');
                     }
                     $i++;
@@ -258,7 +258,7 @@ class PagesController extends AppController
             return $this->redirect($this->request->url);
         }
         $plans = [];
-        for($i = 1; $i < 8; $i++) {
+        for ($i = 1; $i < 8; $i++) {
             $plans[$i] = SubscriptionPlan::getPlan($i)['price'];
         }
         if ($this->userHelper->isLoggedIn() && $this->userRecord->hasActiveSubscriptionDiscountForRecord()) {
@@ -268,10 +268,10 @@ class PagesController extends AppController
             return $this->render(['template' => 'subscribe_discount', 'data' => $data]);
         }
         $cookieExists = false;
-        if(isset($_COOKIE['sreftime'])) {
+        if (isset($_COOKIE['sreftime'])) {
             $cookieExists = isset($_COOKIE['sreftime']);
             $cookieName = 'sreftime';
-        }else if($_COOKIE['sref2time']) {
+        } elseif ($_COOKIE['sref2time']) {
             $cookieExists = isset($_COOKIE['sref2time']);
             $cookieName = 'sref2time';
         }

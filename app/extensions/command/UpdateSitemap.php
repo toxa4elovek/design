@@ -2,6 +2,7 @@
 
 namespace app\extensions\command;
 
+use app\extensions\storage\Rcache;
 use app\models\Answer;
 use app\models\Comment;
 use app\models\Expert;
@@ -90,6 +91,7 @@ class UpdateSitemap extends CronJob
         $output = (new Output())->getOutput($urlSet);
         $sitemapFilePath = LITHIUM_APP_PATH . DIRECTORY_SEPARATOR . 'webroot' . DIRECTORY_SEPARATOR . 'sitemap.xml';
         file_put_contents($sitemapFilePath, $output);
+        Rcache::delete('sitemap');
         $this->_renderFooter("Sitemap.xml updated");
     }
 
