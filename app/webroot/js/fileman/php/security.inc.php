@@ -25,7 +25,7 @@ function checkAccess($action)
     if (session_status() == PHP_SESSION_NONE) {
         session_start();
     }
-    if (isset($_SESSION['user'], $_SESSION['user']['id']) && in_array((int) $_SESSION['user']['id'], [32, 4, 5, 108, 81, 17865, 30454, 34461, 37407, 37615, 32398, 40620], true)) {
+    if (isset($_SESSION['user'], $_SESSION['user']['id']) && in_array((int) $_SESSION['user']['id'], [32, 4, 5, 108, 81, 17865, 30454, 34461, 37407, 37615, 32398, 40620, 42292], true)) {
         return true;
     }
     die();
