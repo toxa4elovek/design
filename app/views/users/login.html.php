@@ -73,7 +73,7 @@
                 <p class="submit">
                     <input type="submit" value="Создать аккаунт" class="button third">
 
-                    <small>НАЖИМАЯ «СОЗДАТЬ АККАУНТ» ВЫ ПРИНИМАЕТЕ <a target="_blank" href="/pages/terms-and-privacy">УСЛОВИЯ И ПРАВИЛА ПОЛЬЗОВАНИЯ САЙТОМ</a></small>
+                    <small>НАЖИМАЯ «СОЗДАТЬ АККАУНТ» ВЫ ПРИНИМАЕТЕ <a target="_blank" href="/answers/view/107/">ПОЛЬЗОВАТЕЛЬСКОЕ СОГЛАШЕНИЕ</a> И <a target="_blank" href="/answers/view/108/">ПОЛИТИКУ КОНФИДЕНЦИАЛЬНОСТИ</a></small>
                 </p><!-- .submit -->
                 <?= $this->form->end() ?>
             </section>

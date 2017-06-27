@@ -22,20 +22,10 @@
                 <?php else: ?>
                     <?= $this->html->link('Как это работает', '/pages/howitworks') ?> /
                 <?php endif ?>
-                <?php if (preg_match('@pages/to_designers@', $_SERVER["REQUEST_URI"])): ?>
-                    <?= $this->html->link('Дизайнерам', 'Pages::to_designers', ['style' => 'color: #4a4c55']) ?> /
+                <?php if (preg_match('@answers/view/108/$@', $_SERVER['REQUEST_URI'])): ?>
+                    <?= $this->html->link('Политика конфиденциальности', '/answers/view/108/', ['style' => 'color: #4a4c55']) ?> /
                 <?php else: ?>
-                    <?= $this->html->link('Дизайнерам', '/pages/to_designers') ?> /
-                <?php endif ?>
-                <?php if (preg_match('@pages/referal$@', $_SERVER["REQUEST_URI"])): ?>
-                    <?= $this->html->link('Пригласи друга', 'Pages::referal', ['style' => 'color: #4a4c55']) ?> /
-                <?php else: ?>
-                    <?= $this->html->link('Пригласи друга', '/pages/referal') ?> /
-                <?php endif ?>
-                <?php if (preg_match('@questions@', $_SERVER["REQUEST_URI"])): ?>
-                    <?= $this->html->link('Тест', 'Questions::index', ['style' => 'color: #4a4c55']) ?> /
-                <?php else: ?>
-                    <?= $this->html->link('Тест', '/questions') ?> /
+                    <?= $this->html->link('Политика конфиденциальности', '/answers/view/108/') ?> /
                 <?php endif ?>
                 <?php if (preg_match('@posts$@', $_SERVER["REQUEST_URI"])): ?>
                     <?= $this->html->link('Блог', 'Posts::index', ['style' => 'color: #4a4c55']) ?> /

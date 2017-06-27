@@ -15,7 +15,8 @@
                             <input class="i1" name="name" style="margin-top:30px;" type="text" placeholder="ВАШЕ ИМЯ" />
                             <input class="i1" name="email" type="text" placeholder="ВАШ EMAIL" />
                             <input class="i1" name="subject" type="text" placeholder="ТЕМА СООБЩЕНИЯ" />
-                            <textarea name="message" placeholder="ВАШЕ СООБЩЕНИЕ"></textarea>
+                            <textarea style="margin-bottom: 0;" name="message" placeholder="ВАШЕ СООБЩЕНИЕ"></textarea>
+                            <p class="regular" style="margin-bottom: 20px;">Предоставляя данные, вы подтверждаете согласие на их обработку и принимаете <a href="/answers/view/108/" target="_blank">Политику конфиденциальности GoDesigner</a></p>
                             <input type="submit" style="display: block; margin: 0 auto 20px 168px; width: 200px;color:#FFFFFF;font-size: 12px;text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);" value="Отправить" class="button steps-link" data-step="2">
                         </form>
                         <div class="margins-1">

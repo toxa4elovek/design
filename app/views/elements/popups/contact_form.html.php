@@ -25,7 +25,7 @@
                 <div style="text-align: center;">
                     <input type="submit" id="reqsend" class="reqbutton" value="Отправить" style="margin: 19px auto 20px auto; width: 184px; color:#FFFFFF;font-size: 12px;text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);height:48px">
                 </div>
-                <a class="form-faq-link" href="https://godesigner.ru/answers/view/96" target="_blank">Почему не сокращается срок после теста?</a><br>
+                <a class="form-faq-link" href="https://godesigner.ru/answers/view/108" target="_blank">Соглашение о конфиденциальности</a><br>
                 <a class="form-faq-link" href="https://godesigner.ru/answers/view/96" target="_blank">Можно ли загрузить решение раньше срока?</a>
             </form>
             <div id="contactlist" style=" background-color: #ffffff; display:none; top:-548px;margin-left:42px;width:401px;position:relative;z-index:15;">

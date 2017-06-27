@@ -75,6 +75,7 @@
                                 <tr height="31"><td colspan="2"></td></tr>
                                 <tr><td class="result">ИТОГО:</td><td class="result"><span class="table-left">21400р</span></td></tr>
                             </table>
+                            <p class="" style="margin-bottom: 20px;">Предоставляя данные, вы подтверждаете согласие на их обработку и принимаете <a href="/answers/view/108/" target="_blank">Политику конфиденциальности GoDesigner</a></p>
                         </div>
 
                         <div class="fastpitch-line"></div>
