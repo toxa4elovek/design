@@ -56,19 +56,19 @@ class UpdateSitemap extends CronJob
         }
         $items = Answer::all(['order' => ['Answer.id' => 'asc']]);
         foreach ($items as $item) {
-            $urlObject = (new Url('https://godesigner.ru/answers/view/' . $item->id))->setLastMod(date('Y-m-d', $layoutTime));
+            $urlObject = (new Url('https://godesigner.ru/answers/view/' . $item->id . '/'))->setLastMod(date('Y-m-d', $layoutTime));
             $urlSet->addUrl($urlObject);
         }
         $items = Expert::all(['conditions' => ['Expert.enabled' => 1], 'order' => ['Expert.id' => 'asc']]);
         foreach ($items as $item) {
-            $urlObject = (new Url('https://godesigner.ru/experts/view/' . $item->id))->setLastMod(date('Y-m-d', $layoutTime));
+            $urlObject = (new Url('https://godesigner.ru/experts/view/' . $item->id . '/'))->setLastMod(date('Y-m-d', $layoutTime));
             $urlSet->addUrl($urlObject);
         }
         $items = Post::all(['conditions' => ['Post.published' => 1], 'order' => ['Post.id' => 'asc']]);
         foreach ($items as $item) {
             $lastEditTime = $this->_getPostLastEditTime($item);
             $maxTime = $this->_getMaxTimeOutOfList([$lastEditTime, $layoutTime]);
-            $urlObject = (new Url('https://godesigner.ru/posts/view/' . $item->id))->setLastMod(date('Y-m-d', $maxTime));
+            $urlObject = (new Url('https://godesigner.ru/posts/view/' . $item->id . '/'))->setLastMod(date('Y-m-d', $maxTime));
             $urlSet->addUrl($urlObject);
         }
         $items = Pitch::all(['conditions' => [
@@ -81,11 +81,11 @@ class UpdateSitemap extends CronJob
             $projectLastCommentTime = $this->_getProjectLastCommentTime($item);
             $projectLastSolutionTime = $this->_getProjectLastSolutionTime($item);
             $maxTime = $this->_getMaxTimeOutOfList([$startedTime, $projectLastCommentTime, $projectLastSolutionTime, $layoutTime]);
-            $urlObject = (new Url('https://godesigner.ru/pitches/view/' . $item->id))->setLastMod(date('Y-m-d', $maxTime));
+            $urlObject = (new Url('https://godesigner.ru/pitches/view/' . $item->id . '/'))->setLastMod(date('Y-m-d', $maxTime));
             $urlSet->addUrl($urlObject);
-            $urlObject = (new Url('https://godesigner.ru/pitches/details/' . $item->id))->setLastMod(date('Y-m-d', $maxTime));
+            $urlObject = (new Url('https://godesigner.ru/pitches/view/' . $item->id . '/?tab=details'))->setLastMod(date('Y-m-d', $maxTime));
             $urlSet->addUrl($urlObject);
-            $urlObject = (new Url('https://godesigner.ru/pitches/designers/' . $item->id))->setLastMod(date('Y-m-d', $maxTime));
+            $urlObject = (new Url('https://godesigner.ru/pitches/view/' . $item->id . '/?tab=designers'))->setLastMod(date('Y-m-d', $maxTime));
             $urlSet->addUrl($urlObject);
         }
         $output = (new Output())->getOutput($urlSet);
