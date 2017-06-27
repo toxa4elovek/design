@@ -237,4 +237,14 @@ class HtmlExtended extends \lithium\template\helper\Html
             return '<title>' . $title . '</title>';
         }
     }
+
+    public function seoLink($text, $link, array $options = ['linkStyle' => '', 'textStyle' => '']) {
+        if (preg_match("@^$link$@", $_SERVER['REQUEST_URI'])):
+            $string = sprintf('<span style="%s">%s</span>', $options['textStyle'], $text);
+        else:
+            $string = sprintf('<a style="%s" href="%s">%s</a>', $options['linkStyle'], $link, $text);
+        endif;
+        return $string;
+    }
+
 }

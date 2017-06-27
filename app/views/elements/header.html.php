@@ -331,16 +331,22 @@
         <?php else:?>
             <div class="topnav-menu" style="float:left;height:41px;padding-left:10px;padding-top:10px;">
                 <?php endif?>
-                <a href="/news">Лента</a> /
-                <a href="/pages/howitworks">Как это работает?</a> /
-                <a href="/pitches">Все проекты</a> /
+                <?php
+                $textStyle = 'color: #4a4c55; margin-right: 4px; margin-left: 4px;';
+                $defaultOptions = ['textStyle' => $textStyle];
+                $firstTextStyle = 'color: #4a4c55; margin-right: 4px;';
+                $firstItemOptions = ['textStyle' => $firstTextStyle];
+                ?>
+                <?= $this->htmlExtended->seoLink('Лента', '/news/', $firstItemOptions)?> /
+                <?= $this->htmlExtended->seoLink('Как это работает', '/pages/howitworks/', $defaultOptions)?> /
+                <?= $this->htmlExtended->seoLink('Все проекты', '/pitches/', $defaultOptions)?> /
                 <?php if ($this->user->getNewBlogpostCount() > 0):?>
-                <a href="/posts">Блог</a><?php echo $this->html->link('(' . $this->user->getNewBlogpostCount() . ')', 'Posts::index', ['style' => 'color: #648FA4', 'class' => 'updatecurrent', 'escape' => false])?>
+                    <?= $this->htmlExtended->seoLink('Блог', '/posts/', $defaultOptions)?><?php echo $this->html->link('(' . $this->user->getNewBlogpostCount() . ')', 'Posts::index', ['style' => 'color: #648FA4', 'class' => 'updatecurrent', 'escape' => false])?>
                 <?php else:?>
-                <a href="/posts">Блог</a>
+                    <?= $this->htmlExtended->seoLink('Блог', '/posts/', $defaultOptions)?>
                 <?php endif?>
                 <?php if (!$this->user->isLoggedIn()):?>
-                    /  <a href="/login/">Вход</a>
+                    /  <?= $this->htmlExtended->seoLink('Вход', '/login/', $defaultOptions)?>
                 <?php endif?>
             </div>
             <ul class="header-menu" <?php if ($this->user->isSubscriptionActive()):?>style="height: 253px;"<?php endif?>>
