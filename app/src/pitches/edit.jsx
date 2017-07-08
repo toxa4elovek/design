@@ -265,7 +265,7 @@ function FeatureCart () {
   this.data = {}
   this.fileIds = []
   this.validatetype = 1
-  this.transferFee = feeRates.low
+  this.transferFee = feeRates.normal
   this.transferFeeKey = 'Сбор GoDesigner'
   this.mode = 'add'
   this.init = function () {
@@ -315,7 +315,7 @@ function FeatureCart () {
         if (percent.length > 0) {
           self.transferFee = (percent.replace(',', '.') / 100).toFixed(3)
         } else { // For older pitches
-          self.transferFee = feeRates.good
+          self.transferFee = feeRates.normal
         }
         object.name = self.transferFeeKey
       }
@@ -341,9 +341,17 @@ function FeatureCart () {
     self._renderCheck()
   }
   this.updateFees = function () {
+    self._calculateOptionsWithoutFee()
     if (self.category != 20) {
-      const award = self.getOption(self.awardKey)
-      self.content[self.transferFeeKey] = Math.round(award * this.transferFee)
+      var award = self.getOption(self.awardKey)
+      var commision = Math.round(award * this.transferFee) - this.transferFeeDiscount
+      if (commision < 0) {
+        commision = 0
+      }
+      if ($('input[name=category_id]').val() === '22') {
+        commision = this.transferFee
+      }
+      self.content[self.transferFeeKey] = commision
     }
   }
   this.getOption = function (key) {
@@ -411,7 +419,6 @@ function FeatureCart () {
       alert('Укажите награду для дизайнера!')
     } else {
       $.post('/pitches/add.json', self.data, function (response) {
-        console.log(response)
         if (response === 'redirect') {
           window.location = '/users/registration'
         }
@@ -515,7 +522,7 @@ function FeatureCart () {
       if (self.category == 7 && self.awardKey == key) {
         key = 'Награда копирайтеру'
       }
-      if (key == self.transferFeeKey) {
+      if ((key == self.transferFeeKey) && ($('input[name=category_id]').val() !== '22')) {
         html += '<li><span>' + key + ' <div>' + (self.transferFee * 100).toFixed(1) + '%</div></span><small>' + value + '.-</small></li>'
       } else {
         html += '<li><span>' + key + '</span><small>' + value + '.-</small></li>'
