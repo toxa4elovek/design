@@ -333,7 +333,7 @@ $(document).ready(function () {
     if (gallerySorting.length > 0) {
       data.sorting = gallerySorting
     }
-    $.get('/pitches/designers/' + $('input[name=pitch_id]').val(), data, function (response) {
+    $.get(`/pitches/view/${$('input[name=pitch_id]').val()}/?tab=designers`, data, function (response) {
       obj = $('<div/>').html(response).contents(); // http://stackoverflow.com/a/11047751
       obj.each(function (index) {
         if ($(this).is('li')) {
@@ -703,12 +703,12 @@ var gallerySwitch = (function () {
       })
     },
     tabInit: function () {
-      if (window.location.pathname.indexOf('view') != -1) { // Gallery Tab Init
-        initGallery()
-      } else if (window.location.pathname.indexOf('details') != -1) { // Details Tab Init
+      if (window.location.href.indexOf('details') !== -1) { // Details Tab Init
         initDetails()
-      } else if (window.location.pathname.indexOf('designers') != -1) { // Designers Tab Init
+      } else if (window.location.href.indexOf('designers') !== -1) { // Designers Tab Init
         initDesigners()
+      } else {
+        initGallery()
       }
     }
   }
