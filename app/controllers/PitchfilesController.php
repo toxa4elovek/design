@@ -7,7 +7,6 @@ use \lithium\storage\Session;
 
 class PitchfilesController extends AppController
 {
-
     public $publicActions = [
         'index', 'add', 'addDescription', 'delete'
     ];
@@ -36,8 +35,14 @@ class PitchfilesController extends AppController
 
     public function delete()
     {
-        $file = Pitchfile::first($this->request->params['id']);
-
+        $id = $this->request->params['id'];
+        if ((null === $this->request->params['id']) && isset($this->request->data['id'])) {
+            $id = $this->request->data['id'];
+        }
+        if (null === $id) {
+            return 'false';
+        }
+        $file = Pitchfile::first($id);
         //if((($file->user_id) && ($file->user_id == Session::read('user.id'))) || ($file->user_id == 0)){
             $file->delete();
         return 'true';
