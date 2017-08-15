@@ -73,6 +73,8 @@
                             </nav>
                             <?php endif; ?>
                             <div class="new-content group">
+
+                            <!--
                             <?php if((!isset($_COOKIE['closed-email-banner'])) && (!$this->user->getId() || ($this->user->getId() && (int) $this->user->read('user.email_digest') === 0))):?>
                                 <div class="email-prompt">
                                     <?php if($this->user->getId() && (int) $this->user->read('user.email_digest') === 0):?>
@@ -94,6 +96,7 @@
                                     <?php endif ?>
                                 </div>
                             <?php endif; ?>
+                            -->
                 <?php endif; ?>
                             <div id="l-sidebar-office">
                                 <?php
