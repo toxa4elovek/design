@@ -2084,7 +2084,8 @@ class UsersController extends \app\controllers\AppController
                     2 => 'va@godesigner.ru',
                     3 => 'nyudmitriy@godesigner.ru',
                     4 => 'fedchenko@godesigner.ru',
-                    5 => 'm.elenevskaya@godesigner.ru'
+                    5 => 'm.elenevskaya@godesigner.ru',
+                    6 => 'v.cirdja@godesigner.ru'
                 ];
                 $this->request->data['target'] = $emails[$this->request->data['target']];
             } else {
