@@ -115,7 +115,7 @@
             </ul>
             <div style="text-align:center"><a id="needassist" href="#" style="height:16px;background: url('/img/category_icon.png') no-repeat;padding-left:24px;margin-top: 10px">Не нашли нужную категорию? Спросите у нас.</a></div>
         </div><!-- .main -->
-        <a href="https://godesigner.ru/fastpitch" title="Логотип в один клик за 21 400 руб" id="fastpitch-logo"></a>
+        <a href="https://godesigner.ru/fastpitch" title="Логотип в один клик за 19 600 руб" id="fastpitch-logo"></a>
 
 
     </div><!-- .middle -->
