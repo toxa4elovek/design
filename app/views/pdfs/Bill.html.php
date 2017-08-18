@@ -59,7 +59,7 @@
         <td style="border-left:1px solid;border-top:1px solid;border-bottom:1px solid; text-align:center;">
             <?php
             if ($pitch->type === 'plan-payment') {
-                $string = 'Оплата абонентского обслуживания на условиях агентского соглашения, размещённого на сайте godesigner.ru, № ' . $pitch->id . ' . НДС не предусмотрен.';
+                $string = 'Оказание услуг дизайна на условиях оферты сайта godesigner.ru, за проект № ' . $pitch->id . ' . Без НДС.';
             } elseif ($pitch->type === 'fund-balance') {
                 $string = 'Пополнение лицевого счета личного кабинета на условиях абонентского договора № ' . $lastPlanPayment->id;
             } else {

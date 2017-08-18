@@ -35,7 +35,7 @@
                 <a style="width: 106px;line-height: 41px;
 height: 41px;margin-left:15px;margin-top:2px;display: block" href="#" id="goSearch" class="blue-button clean-style-button">Поиск</a>
                 </td></tr></table>
-                <div id="filtertab" style="display:none;border-radius:10px;padding-top:14px;margin-left:0;width: 711px;height:380px;background-color: white;z-index:10;position:absolute;">
+                <div id="filtertab" style="display:none;border-radius:10px;padding-top:14px;margin-left:0;width: 711px;height:380px;background-color: white;z-index:10;position:absolute; overflow:scroll;">
                     <ul class="filterlist" style="float:left;width:105px;margin-left:25px;text-transform: none">
                         <li class="first">проекты</li>
                         <li style="width:85px"><a data-group="type" data-value="all" href="#">все</a></li>
