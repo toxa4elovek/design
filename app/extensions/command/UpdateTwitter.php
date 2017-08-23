@@ -8,7 +8,6 @@ use app\models\Wp_post;
 
 class UpdateTwitter extends CronJob
 {
-
     public function run()
     {
         Rcache::init();
@@ -37,7 +36,7 @@ class UpdateTwitter extends CronJob
                     $censoredTweets['statuses'][$key] = $tweet;
                 }
             }
-
+/*
             if (($tutPosts = Wp_post::getPostsForStream($minTimestamp)) && (count($tutPosts) > 0)) {
                 foreach ($tutPosts as $post) {
                     $censoredTweets['statuses'][] = [
@@ -52,7 +51,7 @@ class UpdateTwitter extends CronJob
                     ];
                 }
             }
-
+*/
             uasort($censoredTweets['statuses'], function ($a, $b) {
                 return ($a['timestamp'] > $b['timestamp']) ? -1 : 1;
             });
