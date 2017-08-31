@@ -1,11 +1,11 @@
-var webpack = require("webpack");
+var webpack = require('webpack');
 var path = require('path');
 ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
-    entry: "C:\\server\\www\\godesigner\\app\\src\\components.jsx",
+    entry: "E:\\OS2\\OSPanel\\domains\\godesigner.loc\\app\\src\\components.jsx",
     output: {
-        path: "C:\\server\\www\\godesigner\\app\\webroot\\dist\\",
+        path: "E:\\OS2\\OSPanel\\domains\\godesigner.loc\\app\\webroot\\dist\\",
         filename: "components.js"
     },
     module: {

@@ -32,7 +32,7 @@ var PushWidget = function (_React$Component) {
   function PushWidget(props) {
     _classCallCheck(this, PushWidget);
 
-    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(PushWidget).call(this, props));
+    var _this = _possibleConstructorReturn(this, (PushWidget.__proto__ || Object.getPrototypeOf(PushWidget)).call(this, props));
 
     _this.confirmButtonClick = _this.confirmButtonClick.bind(_this);
     _this.denyButtonClick = _this.denyButtonClick.bind(_this);
@@ -73,9 +73,9 @@ var PushWidget = function (_React$Component) {
           _react2.default.createElement(
             'h3',
             null,
-            'Показывать важные',
+            '\u041F\u043E\u043A\u0430\u0437\u044B\u0432\u0430\u0442\u044C \u0432\u0430\u0436\u043D\u044B\u0435',
             _react2.default.createElement('br', null),
-            ' новости в браузере?'
+            ' \u043D\u043E\u0432\u043E\u0441\u0442\u0438 \u0432 \u0431\u0440\u0430\u0443\u0437\u0435\u0440\u0435?'
           )
         ),
         _react2.default.createElement(
@@ -84,12 +84,12 @@ var PushWidget = function (_React$Component) {
           _react2.default.createElement(
             'span',
             { onClick: this.confirmButtonClick, className: _PushWidget2.default['push-widget-box-confirm-button'] },
-            'Да, хочу знать!'
+            '\u0414\u0430, \u0445\u043E\u0447\u0443 \u0437\u043D\u0430\u0442\u044C!'
           ),
           _react2.default.createElement(
             'span',
             { onClick: this.denyButtonClick, className: _PushWidget2.default['push-widget-box-deny-button'] },
-            'не нужно'
+            '\u043D\u0435 \u043D\u0443\u0436\u043D\u043E'
           )
         )
       );

@@ -36,7 +36,7 @@
       fee = value / 10;
     }
     var percentage = (fee / value * 100).toFixed(1);
-    return [{ 'name': 'Награда дизайнеру', 'value': value }, { 'name': 'Сбор GoDesigner ' + percentage, 'value': fee }];
+    return [{ 'name': 'Награда дизайнеру', 'value': value }, { 'name': '\u0421\u0431\u043E\u0440 GoDesigner ' + percentage, 'value': fee }];
   };
   var renderReceipt = function renderReceipt(data, style) {
     ReactDOM.render(React.createElement(Receipt, { data: data, style: style, showControl: false }), document.getElementById('receipt-container'));
