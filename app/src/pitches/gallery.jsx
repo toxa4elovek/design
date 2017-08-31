@@ -59,7 +59,7 @@ $(document).ready(function () {
     let message = `Осталось ${finishSoon} дней приёма работ. Хотите продлить срок?`
     if (finishSoon == 2) {
       message = 'Осталось 2 дня приёма работ. Хотите продлить срок?'
-    }else if (finishSoon == 1) {
+    } else if (finishSoon == 1) {
       message = 'Остался 1 день приёма работ. Хотите продлить срок?'
     }
     const steps = [
@@ -176,7 +176,7 @@ $(document).ready(function () {
   $(document).on('click', '.ajaxgallery', function (e) {
     e.preventDefault()
     if (window.history.pushState) {
-      window.history.pushState('object or string', 'Title', this.href); // @todo Check params
+      window.history.pushState('object or string', 'Title', this.href) // @todo Check params
       gallerySwitch.historyChange()
     } else {
       window.location = $(this).attr('href')
@@ -204,7 +204,7 @@ $(document).ready(function () {
         opacity: 80,
         closeClass: 'gotest-close'
       })
-    }else if ($(this).hasClass('needWait')) {
+    } else if ($(this).hasClass('needWait')) {
       $('#popup-need-wait').modal({
         containerId: 'gotest-popup_gallery',
         opacity: 80,
@@ -334,7 +334,7 @@ $(document).ready(function () {
       data.sorting = gallerySorting
     }
     $.get(`/pitches/view/${$('input[name=pitch_id]').val()}/?tab=designers`, data, function (response) {
-      obj = $('<div/>').html(response).contents(); // http://stackoverflow.com/a/11047751
+      obj = $('<div/>').html(response).contents() // http://stackoverflow.com/a/11047751
       obj.each(function (index) {
         if ($(this).is('li')) {
           $(this).css('opacity', '0')
@@ -368,7 +368,7 @@ $(document).ready(function () {
         var designersCount = $($(response)[0]).val()
         $('#search-ajax-loader').remove()
         if (designersCount != 0) {
-          obj = $('<div/>').html(response).contents(); // http://stackoverflow.com/a/11047751
+          obj = $('<div/>').html(response).contents() // http://stackoverflow.com/a/11047751
           obj.each(function (index) {
             if ($(this).is('li')) {
               $(this).css('opacity', '0')
@@ -510,7 +510,7 @@ var gallerySwitch = (function () {
           text = 'К сожалению, мы не сможем подтвердить ваш телефон. Пожалуйста, укажите другой номер.'
           $('#phone-confirm').css('height', '445px')
           paragraph.text(text).show()
-        }else if (response == 'limit') {
+        } else if (response == 'limit') {
           text = 'К сожалению, Вы превысили лимит отправки сообщений. Попробуйте снова через час.'
           $('#phone-confirm').css('height', '445px')
           paragraph.text(text).show()
@@ -609,10 +609,10 @@ var gallerySwitch = (function () {
       if ($('#placeholder').length > 0) {
         renderFloatingBlock()
       }
-    } catch(err) {}
+    } catch (err) {}
     var floatingBlockHeight = $('#floatingblock').height()
     var offset = $('#floatingblock').offset()
-    if(offset) {
+    if (offset) {
       $(window).scroll(function () {
         var currentPosition = $(window).scrollTop() + floatingBlockHeight
         var obj = $('#floatingblock')
@@ -636,10 +636,10 @@ var gallerySwitch = (function () {
     $('.social-likes').socialLikes()
     // Plot
     $('#scroller').draggable({ drag: function () {
-        var x = $('#scroller').css('left')
-        x = parseInt(x.substring(0, x.length - 2))
-        var mod = ($('.konvajs-content', '#container').width() - 476) / 350
-        $('.konvajs-content', '#container').css('right', Math.round(x * mod) + 'px')
+      var x = $('#scroller').css('left')
+      x = parseInt(x.substring(0, x.length - 2))
+      var mod = ($('.konvajs-content', '#container').width() - 476) / 350
+      $('.konvajs-content', '#container').css('right', Math.round(x * mod) + 'px')
     }, axis: 'x', containment: 'parent'})
   }
   // Details Tab Init
@@ -680,8 +680,8 @@ var gallerySwitch = (function () {
 
     $('.btn-success').on('click', function () {
       {
-      $.post('/rating/takePart.json', {'id': $(this).data('pitchid')})
-      $('#take-part').hide('fast')
+        $.post('/rating/takePart.json', {'id': $(this).data('pitchid')})
+        $('#take-part').hide('fast')
       }
     })
   }

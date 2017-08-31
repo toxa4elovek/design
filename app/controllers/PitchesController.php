@@ -535,6 +535,7 @@ class PitchesController extends AppController
             $res['needRatingPopup'] = $needRatingPopup;
             $res['needWinnerPopup'] = $pitch->winnerPopup();
             $res['type'] = $pitch->type;
+            $res['user_id'] = $pitch->user_id;
             return $res;
         }
 
