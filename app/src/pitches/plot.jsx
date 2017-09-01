@@ -4,7 +4,6 @@ $(document).on('click', '#dinamic', function() {
 
 function renderFloatingBlock() {
     $.post('/pitches/getpitchdata.json', {"pitch_id": $('input[name=pitch_id]').val()}, function(response){
-        console.log(response);
         const minimum = 3;
         if((response.type != 'company_project') && ((parseFloat(response.avgNum) < 3) || (response.guaranteed == '1'))) {
             $('#refundLabel').text('Нельзя вернуть деньги.').css('color', '#ed6567');

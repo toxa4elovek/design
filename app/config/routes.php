@@ -72,6 +72,7 @@ Router::connect('/pitchfiles/{:filename}', ['Pitchfiles::download']);
 Router::connect('/news', 'Users::feed');
 Router::connect('/logosale', 'Solutions::logosale');
 Router::connect('/payture_callback', 'Payments::payture_callback');
+Router::connect('/dizain-logotipa', 'Lp::logo');
 
 //Router::connect('/users/nominated', array('controller' => 'Users', 'action' => 'solutions', 'filterType' => 'nominating'));
 
