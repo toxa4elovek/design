@@ -529,6 +529,11 @@
   text-decoration: underline;
 }
 
+.lp-contact .privacy{
+  margin-top: 140px;
+  margin-left: 58px;
+}
+
 .lp-contact .info {
   width: 566px;
   float: left;

@@ -174,6 +174,11 @@
                     </form>
                 </li>
             </ul>
+            <p class="privacy">Предупреждение: Предоставляя данные, вы подтверждаете согласие на их обработку и принимаете
+                <a href="https://godesigner.ru/answers/view/108/" target="_blank">
+                    Политику конфиденциальности GoDesigner
+                </a>
+            </p>
         </section>
     </main>
 </div>

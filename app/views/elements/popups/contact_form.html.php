@@ -23,10 +23,15 @@
                 <textarea name="message" id="reqmessage" style="margin-left: 43px;margin-top:5px;width:365px;height:170px;"></textarea>
 
                 <div style="text-align: center;">
-                    <input type="submit" id="reqsend" class="reqbutton" value="Отправить" style="margin: 19px auto 20px auto; width: 184px; color:#FFFFFF;font-size: 12px;text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);height:48px">
+                    <input type="submit" id="reqsend" class="reqbutton" value="Отправить" style="margin: 10px auto 10px auto; width: 184px; color:#FFFFFF;font-size: 12px;text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);height:48px">
                 </div>
-                <a class="form-faq-link" href="https://godesigner.ru/answers/view/108" target="_blank">Соглашение о конфиденциальности</a><br>
-                <a class="form-faq-link" href="https://godesigner.ru/answers/view/96" target="_blank">Можно ли загрузить решение раньше срока?</a>
+                <div style="text-align: center; text-indent: 0.5em">
+                    <span style="color: black" > Предоставляя данные, вы подтверждаете согласие на их обработку и принимаете</span>
+                    <a href="https://godesigner.ru/answers/view/108" target="_blank">
+                        Политику конфиденциальности GoDesigner
+                    </a><br>
+                    <a href="https://godesigner.ru/answers/view/96" target="_blank">Можно ли загрузить решение раньше срока?</a>
+                </div>
             </form>
             <div id="contactlist" style=" background-color: #ffffff; display:none; top:-548px;margin-left:42px;width:401px;position:relative;z-index:15;">
                 <ul style="padding: 0 20px; border: 2px solid #e0e0e0;">
@@ -44,6 +49,7 @@
                 </ul>
             </div>
         </div>
+
         <div id="reqformthankyou" style="display:none;">
             <a href="#" style="color: rgb(100, 143, 164); font-size: 12px; padding-right: 20px; background: url('/img/closerequestform.png') no-repeat scroll 50px 0px transparent; margin-top: 0px; margin-left: 405px;" class="close-request">закрыть</a>
             <img style="margin-left:45px;margin-top:0px" src="/img/reqthank.png" alt="">
