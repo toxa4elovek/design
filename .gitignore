@@ -127,3 +127,6 @@ app/webroot/js/users/mypitches/ProjectListItem.js
 .php_cs.cache
 app/webroot/js/users/feed.js
 app/webroot/js/users/hireDesigner.js
+.htaccess
+app/.htaccess
+app/webroot/.htaccess
