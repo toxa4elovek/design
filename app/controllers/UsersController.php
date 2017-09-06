@@ -1179,8 +1179,6 @@ class UsersController extends \app\controllers\AppController
                 $user->created = date('Y-m-d H:i:s');
 
                 if ((!is_null(Session::read('redirect'))) && (Session::read('redirect') != '/users/logout')) {
-                    $redirect = Session::read('redirect');
-                } else {
                     $redirect = '/users/feed';
                 }
                 if (isset($this->request->data['who_am_i'])) {

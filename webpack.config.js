@@ -3,9 +3,9 @@ var path = require('path');
 ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
-    entry: "C:\\server\\www\\godesigner\\app\\src\\components.jsx",
+    entry: "D:\\openserver\\domains\\design.lc\\app\\src\\components.jsx",
     output: {
-        path: "C:\\server\\www\\godesigner\\app\\webroot\\dist\\",
+        path: "D:\\openserver\\domains\\design.lc\\app\\webroot\\dist\\",
         filename: "components.js"
     },
     module: {
