@@ -15,7 +15,6 @@
     "postcss-use": "^2.0.1",
     "react-css-modules": "^3.6.3",
     "style-loader": "^0.13.0",
-    "webpack": "^1.15.0",
     "whatwg-fetch": "^0.9.0"
   },
   "devDependencies": {
